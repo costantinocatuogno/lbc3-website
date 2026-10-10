@@ -113,7 +113,7 @@ export async function loadWall(content, distDir) {
     sponsoren: content.sponsoren.map((s) => ({ firma: s.firma, logo: s.logo || null, website: s.website || '', paket: s.paket || '', text: '', social: {} }))
   });
   if (!base || !key) return beispiel();
-  const headers = { apikey: key, Authorization: `Bearer ${key}` };
+  const headers = key.startsWith('sb_') ? { apikey: key } : { apikey: key, Authorization: `Bearer ${key}` };
   const get = async (path) => {
     const res = await fetch(`${base}${path}`, { headers });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);

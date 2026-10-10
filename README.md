@@ -50,7 +50,7 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
    - Redirect URLs: `https://EURE-DOMAIN/login/` (und zum Testen die Netlify-Adresse `https://….netlify.app/login/`)
 5. **Authentication → SMTP Settings**: eigenen Versand über Brevo eintragen (Host `smtp-relay.brevo.com`, Port 587, Zugangsdaten aus Brevo → SMTP & API). Ohne eigenes SMTP verschickt Supabase nur sehr wenige E-Mails pro Stunde.
 6. Optional: **Authentication → Email Templates** ins Deutsche übersetzen (Einladung, Passwort zurücksetzen, Magic Link).
-7. **Project Settings → API**: `Project URL`, `anon public` key und `service_role` key notieren.
+7. **Project Settings → API Keys**: `Project URL` und zwei Schlüssel notieren. Gibt es den Reiter **Legacy API Keys**, dort `anon` und `service_role` nehmen. Sonst den **Publishable key** (statt anon) und einen **Secret key** (statt service_role) – beides funktioniert.
 8. **Ersten Admin anlegen**: Authentication → Users → *Invite user* (eigene E-Mail). Dann im SQL Editor (E-Mail anpassen):
    ```sql
    insert into public.profiles (id, email, name, rolle)
@@ -71,8 +71,8 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
    | Variable | Wert |
    | --- | --- |
    | `SUPABASE_URL` | Project URL aus Supabase |
-   | `SUPABASE_ANON_KEY` | anon public key |
-   | `SUPABASE_SERVICE_ROLE_KEY` | service_role key (**geheim**, nur hier eintragen!) |
+   | `SUPABASE_ANON_KEY` | anon key bzw. Publishable key |
+   | `SUPABASE_SERVICE_ROLE_KEY` | service_role key bzw. Secret key (**geheim**, nur hier eintragen!) |
    | `BREVO_API_KEY` | API-Key aus Brevo |
    | `MAIL_FROM` | `kontakt@EURE-DOMAIN` (in Brevo verifiziert) |
    | `MAIL_FROM_NAME` | `LBC3 · Luigi Battista Catuogno` |

@@ -29,9 +29,15 @@ export function handle(fn) {
 export const siteUrl = () => (process.env.URL || process.env.SITE_URL || '').replace(/\/$/, '');
 
 // ---------- Supabase (REST, mit Service-Role-Key – nur serverseitig!) ----------
+// Funktioniert mit dem alten service_role-Key (JWT) und dem neuen Secret Key (sb_secret_…):
+// Neue Keys gehören nur in den apikey-Header, nicht in Authorization.
+export function keyHeaders(key) {
+  return String(key).startsWith('sb_') ? { apikey: key } : { apikey: key, Authorization: `Bearer ${key}` };
+}
+
 function sbHeaders(extra = {}) {
   const key = env('SUPABASE_SERVICE_ROLE_KEY');
-  return { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', ...extra };
+  return { ...keyHeaders(key), 'Content-Type': 'application/json', ...extra };
 }
 
 export async function sb(path, { method = 'GET', body, headers = {} } = {}) {
@@ -100,7 +106,7 @@ export async function sbUpload(bucket, path, data, contentType) {
   const key = env('SUPABASE_SERVICE_ROLE_KEY');
   const res = await fetch(`${env('SUPABASE_URL')}/storage/v1/object/${bucket}/${path}`, {
     method: 'POST',
-    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': contentType, 'x-upsert': 'true' },
+    headers: { ...keyHeaders(key), 'Content-Type': contentType, 'x-upsert': 'true' },
     body: data
   });
   if (!res.ok) throw new HttpError(502, `Bild-Upload fehlgeschlagen (${res.status}).`);
