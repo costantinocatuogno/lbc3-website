@@ -3,7 +3,7 @@
 
 backend:
   name: github
-  repo: GITHUB-BENUTZER/lbc3-website   # ← anpassen (siehe README, Schritt 4)
+  repo: costantinocatuogno/lbc3-website
   branch: main
   base_url: https://api.netlify.com     # Netlify übernimmt die GitHub-Anmeldung (OAuth)
   commit_messages:
