@@ -1,0 +1,97 @@
+{
+  "titel": "ADAC Kart Masters Ampfing 2026",
+  "datum": "2026-07-01",
+  "startseite": true,
+  "bilder": [
+    {
+      "bild": "/uploads/ampfing-2026/zweikampf-reifenmauer.jpg",
+      "kategorie": "strecke",
+      "text": "Zweikampf vor der Reifenmauer",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/helm-portraet.jpg",
+      "kategorie": "fahrerlager",
+      "text": "Helm mit #LBC3 im Fahrerlager",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/mitzieher-kurvenausgang.jpg",
+      "kategorie": "strecke",
+      "text": "Mitzieher am Kurvenausgang",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg",
+      "kategorie": "strecke",
+      "text": "Mitten im Feld",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/startaufstellung.jpg",
+      "kategorie": "fahrerlager",
+      "text": "Konzentration in der Startaufstellung",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/gerade-vor-dem-feld.jpg",
+      "kategorie": "strecke",
+      "text": "Auf der Geraden vor dem Feld",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/anbremsen-kurve.jpg",
+      "kategorie": "strecke",
+      "text": "Anbremsen vor der Kurve",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/am-scheitelpunkt.jpg",
+      "kategorie": "strecke",
+      "text": "Am Scheitelpunkt",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/vor-dem-start.jpg",
+      "kategorie": "fahrerlager",
+      "text": "Warten auf den Start",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/volle-fahrt-gerade.jpg",
+      "kategorie": "strecke",
+      "text": "Volle Fahrt auf der Geraden",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/frontal-aus-der-kurve.jpg",
+      "kategorie": "strecke",
+      "text": "Frontal aus der Kurve",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/seitenansicht-vollgas.jpg",
+      "kategorie": "strecke",
+      "text": "Seitenansicht in voller Fahrt",
+      "fotograf": "Kadicfilms Studios"
+    },
+    {
+      "bild": "/uploads/ampfing-2026/duell-um-position.jpg",
+      "kategorie": "strecke",
+      "text": "Duell um die Position",
+      "fotograf": ""
+    },
+    {
+      "bild": "/uploads/ampfing-2026/einlenken.jpg",
+      "kategorie": "strecke",
+      "text": "Einlenken in die Kurve",
+      "fotograf": ""
+    },
+    {
+      "bild": "/uploads/ampfing-2026/nummer-3-von-hinten.jpg",
+      "kategorie": "strecke",
+      "text": "Nummer 3 von hinten",
+      "fotograf": ""
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+import { esc, icon, img } from '../lib/html.mjs';
+import { LANGS, url, t } from '../lib/i18n.mjs';
+
+const NAV = [
+  ['nav_news', '/news/'],
+  ['nav_ueber', '/ueber-luigi/'],
+  ['nav_kalender', '/kalender/'],
+  ['nav_galerie', '/galerie/'],
+  ['nav_squadra', '/squadra-3/'],
+  ['nav_partner', '/partner/'],
+  ['nav_kontakt', '/kontakt/']
+];
+
+export function layout({
+  lang = 'de', path = '/', title, description, body, ctx, active = '', bodyClass = '',
+  noindex = false, scripts = [], ogImage = '/assets/img/og-lbc3.jpg', showReplay = false, alternates = true, jsonLd = null
+}) {
+  const _ = t(lang);
+  const site = ctx.content.site;
+  const base = ctx.siteUrl;
+  const fullTitle = title ? `${title} · LBC3 Luigi Battista Catuogno` : 'LBC3 · Luigi Battista Catuogno – Kartfahrer #3';
+  const desc = description || ctx.content.texte(lang).hero_text;
+  const canonical = `${base}${url(lang, path)}`;
+  const hreflang = alternates
+    ? LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${base}${url(l, path)}">`).join('\n') +
+      `\n<link rel="alternate" hreflang="x-default" href="${base}${path}">`
+    : '';
+
+  const langSwitch = alternates
+    ? LANGS.map((l) => (l === lang
+      ? `<span class="lang is-active" aria-current="true">${l.toUpperCase()}</span>`
+      : `<a class="lang" href="${url(l, path)}" hreflang="${l}" lang="${l}">${l.toUpperCase()}</a>`)).join('')
+    : '';
+
+  const nav = NAV.map(([key, href]) => {
+    const isActive = active === href;
+    return `<a href="${url(lang, href)}"${isActive ? ' aria-current="page" class="is-active"' : ''}>${_(key)}</a>`;
+  }).join('');
+
+  return `<!doctype html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(fullTitle)}</title>
+<meta name="description" content="${esc(desc)}">
+${noindex ? '<meta name="robots" content="noindex, nofollow">' : `<link rel="canonical" href="${canonical}">`}
+${noindex ? '' : hreflang}
+<meta property="og:type" content="website">
+<meta property="og:title" content="${esc(fullTitle)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:image" content="${base}${ogImage}">
+<meta property="og:url" content="${canonical}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#121418">
+<link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<link rel="preload" href="/fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css?v=${ctx.version}">
+${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
+</head>
+<body class="${bodyClass}">
+<a class="skip" href="#main">${_('skip')}</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="${url(lang, '/')}">
+      <img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="40" height="50">
+      <span class="brand-text"><strong>LUIGI BATTISTA CATUOGNO</strong><small>${_('kartfahrer')} · #3</small></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="${_('menu')}">${icon.menu}</button>
+    <nav id="site-nav" class="site-nav" aria-label="Hauptmenü">
+      <div class="nav-links">${nav}</div>
+      <div class="nav-tools">
+        ${langSwitch}
+        <a class="icon-btn" href="${esc(site.instagram)}" rel="noopener" target="_blank" aria-label="Instagram ${esc(site.instagram_handle)}">${icon.instagram}</a>
+        ${showReplay ? `<button class="icon-btn" type="button" data-intro-replay aria-label="${_('intro_replay')}">${icon.play}</button>` : ''}
+        <a class="btn btn-outline btn-sm" href="/login/">${icon.lock}<span>${_('login')}</span></a>
+      </div>
+    </nav>
+  </div>
+</header>
+<main id="main">
+${body}
+</main>
+${footer(lang, ctx)}
+<script src="/assets/js/site.js?v=${ctx.version}" defer></script>
+${scripts.map((s) => `<script src="${s}?v=${ctx.version}" defer></script>`).join('\n')}
+</body>
+</html>`;
+}
+
+function footer(lang, ctx) {
+  const _ = t(lang);
+  const site = ctx.content.site;
+  const year = new Date().getFullYear();
+  return `<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <a href="${url(lang, '/')}" class="footer-logo"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="88" height="110" loading="lazy"></a>
+    <div class="footer-col">
+      ${NAV.slice(0, 4).map(([k, h]) => `<a href="${url(lang, h)}">${_(k)}</a>`).join('')}
+    </div>
+    <div class="footer-col">
+      ${NAV.slice(4).map(([k, h]) => `<a href="${url(lang, h)}">${_(k)}</a>`).join('')}
+      <a href="mailto:${esc(site.kontakt_email)}">${esc(site.kontakt_email)}</a>
+      <a href="${esc(site.instagram)}" rel="noopener" target="_blank">Instagram ${esc(site.instagram_handle)}</a>
+      <a href="/login/" class="gold">${_('login_sponsors')}</a>
+    </div>
+  </div>
+  <div class="wrap footer-legal">
+    <span>© ${year} LBC3 · Luigi Battista Catuogno. ${_('rights')}</span>
+    <span><a href="${url(lang, '/impressum/')}">${_('impressum')}</a> · <a href="${url(lang, '/datenschutz/')}">${_('datenschutz')}</a></span>
+  </div>
+  <div class="flagbar" aria-hidden="true"><i style="background:#000"></i><i style="background:#C8102E"></i><i style="background:#E0B000"></i><i class="flagbar-gap"></i><i style="background:#1E8E3E"></i><i style="background:#F2F3F5"></i><i style="background:#C8102E"></i></div>
+</footer>`;
+}
+
+// Für Seiten wie Login/Bericht/Team: eigener, schlanker Rahmen.
+export function bareLayout({ title, body, ctx, scripts = [], bodyClass = '' }) {
+  return `<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)} · LBC3</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#121418">
+<link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<link rel="stylesheet" href="/assets/css/site.css?v=${ctx.version}">
+</head>
+<body class="${bodyClass}">
+${body}
+<script src="/assets/js/config.js?v=${ctx.version}"></script>
+<script src="/assets/vendor/supabase.js?v=${ctx.version}"></script>
+${scripts.map((s) => `<script src="${s}?v=${ctx.version}" defer></script>`).join('\n')}
+</body>
+</html>`;
+}
+
+export { img };

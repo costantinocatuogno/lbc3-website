@@ -1,0 +1,20 @@
+{
+  "de": {
+    "nummer": "01",
+    "jahr": "[JAHR]",
+    "bild": "/uploads/ampfing-2026/einlenken.jpg",
+    "kurztitel": "Der Anfang",
+    "titel": "Der erste Kart",
+    "text": "Wie alles anfing: der erste Helm, die erste Runde, das Gefühl, das nicht mehr losließ. [IHRE GESCHICHTE IN 2–3 SÄTZEN]"
+  },
+  "en": {
+    "kurztitel": "The beginning",
+    "titel": "The first kart",
+    "text": "How it all began: the first helmet, the first lap, the feeling that never let go. [YOUR STORY IN 2–3 SENTENCES]"
+  },
+  "it": {
+    "kurztitel": "L'inizio",
+    "titel": "Il primo kart",
+    "text": "Come è iniziato tutto: il primo casco, il primo giro, la sensazione che non ti lascia più. [LA VOSTRA STORIA IN 2–3 FRASI]"
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "de": {
+    "nationalitaet": "Deutsch · Italienisch",
+    "chassis": "Tony Kart Rookie",
+    "klasse": "[KLASSE]",
+    "team": "[TEAM]",
+    "lieblingsstrecke": "[STRECKE]",
+    "idole": "Hamilton · Antonelli",
+    "ziel": "Formel 1",
+    "woche": [
+      {
+        "tag": "Montag",
+        "was": "Schule & Regeneration",
+        "bild": ""
+      },
+      {
+        "tag": "Dienstag",
+        "was": "Fitness & Reaktion",
+        "bild": ""
+      },
+      {
+        "tag": "Mittwoch",
+        "was": "Streckenstudium",
+        "bild": ""
+      },
+      {
+        "tag": "Donnerstag",
+        "was": "Werkstatt & Setup",
+        "bild": "/uploads/ampfing-2026/vor-dem-start.jpg"
+      },
+      {
+        "tag": "Freitag",
+        "was": "Freies Training",
+        "bild": "/uploads/ampfing-2026/volle-fahrt-gerade.jpg"
+      },
+      {
+        "tag": "Samstag",
+        "was": "Qualifying & Heats",
+        "bild": "/uploads/ampfing-2026/startaufstellung.jpg"
+      },
+      {
+        "tag": "Sonntag",
+        "was": "Finale",
+        "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
+      }
+    ]
+  },
+  "en": {
+    "nationalitaet": "German · Italian",
+    "chassis": "Tony Kart Rookie",
+    "klasse": "[CLASS]",
+    "team": "[TEAM]",
+    "lieblingsstrecke": "[TRACK]",
+    "idole": "Hamilton · Antonelli",
+    "ziel": "Formula 1",
+    "woche": [
+      {
+        "tag": "Monday",
+        "was": "School & recovery",
+        "bild": ""
+      },
+      {
+        "tag": "Tuesday",
+        "was": "Fitness & reaction",
+        "bild": ""
+      },
+      {
+        "tag": "Wednesday",
+        "was": "Track study",
+        "bild": ""
+      },
+      {
+        "tag": "Thursday",
+        "was": "Workshop & setup",
+        "bild": "/uploads/ampfing-2026/vor-dem-start.jpg"
+      },
+      {
+        "tag": "Friday",
+        "was": "Free practice",
+        "bild": "/uploads/ampfing-2026/volle-fahrt-gerade.jpg"
+      },
+      {
+        "tag": "Saturday",
+        "was": "Qualifying & heats",
+        "bild": "/uploads/ampfing-2026/startaufstellung.jpg"
+      },
+      {
+        "tag": "Sunday",
+        "was": "Final",
+        "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
+      }
+    ]
+  },
+  "it": {
+    "nationalitaet": "Tedesca · Italiana",
+    "chassis": "Tony Kart Rookie",
+    "klasse": "[CATEGORIA]",
+    "team": "[TEAM]",
+    "lieblingsstrecke": "[CIRCUITO]",
+    "idole": "Hamilton · Antonelli",
+    "ziel": "Formula 1",
+    "woche": [
+      {
+        "tag": "Lunedì",
+        "was": "Scuola e recupero",
+        "bild": ""
+      },
+      {
+        "tag": "Martedì",
+        "was": "Fitness e riflessi",
+        "bild": ""
+      },
+      {
+        "tag": "Mercoledì",
+        "was": "Studio del circuito",
+        "bild": ""
+      },
+      {
+        "tag": "Giovedì",
+        "was": "Officina e setup",
+        "bild": "/uploads/ampfing-2026/vor-dem-start.jpg"
+      },
+      {
+        "tag": "Venerdì",
+        "was": "Prove libere",
+        "bild": "/uploads/ampfing-2026/volle-fahrt-gerade.jpg"
+      },
+      {
+        "tag": "Sabato",
+        "was": "Qualifiche e manche",
+        "bild": "/uploads/ampfing-2026/startaufstellung.jpg"
+      },
+      {
+        "tag": "Domenica",
+        "was": "Finale",
+        "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
+      }
+    ]
+  }
+}

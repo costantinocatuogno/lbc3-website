@@ -1,0 +1,6 @@
+dist/
+.cache/
+.netlify/
+node_modules/
+.env
+.DS_Store

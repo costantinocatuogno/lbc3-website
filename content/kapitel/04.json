@@ -1,0 +1,20 @@
+{
+  "de": {
+    "nummer": "04",
+    "jahr": "2026 / 27",
+    "bild": "/uploads/ampfing-2026/duell-um-position.jpg",
+    "kurztitel": "Italien",
+    "titel": "Internationale Rennen in Italien",
+    "text": "Die Heimat des Kartsports: erste internationale Rennen auf den Strecken Italiens. [RENNEN / STRECKEN]"
+  },
+  "en": {
+    "kurztitel": "Italy",
+    "titel": "International races in Italy",
+    "text": "The home of karting: first international races on Italy's tracks. [RACES / TRACKS]"
+  },
+  "it": {
+    "kurztitel": "Italia",
+    "titel": "Gare internazionali in Italia",
+    "text": "La patria del kart: prime gare internazionali sui circuiti italiani. [GARE / CIRCUITI]"
+  }
+}
