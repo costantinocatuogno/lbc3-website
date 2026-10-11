@@ -66,12 +66,29 @@ export async function sb(path, { method = 'GET', body, headers = {} } = {}) {
 export async function requireAdmin(req) {
   const auth = req.headers.get('authorization') || '';
   const token = auth.replace(/^Bearer\s+/i, '');
-  if (!token) throw new HttpError(401, 'Nicht angemeldet.');
-  const res = await fetch(`${env('SUPABASE_URL')}/auth/v1/user`, { headers: { apikey: env('SUPABASE_ANON_KEY'), Authorization: `Bearer ${token}` } });
-  if (!res.ok) throw new HttpError(401, 'Sitzung abgelaufen – bitte neu anmelden.');
+  if (!token || token === 'null' || token === 'undefined') throw new HttpError(401, 'Nicht angemeldet – bitte neu anmelden.');
+  const base = env('SUPABASE_URL');
+  const anon = env('SUPABASE_ANON_KEY');
+  const userHeaders = { apikey: anon, Authorization: `Bearer ${token}` };
+  let res;
+  try { res = await fetch(`${base}/auth/v1/user`, { headers: userHeaders }); }
+  catch (e) { throw new HttpError(502, `Supabase nicht erreichbar: ${e.cause?.code || e.message}`); }
+  if (!res.ok) throw new HttpError(401, 'Sitzung abgelaufen – bitte abmelden und neu anmelden.');
   const user = await res.json();
-  const rows = await sb(`/rest/v1/profiles?id=eq.${user.id}&select=rolle`);
-  if (!rows?.[0] || rows[0].rolle !== 'admin') throw new HttpError(403, 'Nur für Admins.');
+  // Rolle mit dem Login des Aufrufers lesen (RLS erlaubt das eigene Profil) – unabhängig vom Service-Key
+  let rolle = null;
+  try {
+    const r = await fetch(`${base}/rest/v1/profiles?id=eq.${user.id}&select=rolle`, { headers: userHeaders });
+    const rows = r.ok ? await r.json() : [];
+    rolle = rows?.[0]?.rolle || null;
+  } catch { /* unten Fallback */ }
+  if (!rolle) {
+    const rows = await sb(`/rest/v1/profiles?id=eq.${user.id}&select=rolle`).catch(() => []);
+    rolle = rows?.[0]?.rolle || null;
+  }
+  if (rolle !== 'admin') {
+    throw new HttpError(403, `Nur für Admins (angemeldet als ${user.email || '?'}, ${rolle ? 'Rolle: ' + rolle : 'kein Profil gefunden'}).`);
+  }
   return user;
 }
 
