@@ -26,7 +26,8 @@ export function handle(fn) {
       const status = err instanceof HttpError ? err.status : 500;
       if (status >= 500) console.error(err);
       // Kurze technische Ursache mitgeben (ohne Schlüssel), damit Fehler bei der Einrichtung schnell gefunden werden
-      const detail = String(err && (err.message || err)).replace(/(key|token|secret)=\S+/gi, '$1=…').slice(0, 160);
+      const cause = err && err.cause ? ` [${err.cause.code || ''} ${err.cause.hostname || err.cause.host || ''} ${err.cause.message || ''}]` : '';
+      const detail = (String(err && (err.message || err)) + cause).replace(/(key|token|secret)=\S+/gi, '$1=…').slice(0, 160);
       return json({ error: err instanceof HttpError ? err.message : `Interner Fehler: ${detail}` }, status);
     }
   };
@@ -47,7 +48,13 @@ function sbHeaders(extra = {}) {
 }
 
 export async function sb(path, { method = 'GET', body, headers = {} } = {}) {
-  const res = await fetch(`${env('SUPABASE_URL')}${path}`, { method, headers: sbHeaders(headers), body: body ? JSON.stringify(body) : undefined });
+  const base = env('SUPABASE_URL');
+  let res;
+  try {
+    res = await fetch(`${base}${path}`, { method, headers: sbHeaders(headers), body: body ? JSON.stringify(body) : undefined });
+  } catch (e) {
+    throw new HttpError(502, `Supabase nicht erreichbar (${base.replace(/^https?:\/\//, '').slice(0, 40)}): ${e.cause?.code || e.message}`);
+  }
   const text = await res.text();
   let data = null;
   try { data = text ? JSON.parse(text) : null; } catch { data = { message: `Supabase antwortet unerwartet (HTTP ${res.status}) – SUPABASE_URL prüfen` }; }
@@ -78,11 +85,12 @@ export async function sendMail({ to, subject, html, attachmentUrl, attachmentNam
     htmlContent: html
   };
   if (attachmentUrl) body.attachment = [{ url: attachmentUrl, name: attachmentName || 'jahresbericht.pdf' }];
-  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+  let res;
+  try { res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: { 'api-key': env('BREVO_API_KEY'), 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(body)
-  });
+  }); } catch (e) { throw new HttpError(502, `Brevo nicht erreichbar: ${e.cause?.code || e.message}`); }
   if (!res.ok) {
     const t = await res.text().catch(() => '');
     let m = ''; try { m = JSON.parse(t).message || ''; } catch { m = t.slice(0, 120); }
