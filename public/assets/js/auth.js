@@ -81,7 +81,15 @@
       const password = loginForm.password.value;
       if (!password) { showMsg('Bitte Passwort eingeben – oder „Login-Link per E-Mail“ nutzen.', true); return; }
       const { error } = await sb.auth.signInWithPassword({ email, password });
-      if (error) { showMsg('Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort prüfen.', true); return; }
+      if (error) {
+        const m = String(error.message || '');
+        const hint = /confirm/i.test(m) ? 'Die E-Mail-Adresse ist noch nicht bestätigt (in Supabase „Auto Confirm User“ anhaken oder Einladungslink öffnen).'
+          : /invalid login|credentials/i.test(m) ? 'E-Mail oder Passwort stimmen nicht.'
+          : /api key|apikey|jwt|unauthorized|fetch/i.test(m) ? 'Verbindung zu Supabase fehlgeschlagen – bitte SUPABASE_URL und SUPABASE_ANON_KEY in Netlify prüfen.'
+          : 'Bitte E-Mail und Passwort prüfen.';
+        showMsg(`Anmeldung fehlgeschlagen. ${hint} (Technische Meldung: ${m || error.status || 'unbekannt'})`, true);
+        return;
+      }
       goToArea();
     });
 
