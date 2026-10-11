@@ -25,7 +25,9 @@ export function handle(fn) {
     } catch (err) {
       const status = err instanceof HttpError ? err.status : 500;
       if (status >= 500) console.error(err);
-      return json({ error: err instanceof HttpError ? err.message : 'Interner Fehler' }, status);
+      // Kurze technische Ursache mitgeben (ohne Schlüssel), damit Fehler bei der Einrichtung schnell gefunden werden
+      const detail = String(err && (err.message || err)).replace(/(key|token|secret)=\S+/gi, '$1=…').slice(0, 160);
+      return json({ error: err instanceof HttpError ? err.message : `Interner Fehler: ${detail}` }, status);
     }
   };
 }
@@ -47,8 +49,9 @@ function sbHeaders(extra = {}) {
 export async function sb(path, { method = 'GET', body, headers = {} } = {}) {
   const res = await fetch(`${env('SUPABASE_URL')}${path}`, { method, headers: sbHeaders(headers), body: body ? JSON.stringify(body) : undefined });
   const text = await res.text();
-  const data = text ? JSON.parse(text) : null;
-  if (!res.ok) throw new HttpError(res.status >= 500 ? 502 : 400, data?.msg || data?.message || data?.error_description || `Supabase-Fehler ${res.status}`);
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch { data = { message: `Supabase antwortet unerwartet (HTTP ${res.status}) – SUPABASE_URL prüfen` }; }
+  if (!res.ok) throw new HttpError(res.status >= 500 ? 502 : 400, `Supabase: ${data?.msg || data?.message || data?.error_description || res.status}${data?.hint ? ' – ' + data.hint : ''}`);
   return data;
 }
 
@@ -80,7 +83,11 @@ export async function sendMail({ to, subject, html, attachmentUrl, attachmentNam
     headers: { 'api-key': env('BREVO_API_KEY'), 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify(body)
   });
-  if (!res.ok) throw new HttpError(502, `E-Mail-Versand fehlgeschlagen (${res.status}).`);
+  if (!res.ok) {
+    const t = await res.text().catch(() => '');
+    let m = ''; try { m = JSON.parse(t).message || ''; } catch { m = t.slice(0, 120); }
+    throw new HttpError(502, `E-Mail-Versand fehlgeschlagen (Brevo ${res.status}${m ? ': ' + m : ''}).`);
+  }
 }
 
 export const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
