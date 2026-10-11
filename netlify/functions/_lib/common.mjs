@@ -1,7 +1,11 @@
 // Gemeinsame Helfer für die Netlify Functions (ohne externe Pakete).
 
 export function env(name, required = true) {
-  const v = process.env[name];
+  let v = (process.env[name] || '').trim();
+  if (name === 'SUPABASE_URL') {
+    const m = v.match(/^https:\/\/[a-z0-9-]+\.supabase\.(co|in)/i);
+    v = m ? m[0] : v.replace(/\/+$/, '');
+  }
   if (required && !v) throw new HttpError(503, `Server ist noch nicht eingerichtet (${name} fehlt).`);
   return v || '';
 }

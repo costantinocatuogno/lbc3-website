@@ -59,9 +59,17 @@ for (const [name, src] of VENDOR) {
   writeFileSync(join(DIST, 'assets/vendor', name), buf || `/* ${name} konnte beim Build nicht geladen werden */ window.__supabaseMissing = true;`);
 }
 
+// Supabase-Adresse robust machen: Leerzeichen, Schrägstrich am Ende oder angehängte Pfade (/rest/v1 …) entfernen
+function cleanSupabaseUrl(v) {
+  const m = String(v || '').trim().match(/^https:\/\/[a-z0-9-]+\.supabase\.(co|in)/i);
+  if (!m && v) console.warn('⚠ SUPABASE_URL sieht ungewöhnlich aus – erwartet: https://xxxx.supabase.co');
+  return m ? m[0] : String(v || '').trim().replace(/\/+$/, '');
+}
+process.env.SUPABASE_URL = cleanSupabaseUrl(process.env.SUPABASE_URL);
+
 // Öffentliche Supabase-Zugangsdaten (anon key ist öffentlich; geschützt wird über Row-Level-Security).
 writeFileSync(join(DIST, 'assets/js/config.js'), `window.LBC3_CONFIG = ${JSON.stringify({
-  supabaseUrl: process.env.SUPABASE_URL || '',
+  supabaseUrl: cleanSupabaseUrl(process.env.SUPABASE_URL),
   supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
   siteUrl
 })};\n`);

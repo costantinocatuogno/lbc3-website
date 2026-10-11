@@ -1,5 +1,5 @@
 // Saisonende: Jahresbericht an alle bestätigten Squadra-3-Mitglieder mit Häkchen "Jahresbericht" senden.
-import { handle, json, sb, requireAdmin, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError } from './_lib/common.mjs';
+import { handle, json, sb, requireAdmin, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, env } from './_lib/common.mjs';
 
 const eur = (n) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
 
@@ -21,7 +21,7 @@ export default handle(async (req) => {
   let pdfUrl = '';
   if (s.pdf_bericht) {
     const signed = await sb(`/storage/v1/object/sign/berichte/${s.pdf_bericht}`, { method: 'POST', body: { expiresIn: 60 * 60 * 24 * 7 } });
-    pdfUrl = `${process.env.SUPABASE_URL}/storage/v1${signed.signedURL || signed.signedUrl}`;
+    pdfUrl = `${env("SUPABASE_URL")}/storage/v1${signed.signedURL || signed.signedUrl}`;
   }
 
   const tabelle = ausgaben.map((r) => `<tr><td style="padding:6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(r.kategorie)}</td><td style="padding:6px 0;border-bottom:1px solid #ECEDEF;text-align:right"><strong>${eur(r.betrag)}</strong></td></tr>`).join('');
