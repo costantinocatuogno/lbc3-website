@@ -1,0 +1,15 @@
+{
+  "startseite": false,
+  "bilder": [
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/img_0144.jpeg"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/img_0135.jpeg"
+    }
+  ],
+  "titel": "ADAC Kart Masters Mülsen 2026",
+  "datum": "2026-04-26"
+}
