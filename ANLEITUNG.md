@@ -4,8 +4,8 @@ Es gibt zwei Bereiche:
 
 | Bereich | Adresse | Was ihr dort macht |
 | --- | --- | --- |
-| **Inhalte (CMS)** | `https://luigi-battista.com/admin/` | Fotos, News, Rennen & Ergebnisse, Kapitel, Sponsoren-Logos, Texte |
-| **Team-Bereich** | `https://luigi-battista.com/team/` (über „Login“ → „Team / Admin“) | Ausgabenbericht, Sponsoren-Zugänge, Squadra 3 |
+| **Inhalte (CMS)** | `https://luigi-catuogno.com/admin/` | Fotos, News, Rennen & Ergebnisse, Kapitel, Sponsoren-Logos, Texte |
+| **Team-Bereich** | `https://luigi-catuogno.com/team/` (über „Login“ → „Team / Admin“) | Ausgabenbericht, Sponsoren-Zugänge, Squadra 3 |
 
 Nach jeder Änderung im CMS dauert es **1–2 Minuten**, bis sie auf der Website sichtbar ist. Änderungen im Team-Bereich gelten sofort.
 

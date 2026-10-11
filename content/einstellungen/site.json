@@ -2,8 +2,8 @@
   "name": "Luigi Battista Catuogno",
   "marke": "LBC3",
   "startnummer": "3",
-  "kontakt_email": "kontakt@luigi-battista.com",
-  "business_email": "business@luigi-battista.com",
+  "kontakt_email": "contact@luigi-catuogno.com",
+  "business_email": "contact@luigi-catuogno.com",
   "instagram": "https://www.instagram.com/l.b.c._3/",
   "instagram_handle": "@l.b.c._3",
   "hashtag": "#LBC3",
@@ -18,6 +18,6 @@
   "login_bild": "/uploads/ampfing-2026/startaufstellung.jpg",
   "sponsorenmappe_pdf": "",
   "zahlungsinfo": "[BANKVERBINDUNG ODER ZAHLUNGSLINK – noch festzulegen]",
-  "impressum": "**Angaben gemäß § 5 DDG**\n\n[VORNAME NACHNAME]\n[STRASSE NR.]\n[PLZ ORT]\n\nE-Mail: kontakt@luigi-battista.com\n\nVerantwortlich für den Inhalt: [VORNAME NACHNAME]",
+  "impressum": "**Angaben gemäß § 5 DDG**\n\n[VORNAME NACHNAME]\n[STRASSE NR.]\n[PLZ ORT]\n\nE-Mail: contact@luigi-catuogno.com\n\nVerantwortlich für den Inhalt: [VORNAME NACHNAME]",
   "datenschutz": "**Datenschutzerklärung**\n\n[HIER DIE DATENSCHUTZERKLÄRUNG EINFÜGEN – sie muss Netlify (Hosting), Supabase (Login und Unterstützer-Daten, Server in der EU), Brevo (E-Mail-Versand) und Netlify Forms (Kontaktformular) nennen – und die Squadra 3: Name, E-Mail, optional Foto und Instagram-Name; Zweck Wall of Fame (Website und gedruckte Fotowand), Rechtsgrundlage Einwilligung, bei unter 16-Jährigen Einwilligung der Eltern, Widerruf jederzeit per E-Mail.]\n\nDiese Website setzt keine Tracking-Cookies. Schriften werden von unserem eigenen Server geladen."
 }
