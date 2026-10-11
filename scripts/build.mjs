@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { loadContent, loadWall } from './lib/content.mjs';
 import { LANGS, url } from './lib/i18n.mjs';
 import { home } from './templates/home.mjs';
-import { newsList, newsDetail, ueber, kalender, galerie, partner, kontakt, rechtliches, message } from './templates/pages.mjs';
+import { newsList, newsDetail, ueber, kalender, galerie, galerieSerie, galerieJahr, galerieAlbum, partner, kontakt, rechtliches, message } from './templates/pages.mjs';
 import { loginPage, berichtPage, teamPage } from './templates/secure.mjs';
 import { squadra, wallPrint } from './templates/squadra.mjs';
 
@@ -94,6 +94,11 @@ for (const lang of LANGS) {
   out(url(lang, '/ueber-luigi/'), ueber(lang, ctx));
   out(url(lang, '/kalender/'), kalender(lang, ctx));
   out(url(lang, '/galerie/'), galerie(lang, ctx));
+  for (const se of content.serien) {
+    out(url(lang, se.path), galerieSerie(lang, ctx, se));
+    for (const j of se.jahre) out(url(lang, j.path), galerieJahr(lang, ctx, se, j));
+  }
+  for (const a of content.alben) out(url(lang, a.path), galerieAlbum(lang, ctx, a));
   out(url(lang, '/squadra-tre/'), squadra(lang, ctx, wall));
   out(url(lang, '/partner/'), partner(lang, ctx, wall));
   out(url(lang, '/kontakt/'), kontakt(lang, ctx));

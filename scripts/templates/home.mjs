@@ -96,7 +96,7 @@ ${album ? `
     <a class="link" href="${url(lang, '/galerie/')}">${_('to_gallery')} ${icon.arrow}</a>
   </div>
   <div class="grid-4">
-    ${preview.map((p) => `<a class="square-photo" href="${url(lang, '/galerie/')}">${picture(p.bild, p.text, { width: 600, sizes: '(max-width: 760px) 50vw, 25vw' })}</a>`).join('')}
+    ${preview.map((p) => `<a class="square-photo" href="${url(lang, album?.path || '/galerie/')}">${picture(p.bild, p.text, { width: 600, sizes: '(max-width: 760px) 50vw, 25vw' })}</a>`).join('')}
   </div>
 </section>` : ''}
 

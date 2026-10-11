@@ -164,39 +164,89 @@ ${pageHead('/on-track', _('kal_title'))}
   return layout({ lang, path: '/kalender/', title: _('nav_kalender'), body, ctx, active: '/kalender/' });
 }
 
-/* ---------------- GALERIE ---------------- */
+/* ---------------- GALERIE: Serie → Jahr → Strecke ---------------- */
+function galCrumbs(lang, _, items) {
+  const all = [[_('nav_galerie'), '/galerie/'], ...items];
+  return `<nav class="crumbs" aria-label="${_('breadcrumb')}">${all.map(([label, path], i) => i < all.length - 1
+    ? `<a href="${url(lang, path)}">${esc(label)}</a><span aria-hidden="true">/</span>`
+    : `<span aria-current="page">${esc(label)}</span>`).join('')}</nav>`;
+}
+function galCard(lang, _, { href, cover, kicker, title, meta }) {
+  return `<a class="gal-card" href="${url(lang, href)}">
+    <div class="gal-card-img">${cover ? picture(cover, title, { width: 900, sizes: '(max-width: 760px) 100vw, 33vw' }) : ''}</div>
+    <div class="gal-card-body">${kicker ? `<div class="eyebrow">${esc(kicker)}</div>` : ''}<h3 class="h3">${esc(title)}</h3><div class="meta">${meta}</div></div>
+  </a>`;
+}
+const fotosLabel = (_, n) => `${n} ${_('photos')}`;
+function albumCards(lang, _, alben, withYear = false) {
+  return `<div class="gal-grid">${alben.map((a) => galCard(lang, _, {
+    href: a.path, cover: a.cover, kicker: withYear ? a.jahr : '', title: a.strecke,
+    meta: `${a.datum ? `<span>${formatDate(a.datum, lang)}</span>` : ''}<span>${fotosLabel(_, a.bilder.length)}</span>`
+  })).join('')}</div>`;
+}
+
 export function galerie(lang, ctx) {
   const _ = t(lang);
+  const serien = ctx.content.serien;
+  const grid = serien.length ? `<div class="gal-grid">${serien.map((s) => galCard(lang, _, {
+    href: s.path, cover: s.cover, kicker: s.jahre.map((j) => j.jahr).join(' · '), title: s.name,
+    meta: `<span>${s.alben.length} ${s.alben.length === 1 ? _('gal_race') : _('gal_races')}</span><span>${fotosLabel(_, s.fotos)}</span>`
+  })).join('')}</div>` : `<p class="muted">${_('gal_empty')}</p>`;
+  const body = `${pageHead(_('gal_kicker'), _('nav_galerie'), `<p class="lead">${_('gal_intro')}</p>`)}<section class="wrap section">${grid}</section>`;
+  return layout({ lang, path: '/galerie/', title: _('nav_galerie'), body, ctx, active: '/galerie/' });
+}
+
+export function galerieSerie(lang, ctx, serie) {
+  const _ = t(lang);
+  const years = serie.jahre.map((j) => `
+<section class="wrap section">
+  <div class="section-head"><h2 class="h2 xl"><a class="plain" href="${url(lang, j.path)}">${esc(j.jahr)}</a></h2></div>
+  ${albumCards(lang, _, j.alben)}
+</section>`).join('');
+  const body = `<section class="wrap page-head">${galCrumbs(lang, _, [[serie.name, serie.path]])}<div class="eyebrow">${_('nav_galerie')}</div><h1 class="h1">${esc(serie.name)}</h1></section>${years}`;
+  return layout({ lang, path: serie.path, title: `${serie.name} · ${_('nav_galerie')}`, body, ctx, active: '/galerie/' });
+}
+
+export function galerieJahr(lang, ctx, serie, jahr) {
+  const _ = t(lang);
+  const body = `<section class="wrap page-head">${galCrumbs(lang, _, [[serie.name, serie.path], [jahr.jahr, jahr.path]])}<div class="eyebrow">${esc(serie.name)}</div><h1 class="h1">${esc(jahr.jahr)}</h1></section>
+<section class="wrap section">${albumCards(lang, _, jahr.alben)}</section>`;
+  return layout({ lang, path: jahr.path, title: `${serie.name} ${jahr.jahr} · ${_('nav_galerie')}`, body, ctx, active: '/galerie/' });
+}
+
+export function galerieAlbum(lang, ctx, a) {
+  const _ = t(lang);
   const c = ctx.content;
-  let idx = 0;
-  const albums = c.alben.map((a) => {
-    const counts = { strecke: 0, fahrerlager: 0 };
-    a.bilder.forEach((b) => { counts[b.kategorie] = (counts[b.kategorie] || 0) + 1; });
-    const credits = [...new Set(a.bilder.map((b) => b.fotograf).filter(Boolean))];
-    return `
+  const counts = { strecke: 0, fahrerlager: 0 };
+  a.bilder.forEach((b) => { counts[b.kategorie] = (counts[b.kategorie] || 0) + 1; });
+  const credits = [...new Set(a.bilder.map((b) => b.fotograf).filter(Boolean))];
+  const serie = c.serien.find((s) => s.slug === a.serieSlug);
+  const siblings = serie ? serie.alben.filter((x) => x !== a).slice(0, 3) : [];
+  const body = `
+<section class="wrap page-head">${galCrumbs(lang, _, [[a.serie, `/galerie/${a.serieSlug}/`], [a.jahr, `/galerie/${a.serieSlug}/${a.jahr}/`], [a.strecke, a.path]])}
+  <div class="eyebrow">${esc(a.serie)} · ${esc(a.jahr)}</div><h1 class="h1">${esc(a.strecke)}</h1>
+  ${a.datum ? `<p class="muted">${formatDate(a.datum, lang)} · ${fotosLabel(_, a.bilder.length)}</p>` : ''}
+</section>
 <section class="wrap section" data-gallery>
-  <div class="section-head">
-    <h2 class="h2 xl">${esc(a.titel)}</h2>
-    <div class="pill-row">
-      <button type="button" class="pill is-active" data-gfilter="all" aria-pressed="true">${_('all')} (${a.bilder.length})</button>
-      <button type="button" class="pill" data-gfilter="strecke" aria-pressed="false">${_('cat_strecke')} (${counts.strecke || 0})</button>
-      <button type="button" class="pill" data-gfilter="fahrerlager" aria-pressed="false">${_('cat_fahrerlager')} (${counts.fahrerlager || 0})</button>
-    </div>
+  <div class="pill-row mb-s">
+    <button type="button" class="pill is-active" data-gfilter="all" aria-pressed="true">${_('all')} (${a.bilder.length})</button>
+    <button type="button" class="pill" data-gfilter="strecke" aria-pressed="false">${_('cat_strecke')} (${counts.strecke || 0})</button>
+    <button type="button" class="pill" data-gfilter="fahrerlager" aria-pressed="false">${_('cat_fahrerlager')} (${counts.fahrerlager || 0})</button>
   </div>
   <div class="masonry" data-lightbox-group>
-    ${a.bilder.map((b) => {
-      const i = idx++;
+    ${a.bilder.map((b, i) => {
       const isVideo = /\.(mp4|webm|mov)$/i.test(b.bild);
       return `<button type="button" class="masonry-item" data-cat="${esc(b.kategorie)}" data-lightbox-index="${i}" data-full="${esc(isVideo ? b.bild : img(b.bild, 1800))}" data-video="${isVideo}" data-caption="${esc(b.text || '')}${b.fotograf ? ` · ${_('photo_credit')}: ${esc(b.fotograf)}` : ''}" aria-label="${_('enlarge')}: ${esc(b.text || '')}">
         ${isVideo ? `<video src="${esc(b.bild)}" muted playsinline preload="metadata"></video>` : picture(b.bild, b.text || '', { width: 700, sizes: '(max-width: 760px) 100vw, 33vw' })}
       </button>`;
     }).join('')}
   </div>
-  ${credits.length ? `<p class="muted small">${_('photo_credit')}: ${credits.map(esc).join(', ')} · ${_('more_insta')}: <a href="${esc(c.site.instagram)}" rel="noopener" target="_blank">${esc(c.site.instagram_handle)}</a></p>` : ''}
-</section>`;
-  }).join('');
-  const body = `${pageHead(_('gal_kicker'), _('nav_galerie'))}${albums}${lightbox(lang)}`;
-  return layout({ lang, path: '/galerie/', title: _('nav_galerie'), body, ctx, active: '/galerie/' });
+  ${credits.length ? `<p class="muted small">${_('photo_credit')}: ${credits.map(esc).join(', ')}</p>` : ''}
+  <p class="muted small">${_('more_insta')}: <a href="${esc(c.site.instagram)}" rel="noopener" target="_blank">${esc(c.site.instagram_handle)}</a></p>
+</section>
+${siblings.length ? `<section class="wrap section"><div class="section-head"><h2 class="h2">${_('gal_more')} ${esc(a.serie)}</h2></div>${albumCards(lang, _, siblings, true)}</section>` : ''}
+${lightbox(lang)}`;
+  return layout({ lang, path: a.path, title: `${a.strecke} ${a.jahr} · ${a.serie}`, body, ctx, active: '/galerie/' });
 }
 
 function lightbox(lang) {

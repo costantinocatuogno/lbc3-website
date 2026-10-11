@@ -90,10 +90,13 @@ collections:
     extension: json
     slug: '{{slug}}'
     identifier_field: titel
-    summary: '{{titel}}'
+    summary: '{{serie}} · {{strecke}} · {{datum}}'
     fields:
-      - { label: Titel, name: titel, widget: string, hint: 'z. B. ADAC Kart Masters Ampfing 2026' }
-      - { label: Datum, name: datum, widget: datetime, date_format: DD.MM.YYYY, time_format: false, format: YYYY-MM-DD }
+      - { label: Serie, name: serie, widget: string, hint: 'Immer gleich schreiben, z. B. „ADAC Kart Masters“, „SAKC“, „WSK“ – danach wird die Galerie gruppiert' }
+      - { label: Strecke, name: strecke, widget: string, hint: 'z. B. Mülsen, Ampfing, Lonato' }
+      - { label: Datum, name: datum, widget: datetime, date_format: DD.MM.YYYY, time_format: false, format: YYYY-MM-DD, hint: 'Das Jahr für die Galerie wird automatisch aus dem Datum genommen' }
+      - { label: Titel, name: titel, widget: string, hint: 'z. B. ADAC Kart Masters Mülsen 2026 (für die Übersicht im CMS)' }
+      - { label: Titelbild (optional), name: titelbild, widget: image, required: false, media_folder: /public/uploads/galerie, public_folder: /uploads/galerie, hint: 'Ohne Auswahl wird das erste Foto genommen' }
       - { label: Auf der Startseite zeigen, name: startseite, widget: boolean, default: false }
       - label: Fotos & Videos
         name: bilder

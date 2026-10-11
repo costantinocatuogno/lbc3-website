@@ -56,9 +56,31 @@ export function loadContent(root) {
     .map((f) => ({ id: basename(f, '.json'), ...readJSON(join(C, 'rennen', f)) }))
     .sort((a, b) => String(a.start).localeCompare(String(b.start)));
 
+  // Galerie-Aufbau: Serie → Jahr → Strecke
   const alben = listDir(join(C, 'alben'), '.json')
-    .map((f) => ({ slug: basename(f, '.json'), ...readJSON(join(C, 'alben', f)) }))
+    .map((f) => {
+      const a = { slug: basename(f, '.json'), ...readJSON(join(C, 'alben', f)) };
+      a.bilder = (a.bilder || []).filter((b) => b && b.bild);
+      a.serie = String(a.serie || '').trim() || 'Weitere Rennen';
+      a.jahr = String(a.jahr || String(a.datum || '').slice(0, 4) || '').trim() || 'Ohne Jahr';
+      a.strecke = String(a.strecke || '').trim() || a.titel || a.slug;
+      a.serieSlug = urlSlug(a.serie);
+      a.streckeSlug = urlSlug(a.strecke);
+      a.path = `/galerie/${a.serieSlug}/${a.jahr}/${a.streckeSlug}/`;
+      a.cover = a.titelbild || (a.bilder.find((b) => !/\.(mp4|webm|mov)$/i.test(b.bild)) || {}).bild || '';
+      return a;
+    })
     .sort((a, b) => String(b.datum).localeCompare(String(a.datum)));
+  const serien = [];
+  for (const a of alben) {
+    let s = serien.find((x) => x.slug === a.serieSlug);
+    if (!s) { s = { name: a.serie, slug: a.serieSlug, path: `/galerie/${a.serieSlug}/`, alben: [], jahre: [] }; serien.push(s); }
+    s.alben.push(a);
+    let j = s.jahre.find((x) => x.jahr === a.jahr);
+    if (!j) { j = { jahr: a.jahr, path: `/galerie/${a.serieSlug}/${a.jahr}/`, alben: [] }; s.jahre.push(j); }
+    j.alben.push(a);
+  }
+  serien.forEach((s) => { s.jahre.sort((x, y) => y.jahr.localeCompare(x.jahr)); s.cover = s.alben[0]?.cover || ''; s.fotos = s.alben.reduce((n, a) => n + a.bilder.length, 0); });
 
   const kapitel = listDir(join(C, 'kapitel'), '.json')
     .map((f) => readJSON(join(C, 'kapitel', f)))
@@ -91,7 +113,7 @@ export function loadContent(root) {
   const saisons = [...new Set(rennen.map((r) => Number(r.saison)).filter(Boolean))].sort((a, b) => a - b);
 
   return {
-    site, fahrer, kapitel, news, rennen, alben, sponsoren, pakete, stats, upcoming, saisons, wandBeispiel,
+    site, fahrer, kapitel, news, rennen, alben, serien, sponsoren, pakete, stats, upcoming, saisons, wandBeispiel,
     texte: (lang) => pick(texte, lang),
     fahrerFor: (lang) => pick(fahrer, lang),
     kapitelFor: (lang) => kapitel.map((k) => pick(k, lang)),
@@ -154,4 +176,12 @@ export async function loadWall(content, distDir) {
     console.warn('⚠ Wall of Fame konnte nicht geladen werden:', err.message);
     return beispiel();
   }
+}
+
+// URL-taugliche Kurzform: „ADAC Kart Masters“ → „adac-kart-masters“, „Mülsen“ → „muelsen“
+export function urlSlug(text) {
+  return String(text || '').toLowerCase()
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'album';
 }
