@@ -46,8 +46,8 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
 2. **SQL Editor → New query**: Inhalt von `supabase/migrations/001_init.sql` einfügen → **Run**. Danach genauso `002_squadra3_wall.sql` (Squadra-3-Fotos, Sponsoren-Wall, private Speicher `squadra` und `sponsoren`).
 3. **Authentication → Sign In / Providers → Email**: aktiv lassen. **„Allow new users to sign up“ ausschalten** (nur Einladungen).
 4. **Authentication → URL Configuration**:
-   - Site URL: `https://EURE-DOMAIN`
-   - Redirect URLs: `https://EURE-DOMAIN/login/` (und zum Testen die Netlify-Adresse `https://….netlify.app/login/`)
+   - Site URL: `https://luigi-battista.com`
+   - Redirect URLs: `https://luigi-battista.com/login/` (und zum Testen die Netlify-Adresse `https://….netlify.app/login/`)
 5. **Authentication → SMTP Settings**: eigenen Versand über Brevo eintragen (Host `smtp-relay.brevo.com`, Port 587, Zugangsdaten aus Brevo → SMTP & API). Ohne eigenes SMTP verschickt Supabase nur sehr wenige E-Mails pro Stunde.
 6. Optional: **Authentication → Email Templates** ins Deutsche übersetzen (Einladung, Passwort zurücksetzen, Magic Link).
 7. **Project Settings → API Keys**: `Project URL` und zwei Schlüssel notieren. Gibt es den Reiter **Legacy API Keys**, dort `anon` und `service_role` nehmen. Sonst den **Publishable key** (statt anon) und einen **Secret key** (statt service_role) – beides funktioniert.
@@ -61,7 +61,7 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
 
 ### 3. Brevo (E-Mails)
 1. Konto auf brevo.com (Free-Tarif: 300 E-Mails/Tag).
-2. **Senders, Domains & Dedicated IPs**: eure Domain verifizieren (DNS-Einträge) und Absender `kontakt@EURE-DOMAIN` anlegen.
+2. **Senders, Domains & Dedicated IPs**: eure Domain verifizieren (DNS-Einträge) und Absender `kontakt@luigi-battista.com` anlegen.
 3. **SMTP & API → API Keys**: neuen API-Key erstellen.
 
 ### 4. Netlify
@@ -74,7 +74,7 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
    | `SUPABASE_ANON_KEY` | anon key bzw. Publishable key |
    | `SUPABASE_SERVICE_ROLE_KEY` | service_role key bzw. Secret key (**geheim**, nur hier eintragen!) |
    | `BREVO_API_KEY` | API-Key aus Brevo |
-   | `MAIL_FROM` | `kontakt@EURE-DOMAIN` (in Brevo verifiziert) |
+   | `MAIL_FROM` | `kontakt@luigi-battista.com` (in Brevo verifiziert) |
    | `MAIL_FROM_NAME` | `LBC3 · Luigi Battista Catuogno` |
    | `MAIL_REPLY_TO` | Adresse, an die Antworten gehen sollen |
    | `SQUADRA_ZAHLUNGSINFO` | Text für die Bestätigungs-Mail, z. B. Kontoinhaber, IBAN, Verwendungszweck „Squadra 3“ oder ein PayPal-Link |
@@ -87,11 +87,11 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
 ### 5. CMS-Zugang (Decap)
 1. In `public/admin/config.yml` bei `repo:` euren GitHub-Namen eintragen (z. B. `catuogno/lbc3-website`), ebenso `site_url` und `display_url`.
 2. GitHub → Settings → Developer settings → **OAuth Apps → New OAuth App**:
-   - Homepage URL: `https://EURE-DOMAIN`
+   - Homepage URL: `https://luigi-battista.com`
    - Authorization callback URL: `https://api.netlify.com/auth/done`
 3. Netlify → **Site configuration → Access & security → OAuth → Install provider → GitHub** → Client ID und Secret aus Schritt 2 eintragen.
 4. Jede Person, die Inhalte pflegt, braucht ein GitHub-Konto mit Schreibrecht auf das Repository (GitHub → Repository → Settings → Collaborators).
-5. Anmelden unter `https://EURE-DOMAIN/admin/` → „Login with GitHub“.
+5. Anmelden unter `https://luigi-battista.com/admin/` → „Login with GitHub“.
 
 > Alternative ohne GitHub-Konten für die Familie: DecapBridge (decapbridge.com) – Login per E-Mail; dann `backend` in `config.yml` laut deren Anleitung ändern.
 
@@ -111,7 +111,7 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
 Netlify Free, Supabase Free, Brevo Free reichen für den Start. Kostenlose Supabase-Projekte werden bei längerer Inaktivität pausiert. Die tägliche Funktion `keepalive` hält das Projekt aktiv; falls es trotzdem pausiert, im Supabase-Dashboard „Restore“ klicken oder auf den Pro-Tarif wechseln.
 
 ## Noch offene Platzhalter
-In eckigen Klammern im Inhalt, z. B. `[STRECKE]`, `[DATUM]`, `[KLASSE]`, `[TEAM]`, `[PREIS / SAISON]`, `[SPONSOR 1]`, `kontakt@[DOMAIN]`, Impressum und Datenschutzerklärung.
+In eckigen Klammern im Inhalt, z. B. `[STRECKE]`, `[DATUM]`, `[KLASSE]`, `[TEAM]`, `[PREIS / SAISON]`, `[SPONSOR 1]`, `kontakt@luigi-battista.com`, Impressum und Datenschutzerklärung.
 Beispieldaten zum Prüfen: Datum des Ampfing-Rennens (01.07.2026 ist ein Platzhalter), das Beispielrennen am 14.03.2027 (Countdown), Daten der News-Beiträge, Fotograf (Kadicfilms Studios laut Bilddaten – bitte bestätigen).
 
 ## Projektstruktur

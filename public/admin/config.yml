@@ -1,4 +1,4 @@
-# Decap CMS – Redaktionsoberfläche unter https://DEINE-DOMAIN/admin/
+# Decap CMS – Redaktionsoberfläche unter https://luigi-battista.com/admin/
 # Jede Änderung wird als Commit im GitHub-Repository gespeichert; Netlify baut die Website danach automatisch neu (1–2 Minuten).
 
 backend:
@@ -14,8 +14,8 @@ backend:
     deleteMedia: 'Bild gelöscht: {{path}}'
 
 locale: de
-site_url: https://DEINE-DOMAIN
-display_url: https://DEINE-DOMAIN
+site_url: https://luigi-battista.com
+display_url: https://luigi-battista.com
 logo_url: /assets/img/lbc3-logo.png
 media_folder: public/uploads
 public_folder: /uploads
