@@ -297,7 +297,7 @@ ${sponsorWall(lang, wall)}
       <h3 class="h3 light">${_('squadra_teaser_t')}</h3>
       <p class="lead light">${_('squadra_teaser')}</p>
       <div class="btn-row">
-        <a class="btn btn-red" href="${url(lang, '/squadra-tre/#beitreten')}">${_('join_free')}</a>
+        <a class="btn btn-red" href="${url(lang, '/squadra-tre/#beitreten')}">${_('join_now')}</a>
         <a class="btn btn-ghost-light" href="${url(lang, '/squadra-tre/#wall')}">${_('wall_title')}</a>
       </div>
     </div>

@@ -76,8 +76,8 @@ export function joinForm(lang, ctx) {
     <fieldset class="field">
       <legend>${_('f_membership')}</legend>
       <div class="choice">
-        <label><input type="radio" name="mitgliedschaft" value="freund" checked><span><strong>${_('sq_free_t')}</strong><small>${_('sq_free_p')}</small></span></label>
-        <label><input type="radio" name="mitgliedschaft" value="unterstuetzer"><span><strong>${_('sq_sup_t')}</strong><small>${_('sq_sup_p')}</small></span></label>
+        <label><input type="radio" name="mitgliedschaft" value="unterstuetzer" checked><span><strong>${_('sq_sup_t')}</strong><small>${_('sq_sup_p')}</small></span></label>
+        <label><input type="radio" name="mitgliedschaft" value="freund"><span><strong>${_('sq_free_t')}</strong><small>${_('sq_free_p')}</small></span></label>
       </div>
     </fieldset>
 
@@ -105,7 +105,7 @@ export function joinForm(lang, ctx) {
     </fieldset>
     <label class="field" data-parent hidden><span>${_('f_parent')}</span><input name="eltern_email" type="email" maxlength="200"><small class="muted">${_('f_parent_hint')}</small></label>
 
-    <div data-sup hidden>
+    <div data-sup>
       <div class="grid-2 tight">
         <label class="field"><span>${_('f_type')}</span>
           <select name="art"><option value="einmalig">${_('type_once')}</option><option value="jaehrlich">${_('type_yearly')}</option><option value="sachleistung">${_('type_kind')}</option></select>
@@ -145,7 +145,7 @@ export function squadra(lang, ctx, wall) {
       <h1 class="h1 big light">${_('sq_title')}</h1>
       <p class="lead light">${_('sq_intro')}</p>
       <div class="btn-row">
-        <a class="btn btn-red" href="#beitreten">${_('join_free')}</a>
+        <a class="btn btn-red" href="#beitreten">${_('join_now')}</a>
         <a class="btn btn-ghost-light" href="${esc(site.instagram)}" rel="noopener" target="_blank">${icon.instagram}<span>${_('sq_follow')}</span></a>
       </div>
     </div>
@@ -169,13 +169,13 @@ export function squadra(lang, ctx, wall) {
 <section class="wrap section two-col align-start sq-join">
   <div>
     <h2 class="h2">${_('sq_types')}</h2>
-    <div class="card way way-red">
-      <div class="row-between"><h3 class="h3">${_('sq_free_t')}</h3><span class="badge ok">${_('sq_free_p')}</span></div>
-      <ul class="lines"><li>${_('sq_free_b1')}</li><li>${_('sq_free_b2')}</li><li>${_('sq_free_b3')}</li></ul>
-    </div>
-    <div class="card way way-dark mt-s">
+    <div class="card way way-dark">
       <div class="row-between"><h3 class="h3">${_('sq_sup_t')}</h3><span class="badge">${_('sq_sup_p')}</span></div>
       <ul class="lines"><li>${_('sq_sup_b1')}</li><li>${_('sq_sup_b2')}</li><li>${_('sq_sup_b3')}</li></ul>
+    </div>
+    <div class="card way way-red mt-s">
+      <div class="row-between"><h3 class="h3">${_('sq_free_t')}</h3><span class="badge ok">${_('sq_free_p')}</span></div>
+      <ul class="lines"><li>${_('sq_free_b1')}</li><li>${_('sq_free_b2')}</li><li>${_('sq_free_b3')}</li></ul>
     </div>
     <div class="card hashtag-card mt-s">
       <div class="eyebrow">${_('sq_hashtag_t')}</div>
