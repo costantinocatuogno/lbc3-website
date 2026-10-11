@@ -68,9 +68,10 @@ export function loadContent(root) {
       a.streckeSlug = urlSlug(a.strecke);
       a.path = `/galerie/${a.serieSlug}/${a.jahr}/${a.streckeSlug}/`;
       a.cover = a.titelbild || (a.bilder.find((b) => !/\.(mp4|webm|mov)$/i.test(b.bild)) || {}).bild || '';
+      a.sortKey = String(a.datum || `${a.jahr}-00`);
       return a;
     })
-    .sort((a, b) => String(b.datum).localeCompare(String(a.datum)));
+    .sort((a, b) => b.sortKey.localeCompare(a.sortKey));
   const serien = [];
   for (const a of alben) {
     let s = serien.find((x) => x.slug === a.serieSlug);
