@@ -2,12 +2,84 @@
   "startseite": false,
   "bilder": [
     {
-      "kategorie": "strecke",
-      "bild": "/uploads/galerie/img_0144.jpeg"
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/muelsen-2026-01.jpg",
+      "text": "Platz 3 in der Mini B – Podium beim ADAC Kart Masters in Mülsen"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/muelsen-2026-02.jpg",
+      "text": "Siegerehrung: der Pokal für Platz 3"
     },
     {
       "kategorie": "strecke",
-      "bild": "/uploads/galerie/img_0135.jpeg"
+      "bild": "/uploads/galerie/img_0135.jpeg",
+      "text": "Bereit für das Rennen"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/img_0144.jpeg",
+      "text": "Fokus vor dem Start"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-03.jpg",
+      "text": "Vorne weg: Luigi führt das Feld an"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-04.jpg",
+      "text": "Im Zweikampf durch die Kurve"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-05.jpg",
+      "text": "Am Kerb entlang"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-06.jpg",
+      "text": "Konzentriert am Kurvenausgang"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-07.jpg",
+      "text": "Einlenken vor der Tribüne"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-08.jpg"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-09.jpg",
+      "text": "Mitzieher bei voller Fahrt"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-10.jpg"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-11.jpg",
+      "text": "Speed vor dem Fahrerlager"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-12.jpg"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-13.jpg"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-2026-14.jpg"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/muelsen-2026-15.jpg",
+      "text": "Warten auf den Start"
     }
   ],
   "titel": "ADAC Kart Masters Mülsen 2026",
