@@ -181,7 +181,7 @@ const fotosLabel = (_, n) => `${n} ${_('photos')}`;
 function albumCards(lang, _, alben, withYear = false) {
   return `<div class="gal-grid">${alben.map((a) => galCard(lang, _, {
     href: a.path, cover: a.cover, kicker: withYear ? a.jahr : '', title: a.strecke,
-    meta: `${a.datum ? `<span>${formatDate(a.datum, lang)}</span>` : ''}<span>${fotosLabel(_, a.bilder.length)}</span>`
+    meta: `${a.datum ? `<span>${formatDate(a.datum, lang)}</span>` : ''}<span>${a.bilder.length ? fotosLabel(_, a.bilder.length) : _('gal_soon')}</span>`
   })).join('')}</div>`;
 }
 
@@ -225,14 +225,15 @@ export function galerieAlbum(lang, ctx, a) {
   const body = `
 <section class="wrap page-head">${galCrumbs(lang, _, [[a.serie, `/galerie/${a.serieSlug}/`], [a.jahr, `/galerie/${a.serieSlug}/${a.jahr}/`], [a.strecke, a.path]])}
   <div class="eyebrow">${esc(a.serie)} · ${esc(a.jahr)}</div><h1 class="h1">${esc(a.strecke)}</h1>
-  ${a.datum ? `<p class="muted">${formatDate(a.datum, lang)} · ${fotosLabel(_, a.bilder.length)}</p>` : ''}
+  ${a.datum ? `<p class="muted">${formatDate(a.datum, lang)}${a.bilder.length ? ` · ${fotosLabel(_, a.bilder.length)}` : ''}</p>` : ''}
 </section>
 <section class="wrap section" data-gallery>
-  <div class="pill-row mb-s">
+  <div class="pill-row mb-s"${a.bilder.length ? '' : ' hidden'}>
     <button type="button" class="pill is-active" data-gfilter="all" aria-pressed="true">${_('all')} (${a.bilder.length})</button>
     <button type="button" class="pill" data-gfilter="strecke" aria-pressed="false">${_('cat_strecke')} (${counts.strecke || 0})</button>
     <button type="button" class="pill" data-gfilter="fahrerlager" aria-pressed="false">${_('cat_fahrerlager')} (${counts.fahrerlager || 0})</button>
   </div>
+  ${a.bilder.length ? '' : `<p class="muted">${_('gal_soon_long')}</p>`}
   <div class="masonry" data-lightbox-group>
     ${a.bilder.map((b, i) => {
       const isVideo = /\.(mp4|webm|mov)$/i.test(b.bild);
