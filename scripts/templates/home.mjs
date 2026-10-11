@@ -61,7 +61,7 @@ ${highlights.length ? `
   <div class="carousel" data-carousel-track tabindex="0">
     ${highlights.map((n, i) => `
     <a class="hl-card" href="${url(lang, `/news/${n.slug}/`)}">
-      ${picture(n.titelbild, n.titel, { width: 800, sizes: '(max-width: 760px) 90vw, 33vw' })}
+      ${picture(n.vorschaubild || n.titelbild, n.titel, { width: 800, sizes: '(max-width: 760px) 90vw, 33vw' })}
       <div class="hl-body"><span class="hl-num">${String(i + 1).padStart(2, '0')}</span><span class="hl-title">${esc(n.titel)}</span></div>
     </a>`).join('')}
   </div>

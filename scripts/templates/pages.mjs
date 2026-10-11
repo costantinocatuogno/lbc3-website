@@ -14,7 +14,7 @@ export function newsList(lang, ctx) {
   const filters = ['all', ...CATS].map((c, i) => `<button type="button" class="pill${i === 0 ? ' is-active' : ''}" data-filter="${c}" aria-pressed="${i === 0}">${c === 'all' ? _('all') : _(`cat_${c}`)}</button>`).join('');
   const card = (n) => `
     <article class="news-card" data-cat="${esc(n.kategorie)}">
-      <a href="${url(lang, `/news/${n.slug}/`)}" class="news-card-img">${picture(n.titelbild, n.titel, { width: 800, sizes: '(max-width: 760px) 100vw, 33vw' })}</a>
+      <a href="${url(lang, `/news/${n.slug}/`)}" class="news-card-img">${picture(n.vorschaubild || n.titelbild, n.titel, { width: 800, sizes: '(max-width: 760px) 100vw, 33vw' })}</a>
       <div class="news-card-body">
         <div class="meta"><span class="red">${_(`cat_${n.kategorie}`)}</span><span>${formatDate(n.datum, lang)}</span></div>
         <h3 class="h3"><a href="${url(lang, `/news/${n.slug}/`)}">${esc(n.titel)}</a></h3>
@@ -27,7 +27,7 @@ ${pageHead(_('news_kicker'), _('news_title'), `<div class="pill-row" data-filter
 ${lead ? `
 <section class="wrap">
   <a class="news-lead" href="${url(lang, `/news/${lead.slug}/`)}" data-cat="${esc(lead.kategorie)}">
-    ${picture(lead.titelbild, lead.titel, { width: 1200, sizes: '(max-width: 760px) 100vw, 50vw', eager: true })}
+    ${picture(lead.vorschaubild || lead.titelbild, lead.titel, { width: 1200, sizes: '(max-width: 760px) 100vw, 50vw', eager: true })}
     <div class="news-lead-body">
       <div class="meta"><span class="badge-red">${_(`cat_${lead.kategorie}`)}</span><span>${formatDate(lead.datum, lang)}</span></div>
       <h2 class="h2">${esc(lead.titel)}</h2>
@@ -56,7 +56,7 @@ export function newsDetail(lang, ctx, n) {
   ${gal.length ? `<div class="grid-3 article-gallery" data-lightbox-group>${gal.map((g, i) => `<button type="button" class="square-photo" data-lightbox-index="${i}" data-full="${esc(img(g, 1800))}" data-caption="${esc(n.titel)}" aria-label="${_('enlarge')}">${picture(g, n.titel, { width: 600 })}</button>`).join('')}</div>` : ''}
 </article>
 ${lightbox(lang)}`;
-  return layout({ lang, path: `/news/${n.slug}/`, title: n.titel, description: n.teaser, body, ctx, active: '/news/', ogImage: img(n.titelbild, 1200) });
+  return layout({ lang, path: `/news/${n.slug}/`, title: n.titel, description: n.teaser, body, ctx, active: '/news/', ogImage: img(n.vorschaubild || n.titelbild, 1200) });
 }
 
 /* ---------------- ÜBER LUIGI ---------------- */

@@ -45,7 +45,8 @@ collections:
       - { label: Titel, name: titel, widget: string }
       - { label: Datum, name: datum, widget: datetime, date_format: DD.MM.YYYY, time_format: false, format: YYYY-MM-DD }
       - { label: Kategorie, name: kategorie, widget: select, options: [Rennen, Team, Partner], default: Rennen }
-      - { label: Titelbild, name: titelbild, widget: image, media_folder: /public/uploads/news, public_folder: /uploads/news }
+      - { label: Titelbild (im Artikel), name: titelbild, widget: image, media_folder: /public/uploads/news, public_folder: /uploads/news }
+      - { label: Vorschaubild (optional), name: vorschaubild, widget: image, required: false, media_folder: /public/uploads/news, public_folder: /uploads/news, hint: 'Bild für die News-Übersicht, die Startseite und Social Media. Ohne Auswahl wird das Titelbild genommen.' }
       - { label: Kurztext (Vorschau), name: teaser, widget: text, required: false }
       - { label: Als Highlight auf der Startseite zeigen, name: highlight, widget: boolean, default: false }
       - { label: Entwurf (noch nicht veröffentlichen), name: entwurf, widget: boolean, default: false }
