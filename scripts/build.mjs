@@ -94,7 +94,7 @@ for (const lang of LANGS) {
   out(url(lang, '/ueber-luigi/'), ueber(lang, ctx));
   out(url(lang, '/kalender/'), kalender(lang, ctx));
   out(url(lang, '/galerie/'), galerie(lang, ctx));
-  out(url(lang, '/squadra-3/'), squadra(lang, ctx, wall));
+  out(url(lang, '/squadra-tre/'), squadra(lang, ctx, wall));
   out(url(lang, '/partner/'), partner(lang, ctx, wall));
   out(url(lang, '/kontakt/'), kontakt(lang, ctx));
   out(url(lang, '/impressum/'), rechtliches(lang, ctx, 'impressum'));

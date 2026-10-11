@@ -1,4 +1,4 @@
-// Squadra 3 (Fanclub), Wall of Fame (Mitglieder + Sponsoren) und Druckansicht der Fotowand.
+// Squadra Tre (Fanclub), Wall of Fame (Mitglieder + Sponsoren) und Druckansicht der Fotowand.
 import { esc, icon, img, flagsIT } from '../lib/html.mjs';
 import { url, t } from '../lib/i18n.mjs';
 import { layout } from './layout.mjs';
@@ -22,7 +22,7 @@ export function wallGrid(lang, wall, { limit = 0, cta = true } = {}) {
   return `
   <div class="fame-grid">
     ${list.map(fameTile).join('')}
-    ${cta ? `<a class="fame-tile is-you" href="${url(lang, '/squadra-3/#beitreten')}"><div class="fame-photo"><span class="fame-initials">+</span></div><figcaption>${_('wall_empty_you')}</figcaption></a>` : ''}
+    ${cta ? `<a class="fame-tile is-you" href="${url(lang, '/squadra-tre/#beitreten')}"><div class="fame-photo"><span class="fame-initials">+</span></div><figcaption>${_('wall_empty_you')}</figcaption></a>` : ''}
   </div>`;
 }
 
@@ -128,7 +128,7 @@ export function joinForm(lang, ctx) {
 </div>`;
 }
 
-/* ---------- Seite /squadra-3/ ---------- */
+/* ---------- Seite /squadra-tre/ ---------- */
 export function squadra(lang, ctx, wall) {
   const _ = t(lang);
   const c = ctx.content;
@@ -199,7 +199,7 @@ export function squadra(lang, ctx, wall) {
     <p class="muted-light mt">${_('wall_print_note')}</p>
   </div>
 </section>`;
-  return layout({ lang, path: '/squadra-3/', title: `Squadra 3 · ${tag}`, description: _('sq_intro'), body, ctx, active: '/squadra-3/' });
+  return layout({ lang, path: '/squadra-tre/', title: `Squadra Tre · ${tag}`, description: _('sq_intro'), body, ctx, active: '/squadra-tre/' });
 }
 
 /* ---------- Druckansicht /wall-of-fame/druck/ ---------- */
@@ -245,7 +245,7 @@ export function wallPrint(ctx, wall) {
     </select>
   </label>
   <label class="field inline"><span>Inhalt</span>
-    <select data-pw-content><option value="beide">Squadra 3 + Sponsoren</option><option value="squadra">Nur Squadra 3</option><option value="sponsoren">Nur Sponsoren</option></select>
+    <select data-pw-content><option value="beide">Squadra Tre + Sponsoren</option><option value="squadra">Nur Squadra Tre</option><option value="sponsoren">Nur Sponsoren</option></select>
   </label>
   <button type="button" class="btn btn-red btn-sm" data-pw-print>Drucken / als PDF speichern</button>
   <span class="muted small">${wall.mitglieder.length} Mitglieder · ${wall.sponsoren.length} Sponsoren${wall.beispiel ? ' · <strong>Beispieldaten</strong>' : ''}</span>
@@ -253,7 +253,7 @@ export function wallPrint(ctx, wall) {
 <p class="pw-help no-print">Tipp: Im Druckdialog „Als PDF speichern“ wählen, Ränder auf „Keine“ und „Hintergrundgrafiken“ einschalten. Die PDF-Datei geht dann an die Druckerei. Es erscheinen nur freigegebene Fotos und Einträge.</p>
 <div class="pw-stage" data-pw-stage>
   <section class="pw-sheet" data-pw-sheet="squadra">
-    ${header('SQUADRA <span>#3</span> · WALL OF FAME')}
+    ${header('SQUADRA <span>TRE</span> · WALL OF FAME')}
     <div class="pw-grid" data-pw-grid>${tiles}</div>
     <footer class="pw-foot">Grazie a tutti! · Danke an alle! · Forza Luigi #3</footer>
   </section>

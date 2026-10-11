@@ -16,8 +16,23 @@
   status = 301
 
 [[redirects]]
+  from = "/squadra-3/*"
+  to = "/squadra-tre/"
+  status = 301
+
+[[redirects]]
+  from = "/en/squadra-3/*"
+  to = "/en/squadra-tre/"
+  status = 301
+
+[[redirects]]
+  from = "/it/squadra-3/*"
+  to = "/it/squadra-tre/"
+  status = 301
+
+[[redirects]]
   from = "/squadra/*"
-  to = "/squadra-3/"
+  to = "/squadra-tre/"
   status = 301
 
 [[redirects]]

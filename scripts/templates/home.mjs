@@ -106,7 +106,7 @@ ${album ? `
     <h2 class="cta-title">${esc(tx.sponsor_aufruf).replace('#LBC3', '<span class="gold">#LBC3</span>')}</h2>
     <div class="btn-row">
       <a class="btn btn-gold" href="${url(lang, '/partner/#sponsoren')}">${_('btn_sponsor')}</a>
-      <a class="btn btn-ghost-light" href="${url(lang, '/squadra-3/')}">${_('btn_squadra')}</a>
+      <a class="btn btn-ghost-light" href="${url(lang, '/squadra-tre/')}">${_('btn_squadra')}</a>
     </div>
   </div>
 </section>

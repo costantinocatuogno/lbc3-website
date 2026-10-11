@@ -229,7 +229,7 @@ export function partner(lang, ctx, wall) {
     <p class="lead light">${esc(tx.partner_intro)}</p>
     <div class="btn-row">
       <a class="btn btn-gold" href="#sponsoren">${_('btn_sponsor')}</a>
-      <a class="btn btn-ghost-light" href="${url(lang, '/squadra-3/')}">${_('btn_squadra')}</a>
+      <a class="btn btn-ghost-light" href="${url(lang, '/squadra-tre/')}">${_('btn_squadra')}</a>
     </div>
   </div>
 </section>
@@ -249,7 +249,7 @@ export function partner(lang, ctx, wall) {
       <h3 class="h2">Squadra <span class="red">3</span></h3>
       <p>${_('squadra_lead')}</p>
       <ul class="lines"><li>${_('sq_b1')}</li><li>${_('sq_b2')}</li><li>${_('sq_b3')}</li><li><strong>${_('sq_b4')}</strong></li></ul>
-      <a class="btn btn-red" href="${url(lang, '/squadra-3/')}">${_('join_now')}</a>
+      <a class="btn btn-red" href="${url(lang, '/squadra-tre/')}">${_('join_now')}</a>
     </div>
   </div>
 </section>
@@ -293,12 +293,12 @@ ${sponsorWall(lang, wall)}
   <div class="wrap section two-col squadra">
     <div>
       ${flagsIT()}
-      <h2 class="h1 big light">Squadra<br><span class="gold">#3</span></h2>
+      <h2 class="h1 big light">Squadra<br><span class="gold">Tre</span></h2>
       <h3 class="h3 light">${_('squadra_teaser_t')}</h3>
       <p class="lead light">${_('squadra_teaser')}</p>
       <div class="btn-row">
-        <a class="btn btn-red" href="${url(lang, '/squadra-3/#beitreten')}">${_('join_free')}</a>
-        <a class="btn btn-ghost-light" href="${url(lang, '/squadra-3/#wall')}">${_('wall_title')}</a>
+        <a class="btn btn-red" href="${url(lang, '/squadra-tre/#beitreten')}">${_('join_free')}</a>
+        <a class="btn btn-ghost-light" href="${url(lang, '/squadra-tre/#wall')}">${_('wall_title')}</a>
       </div>
     </div>
     <div>

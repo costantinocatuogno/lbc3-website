@@ -6,7 +6,7 @@ const NAV = [
   ['nav_ueber', '/ueber-luigi/'],
   ['nav_kalender', '/kalender/'],
   ['nav_galerie', '/galerie/'],
-  ['nav_squadra', '/squadra-3/'],
+  ['nav_squadra', '/squadra-tre/'],
   ['nav_partner', '/partner/'],
   ['nav_kontakt', '/kontakt/']
 ];

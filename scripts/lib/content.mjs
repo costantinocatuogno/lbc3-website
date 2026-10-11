@@ -99,7 +99,7 @@ export function loadContent(root) {
   };
 }
 
-// Namen für die "Wand der Squadra 3" – nur bestätigte Mitglieder mit Einwilligung.
+// Namen für die "Wand der Squadra Tre" – nur bestätigte Mitglieder mit Einwilligung.
 // Beim Build auf Netlify aus Supabase geladen; ohne Zugangsdaten werden Beispielnamen verwendet.
 // Wall of Fame: lädt beim Build die freigegebenen Squadra-3-Mitglieder und Sponsoren-Einträge
 // und kopiert NUR freigegebene Fotos/Logos aus dem privaten Supabase-Speicher nach dist/wall/.

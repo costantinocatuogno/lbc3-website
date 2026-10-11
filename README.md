@@ -8,7 +8,7 @@ Offizielle Website des Kartfahrers Luigi Battista Catuogno, gehostet auf **Netli
 | Inhalte | **Decap CMS** unter `/admin/` (Dateien im Ordner `content/`) | News, Rennen, Fotos, Kapitel, Sponsoren, Texte |
 | Login & geschützte Daten | **Supabase** (Server in der EU) | Sponsoren-Login, Ausgabenbericht, Squadra-3-Liste |
 | Serverfunktionen | **Netlify Functions** (`netlify/functions/`) | Squadra-3-Anmeldung, Einladungen, Jahresbericht-Versand |
-| E-Mails | **Brevo** (EU) | Bestätigungs-Mails, Jahresbericht an die Squadra 3 |
+| E-Mails | **Brevo** (EU) | Bestätigungs-Mails, Jahresbericht an die Squadra Tre |
 | Kontaktformular | **Netlify Forms** | Nachrichten landen per E-Mail bei euch |
 
 Die Anleitung für den Alltag (Fotos hochladen, Ergebnisse eintragen …) steht in **[ANLEITUNG.md](ANLEITUNG.md)**.
@@ -17,7 +17,7 @@ Die Anleitung für den Alltag (Fotos hochladen, Ergebnisse eintragen …) steht 
 
 ## Seiten
 
-`/` Home · `/news/` · `/ueber-luigi/` · `/kalender/` · `/galerie/` · `/squadra-3/` (Fanclub + Wall of Fame) · `/partner/` (inkl. Sponsoren-Wall of Fame) · `/kontakt/` · `/impressum/` · `/datenschutz/`
+`/` Home · `/news/` · `/ueber-luigi/` · `/kalender/` · `/galerie/` · `/squadra-tre/` (Fanclub + Wall of Fame) · `/partner/` (inkl. Sponsoren-Wall of Fame) · `/kontakt/` · `/impressum/` · `/datenschutz/`
 Englisch unter `/en/…`, Italienisch unter `/it/…`.
 Geschützt: `/login/` · `/bericht/` (Sponsoren + Admins) · `/team/` (nur Admins) · `/admin/` (CMS).
 Intern (nicht verlinkt, noindex): `/wall-of-fame/druck/` – Druckvorlage der Fotowand.
@@ -77,7 +77,7 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
    | `MAIL_FROM` | `contact@luigi-catuogno.com` (in Brevo verifiziert) |
    | `MAIL_FROM_NAME` | `LBC3 · Luigi Battista Catuogno` |
    | `MAIL_REPLY_TO` | Adresse, an die Antworten gehen sollen |
-   | `SQUADRA_ZAHLUNGSINFO` | Text für die Bestätigungs-Mail, z. B. Kontoinhaber, IBAN, Verwendungszweck „Squadra 3“ oder ein PayPal-Link |
+   | `SQUADRA_ZAHLUNGSINFO` | Text für die Bestätigungs-Mail, z. B. Kontoinhaber, IBAN, Verwendungszweck „Squadra Tre“ oder ein PayPal-Link |
    | `NETLIFY_BUILD_HOOK_URL` | siehe Schritt 3 – nötig für den Knopf „Wall of Fame veröffentlichen“ |
 3. **Site configuration → Build & deploy → Build hooks → Add build hook** („Wall of Fame“) und die URL als `NETLIFY_BUILD_HOOK_URL` eintragen. Damit funktioniert im Team-Bereich der Knopf **„Wall of Fame veröffentlichen“**, und bestätigte Namen erscheinen automatisch.
 4. **Forms → Enable form detection**, dann **Forms → Form notifications → Email notification** für das Formular `kontakt` einrichten.
@@ -100,7 +100,7 @@ Beim ersten Build lädt das Skript die Schriften (Barlow Condensed, Manrope) und
 ## Sicherheit & Datenschutz
 - Der Ausgabenbericht und die Squadra-3-Liste liegen **nur in Supabase**, nie im Code oder in den Seiten. Der Zugriff wird in der Datenbank per Row-Level-Security geprüft: Sponsoren lesen nur freigegebene Berichte, nur Admins schreiben.
 - Der `service_role`-Key wird ausschließlich in Netlify Functions verwendet.
-- Squadra 3: Double-Opt-in, alle Einwilligungs-Häkchen sind standardmäßig **aus**. Unter 16: Die Bestätigung läuft über die E-Mail eines Elternteils. Namen erscheinen als Vorname + Initiale.
+- Squadra Tre: Double-Opt-in, alle Einwilligungs-Häkchen sind standardmäßig **aus**. Unter 16: Die Bestätigung läuft über die E-Mail eines Elternteils. Namen erscheinen als Vorname + Initiale.
 - Fotos und Sponsoren-Logos liegen in **privaten** Supabase-Speichern. Öffentlich wird nur, was im Team-Bereich freigegeben ist: Der Build kopiert genau diese Bilder nach `/wall/` auf eure eigene Domain. Sponsoren können nur ihren eigenen Eintrag ändern; jede Änderung setzt die Freigabe zurück (Datenbank-Trigger).
 - Social-Media-Links werden nur als `http(s)://`-Links ausgegeben.
 - Keine Tracking-Cookies, Schriften selbst gehostet, strenge Content-Security-Policy (`netlify.toml`).

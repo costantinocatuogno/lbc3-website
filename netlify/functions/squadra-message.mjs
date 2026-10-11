@@ -27,7 +27,7 @@ export default handle(async (req) => {
       html: mailLayout(escapeHtml(betreff), `
         <p>Ciao ${escapeHtml(r.name || '')},</p>
         <p>${escapeHtml(text).replace(/\n/g, '<br>')}</p>
-        <p><a href="${siteUrl()}/squadra-3/" style="color:#B00E28;font-weight:bold">#SquadraLBC3 · #LBC3</a></p>
+        <p><a href="${siteUrl()}/squadra-tre/" style="color:#B00E28;font-weight:bold">#SquadraLBC3 · #LBC3</a></p>
         <p style="color:#555A63;font-size:12px">${ABMELDEN[r.sprache] || ABMELDEN.de}</p>`)
     });
     gesendet++;

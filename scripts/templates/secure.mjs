@@ -96,7 +96,7 @@ export function loginPage(ctx) {
 
       <div class="form-msg" data-msg role="status" hidden></div>
 
-      <div class="note-red">Mitglied der <strong>Squadra 3</strong>? Du brauchst keinen Login – unseren Jahresbericht bekommst du am Saisonende per E-Mail. <a href="/squadra-3/">Mehr erfahren</a></div>
+      <div class="note-red">Mitglied der <strong>Squadra Tre</strong>? Du brauchst keinen Login – unseren Jahresbericht bekommst du am Saisonende per E-Mail. <a href="/squadra-tre/">Mehr erfahren</a></div>
       <p class="muted small">Zugänge werden von uns vergeben. Sponsoren erhalten ihre Einladung per E-Mail.</p>
     </div>
   </div>
@@ -124,7 +124,7 @@ ${topbar('AUSGABENBERICHT · NUR FÜR SPONSOREN')}
     </div>
     <div class="kpis">
       <div class="kpi dark"><span>Gesamtausgaben Saison</span><strong data-k="gesamt"></strong></div>
-      <div class="kpi"><span>Davon durch Sponsoren &amp; Squadra 3</span><strong data-k="partner"></strong></div>
+      <div class="kpi"><span>Davon durch Sponsoren &amp; Squadra Tre</span><strong data-k="partner"></strong></div>
       <div class="kpi"><span>Rennwochenenden</span><strong data-k="rennwochenenden"></strong></div>
       <div class="kpi"><span>Kilometer zu Rennen</span><strong data-k="kilometer"></strong></div>
     </div>
@@ -140,7 +140,7 @@ ${topbar('AUSGABENBERICHT · NUR FÜR SPONSOREN')}
         </div>
         <div class="card dark">
           <h2 class="h3 gold">Gut zu wissen</h2>
-          <p>Als Sponsor siehst du diesen Bericht jederzeit und immer auf dem aktuellen Stand. Die Mitglieder der Squadra 3 erhalten eine Zusammenfassung am Saisonende per E-Mail.</p>
+          <p>Als Sponsor siehst du diesen Bericht jederzeit und immer auf dem aktuellen Stand. Die Mitglieder der Squadra Tre erhalten eine Zusammenfassung am Saisonende per E-Mail.</p>
           <a class="btn btn-gold btn-sm" href="/partner/">Zur Partnerseite</a>
         </div>
       </div>
@@ -165,7 +165,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
   <nav class="app-nav" aria-label="Team-Menü">
     <button type="button" class="is-active" data-tab="bericht">Ausgabenbericht</button>
     <button type="button" data-tab="zugaenge">Sponsoren &amp; Admins</button>
-    <button type="button" data-tab="squadra">Squadra 3</button>
+    <button type="button" data-tab="squadra">Squadra Tre</button>
     <button type="button" data-tab="sponsorwall">Sponsoren-Wall</button>
     <button type="button" data-tab="einladen">Squadra einladen</button>
     <a href="/admin/">Fotos, News, Rennen, Texte ↗</a>
@@ -196,13 +196,13 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <div class="card">
           <h2 class="h3">Finanzierung (€)</h2>
           <label class="field"><span>Sponsoren (Pakete)</span><input type="number" min="0" step="0.01" data-f="fin_sponsoren"></label>
-          <label class="field"><span>Squadra 3 (Unterstützer)</span><input type="number" min="0" step="0.01" data-f="fin_squadra"></label>
+          <label class="field"><span>Squadra Tre (Unterstützer)</span><input type="number" min="0" step="0.01" data-f="fin_squadra"></label>
           <label class="field"><span>Eigenmittel Familie</span><input type="number" min="0" step="0.01" data-f="fin_eigen"></label>
           <label class="field"><span>Sonstiges (z. B. Förderungen)</span><input type="number" min="0" step="0.01" data-f="fin_sonstiges"></label>
         </div>
       </div>
       <div class="card mt">
-        <label class="field"><span>Saisonrückblick für Sponsoren und Squadra 3</span><textarea rows="6" data-f="rueckblick"></textarea></label>
+        <label class="field"><span>Saisonrückblick für Sponsoren und Squadra Tre</span><textarea rows="6" data-f="rueckblick"></textarea></label>
         <div class="grid-2">
           <label class="field"><span>Jahresbericht (PDF)</span><input type="file" accept="application/pdf" data-pdf="pdf_bericht"><small class="muted" data-pdf-name="pdf_bericht"></small></label>
           <label class="field"><span>Belegübersicht (PDF)</span><input type="file" accept="application/pdf" data-pdf="pdf_belege"><small class="muted" data-pdf-name="pdf_belege"></small></label>
@@ -210,12 +210,12 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
       </div>
       <div class="grid-2 mt">
         <div class="note-box"><strong>Sponsoren</strong> sehen den Bericht über ihren Login – jederzeit, sobald er freigegeben ist.</div>
-        <div class="note-box"><strong>Squadra 3</strong> bekommt den Bericht am Saisonende per E-Mail (nur bestätigte Mitglieder mit Häkchen „Jahresbericht“).</div>
+        <div class="note-box"><strong>Squadra Tre</strong> bekommt den Bericht am Saisonende per E-Mail (nur bestätigte Mitglieder mit Häkchen „Jahresbericht“).</div>
       </div>
       <div class="btn-row mt">
         <button type="button" class="btn btn-dark" data-save>Speichern</button>
         <button type="button" class="btn btn-red" data-toggle-release></button>
-        <button type="button" class="btn btn-outline" data-send-report>Jahresbericht an Squadra 3 senden</button>
+        <button type="button" class="btn btn-outline" data-send-report>Jahresbericht an Squadra Tre senden</button>
         <a class="btn btn-outline" href="/bericht/" target="_blank">Vorschau als Sponsor</a>
       </div>
       <p class="muted small" data-mail-info></p>
@@ -238,7 +238,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
 
     <section data-panel="squadra" hidden>
       <div class="section-head">
-        <h1 class="h1">Squadra 3</h1>
+        <h1 class="h1">Squadra Tre</h1>
         <div class="btn-row">
           <button type="button" class="btn btn-red" data-publish>Wall of Fame veröffentlichen</button>
           <a class="btn btn-outline" href="/wall-of-fame/druck/" target="_blank">Wall of Fame drucken</a>
@@ -303,7 +303,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     </section>
 
     <section data-panel="einladen" hidden>
-      <h1 class="h1">Squadra 3 einladen</h1>
+      <h1 class="h1">Squadra Tre einladen</h1>
       <p class="lead">Instagram erlaubt es nicht, Follower automatisch irgendwo einzutragen oder allen eine Nachricht zu schicken. So erreicht ihr trotzdem alle:</p>
       <div class="grid-2 align-start">
         <div class="card">
@@ -311,11 +311,11 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
           <div class="copy-box" data-copy-src data-invite-link></div>
           <button class="btn btn-outline btn-sm" data-copy-btn>Kopieren</button>
           <h2 class="h3 mt">2 · Hashtags</h2>
-          <div class="copy-box" data-copy-src>#SquadraLBC3 #LBC3 #Squadra3</div>
+          <div class="copy-box" data-copy-src>#SquadraLBC3 #LBC3 #SquadraTre</div>
           <button class="btn btn-outline btn-sm" data-copy-btn>Kopieren</button>
           <h2 class="h3 mt">3 · So geht’s auf Instagram</h2>
           <ul class="lines small">
-            <li><strong>Story mit Link-Sticker</strong> auf den Link oben – und als Highlight „Squadra 3“ speichern.</li>
+            <li><strong>Story mit Link-Sticker</strong> auf den Link oben – und als Highlight „Squadra Tre“ speichern.</li>
             <li><strong>Beitrag fixieren</strong> (oben im Profil anpinnen) mit dem Text rechts.</li>
             <li><strong>QR-Code</strong>: Profil → Teilen → QR-Code. Ausdrucken und am Zelt aufhängen.</li>
             <li><strong>Neue Follower</strong>: kurze DM mit dem Text unten – einzeln, nicht als Massennachricht.</li>

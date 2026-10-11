@@ -176,7 +176,7 @@ collections:
           - { label: Über Luigi – Einleitung, name: ueber_intro, widget: text, i18n: true }
           - { label: Sponsoren-Aufruf, name: sponsor_aufruf, widget: string, i18n: true }
           - { label: Partner – Einleitung, name: partner_intro, widget: text, i18n: true }
-          - { label: Squadra 3 – Text, name: squadra_text, widget: text, i18n: true }
+          - { label: Squadra Tre – Text, name: squadra_text, widget: text, i18n: true }
           - { label: Kontakt – Einleitung, name: kontakt_intro, widget: text, i18n: true }
       - name: fahrer
         label: Steckbrief & Rennwoche – DE/EN/IT
@@ -212,7 +212,7 @@ collections:
           - { label: Instagram-Link, name: instagram, widget: string }
           - { label: Instagram-Name, name: instagram_handle, widget: string }
           - { label: Haupt-Hashtag, name: hashtag, widget: string, default: '#LBC3' }
-          - { label: Hashtag Squadra 3, name: squadra_hashtag, widget: string, default: '#SquadraLBC3' }
+          - { label: Hashtag Squadra Tre, name: squadra_hashtag, widget: string, default: '#SquadraLBC3' }
           - { label: Saison auf der gedruckten Wall of Fame, name: saison_wall, widget: string, default: '2026' }
           - { label: Intro-Video (MP4, Hochformat, max. ca. 2 MB), name: intro_video, widget: file }
           - { label: Helm-Bild (rund, freigestellt), name: helm_bild, widget: image }
@@ -222,7 +222,7 @@ collections:
           - { label: Bild Partner/Sponsoren-Aufruf, name: partner_bild, widget: image }
           - { label: Bild Login-Seite, name: login_bild, widget: image }
           - { label: Sponsorenmappe (PDF, optional – sonst Anfrage über Kontakt), name: sponsorenmappe_pdf, widget: file, required: false }
-          - { label: Zahlungsinfo Squadra 3 (nur Info – der E-Mail-Text kommt aus der Netlify-Einstellung SQUADRA_ZAHLUNGSINFO), name: zahlungsinfo, widget: text, required: false }
+          - { label: Zahlungsinfo Squadra Tre (nur Info – der E-Mail-Text kommt aus der Netlify-Einstellung SQUADRA_ZAHLUNGSINFO), name: zahlungsinfo, widget: text, required: false }
           - { label: Impressum, name: impressum, widget: markdown }
           - { label: Datenschutzerklärung, name: datenschutz, widget: markdown }
       - name: wand

@@ -5,7 +5,7 @@ Es gibt zwei Bereiche:
 | Bereich | Adresse | Was ihr dort macht |
 | --- | --- | --- |
 | **Inhalte (CMS)** | `https://luigi-catuogno.com/admin/` | Fotos, News, Rennen & Ergebnisse, Kapitel, Sponsoren-Logos, Texte |
-| **Team-Bereich** | `https://luigi-catuogno.com/team/` (über „Login“ → „Team / Admin“) | Ausgabenbericht, Sponsoren-Zugänge, Squadra 3 |
+| **Team-Bereich** | `https://luigi-catuogno.com/team/` (über „Login“ → „Team / Admin“) | Ausgabenbericht, Sponsoren-Zugänge, Squadra Tre |
 
 Nach jeder Änderung im CMS dauert es **1–2 Minuten**, bis sie auf der Website sichtbar ist. Änderungen im Team-Bereich gelten sofort.
 
@@ -37,7 +37,7 @@ Wichtig: Fotos, auf denen andere Kinder oder Erwachsene erkennbar sind, nur mit 
 
 ## 4. Texte ändern (Deutsch, Englisch, Italienisch)
 - `/admin/` → **Einstellungen & Texte**:
-  - **Texte**: Einleitung Startseite, Über Luigi, Sponsoren-Aufruf, Partner, Squadra 3, Kontakt – oben zwischen DE / EN / IT umschalten.
+  - **Texte**: Einleitung Startseite, Über Luigi, Sponsoren-Aufruf, Partner, Squadra Tre, Kontakt – oben zwischen DE / EN / IT umschalten.
   - **Steckbrief & Rennwoche**: Klasse, Team, Lieblingsstrecke, die 7 Tage der Rennwoche mit Fotos.
   - **Allgemein**: E-Mail, Instagram, Intro-Video, Bilder für On/Off Track, Sponsorenmappe (PDF), **Impressum**, **Datenschutz**.
 - **Über Luigi – Kapitel**: die 5 Kapitel mit Jahr, Titel, Text und Bild.
@@ -50,22 +50,22 @@ Wichtig: Fotos, auf denen andere Kinder oder Erwachsene erkennbar sind, nur mit 
 
 ## 6. Ausgabenbericht
 1. `/team/` → **Ausgabenbericht** → Saison eintragen.
-2. Beträge je Kategorie, Kennzahlen (Rennwochenenden, Kilometer), Finanzierung (Sponsoren, Squadra 3, Eigenmittel, Sonstiges), Saisonrückblick.
+2. Beträge je Kategorie, Kennzahlen (Rennwochenenden, Kilometer), Finanzierung (Sponsoren, Squadra Tre, Eigenmittel, Sonstiges), Saisonrückblick.
 3. Optional PDFs hochladen (Jahresbericht, Belegübersicht).
 4. **Speichern**. Solange „Entwurf – nur Admins“ angezeigt wird, sehen Sponsoren nichts.
 5. **„Für Sponsoren freigeben“** → ab sofort sehen alle Sponsoren den Bericht unter `/bericht/`. Ihr könnt ihn jederzeit weiter aktualisieren.
 6. Mit **„Vorschau als Sponsor“** prüft ihr, wie es aussieht.
 
-## 7. Saisonende: Jahresbericht an die Squadra 3
+## 7. Saisonende: Jahresbericht an die Squadra Tre
 1. Bericht vollständig ausfüllen und freigeben (siehe 6.).
-2. `/team/` → **Ausgabenbericht** → **„Jahresbericht an Squadra 3 senden“**.
+2. `/team/` → **Ausgabenbericht** → **„Jahresbericht an Squadra Tre senden“**.
 3. Alle **bestätigten** Mitglieder mit Häkchen „Jahresbericht“ bekommen eine E-Mail mit Tabelle, Rückblick und (falls hochgeladen) dem PDF im Anhang.
 4. Unter dem Knopf steht danach, wann gesendet wurde. Bitte nur einmal pro Saison senden.
 
-## 8. Squadra 3 – Luigis Fanclub (kostenlos)
+## 8. Squadra Tre – Luigis Fanclub (kostenlos)
 **Hashtag:** `#SquadraLBC3` (zusammen mit `#LBC3`). In jedem Post und jeder Story verwenden – dann finden sich alle Fans.
 
-**Anmeldungen prüfen:** `/team/` → **Squadra 3**
+**Anmeldungen prüfen:** `/team/` → **Squadra Tre**
 - Gelb umrandete Karten = Foto wartet auf Prüfung. Foto anklicken = groß ansehen.
 - **✓ Foto freigeben**, wenn auf dem Foto wirklich die angemeldete Person ist und es passt. Sonst nicht freigeben (dann steht nur der Name auf der Wall).
 - **Name auf der Wall** anpassen (Standard: Vorname + Initiale, z. B. „Marco R.“) → *Name speichern*.
@@ -78,8 +78,8 @@ Wichtig: Fotos, auf denen andere Kinder oder Erwachsene erkennbar sind, nur mit 
 **Nachricht an alle:** **„Nachricht an die Squadra“** → erst *Testmail an uns*, dann *An alle senden*. Geht nur an Mitglieder mit Häkchen „Renn-Updates“.
 
 **Instagram-Follower einladen:** Tab **„Squadra einladen“** – fertige Texte (DE/IT/EN) und Link zum Kopieren. Instagram erlaubt kein automatisches Eintragen der Follower und keine Massen-Nachrichten. Deshalb:
-1. Link `…/squadra-3/` in Luigis Bio.
-2. Story mit Link-Sticker + als Highlight „Squadra 3“ speichern.
+1. Link `…/squadra-tre/` in Luigis Bio.
+2. Story mit Link-Sticker + als Highlight „Squadra Tre“ speichern.
 3. Einen Beitrag oben im Profil anpinnen.
 4. Neue Follower mit der kurzen DM einzeln begrüßen.
 5. Instagram-QR-Code (Profil → Teilen → QR-Code) ausdrucken und am Zelt aufhängen.
@@ -93,8 +93,8 @@ Wichtig: Fotos, auf denen andere Kinder oder Erwachsene erkennbar sind, nur mit 
 - Das **Logo-Laufband** auf der Startseite bleibt wie bisher (CMS → Sponsoren).
 
 ## 10. Saisonende: Fotowand am Rennzelt drucken
-1. `/team/` → **Squadra 3** → **„Wall of Fame drucken“** (oder direkt `/wall-of-fame/druck/`).
-2. Format wählen (z. B. *Fotowand 300 × 200 cm*, *A0* oder *A4-Probedruck*) und Inhalt (Squadra 3, Sponsoren oder beides).
+1. `/team/` → **Squadra Tre** → **„Wall of Fame drucken“** (oder direkt `/wall-of-fame/druck/`).
+2. Format wählen (z. B. *Fotowand 300 × 200 cm*, *A0* oder *A4-Probedruck*) und Inhalt (Squadra Tre, Sponsoren oder beides).
 3. **Drucken / als PDF speichern** → im Druckdialog „Als PDF speichern“, Ränder „Keine“, „Hintergrundgrafiken“ an.
 4. Erst einen A4-Probedruck machen, dann die PDF an die Druckerei (Banner/Plane oder Fotowand) schicken.
 5. Saison-Jahr ändern: CMS → Einstellungen → „Saison auf der gedruckten Wall of Fame“.

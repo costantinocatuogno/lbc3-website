@@ -45,7 +45,7 @@ export function sponsorMarquee(lang, ctx) {
 <section class="marquee-section" aria-label="${_('our_sponsors')}">
   <div class="wrap marquee-head">
     <span class="eyebrow muted">${_('our_sponsors')}</span>
-    <a class="link" href="${url(lang, '/squadra-3/')}">${_('squadra_link')}</a>
+    <a class="link" href="${url(lang, '/squadra-tre/')}">${_('squadra_link')}</a>
   </div>
   <div class="marquee"><div class="marquee-track">${items.map((s) => cell(s, false)).join('')}${items.map((s) => cell(s, true)).join('')}</div></div>
 </section>`;

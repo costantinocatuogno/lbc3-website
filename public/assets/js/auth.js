@@ -50,7 +50,7 @@
       $$('[data-role-tab]').forEach((t) => { t.classList.toggle('is-active', t === tab); t.setAttribute('aria-selected', String(t === tab)); });
       hint.textContent = role === 'sponsor'
         ? 'Als Sponsor siehst du hier jederzeit unseren aktuellen Ausgabenbericht.'
-        : 'Für das Team: Ausgabenbericht pflegen, Zugänge verwalten, Squadra 3. Fotos und Texte im CMS.';
+        : 'Für das Team: Ausgabenbericht pflegen, Zugänge verwalten, Squadra Tre. Fotos und Texte im CMS.';
     }));
 
     const goToArea = async () => {
@@ -254,7 +254,7 @@
         $('[data-rows]').innerHTML = (rows || []).map((r) => `<tr><td>${escapeHtml(r.kategorie)}</td><td class="num strong">${eur(r.betrag)}</td><td class="num muted">${total ? Math.round((Number(r.betrag) / total) * 100) : 0} %</td></tr>`).join('')
           + `<tr><td class="strong">Gesamt</td><td class="num strong red">${eur(total)}</td><td class="num strong">100 %</td></tr>`;
         $('[data-finanzierung]').innerHTML = [
-          ['Sponsoren (Pakete)', s.fin_sponsoren], ['Squadra 3 (Unterstützer)', s.fin_squadra], ['Eigenmittel Familie', s.fin_eigen], ['Sonstiges (z. B. Förderungen)', s.fin_sonstiges]
+          ['Sponsoren (Pakete)', s.fin_sponsoren], ['Squadra Tre (Unterstützer)', s.fin_squadra], ['Eigenmittel Familie', s.fin_eigen], ['Sonstiges (z. B. Förderungen)', s.fin_sonstiges]
         ].map(([k, v]) => `<div><dt>${k}</dt><dd>${eur(v)}</dd></div>`).join('');
         $('[data-rueckblick]').innerHTML = escapeHtml(s.rueckblick || '–').replace(/\n/g, '<br>');
         const dl = $('[data-downloads]');
@@ -316,7 +316,7 @@
         badge.textContent = released ? 'Für Sponsoren sichtbar' : 'Entwurf – nur Admins';
         badge.classList.toggle('ok', released);
         $('[data-toggle-release]').textContent = released ? 'Freigabe zurückziehen' : 'Für Sponsoren freigeben';
-        $('[data-mail-info]').textContent = current && current.mail_versendet_am ? `Jahresbericht an Squadra 3 gesendet am ${new Date(current.mail_versendet_am).toLocaleString('de-DE')}.` : '';
+        $('[data-mail-info]').textContent = current && current.mail_versendet_am ? `Jahresbericht an Squadra Tre gesendet am ${new Date(current.mail_versendet_am).toLocaleString('de-DE')}.` : '';
         ['pdf_bericht', 'pdf_belege'].forEach((k) => { $(`[data-pdf-name="${k}"]`).textContent = current && current[k] ? `Hochgeladen: ${current[k]}` : ''; });
       };
 
@@ -397,7 +397,7 @@
         } catch (err) { showMsg('Einladung fehlgeschlagen: ' + err.message, true); }
       });
 
-      /* ----- Squadra 3 ----- */
+      /* ----- Squadra Tre ----- */
       let squadra = [];
       let sFilter = 'alle';
       const kurzName = (n) => { const p2 = String(n || '').trim().split(/\s+/); return p2.length > 1 ? `${p2[0]} ${p2[p2.length - 1][0].toUpperCase()}.` : (p2[0] || ''); };
@@ -552,7 +552,7 @@
         const blob = new Blob(['﻿' + [head.join(';'), ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `squadra-3-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.download = `squadra-tre-${new Date().toISOString().slice(0, 10)}.csv`;
         a.click();
       });
 
@@ -603,14 +603,14 @@
       /* ----- Einladen: fertige Texte für Instagram ----- */
       const site = (cfg.siteUrl || location.origin).replace(/\/$/, '');
       const INVITE = [
-        ['Beitrag / Story (Deutsch)', `🏁 Werde Teil der SQUADRA #3!\nLuigis Fanclub ist kostenlos – lade dein Foto hoch und du stehst auf unserer Wall of Fame. Am Saisonende drucken wir sie und bauen sie am Rennzelt auf 📸\n👉 Link in Bio: ${site}/squadra-3/\n#SquadraLBC3 #LBC3`],
-        ['Post / Storia (Italiano)', `🏁 Entra nella SQUADRA #3!\nIl fan club di Luigi è gratis – carica la tua foto e sarai sulla nostra Wall of Fame. A fine stagione la stampiamo e la montiamo alla tenda 📸\n👉 Link in bio: ${site}/it/squadra-3/\n#SquadraLBC3 #LBC3`],
-        ['Post / Story (English)', `🏁 Join the SQUADRA #3!\nLuigi's fan club is free – upload your photo and you're on our Wall of Fame. At season end we print it and put it up at the race tent 📸\n👉 Link in bio: ${site}/en/squadra-3/\n#SquadraLBC3 #LBC3`],
-        ['DM an neue Follower (Deutsch)', `Ciao und danke fürs Folgen! 🙌 Hast du Lust, in Luigis Squadra 3 zu kommen? Kostenlos, mit deinem Foto auf der Wall of Fame: ${site}/squadra-3/`],
-        ['DM ai nuovi follower (Italiano)', `Ciao e grazie per il follow! 🙌 Ti va di entrare nella Squadra 3 di Luigi? È gratis, con la tua foto sulla Wall of Fame: ${site}/it/squadra-3/`]
+        ['Beitrag / Story (Deutsch)', `🏁 Werde Teil der SQUADRA TRE!\nLuigis Fanclub ist kostenlos – lade dein Foto hoch und du stehst auf unserer Wall of Fame. Am Saisonende drucken wir sie und bauen sie am Rennzelt auf 📸\n👉 Link in Bio: ${site}/squadra-tre/\n#SquadraLBC3 #LBC3`],
+        ['Post / Storia (Italiano)', `🏁 Entra nella SQUADRA TRE!\nIl fan club di Luigi è gratis – carica la tua foto e sarai sulla nostra Wall of Fame. A fine stagione la stampiamo e la montiamo alla tenda 📸\n👉 Link in bio: ${site}/it/squadra-tre/\n#SquadraLBC3 #LBC3`],
+        ['Post / Story (English)', `🏁 Join the SQUADRA TRE!\nLuigi's fan club is free – upload your photo and you're on our Wall of Fame. At season end we print it and put it up at the race tent 📸\n👉 Link in bio: ${site}/en/squadra-tre/\n#SquadraLBC3 #LBC3`],
+        ['DM an neue Follower (Deutsch)', `Ciao und danke fürs Folgen! 🙌 Hast du Lust, in Luigis Squadra Tre zu kommen? Kostenlos, mit deinem Foto auf der Wall of Fame: ${site}/squadra-tre/`],
+        ['DM ai nuovi follower (Italiano)', `Ciao e grazie per il follow! 🙌 Ti va di entrare nella Squadra Tre di Luigi? È gratis, con la tua foto sulla Wall of Fame: ${site}/it/squadra-tre/`]
       ];
       function renderInvite() {
-        $('[data-invite-link]').textContent = `${site}/squadra-3/`;
+        $('[data-invite-link]').textContent = `${site}/squadra-tre/`;
         $('[data-invite-texts]').innerHTML = '<h2 class="h3">Fertige Texte</h2>' + INVITE.map(([t2, txt]) => `<h3 class="small strong mt">${escapeHtml(t2)}</h3><div class="copy-box" data-copy-src>${escapeHtml(txt)}</div><button class="btn btn-outline btn-sm" data-copy-btn>Kopieren</button>`).join('');
       }
       $('[data-panel="einladen"]').addEventListener('click', async (e) => {
