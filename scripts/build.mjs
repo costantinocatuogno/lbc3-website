@@ -115,7 +115,10 @@ writeFileSync(join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 ${publicPages.map((p) => `  <url><loc>${siteUrl}${p}</loc></url>`).join('\n')}
 </urlset>
 `);
-writeFileSync(join(DIST, 'robots.txt'), `User-agent: *
+// KI-Crawler ausschließen (Nutzungsvorbehalt nach § 44b UrhG), Suchmaschinen bleiben erlaubt
+const AI_BOTS = ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot', 'CCBot', 'Google-Extended', 'ClaudeBot', 'anthropic-ai', 'PerplexityBot', 'Bytespider', 'Applebot-Extended', 'meta-externalagent', 'Amazonbot', 'cohere-ai', 'Diffbot'];
+writeFileSync(join(DIST, 'robots.txt'), `${AI_BOTS.map((b) => `User-agent: ${b}\nDisallow: /\n`).join('\n')}
+User-agent: *
 Disallow: /admin/
 Disallow: /login/
 Disallow: /bericht/

@@ -62,7 +62,7 @@ const ui = {
     login_sponsors: 'Login für Sponsoren',
     kontakt_kicker: 'Kontakt', kontakt_title: 'Lass uns<br>reden.', write_msg: 'Nachricht schreiben', f_company: 'Firma (optional)', f_topic: 'Anliegen',
     topic1: 'Sponsoring / Partnerschaft', topic2: 'Sponsorenmappe anfordern', topic3: 'Presse', topic4: 'Sonstiges', f_message: 'Nachricht',
-    send: 'Absenden', impressum: 'Impressum', datenschutz: 'Datenschutz', rights: 'Alle Rechte vorbehalten.',
+    send: 'Absenden', impressum: 'Impressum', datenschutz: 'Datenschutz', rights: 'Alle Rechte vorbehalten. Texte, Fotos, Design und Software dürfen ohne unsere schriftliche Erlaubnis nicht kopiert oder weiterverwendet werden.',
     thanks_title: 'Danke!', thanks_text: 'Deine Nachricht ist angekommen. Wir melden uns so schnell wie möglich.',
     confirmed_title: 'Benvenuto in der Squadra Tre!', confirmed_text: 'Deine E-Mail-Adresse ist bestätigt. Danke, dass du Luigi unterstützt!',
     back_home: 'Zur Startseite', not_found: 'Diese Seite gibt es nicht.'
@@ -114,7 +114,7 @@ const ui = {
     login_sponsors: 'Sponsor login',
     kontakt_kicker: 'Contact', kontakt_title: "Let's<br>talk.", write_msg: 'Write a message', f_company: 'Company (optional)', f_topic: 'Topic',
     topic1: 'Sponsorship / partnership', topic2: 'Request sponsorship kit', topic3: 'Press', topic4: 'Other', f_message: 'Message',
-    send: 'Send', impressum: 'Legal notice', datenschutz: 'Privacy', rights: 'All rights reserved.',
+    send: 'Send', impressum: 'Legal notice', datenschutz: 'Privacy', rights: 'All rights reserved. Texts, photos, design and software may not be copied or reused without our written permission.',
     thanks_title: 'Thank you!', thanks_text: 'Your message has arrived. We will get back to you as soon as possible.',
     confirmed_title: 'Benvenuto to the Squadra Tre!', confirmed_text: 'Your email address is confirmed. Thank you for supporting Luigi!',
     back_home: 'Back to home', not_found: 'This page does not exist.'
@@ -166,7 +166,7 @@ const ui = {
     login_sponsors: 'Login sponsor',
     kontakt_kicker: 'Contatti', kontakt_title: 'Parliamone.', write_msg: 'Scrivi un messaggio', f_company: 'Azienda (facoltativo)', f_topic: 'Argomento',
     topic1: 'Sponsorizzazione / partnership', topic2: 'Richiedi cartella sponsor', topic3: 'Stampa', topic4: 'Altro', f_message: 'Messaggio',
-    send: 'Invia', impressum: 'Note legali', datenschutz: 'Privacy', rights: 'Tutti i diritti riservati.',
+    send: 'Invia', impressum: 'Note legali', datenschutz: 'Privacy', rights: 'Tutti i diritti riservati. Testi, foto, design e software non possono essere copiati o riutilizzati senza il nostro permesso scritto.',
     thanks_title: 'Grazie!', thanks_text: 'Il tuo messaggio è arrivato. Ti risponderemo il prima possibile.',
     confirmed_title: 'Benvenuto nella Squadra Tre!', confirmed_text: 'Il tuo indirizzo e-mail è confermato. Grazie per sostenere Luigi!',
     back_home: 'Torna alla home', not_found: 'Questa pagina non esiste.'
