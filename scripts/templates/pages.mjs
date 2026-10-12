@@ -148,11 +148,11 @@ export function kalender(lang, ctx) {
   const c = ctx.content;
   const seasons = c.saisons.length ? c.saisons : [new Date().getFullYear()];
   const current = seasons.find((s) => c.rennen.some((r) => Number(r.saison) === s && r.status === 'gefahren')) || seasons[0];
-  const rows = (s) => c.rennen.filter((r) => Number(r.saison) === s).map((r) => `
-    <tr>
+  const rows = (s) => c.rennen.filter((r) => Number(r.saison) === s).sort((a, b) => String(a.start).localeCompare(String(b.start))).map((r) => `
+    <tr${r.status === 'nicht_gefahren' ? ' class="is-dns"' : ''}>
       <td>${formatDate(r.start, lang)}</td><td>${esc(r.serie)}</td><td><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(r.land)}</span>` : ''}</td>
       <td>${esc(r.qualifying || '–')}</td><td class="red strong">${r.finale ? `P${esc(r.finale)}` : '–'}</td>
-      <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : ''}">${_(`st_${r.status}`)}</span></td>
+      <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
     </tr>`).join('');
   const body = `
 ${pageHead('/on-track', _('kal_title'))}

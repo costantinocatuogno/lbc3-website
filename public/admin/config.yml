@@ -76,7 +76,8 @@ collections:
       - { label: Klasse, name: klasse, widget: string, required: false }
       - { label: Strecke, name: strecke, widget: string }
       - { label: Land, name: land, widget: select, options: [Deutschland, Italien, Österreich, Schweiz, Frankreich, Belgien, Niederlande, Spanien, Tschechien, Sonstiges], default: Deutschland }
-      - { label: Status, name: status, widget: select, options: [{ label: bevorstehend, value: bevorstehend }, { label: gefahren, value: gefahren }], default: bevorstehend }
+      - { label: Status, name: status, widget: select, options: [{ label: bevorstehend, value: bevorstehend }, { label: gefahren, value: gefahren }, { label: nicht gefahren, value: nicht_gefahren }], default: bevorstehend }
+      - { label: Grund (nur bei „nicht gefahren“), name: grund, widget: string, required: false, hint: 'z. B. Unfall – leer lassen, wenn kein Grund angezeigt werden soll' }
       - { label: Qualifying (z. B. P4), name: qualifying, widget: string, required: false }
       - { label: Platz im Finale (nur Zahl, z. B. 3), name: finale, widget: number, value_type: int, required: false, hint: 'Für die Statistik: 1 = Sieg, 1–3 = Podium.' }
       - { label: Rennbericht (News), name: bericht, widget: relation, collection: news, search_fields: [titel], value_field: '{{slug}}', display_fields: [titel], required: false }
