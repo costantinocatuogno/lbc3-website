@@ -576,3 +576,10 @@ a.plain:hover { color: var(--red); }
 .reel figcaption { display: flex; flex-direction: column; gap: 4px; font-size: 15px; color: var(--text); }
 .reel figcaption strong { font-family: var(--display); font-weight: 800; font-size: 22px; text-transform: uppercase; color: var(--ink); }
 @media (max-width: 560px) { .reels { grid-template-columns: 1fr; } .reel { max-width: 380px; margin: 0 auto; } }
+
+/* ======================= Startseite: Story-Video ======================= */
+.story { display: grid; grid-template-columns: 1fr minmax(240px, 360px); gap: clamp(24px, 5vw, 72px); align-items: center; }
+.story-text { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+.story-video { margin: 0; }
+.story-video video { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 16px; background: var(--ink); box-shadow: 0 18px 40px rgba(18, 20, 24, .22); }
+@media (max-width: 760px) { .story { grid-template-columns: 1fr; } .story-video { max-width: 380px; width: 100%; margin: 0 auto; } }

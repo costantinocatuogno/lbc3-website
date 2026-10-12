@@ -48,6 +48,19 @@ export function home(lang, ctx) {
   <div class="ticker-track">${tags}</div>
 </section>
 
+${site.story_video ? `
+<section class="section wrap story">
+  <div class="story-text">
+    <div class="eyebrow">${_('story_kicker')}</div>
+    <h2 class="h1">${_('story_title')}</h2>
+    <p class="lead">${_('story_text')}</p>
+    <a class="btn btn-dark" href="${url(lang, '/ueber-luigi/')}">${_('story_more')}</a>
+  </div>
+  <figure class="story-video">
+    <video src="${esc(site.story_video)}"${site.story_vorschau ? ` poster="${esc(site.story_vorschau)}"` : ''} controls playsinline preload="none"></video>
+  </figure>
+</section>` : ''}
+
 ${highlights.length ? `
 <section class="section wrap" data-carousel>
   <div class="section-head">
