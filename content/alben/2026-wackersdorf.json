@@ -4,5 +4,11 @@
   "titel": "ADAC Kart Masters Wackersdorf 2026",
   "datum": "2026-10-04",
   "startseite": false,
-  "bilder": []
+  "bilder": [
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/bande-wackersdorf-elias-pokal.jpg",
+      "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2"
+    }
+  ]
 }

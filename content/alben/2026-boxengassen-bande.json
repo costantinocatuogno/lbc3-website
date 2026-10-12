@@ -7,6 +7,11 @@
   "bilder": [
     {
       "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/bande-wackersdorf-elias-pokal.jpg",
+      "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2"
+    },
+    {
+      "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-ampfing-lui.jpg",
       "text": "Ampfing: Luigi und Lui – Teamkollegen bei 7L Performance"
     },
