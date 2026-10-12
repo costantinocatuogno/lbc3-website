@@ -53,7 +53,7 @@ const topbar = (title, extra = '') => `
     <div class="app-bar-tools">
       <span class="muted-light small" data-user-label></span>
       ${extra}
-      <a class="app-link" href="/">Zur Website</a>
+      <a class="app-link" href="/vorschau/">Zur Website</a>
       <button type="button" class="btn btn-ghost-light btn-sm" data-logout>Abmelden</button>
     </div>
   </div>

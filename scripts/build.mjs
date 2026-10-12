@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { loadContent, loadWall } from './lib/content.mjs';
 import { LANGS, url } from './lib/i18n.mjs';
 import { home } from './templates/home.mjs';
+import { baldPage, vorschauPage, baldRedirects } from './templates/bald.mjs';
 import { newsList, newsDetail, ueber, kalender, galerie, galerieSerie, galerieJahr, galerieAlbum, partner, kontakt, rechtliches, message } from './templates/pages.mjs';
 import { loginPage, berichtPage, teamPage } from './templates/secure.mjs';
 import { squadra, wallPrint } from './templates/squadra.mjs';
@@ -112,9 +113,18 @@ out('/login/', loginPage(ctx));
 out('/bericht/', berichtPage(ctx));
 out('/team/', teamPage(ctx));
 out('/wall-of-fame/druck/', wallPrint(ctx, wall));
+out('/bald/', baldPage(ctx));
+out('/vorschau/', vorschauPage());
+
+// ---------- Bald-Modus: Besucher sehen nur die „Bald geht's los“-Seite ----------
+const baldModus = content.site.bald_modus === true;
+if (baldModus) {
+  writeFileSync(join(DIST, '_redirects'), baldRedirects());
+  writeFileSync(join(DIST, '_headers'), '/*\n  X-Robots-Tag: noindex\n');
+}
 
 // ---------- SEO ----------
-const publicPages = pages.filter((p) => !/\/(login|bericht|team|danke|squadra-bestaetigt|wall-of-fame)\/|404/.test(p));
+const publicPages = pages.filter((p) => !/\/(login|bericht|team|danke|squadra-bestaetigt|wall-of-fame|bald|vorschau)\/|404/.test(p));
 writeFileSync(join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${publicPages.map((p) => `  <url><loc>${siteUrl}${p}</loc></url>`).join('\n')}
@@ -132,4 +142,4 @@ Disallow: /wall-of-fame/
 Sitemap: ${siteUrl}/sitemap.xml
 `);
 
-console.log(`✔ ${pages.length} Seiten erzeugt in ${Date.now() - t0} ms · Schriften: ${fontsOk}/${FONTS.length} · Wall of Fame: ${wall.beispiel ? 'Beispieldaten' : `${wall.mitglieder.length} Mitglieder, ${wall.sponsoren.length} Sponsoren`}`);
+console.log(`${baldModus ? '⏳ Bald-Modus AN · ' : ''}✔ ${pages.length} Seiten erzeugt in ${Date.now() - t0} ms · Schriften: ${fontsOk}/${FONTS.length} · Wall of Fame: ${wall.beispiel ? 'Beispieldaten' : `${wall.mitglieder.length} Mitglieder, ${wall.sponsoren.length} Sponsoren`}`);
