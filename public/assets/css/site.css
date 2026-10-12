@@ -583,3 +583,13 @@ a.plain:hover { color: var(--red); }
 .story-video { margin: 0; }
 .story-video video { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 16px; background: var(--ink); box-shadow: 0 18px 40px rgba(18, 20, 24, .22); }
 @media (max-width: 760px) { .story { grid-template-columns: 1fr; } .story-video { max-width: 380px; width: 100%; margin: 0 auto; } }
+
+/* Farblinie zwischen „Hinter den Kulissen“ und den Rennserien: Rot · Weiß · Grün · Schwarz · Gold, weich ineinander verlaufend */
+.gal-divider { height: 6px; margin: clamp(32px, 5vw, 56px) 0; border-radius: 999px;
+  background: linear-gradient(90deg, #C8102E 0%, #F2F3F5 22%, #1E8E3E 45%, #121418 70%, #E3B23C 100%);
+  box-shadow: 0 2px 10px rgba(18, 20, 24, .12); }
+
+.gal-card-img.is-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  background: radial-gradient(120% 90% at 50% 0%, #22252B 0%, var(--ink) 70%); }
+.gal-card-img img.gal-ph { width: 64px; height: auto; object-fit: contain; opacity: .35; transform: none; }
+.gal-ph-text { color: var(--gold); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; }

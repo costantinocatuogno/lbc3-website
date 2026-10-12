@@ -188,7 +188,7 @@ function galCrumbs(lang, _, items) {
 }
 function galCard(lang, _, { href, cover, kicker, title, meta }) {
   return `<a class="gal-card" href="${url(lang, href)}">
-    <div class="gal-card-img">${cover ? picture(cover, title, { width: 900, sizes: '(max-width: 760px) 100vw, 33vw' }) : ''}</div>
+    <div class="gal-card-img${cover ? '' : ' is-empty'}">${cover ? picture(cover, title, { width: 900, sizes: '(max-width: 760px) 100vw, 33vw' }) : `<img class="gal-ph" src="/assets/img/lbc3-logo.png" alt="" aria-hidden="true"><span class="gal-ph-text">${_('gal_soon')}</span>`}</div>
     <div class="gal-card-body">${kicker ? `<div class="eyebrow">${esc(kicker)}</div>` : ''}<h3 class="h3">${esc(title)}</h3><div class="meta">${meta}</div></div>
   </a>`;
 }
@@ -203,10 +203,17 @@ function albumCards(lang, _, alben, withYear = false) {
 export function galerie(lang, ctx) {
   const _ = t(lang);
   const serien = ctx.content.serien;
-  const grid = serien.length ? `<div class="gal-grid">${serien.map((s) => galCard(lang, _, {
-    href: s.path, cover: s.cover, kicker: s.jahre.map((j) => j.jahr).join(' · '), title: s.name,
-    meta: `<span>${s.alben.length} ${s.alben.length === 1 ? _('gal_race') : _('gal_races')}</span><span>${fotosLabel(_, s.fotos)}</span>`
-  })).join('')}</div>` : `<p class="muted">${_('gal_empty')}</p>`;
+  const card = (se) => galCard(lang, _, {
+    href: se.path, cover: se.cover, kicker: se.jahre.map((j) => j.jahr).join(' · '), title: se.name,
+    meta: `<span>${se.alben.length} ${se.slug === 'hinter-den-kulissen' ? (se.alben.length === 1 ? _('gal_album') : _('gal_albums')) : (se.alben.length === 1 ? _('gal_race') : _('gal_races'))}</span><span>${se.fotos ? fotosLabel(_, se.fotos) : _('gal_soon')}</span>`
+  });
+  // „Hinter den Kulissen“ steht ganz oben, darunter – getrennt durch die Farblinie – die Meisterschafts-Serien
+  const kulissen = serien.filter((se) => se.slug === 'hinter-den-kulissen');
+  const rennserien = serien.filter((se) => se.slug !== 'hinter-den-kulissen');
+  const grid = serien.length ? `
+    ${kulissen.length ? `<div class="gal-grid">${kulissen.map(card).join('')}</div>` : ''}
+    ${kulissen.length && rennserien.length ? '<div class="gal-divider" role="separator" aria-hidden="true"></div>' : ''}
+    ${rennserien.length ? `<div class="gal-grid">${rennserien.map(card).join('')}</div>` : ''}` : `<p class="muted">${_('gal_empty')}</p>`;
   const body = `${pageHead(_('gal_kicker'), _('nav_galerie'), `<p class="lead">${_('gal_intro')}</p>`)}<section class="wrap section">${grid}</section>`;
   return layout({ lang, path: '/galerie/', title: _('nav_galerie'), body, ctx, active: '/galerie/' });
 }

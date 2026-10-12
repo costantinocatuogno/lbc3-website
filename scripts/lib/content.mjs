@@ -81,7 +81,7 @@ export function loadContent(root) {
     if (!j) { j = { jahr: a.jahr, path: `/galerie/${a.serieSlug}/${a.jahr}/`, alben: [] }; s.jahre.push(j); }
     j.alben.push(a);
   }
-  serien.forEach((s) => { s.jahre.sort((x, y) => y.jahr.localeCompare(x.jahr)); s.cover = s.alben[0]?.cover || ''; s.fotos = s.alben.reduce((n, a) => n + a.bilder.length, 0); });
+  serien.forEach((s) => { s.jahre.sort((x, y) => y.jahr.localeCompare(x.jahr)); s.cover = (s.alben.find((a) => a.cover) || {}).cover || ''; s.fotos = s.alben.reduce((n, a) => n + a.bilder.length, 0); });
 
   const kapitel = listDir(join(C, 'kapitel'), '.json')
     .map((f) => readJSON(join(C, 'kapitel', f)))
