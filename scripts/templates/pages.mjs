@@ -152,7 +152,7 @@ export function kalender(lang, ctx) {
     <tr${r.status === 'nicht_gefahren' ? ' class="is-dns"' : ''}>
       <td>${formatDate(r.start, lang)}</td><td>${esc(r.serie)}</td><td><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(r.land)}</span>` : ''}</td>
       <td>${esc(r.qualifying || '–')}</td><td>${esc(r.heat1 || '–')}</td><td>${esc(r.heat2 || '–')}</td><td class="red strong">${r.finale ? `P${esc(r.finale)}` : '–'}</td>
-      <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
+      <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'angemeldet' ? 'is-reg' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
     </tr>`).join('');
   const body = `
 ${pageHead('/on-track', _('kal_title'))}

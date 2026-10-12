@@ -76,7 +76,7 @@ collections:
       - { label: Klasse, name: klasse, widget: string, required: false }
       - { label: Strecke, name: strecke, widget: string }
       - { label: Land, name: land, widget: select, options: [Deutschland, Italien, Österreich, Schweiz, Frankreich, Belgien, Niederlande, Spanien, Tschechien, Sonstiges], default: Deutschland }
-      - { label: Status, name: status, widget: select, options: [{ label: geplant, value: bevorstehend }, { label: gefahren, value: gefahren }, { label: nicht gefahren, value: nicht_gefahren }], default: bevorstehend }
+      - { label: Status, name: status, widget: select, options: [{ label: geplant, value: bevorstehend }, { label: angemeldet, value: angemeldet }, { label: gefahren, value: gefahren }, { label: nicht gefahren, value: nicht_gefahren }], default: bevorstehend }
       - { label: Grund (nur bei „nicht gefahren“), name: grund, widget: string, required: false, hint: 'z. B. Unfall – leer lassen, wenn kein Grund angezeigt werden soll' }
       - { label: Qualifying (z. B. P4), name: qualifying, widget: string, required: false }
       - { label: Heat 1 (z. B. P3), name: heat1, widget: string, required: false }

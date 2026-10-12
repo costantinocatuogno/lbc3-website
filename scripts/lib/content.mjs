@@ -108,7 +108,7 @@ export function loadContent(root) {
   };
 
   const upcoming = rennen
-    .filter((r) => r.status === 'bevorstehend')
+    .filter((r) => r.status === 'bevorstehend' || r.status === 'angemeldet')
     .map((r) => ({ start: r.start, strecke: r.strecke, serie: r.serie, klasse: r.klasse, land: r.land }));
 
   const saisons = [...new Set(rennen.map((r) => Number(r.saison)).filter(Boolean))].sort((a, b) => a - b);

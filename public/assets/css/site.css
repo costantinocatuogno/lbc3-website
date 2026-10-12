@@ -597,3 +597,4 @@ a.plain:hover { color: var(--red); }
 .status.is-dns { background: transparent; border: 1px solid var(--line); color: var(--muted); }
 .status-why { display: block; margin-top: 4px; }
 tr.is-dns td { color: var(--muted); }
+.status.is-reg { background: var(--red); color: #fff; }
