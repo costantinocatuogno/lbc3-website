@@ -4,5 +4,16 @@
   "jahr": "2026",
   "titel": "Boxengassen-Bande – auf der Strecke Rivalen, daneben beste Kumpels",
   "startseite": false,
-  "bilder": []
+  "bilder": [
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/bande-muelsen-alex-scooter.jpg",
+      "text": "Mülsen: Luigi und Alex – Doppelpack auf dem Scooter"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/muelsen-2026-17.jpg",
+      "text": "Mülsen: mit Alex im Fahrerlager-Taxi unterwegs"
+    }
+  ]
 }
