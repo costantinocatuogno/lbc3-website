@@ -12,6 +12,11 @@
     },
     {
       "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/fruehstueck.jpg",
+      "text": "Frühstück im Wohnmobil – Energie tanken"
+    },
+    {
+      "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mit-mama-im-fahrerlager.jpg",
       "text": "Gute Laune im Fahrerlager – mit Mama an der Seite"
     },
@@ -157,6 +162,81 @@
     },
     {
       "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/konzentration-vorstart.jpg",
+      "text": "Volle Konzentration im Vorstart"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/blick-durchs-visier.jpg",
+      "text": "Der Blick durchs Visier"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/fahrerbesprechung.jpg",
+      "text": "Fahrerbesprechung vor dem Rennen"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/aufstellung-mauer.jpg",
+      "text": "Aufstellung an der Mauer"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/letzte-worte.jpg",
+      "text": "Letzte Worte vor dem Rollout"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/raus-auf-die-strecke.jpg",
+      "text": "Raus auf die Strecke"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/im-fokus.jpg",
+      "text": "Im Fokus der Kameras"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/vollgas-kurve.jpg",
+      "text": "Vollgas durch die Kurve"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/am-kerb.jpg",
+      "text": "Am Kerb entlang"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/mitzieher-1.jpg",
+      "text": "Mitzieher bei voller Fahrt"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/speed-gerade.jpg",
+      "text": "Speed auf der Geraden"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/vorne-im-pulk.jpg",
+      "text": "Vorne im Pulk"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/mitten-im-feld-rennen.jpg",
+      "text": "Mitten im Feld"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/duell-kurve.jpg",
+      "text": "Duell in der Kurve"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/auf-der-jagd.jpg",
+      "text": "Auf der Jagd"
+    },
+    {
+      "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/letzte-handgriffe.jpg",
       "text": "Letzte Handgriffe vom Mechaniker"
     },
@@ -178,6 +258,16 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/rueckweg.jpg",
       "text": "Auf dem Rückweg durchs Fahrerlager"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/grillen.jpg",
+      "text": "Grillen mit dem Mechaniker"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/abendessen.jpg",
+      "text": "Abendessen am Wohnmobil"
     },
     {
       "kategorie": "fahrerlager",
