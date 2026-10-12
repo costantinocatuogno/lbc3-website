@@ -7,6 +7,11 @@
   "bilder": [
     {
       "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/bande-ampfing-lui.jpg",
+      "text": "Ampfing: Luigi und Lui – Teamkollegen bei 7L Performance"
+    },
+    {
+      "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-muelsen-alex-scooter.jpg",
       "text": "Mülsen: Luigi und Alex – Doppelpack auf dem Scooter"
     },
