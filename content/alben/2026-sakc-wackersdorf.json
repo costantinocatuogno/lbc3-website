@@ -4,5 +4,11 @@
   "jahr": "2026",
   "titel": "SAKC Wackersdorf 2026",
   "startseite": false,
-  "bilder": []
+  "bilder": [
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/sakc-wackersdorf-nico.jpg",
+      "text": "SAKC Wackersdorf: Abklatschen mit Nico vor dem Start"
+    }
+  ]
 }
