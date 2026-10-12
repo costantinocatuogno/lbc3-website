@@ -4,5 +4,11 @@
   "jahr": "2026",
   "titel": "Ba-Co Momente – Basti & Costa",
   "startseite": false,
-  "bilder": []
+  "bilder": [
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/ba-co/ampfing-testtag-basti-costa.jpg",
+      "text": "Ampfing-Testtag: Costa und Basti besprechen den nächsten Run"
+    }
+  ]
 }
