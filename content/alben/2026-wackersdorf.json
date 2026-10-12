@@ -6,6 +6,11 @@
   "startseite": false,
   "bilder": [
     {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/wackersdorf-milly-luigi-meister.jpg",
+      "text": "Wackersdorf: Meisterin Milly und Vizemeister Luigi unter der Startampel"
+    },
+    {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-wackersdorf-elias-pokal.jpg",
       "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2"

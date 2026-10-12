@@ -8,6 +8,7 @@
   "highlight": true,
   "entwurf": false,
   "galerie": [
+    "/uploads/galerie/wackersdorf-milly-luigi-meister.jpg",
     "/uploads/news/vizemeister-2026-siegerehrung.jpg",
     "/uploads/news/vizemeister-2026-mini-b-top2.jpg",
     "/uploads/news/vizemeister-2026-trainer.jpg",
