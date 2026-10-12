@@ -97,7 +97,11 @@ ${(c.site.videos || []).filter((v) => v && v.datei).length ? `
 <section class="band-white">
   <div class="wrap section">
     <h2 class="h2">${_('steckbrief')}</h2>
-    <dl class="facts">${facts.map(([k, v], i) => `<div><dt>${_(k)}</dt><dd${i === facts.length - 1 ? ' class="red"' : ''}>${esc(v)}</dd></div>`).join('')}</dl>
+    <dl class="facts">${facts.map(([k, v], i) => {
+      const link = k === 'f_team' && /^https?:\/\//.test(f.team_link || '') ? f.team_link : '';
+      const val = link ? `<a href="${esc(link)}" target="_blank" rel="noopener">${esc(v)}</a>` : esc(v);
+      return `<div><dt>${_(k)}</dt><dd${i === facts.length - 1 ? ' class="red"' : ''}>${val}</dd></div>`;
+    }).join('')}</dl>
   </div>
 </section>
 

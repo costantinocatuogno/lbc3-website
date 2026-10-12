@@ -191,9 +191,10 @@ collections:
           - { label: Nationalität, name: nationalitaet, widget: string, i18n: true }
           - { label: Chassis, name: chassis, widget: string, i18n: duplicate }
           - { label: Klasse, name: klasse, widget: string, i18n: true }
-          - { label: Team, name: team, widget: string, i18n: true }
+          - { label: Team, name: team, widget: string, i18n: duplicate }
+          - { label: Team-Website (Link), name: team_link, widget: string, i18n: duplicate, required: false, hint: 'z. B. https://www.7l-performance.de – der Teamname wird dann im Steckbrief verlinkt' }
           - { label: Lieblingsstrecke, name: lieblingsstrecke, widget: string, i18n: true }
-          - { label: Idole, name: idole, widget: string, i18n: duplicate }
+          - { label: Idol(e), name: idole, widget: string, i18n: duplicate }
           - { label: Ziel, name: ziel, widget: string, i18n: true }
           - label: Eine Rennwoche mit Luigi
             name: woche

@@ -2,10 +2,10 @@
   "de": {
     "nationalitaet": "Deutsch · Italienisch",
     "chassis": "Tony Kart Rookie",
-    "klasse": "[KLASSE]",
-    "team": "[TEAM]",
-    "lieblingsstrecke": "[STRECKE]",
-    "idole": "Hamilton · Antonelli",
+    "klasse": "Mini",
+    "team": "7L Performance",
+    "lieblingsstrecke": "Mülsen",
+    "idole": "Juan Manuel Fangio",
     "ziel": "Formel 1",
     "woche": [
       {
@@ -43,15 +43,16 @@
         "was": "Finale",
         "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
       }
-    ]
+    ],
+    "team_link": ""
   },
   "en": {
     "nationalitaet": "German · Italian",
     "chassis": "Tony Kart Rookie",
-    "klasse": "[CLASS]",
-    "team": "[TEAM]",
-    "lieblingsstrecke": "[TRACK]",
-    "idole": "Hamilton · Antonelli",
+    "klasse": "Mini",
+    "team": "7L Performance",
+    "lieblingsstrecke": "Mülsen",
+    "idole": "Juan Manuel Fangio",
     "ziel": "Formula 1",
     "woche": [
       {
@@ -89,15 +90,16 @@
         "was": "Final",
         "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
       }
-    ]
+    ],
+    "team_link": ""
   },
   "it": {
     "nationalitaet": "Tedesca · Italiana",
     "chassis": "Tony Kart Rookie",
-    "klasse": "[CATEGORIA]",
-    "team": "[TEAM]",
-    "lieblingsstrecke": "[CIRCUITO]",
-    "idole": "Hamilton · Antonelli",
+    "klasse": "Mini",
+    "team": "7L Performance",
+    "lieblingsstrecke": "Mülsen",
+    "idole": "Juan Manuel Fangio",
     "ziel": "Formula 1",
     "woche": [
       {
@@ -135,6 +137,7 @@
         "was": "Finale",
         "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
       }
-    ]
+    ],
+    "team_link": ""
   }
 }
