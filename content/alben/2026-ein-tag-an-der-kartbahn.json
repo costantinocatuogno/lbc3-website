@@ -53,27 +53,27 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mit-dem-mechaniker.jpg",
-      "text": "Gute Stimmung mit dem Mechaniker"
+      "text": "Gute Stimmung mit Papa"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mit-mechaniker-portraet.jpg",
-      "text": "Luigi und sein Mechaniker – ein eingespieltes Team"
+      "text": "Luigi und Papa – ein eingespieltes Team"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mechaniker-335.jpg",
-      "text": "Der Mechaniker bereitet die 335 vor"
+      "text": "Papa bereitet die 335 vor"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/unter-dem-kart.jpg",
-      "text": "Arbeit unter dem Kart"
+      "text": "Papa arbeitet unter dem Kart"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/feinarbeit.jpg",
-      "text": "Feinarbeit im Teamzelt"
+      "text": "Feinarbeit im Teamzelt – Papa als Mechaniker"
     },
     {
       "kategorie": "fahrerlager",
@@ -178,7 +178,12 @@
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/aufstellung-mauer.jpg",
-      "text": "Aufstellung an der Mauer"
+      "text": "Aufstellung an der Mauer – Papa gibt letzte Tipps"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/bereit-an-der-mauer.jpg",
+      "text": "Bereit an der Mauer"
     },
     {
       "kategorie": "strecke",
@@ -189,6 +194,11 @@
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/raus-auf-die-strecke.jpg",
       "text": "Raus auf die Strecke"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/startaufstellung-boxengasse.jpg",
+      "text": "Startaufstellung in der Boxengasse"
     },
     {
       "kategorie": "strecke",
@@ -237,8 +247,23 @@
     },
     {
       "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/kurvenausgang.jpg",
+      "text": "Kurvenausgang mit Blick nach vorn"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/mitzieher-2.jpg",
+      "text": "Mitzieher in der Kurve"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/ideallinie.jpg",
+      "text": "Volle Konzentration auf der Ideallinie"
+    },
+    {
+      "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/letzte-handgriffe.jpg",
-      "text": "Letzte Handgriffe vom Mechaniker"
+      "text": "Letzte Handgriffe von Papa"
     },
     {
       "kategorie": "strecke",
@@ -262,7 +287,7 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/grillen.jpg",
-      "text": "Grillen mit dem Mechaniker"
+      "text": "Grillen mit Papa"
     },
     {
       "kategorie": "fahrerlager",
