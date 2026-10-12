@@ -52,6 +52,11 @@
     },
     {
       "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/mit-mechaniker-portraet.jpg",
+      "text": "Luigi und sein Mechaniker – ein eingespieltes Team"
+    },
+    {
+      "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mechaniker-335.jpg",
       "text": "Der Mechaniker bereitet die 335 vor"
     },
@@ -132,8 +137,23 @@
     },
     {
       "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/tipps-adac-zelt.jpg",
+      "text": "Letzte Tipps unter dem ADAC-Zelt"
+    },
+    {
+      "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/ruhe-vor-dem-start.jpg",
       "text": "Ruhe vor dem Start"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/debriefing.jpg",
+      "text": "Debriefing nach dem Lauf"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/was-sagen-die-daten.jpg",
+      "text": "Was sagen die Daten?"
     },
     {
       "kategorie": "strecke",
