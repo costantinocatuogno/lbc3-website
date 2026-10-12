@@ -83,6 +83,17 @@ export function ueber(lang, ctx) {
   </div>
 </section>
 
+${(c.site.videos || []).filter((v) => v && v.datei).length ? `
+<section class="wrap section">
+  <div class="section-head"><div><div class="eyebrow">${_('videos_kicker')}</div><h2 class="h2">${_('videos_title')}</h2></div></div>
+  <div class="reels">${c.site.videos.filter((v) => v && v.datei).map((v) => `
+    <figure class="reel">
+      <video src="${esc(v.datei)}"${v.vorschau ? ` poster="${esc(v.vorschau)}"` : ''} controls playsinline preload="none"></video>
+      <figcaption><strong>${esc(v.titel || '')}</strong>${v.text ? `<span>${esc(v.text)}</span>` : ''}</figcaption>
+    </figure>`).join('')}
+  </div>
+</section>` : ''}
+
 <section class="band-white">
   <div class="wrap section">
     <h2 class="h2">${_('steckbrief')}</h2>

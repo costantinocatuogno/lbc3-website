@@ -568,3 +568,11 @@ fieldset.field legend { padding: 0; margin-bottom: 6px; }
 a.plain { color: inherit; text-decoration: none; }
 a.plain:hover { color: var(--red); }
 .mb-s { margin-bottom: 18px; margin-top: 0; }
+
+/* ======================= Videos (Über Luigi) ======================= */
+.reels { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 340px)); gap: 24px; justify-content: start; }
+.reel { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.reel video { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 14px; background: var(--ink); box-shadow: 0 14px 34px rgba(18, 20, 24, .18); }
+.reel figcaption { display: flex; flex-direction: column; gap: 4px; font-size: 15px; color: var(--text); }
+.reel figcaption strong { font-family: var(--display); font-weight: 800; font-size: 22px; text-transform: uppercase; color: var(--ink); }
+@media (max-width: 560px) { .reels { grid-template-columns: 1fr; } .reel { max-width: 380px; margin: 0 auto; } }

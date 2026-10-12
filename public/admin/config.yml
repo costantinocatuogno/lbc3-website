@@ -214,6 +214,17 @@ collections:
           - { label: Marke, name: marke, widget: string }
           - { label: Startnummer, name: startnummer, widget: string }
           - { label: Kontakt-E-Mail, name: kontakt_email, widget: string }
+          - label: Videos (Seite „Über Luigi“)
+            name: videos
+            widget: list
+            required: false
+            summary: '{{fields.titel}}'
+            hint: 'Hochformat-Videos (Reels). Am besten vorher verkleinern (unter ca. 20 MB) – oder Claude schicken.'
+            fields:
+              - { label: Titel, name: titel, widget: string }
+              - { label: Kurztext, name: text, widget: string, required: false }
+              - { label: Video (MP4), name: datei, widget: file, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
+              - { label: Vorschaubild, name: vorschau, widget: image, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
           - { label: E-Mail für Sponsoren-Anfragen, name: business_email, widget: string }
           - { label: Instagram-Link, name: instagram, widget: string }
           - { label: Instagram-Name, name: instagram_handle, widget: string }
