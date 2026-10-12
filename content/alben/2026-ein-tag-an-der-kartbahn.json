@@ -27,6 +27,61 @@
     },
     {
       "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/selbst-hand-anlegen.jpg",
+      "text": "Selbst Hand anlegen: Luigi pflegt sein Kart"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/jedes-detail.jpg",
+      "text": "Jedes Detail zählt"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/genau-hinschauen.jpg",
+      "text": "Genau hinschauen"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/check-lenkrad.jpg",
+      "text": "Letzter Check am Lenkrad"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/mit-dem-mechaniker.jpg",
+      "text": "Gute Stimmung mit dem Mechaniker"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/mechaniker-335.jpg",
+      "text": "Der Mechaniker bereitet die 335 vor"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/unter-dem-kart.jpg",
+      "text": "Arbeit unter dem Kart"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/feinarbeit.jpg",
+      "text": "Feinarbeit im Teamzelt"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/helm-bereit.jpg",
+      "text": "Helm bereit, Kart bereit"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/ab-zum-vorstart.jpg",
+      "text": "Ab zum Vorstart"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/durchatmen.jpg",
+      "text": "Kurz durchatmen vor dem Rennen"
+    },
+    {
+      "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/zum-vorstart.jpg",
       "text": "Auf dem Weg zum Vorstart"
     },
@@ -64,6 +119,21 @@
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/vorstart-335.jpg",
       "text": "Startnummer 335 im Vorstart"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/mitten-im-feld.jpg",
+      "text": "Mitten im Feld: der Blick der #3"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/letzte-ansage.jpg",
+      "text": "Die letzte Ansage"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/ruhe-vor-dem-start.jpg",
+      "text": "Ruhe vor dem Start"
     },
     {
       "kategorie": "strecke",
