@@ -4,5 +4,11 @@
   "jahr": "2026",
   "titel": "SAKC Liedolsheim 2026",
   "startseite": false,
-  "bilder": []
+  "bilder": [
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/bande-liedolsheim-gruppe.jpg",
+      "text": "SAKC Liedolsheim: die Bande komplett – Leon, Luigi, Max, Nico und Lewis"
+    }
+  ]
 }

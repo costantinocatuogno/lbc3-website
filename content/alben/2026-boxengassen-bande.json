@@ -7,6 +7,11 @@
   "bilder": [
     {
       "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/bande-liedolsheim-gruppe.jpg",
+      "text": "SAKC Liedolsheim: die Bande komplett – Leon, Luigi, Max, Nico und Lewis"
+    },
+    {
+      "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-wackersdorf-elias-pokal.jpg",
       "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2"
     },
