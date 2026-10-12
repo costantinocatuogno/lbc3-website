@@ -64,6 +64,21 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-leon-deniz.jpg",
       "text": "Zu Besuch bei Freunden: Leon und Papa Deniz im Teamzelt"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/bande-briefing-von-hinten.jpg",
+      "text": "Fahrerbesprechung in Ampfing: die ganze Bande hört zu"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/bande-briefing-nah.jpg",
+      "text": "Ohren auf: die letzten Infos vor dem Rennen"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/bande-briefing-gruppe.jpg",
+      "text": "Schulter an Schulter in der Fahrerbesprechung"
     }
   ]
 }
