@@ -44,7 +44,7 @@
         "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
       }
     ],
-    "team_link": ""
+    "team_link": "https://www.7l-performance.de/"
   },
   "en": {
     "nationalitaet": "German · Italian",
@@ -91,7 +91,7 @@
         "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
       }
     ],
-    "team_link": ""
+    "team_link": "https://www.7l-performance.de/"
   },
   "it": {
     "nationalitaet": "Tedesca · Italiana",
@@ -138,6 +138,6 @@
         "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
       }
     ],
-    "team_link": ""
+    "team_link": "https://www.7l-performance.de/"
   }
 }
