@@ -33,6 +33,8 @@
   async function getProfile() {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) return null;
+    // Wer angemeldet ist (Team/Sponsoren), sieht im Bald-Modus immer die echte Website
+    try { document.cookie = 'lbc3_vorschau=1; Max-Age=' + (60 * 60 * 24 * 365) + '; Path=/; Secure; SameSite=Lax'; } catch (e) { /* egal */ }
     const { data, error } = await sb.from('profiles').select('id, rolle, name, firma, email').eq('id', session.user.id).maybeSingle();
     if (error) throw error;
     return data ? { ...data, session } : { rolle: null, session };

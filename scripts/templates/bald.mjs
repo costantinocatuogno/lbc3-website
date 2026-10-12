@@ -41,8 +41,21 @@ const kart = `
   <g class="wheel" style="transform-origin:198px 98px"><circle cx="198" cy="98" r="13" fill="#121418"/><circle cx="198" cy="98" r="6" fill="#c9971f"/><rect x="196" y="87" width="4" height="8" fill="#33363c"/></g>
 </svg>`;
 
+function berlinIso(local) {
+  // „2026-10-31T18:00“ (deutsche Zeit) → exakter Zeitpunkt mit Zeitzonen-Versatz
+  const m = String(local || '').match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+  if (!m) return '';
+  const [y, mo, d, h = '00', mi = '00'] = m.slice(1);
+  const guess = Date.UTC(+y, +mo - 1, +d, +h, +mi);
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Berlin', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(guess));
+  const g = Object.fromEntries(parts.map((x) => [x.type, x.value]));
+  const asBerlin = Date.UTC(+g.year, +g.month - 1, +g.day, +g.hour, +g.minute);
+  return new Date(guess - (asBerlin - guess)).toISOString();
+}
+
 export function baldPage(ctx) {
   const site = ctx.content.site;
+  const ziel = berlinIso(site.start_datum || '2026-10-31T18:00');
   return `<!doctype html>
 <html lang="de">
 <head>
@@ -86,6 +99,12 @@ h1 span { color: var(--gold); }
 @keyframes lines { 0%, 32% { opacity: 0; transform: translateX(0); } 40% { opacity: 1; } 60% { opacity: 0; transform: translateX(-60px); } 100% { opacity: 0; } }
 @keyframes puff { 0%, 12% { opacity: 0; transform: translate(0,0) scale(.6); } 20% { opacity: .8; } 34% { opacity: 0; transform: translate(-60px,-24px) scale(2.2); } 100% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .kart, .kart-body, .wheel, .lines, .puff { animation: none; } }
+.cd { display: flex; gap: clamp(8px, 2vw, 16px); justify-content: center; margin-top: 4px; }
+.cd div { min-width: clamp(64px, 16vw, 96px); padding: 12px 8px 10px; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
+.cd b { display: block; font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 900; font-size: clamp(34px, 7vw, 56px); line-height: 1; color: var(--gold); font-variant-numeric: tabular-nums; }
+.cd span { display: block; margin-top: 6px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--light); }
+.cd-done { font-weight: 700; color: var(--gold); font-size: 20px; }
+footer .team { opacity: .7; }
 .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; background: var(--gold); color: var(--ink); font-weight: 700; text-decoration: none; }
 .btn:hover { background: #f0c24d; }
 footer { text-align: center; padding: 18px 16px 26px; color: var(--light); font-size: 14px; opacity: .8; }
@@ -99,6 +118,9 @@ footer a { color: var(--light); }
   <div class="eyebrow">Luigi Battista Catuogno · #3</div>
   <h1>Wir sind fast<br><span>am Ziel …</span></h1>
   <p class="sub">Komm Ende Oktober wieder!</p>
+  ${ziel ? `<div class="cd" data-ziel="${ziel}" aria-label="Countdown bis zum Start">
+    <div><b data-t="d">–</b><span>Tage</span></div><div><b data-t="h">–</b><span>Std</span></div><div><b data-t="m">–</b><span>Min</span></div><div><b data-t="s">–</b><span>Sek</span></div>
+  </div>` : ''}
   <p class="langs">Quasi al traguardo … torna a fine ottobre! · Almost at the finish line … come back at the end of October!</p>
   <div class="track" aria-hidden="true">
     <div class="lines"><i></i><i></i><i></i></div>
@@ -110,8 +132,9 @@ footer a { color: var(--light); }
 </main>
 <footer>
   <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · <a href="mailto:${esc(site.kontakt_email)}">${esc(site.kontakt_email)}</a><br>
-  © ${new Date().getFullYear()} LBC3 · Luigi Battista Catuogno
+  © ${new Date().getFullYear()} LBC3 · Luigi Battista Catuogno · <a class="team" href="/login/">Team-Login</a>
 </footer>
+<script src="/bald/bald.js" defer></script>
 <div class="flag" aria-hidden="true"><i style="background:#000"></i><i style="background:#C8102E"></i><i style="background:#E0B000"></i><i style="background:transparent"></i><i style="background:#1E8E3E"></i><i style="background:#F2F3F5"></i><i style="background:#C8102E"></i></div>
 </body>
 </html>`;
@@ -126,18 +149,7 @@ export function vorschauPage() {
 </head><body><div>
 <h1 id="t">Vorschau wird eingeschaltet …</h1>
 <p id="m">Einen Moment.</p>
-<script>
-  var aus = /[?&]aus\\b/.test(location.search);
-  if (aus) {
-    document.cookie = 'lbc3_vorschau=; Max-Age=0; Path=/; Secure; SameSite=Lax';
-    document.getElementById('t').textContent = 'Vorschau ausgeschaltet';
-    document.getElementById('m').innerHTML = 'Du siehst jetzt wieder die „Bald geht\\'s los“-Seite. <a href="/">Zur Startseite</a>';
-  } else {
-    document.cookie = 'lbc3_vorschau=1; Max-Age=' + (60 * 60 * 24 * 90) + '; Path=/; Secure; SameSite=Lax';
-    var ziel = (location.search.match(/[?&]ziel=([^&]+)/) || [])[1];
-    location.replace(ziel && /^%2F|^\\//.test(ziel) ? decodeURIComponent(ziel) : '/');
-  }
-</script>
+<script src="/vorschau/vorschau.js"></script>
 <noscript>Bitte JavaScript einschalten.</noscript>
 </div></body></html>`;
 }
@@ -160,3 +172,36 @@ export function baldRedirects() {
     ''
   ].join('\n');
 }
+
+export const baldJs = `(function () {
+  var el = document.querySelector('.cd'); if (!el) return;
+  var ziel = new Date(el.getAttribute('data-ziel')).getTime();
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function tick() {
+    var diff = Math.max(0, ziel - Date.now());
+    if (diff === 0) { el.outerHTML = '<p class="cd-done">Gleich geht\u2019s los \u2013 schau gleich nochmal vorbei!</p>'; return; }
+    var s = Math.floor(diff / 1000);
+    el.querySelector('[data-t=d]').textContent = Math.floor(s / 86400);
+    el.querySelector('[data-t=h]').textContent = pad(Math.floor(s % 86400 / 3600));
+    el.querySelector('[data-t=m]').textContent = pad(Math.floor(s % 3600 / 60));
+    el.querySelector('[data-t=s]').textContent = pad(s % 60);
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
+`;
+
+export const vorschauJs = `(function () {
+  var aus = /[?&]aus\\b/.test(location.search);
+  if (aus) {
+    document.cookie = 'lbc3_vorschau=; Max-Age=0; Path=/; Secure; SameSite=Lax';
+    document.getElementById('t').textContent = 'Vorschau ausgeschaltet';
+    document.getElementById('m').innerHTML = 'Du siehst jetzt wieder die Bald-Seite. <a href="/">Zur Startseite</a>';
+  } else {
+    document.cookie = 'lbc3_vorschau=1; Max-Age=' + (60 * 60 * 24 * 365) + '; Path=/; Secure; SameSite=Lax';
+    var ziel = (location.search.match(/[?&]ziel=([^&]+)/) || [])[1];
+    ziel = ziel ? decodeURIComponent(ziel) : '/';
+    location.replace(ziel.charAt(0) === '/' && ziel.charAt(1) !== '/' ? ziel : '/');
+  }
+})();
+`;

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { loadContent, loadWall } from './lib/content.mjs';
 import { LANGS, url } from './lib/i18n.mjs';
 import { home } from './templates/home.mjs';
-import { baldPage, vorschauPage, baldRedirects } from './templates/bald.mjs';
+import { baldPage, vorschauPage, baldRedirects, baldJs, vorschauJs } from './templates/bald.mjs';
 import { newsList, newsDetail, ueber, kalender, galerie, galerieSerie, galerieJahr, galerieAlbum, partner, kontakt, rechtliches, message } from './templates/pages.mjs';
 import { loginPage, berichtPage, teamPage } from './templates/secure.mjs';
 import { squadra, wallPrint } from './templates/squadra.mjs';
@@ -115,6 +115,8 @@ out('/team/', teamPage(ctx));
 out('/wall-of-fame/druck/', wallPrint(ctx, wall));
 out('/bald/', baldPage(ctx));
 out('/vorschau/', vorschauPage());
+writeFileSync(join(DIST, 'bald/bald.js'), baldJs);
+writeFileSync(join(DIST, 'vorschau/vorschau.js'), vorschauJs);
 
 // ---------- Bald-Modus: Besucher sehen nur die „Bald geht's los“-Seite ----------
 const baldModus = content.site.bald_modus === true;

@@ -209,6 +209,7 @@ collections:
         format: json
         fields:
           - { label: "Bald-Modus (Besucher sehen nur „Wir sind fast am Ziel …“)", name: bald_modus, widget: boolean, default: false, hint: 'Ausschalten und veröffentlichen = Website für alle sichtbar. Das Team sieht die echte Website über luigi-catuogno.com/vorschau/' }
+          - { label: Start-Datum für den Countdown (deutsche Zeit), name: start_datum, widget: datetime, date_format: DD.MM.YYYY, time_format: HH:mm, format: 'YYYY-MM-DD[T]HH:mm', required: false }
           - { label: Name, name: name, widget: string }
           - { label: Marke, name: marke, widget: string }
           - { label: Startnummer, name: startnummer, widget: string }
