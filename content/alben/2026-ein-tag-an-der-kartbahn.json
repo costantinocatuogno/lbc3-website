@@ -1,0 +1,98 @@
+{
+  "serie": "Hinter den Kulissen",
+  "strecke": "Ein Tag an der Kartbahn",
+  "jahr": "2026",
+  "titel": "Ein Tag mit Luigi an der Kartbahn",
+  "startseite": true,
+  "bilder": [
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/anfahrt-sonnenaufgang.jpg",
+      "text": "Ankunft bei Sonnenaufgang: die Kartbahn von oben"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/mit-mama-im-fahrerlager.jpg",
+      "text": "Gute Laune im Fahrerlager – mit Mama an der Seite"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/kart-check.jpg",
+      "text": "Volle Konzentration: Luigi prüft sein Kart"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/teamzelt.jpg",
+      "text": "Im Teamzelt wird geschraubt"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/zum-vorstart.jpg",
+      "text": "Auf dem Weg zum Vorstart"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/absprache-team.jpg",
+      "text": "Letzte Absprache mit dem Team"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/abklatschen.jpg",
+      "text": "Abklatschen vor dem Start"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/teamwork.jpg",
+      "text": "Teamwork vor dem Rennen"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/helm-zurechtruecken.jpg",
+      "text": "Helm zurechtrücken – gleich geht es los"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/bereit.jpg",
+      "text": "#LBC3 – bereit für die Strecke"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/blick-vor-dem-start.jpg",
+      "text": "Der Blick vor dem Start"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/vorstart-335.jpg",
+      "text": "Startnummer 335 im Vorstart"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/letzte-handgriffe.jpg",
+      "text": "Letzte Handgriffe vom Mechaniker"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/strecke-luft.jpg",
+      "text": "Die Strecke aus der Luft"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/fahrerlager-von-oben.jpg",
+      "text": "Fahrerlager und Strecke von oben"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/kartbahn-tag/luftbild.jpg"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/rueckweg.jpg",
+      "text": "Auf dem Rückweg durchs Fahrerlager"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/kartbahn-tag/tag-zu-ende.jpg",
+      "text": "Ein langer Tag geht zu Ende"
+    }
+  ]
+}

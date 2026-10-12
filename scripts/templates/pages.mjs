@@ -395,7 +395,7 @@ export function kontakt(lang, ctx) {
     <h1 class="h1 big">${_('kontakt_title')}</h1>
     <p class="lead">${esc(c.texte(lang).kontakt_intro)}</p>
     <p class="contact-links"><a href="mailto:${esc(c.site.kontakt_email)}">${esc(c.site.kontakt_email)}</a><br><a href="${esc(c.site.instagram)}" rel="noopener" target="_blank">Instagram ${esc(c.site.instagram_handle)} · #LBC3</a></p>
-    ${picture(c.site.off_track_bild, 'Luigi wartet im Kart auf den Start', { width: 900, cls: 'rounded' })}
+    ${picture(c.site.off_track_bild, 'Luigi prüft konzentriert sein Kart', { width: 900, cls: 'rounded' })}
   </div>
   <div class="card form-card">
     <form class="form" name="kontakt" method="POST" action="${url(lang, '/danke/')}" data-netlify="true" netlify-honeypot="bot-field">
