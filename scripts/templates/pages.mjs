@@ -93,14 +93,11 @@ ${(() => {
 <section class="wrap section">
   <div class="section-head"><div><div class="eyebrow">${_('videos_kicker')}</div><h2 class="h2">${_('videos_title')}</h2></div></div>
   ${wide && vids.length ? `<div class="pill-row video-tabs" role="tablist">
-    <button type="button" role="tab" class="chip is-active" aria-selected="true" data-vtab="film">${esc(wide.titel || 'Film')}</button>
-    <button type="button" role="tab" class="chip" aria-selected="false" data-vtab="reels">Reels (${vids.length})</button>
+    <button type="button" role="tab" class="chip is-active" aria-selected="true" data-vtab="reels">${_('tab_reels')} (${vids.length})</button>
+    <button type="button" role="tab" class="chip" aria-selected="false" data-vtab="film">${_('tab_story')}</button>
   </div>` : ''}
-  ${wide ? `<figure class="film" data-vpanel="film">
-    <video src="${esc(wide.datei)}"${wide.vorschau ? ` poster="${esc(wide.vorschau)}"` : ''} controls playsinline preload="none"></video>
-    <figcaption><strong>${esc(wide.titel || '')}</strong>${wide.text ? `<span>${esc(wide.text)}</span>` : ''}</figcaption>
-  </figure>` : ''}
-  ${vids.length ? `<div class="reel-player" data-reels data-vpanel="reels"${wide ? ' hidden' : ''}>
+
+  ${vids.length ? `<div class="reel-player" data-reels data-vpanel="reels">
     <div class="reel-stage">
       <video data-reel-video src="${esc(first.datei)}"${first.vorschau ? ` poster="${esc(first.vorschau)}"` : ''} controls playsinline preload="metadata"></video>
     </div>
@@ -118,6 +115,10 @@ ${(() => {
       </ol>
     </div>
   </div>` : ''}
+  ${wide ? `<figure class="film" data-vpanel="film"${vids.length ? ' hidden' : ''}>
+    <video src="${esc(wide.datei)}"${wide.vorschau ? ` poster="${esc(wide.vorschau)}"` : ''} controls playsinline preload="none"></video>
+    <figcaption><strong>${esc(wide.titel || '')}</strong>${wide.text ? `<span>${esc(wide.text)}</span>` : ''}</figcaption>
+  </figure>` : ''}
 </section>`;
 })()}
 
