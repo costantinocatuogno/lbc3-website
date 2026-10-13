@@ -3,22 +3,13 @@
   "strecke": "Ein Tag an der Kartbahn",
   "jahr": "2026",
   "titel": "Ein Tag mit Luigi an der Kartbahn",
+  "reihenfolge": 1,
   "startseite": true,
   "bilder": [
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/anfahrt-sonnenaufgang.jpg",
       "text": "Ankunft bei Sonnenaufgang: die Kartbahn von oben"
-    },
-    {
-      "kategorie": "fahrerlager",
-      "bild": "/uploads/kartbahn-tag/fruehstueck.jpg",
-      "text": "Frühstück im Wohnmobil – Energie tanken"
-    },
-    {
-      "kategorie": "fahrerlager",
-      "bild": "/uploads/kartbahn-tag/mit-mama-im-fahrerlager.jpg",
-      "text": "Gute Laune im Fahrerlager – mit Mama an der Seite"
     },
     {
       "kategorie": "fahrerlager",
@@ -278,26 +269,6 @@
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/luftbild.jpg"
-    },
-    {
-      "kategorie": "fahrerlager",
-      "bild": "/uploads/kartbahn-tag/rueckweg.jpg",
-      "text": "Auf dem Rückweg durchs Fahrerlager"
-    },
-    {
-      "kategorie": "fahrerlager",
-      "bild": "/uploads/kartbahn-tag/grillen.jpg",
-      "text": "Grillen mit Papa"
-    },
-    {
-      "kategorie": "fahrerlager",
-      "bild": "/uploads/kartbahn-tag/abendessen.jpg",
-      "text": "Abendessen am Wohnmobil"
-    },
-    {
-      "kategorie": "fahrerlager",
-      "bild": "/uploads/kartbahn-tag/tag-zu-ende.jpg",
-      "text": "Ein langer Tag geht zu Ende"
     }
   ]
 }

@@ -71,7 +71,7 @@ export function loadContent(root) {
       a.sortKey = String(a.datum || `${a.jahr}-00`);
       return a;
     })
-    .sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+    .sort((a, b) => (Number(a.reihenfolge) || 999) - (Number(b.reihenfolge) || 999) || b.sortKey.localeCompare(a.sortKey));
   const serien = [];
   for (const a of alben) {
     let s = serien.find((x) => x.slug === a.serieSlug);

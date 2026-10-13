@@ -1,0 +1,60 @@
+{
+  "serie": "Hinter den Kulissen",
+  "strecke": "Boxenstopp Familie",
+  "jahr": "2026",
+  "titel": "Boxenstopp Familie – hier lädt Luigi seine Akkus auf",
+  "reihenfolge": 3,
+  "startseite": false,
+  "bilder": [
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/fruehstueck.jpg",
+      "text": "Lieblingsplatz: Frühstück im Wohnmobil – in Ruhe in den Tag starten"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/mit-mama-im-fahrerlager.jpg",
+      "text": "Mit Mama unterwegs im Fahrerlager"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/rueckweg.jpg",
+      "text": "Gemeinsam mit Mama zurück zum Wohnmobil"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/tag-zu-ende.jpg",
+      "text": "Mama ist da – ein ruhiger Moment nach einem langen Tag"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/abendsonne-rennanzug.jpg",
+      "text": "Abendsonne am Wohnmobil – der Rennanzug hat Feierabend"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/abendsonne-rennanzug-2.jpg",
+      "text": "Kurz durchatmen und den Tag sacken lassen"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/grillen.jpg",
+      "text": "Grillen mit Papa"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/grillen-2.jpg",
+      "text": "Papa am Grill, Luigi schaut genau hin"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/abendessen.jpg",
+      "text": "Abendessen mit der Familie am Wohnmobil"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/familie/abendessen-2.jpg",
+      "text": "Gemeinsam am Tisch – so lädt Luigi die Akkus wieder auf"
+    }
+  ]
+}
