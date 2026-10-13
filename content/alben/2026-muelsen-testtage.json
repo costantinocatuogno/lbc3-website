@@ -1,0 +1,60 @@
+{
+  "serie": "ADAC Kart Masters",
+  "strecke": "Mülsen",
+  "unteralbum": "Testtage",
+  "jahr": "2026",
+  "titel": "Mülsen 2026 – Testtage",
+  "startseite": false,
+  "bilder": [
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-01.jpg",
+      "text": "Testtag in Mülsen – volle Konzentration auf der Geraden"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-02.jpg",
+      "text": "Am Limit durch die Kurve"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-03.jpg",
+      "text": "Blick nach vorne – die Linie sitzt"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-04.jpg",
+      "text": "Mit Tempo über die Strecke"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-05.jpg",
+      "text": "Saubere Linie am Kerb"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-06.jpg",
+      "text": "Runde um Runde Erfahrung sammeln"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-07.jpg",
+      "text": "Frontal auf die nächste Kurve zu"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-08.jpg",
+      "text": "Volle Fahrt in Mülsen"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-09.jpg",
+      "text": "Kurvenfahrt beim Testtag"
+    },
+    {
+      "kategorie": "strecke",
+      "bild": "/uploads/galerie/muelsen-testtage-10.jpg",
+      "text": "Im Training ganz vorne"
+    }
+  ]
+}

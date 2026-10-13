@@ -98,6 +98,7 @@ collections:
     fields:
       - { label: Serie, name: serie, widget: string, hint: 'Immer gleich schreiben, z. B. „ADAC Kart Masters“, „SAKC“, „WSK“ – danach wird die Galerie gruppiert' }
       - { label: Strecke, name: strecke, widget: string, hint: 'z. B. Mülsen, Ampfing, Lonato' }
+      - { label: Unteralbum (optional), name: unteralbum, widget: string, required: false, hint: 'z. B. „Testtage“ – dann erscheint das Album als Unterordner im Album mit gleicher Serie, gleichem Jahr und gleicher Strecke' }
       - { label: Datum, name: datum, widget: datetime, date_format: DD.MM.YYYY, time_format: false, format: YYYY-MM-DD, hint: 'Das Jahr für die Galerie wird automatisch aus dem Datum genommen' }
       - { label: Titel, name: titel, widget: string, hint: 'z. B. ADAC Kart Masters Mülsen 2026 (für die Übersicht im CMS)' }
       - { label: Titelbild (optional), name: titelbild, widget: image, required: false, media_folder: /public/uploads/galerie, public_folder: /uploads/galerie, hint: 'Ohne Auswahl wird das erste Foto genommen' }

@@ -243,12 +243,22 @@ export function galerieAlbum(lang, ctx, a) {
   a.bilder.forEach((b) => { counts[b.kategorie] = (counts[b.kategorie] || 0) + 1; });
   const credits = [...new Set(a.bilder.map((b) => b.fotograf).filter(Boolean))];
   const serie = c.serien.find((s) => s.slug === a.serieSlug);
-  const siblings = serie ? serie.alben.filter((x) => x !== a).slice(0, 3) : [];
+  const top = a.parent || a;
+  const siblings = serie ? serie.alben.filter((x) => x !== top).slice(0, 3) : [];
+  const name = a.parent ? `${a.strecke} – ${a.unteralbum}` : a.strecke;
+  const crumbs = [[a.serie, `/galerie/${a.serieSlug}/`], [a.jahr, `/galerie/${a.serieSlug}/${a.jahr}/`], [a.strecke, top.path]];
+  if (a.parent) crumbs.push([a.unteralbum, a.path]);
+  const subs = a.parent ? [a.parent, ...a.parent.unteralben.filter((x) => x !== a)] : a.unteralben;
+  const subCards = subs.length ? `<div class="gal-grid mb-s">${subs.map((x) => galCard(lang, _, {
+    href: x.path, cover: x.cover, kicker: x.parent ? a.strecke : '', title: x.parent ? x.unteralbum : x.strecke,
+    meta: `<span>${x.bilder.length ? fotosLabel(_, x.bilder.length) : _('gal_soon')}</span>`
+  })).join('')}</div>` : '';
   const body = `
-<section class="wrap page-head">${galCrumbs(lang, _, [[a.serie, `/galerie/${a.serieSlug}/`], [a.jahr, `/galerie/${a.serieSlug}/${a.jahr}/`], [a.strecke, a.path]])}
-  <div class="eyebrow">${esc(a.serie)} · ${esc(a.jahr)}</div><h1 class="h1">${esc(a.strecke)}</h1>
+<section class="wrap page-head">${galCrumbs(lang, _, crumbs)}
+  <div class="eyebrow">${esc(a.serie)} · ${esc(a.jahr)}</div><h1 class="h1">${esc(name)}</h1>
   ${a.datum ? `<p class="muted">${formatDate(a.datum, lang)}${a.bilder.length ? ` · ${fotosLabel(_, a.bilder.length)}` : ''}</p>` : ''}
 </section>
+${subCards ? `<section class="wrap section"><div class="section-head"><h2 class="h2">${_('gal_subalbums')}</h2></div>${subCards}</section>` : ''}
 <section class="wrap section" data-gallery>
   <div class="pill-row mb-s"${a.bilder.length ? '' : ' hidden'}>
     <button type="button" class="pill is-active" data-gfilter="all" aria-pressed="true">${_('all')} (${a.bilder.length})</button>
@@ -269,7 +279,7 @@ export function galerieAlbum(lang, ctx, a) {
 </section>
 ${siblings.length ? `<section class="wrap section"><div class="section-head"><h2 class="h2">${_('gal_more')} ${esc(a.serie)}</h2></div>${albumCards(lang, _, siblings, true)}</section>` : ''}
 ${lightbox(lang)}`;
-  return layout({ lang, path: a.path, title: `${a.strecke} ${a.jahr} · ${a.serie}`, body, ctx, active: '/galerie/' });
+  return layout({ lang, path: a.path, title: `${name} ${a.jahr} · ${a.serie}`, body, ctx, active: '/galerie/' });
 }
 
 function lightbox(lang) {

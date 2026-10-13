@@ -66,14 +66,21 @@ export function loadContent(root) {
       a.strecke = String(a.strecke || '').trim() || a.titel || a.slug;
       a.serieSlug = urlSlug(a.serie);
       a.streckeSlug = urlSlug(a.strecke);
-      a.path = `/galerie/${a.serieSlug}/${a.jahr}/${a.streckeSlug}/`;
+      a.unteralbum = String(a.unteralbum || '').trim();
+      a.path = `/galerie/${a.serieSlug}/${a.jahr}/${a.streckeSlug}/${a.unteralbum ? `${urlSlug(a.unteralbum)}/` : ''}`;
+      a.unteralben = [];
       a.cover = a.titelbild || (a.bilder.find((b) => !/\.(mp4|webm|mov)$/i.test(b.bild)) || {}).bild || '';
       a.sortKey = String(a.datum || `${a.jahr}-00`);
       return a;
     })
     .sort((a, b) => (Number(a.reihenfolge) || 999) - (Number(b.reihenfolge) || 999) || b.sortKey.localeCompare(a.sortKey));
+  // Unteralben (z. B. „Testtage“ unter Mülsen) hängen am Hauptalbum mit gleicher Serie/Jahr/Strecke
+  for (const a of alben.filter((x) => x.unteralbum)) {
+    const parent = alben.find((x) => !x.unteralbum && x.serieSlug === a.serieSlug && x.jahr === a.jahr && x.streckeSlug === a.streckeSlug);
+    if (parent) { a.parent = parent; parent.unteralben.push(a); } else a.unteralbum = '';
+  }
   const serien = [];
-  for (const a of alben) {
+  for (const a of alben.filter((x) => !x.parent)) {
     let s = serien.find((x) => x.slug === a.serieSlug);
     if (!s) { s = { name: a.serie, slug: a.serieSlug, path: `/galerie/${a.serieSlug}/`, alben: [], jahre: [] }; serien.push(s); }
     s.alben.push(a);
@@ -81,7 +88,7 @@ export function loadContent(root) {
     if (!j) { j = { jahr: a.jahr, path: `/galerie/${a.serieSlug}/${a.jahr}/`, alben: [] }; s.jahre.push(j); }
     j.alben.push(a);
   }
-  serien.forEach((s) => { s.jahre.sort((x, y) => y.jahr.localeCompare(x.jahr)); s.cover = (s.alben.find((a) => a.cover) || {}).cover || ''; s.fotos = s.alben.reduce((n, a) => n + a.bilder.length, 0); });
+  serien.forEach((s) => { s.jahre.sort((x, y) => y.jahr.localeCompare(x.jahr)); s.cover = (s.alben.find((a) => a.cover) || {}).cover || ''; s.fotos = s.alben.reduce((n, a) => n + a.bilder.length + a.unteralben.reduce((m, u) => m + u.bilder.length, 0), 0); });
 
   const kapitel = listDir(join(C, 'kapitel'), '.json')
     .map((f) => readJSON(join(C, 'kapitel', f)))
