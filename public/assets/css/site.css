@@ -643,3 +643,9 @@ tr.is-dns td { color: var(--muted); }
   .reel-list { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 4px 2px 8px; }
   .reel-list li { flex: 0 0 104px; scroll-snap-align: start; }
 }
+
+/* Über Luigi – großes Breitformat-Video über den Reels */
+.film { margin: 0 0 48px; display: flex; flex-direction: column; gap: 12px; }
+.film video { width: 100%; aspect-ratio: 16 / 9; border-radius: 16px; background: var(--ink); box-shadow: 0 18px 40px rgba(18, 20, 24, .22); display: block; }
+.film figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; font-size: 15px; color: var(--text); }
+.film figcaption strong { font-family: var(--display); font-weight: 800; font-size: 22px; text-transform: uppercase; color: var(--ink); }

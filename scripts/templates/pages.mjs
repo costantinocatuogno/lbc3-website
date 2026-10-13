@@ -85,13 +85,18 @@ export function ueber(lang, ctx) {
 
 ${(() => {
   const vids = (c.site.videos || []).filter((v) => v && v.datei);
-  if (!vids.length) return '';
-  const first = vids[0];
+  const wide = c.site.video_breit && c.site.video_breit.datei ? c.site.video_breit : null;
+  if (!vids.length && !wide) return '';
+  const first = vids[0] || {};
   const pad = (n) => String(n).padStart(2, '0');
   return `
 <section class="wrap section">
   <div class="section-head"><div><div class="eyebrow">${_('videos_kicker')}</div><h2 class="h2">${_('videos_title')}</h2></div></div>
-  <div class="reel-player" data-reels>
+  ${wide ? `<figure class="film">
+    <video src="${esc(wide.datei)}"${wide.vorschau ? ` poster="${esc(wide.vorschau)}"` : ''} controls playsinline preload="none"></video>
+    <figcaption><strong>${esc(wide.titel || '')}</strong>${wide.text ? `<span>${esc(wide.text)}</span>` : ''}</figcaption>
+  </figure>` : ''}
+  ${vids.length ? `<div class="reel-player" data-reels>
     <div class="reel-stage">
       <video data-reel-video src="${esc(first.datei)}"${first.vorschau ? ` poster="${esc(first.vorschau)}"` : ''} controls playsinline preload="metadata"></video>
     </div>
@@ -108,7 +113,7 @@ ${(() => {
         </button></li>`).join('')}
       </ol>
     </div>
-  </div>
+  </div>` : ''}
 </section>`;
 })()}
 

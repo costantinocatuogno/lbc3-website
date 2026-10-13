@@ -232,6 +232,16 @@ collections:
           - { label: Marke, name: marke, widget: string }
           - { label: Startnummer, name: startnummer, widget: string }
           - { label: Kontakt-E-Mail, name: kontakt_email, widget: string }
+          - label: Großes Video im Breitformat (Seite „Über Luigi“)
+            name: video_breit
+            widget: object
+            required: false
+            hint: 'Wird groß über den Reels gezeigt. Leer lassen = kein Breitformat-Video'
+            fields:
+              - { label: Titel, name: titel, widget: string, required: false }
+              - { label: Text, name: text, widget: text, required: false }
+              - { label: Video (MP4), name: datei, widget: file, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
+              - { label: Vorschaubild, name: vorschau, widget: image, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
           - label: Videos (Seite „Über Luigi“)
             name: videos
             widget: list

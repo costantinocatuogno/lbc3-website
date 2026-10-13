@@ -54,12 +54,12 @@
       "text": "Startaufstellung, Konzentration, Vollgas – so fühlt sich ein Renntag an.",
       "datei": "/uploads/videos/reel-renntag.mp4",
       "vorschau": "/uploads/videos/reel-renntag.jpg"
-    },
-    {
-      "titel": "Luigis Motorsport-Story",
-      "text": "Wie alles begann – und warum Luigi eines Tages Formel-1-Pilot werden will.",
-      "datei": "/uploads/videos/luigi-motorsport-story.mp4",
-      "vorschau": "/uploads/videos/luigi-motorsport-story.jpg"
     }
-  ]
+  ],
+  "video_breit": {
+    "titel": "Luigis Motorsport-Story",
+    "text": "Wie alles begann – und warum Luigi eines Tages Formel-1-Pilot werden will.",
+    "datei": "/uploads/videos/luigi-motorsport-story-wide.mp4",
+    "vorschau": "/uploads/videos/luigi-motorsport-story-wide.jpg"
+  }
 }
