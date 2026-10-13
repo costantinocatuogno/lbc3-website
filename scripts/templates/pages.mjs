@@ -443,7 +443,7 @@ ${sponsorWall(lang, wall)}
   </div>
   <a class="btn btn-dark" href="/login/">${icon.lock}<span>${_('login_sponsors')}</span></a>
 </section>`;
-  return layout({ lang, path: '/partner/', title: _('nav_partner'), body, ctx, active: '/partner/' });
+  return layout({ lang, path: '/partner/', title: _('nav_partner'), body, ctx, active: '/partner/', sponsorBanner: false });
 }
 
 /* ---------------- KONTAKT ---------------- */
