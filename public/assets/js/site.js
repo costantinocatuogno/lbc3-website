@@ -135,6 +135,18 @@
   });
 
 
+
+  /* ---------- Video-Tabs: Film | Reels ---------- */
+  $$('[data-vtab]').forEach((btn) => btn.addEventListener('click', () => {
+    const sec = btn.closest('section');
+    $$('[data-vtab]', sec).forEach((b) => { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-selected', String(b === btn)); });
+    $$('[data-vpanel]', sec).forEach((p) => {
+      const show = p.dataset.vpanel === btn.dataset.vtab;
+      p.hidden = !show;
+      if (!show) $$('video', p).forEach((v) => v.pause());
+    });
+  }));
+
   /* ---------- Reel-Player (ein Player, Auswahlliste) ---------- */
   $$('[data-reels]').forEach((root) => {
     const video = $('[data-reel-video]', root);
