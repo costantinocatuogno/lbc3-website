@@ -1,20 +1,22 @@
 {
   "de": {
     "nummer": "01",
-    "jahr": "[JAHR]",
-    "bild": "/uploads/ampfing-2026/einlenken.jpg",
+    "jahr": "Juni 2024",
+    "bild": "/uploads/kapitel/erstes-kart-2024.jpg",
     "kurztitel": "Der Anfang",
-    "titel": "Der erste Kart",
-    "text": "Wie alles anfing: der erste Helm, die erste Runde, das Gefühl, das nicht mehr losließ. [IHRE GESCHICHTE IN 2–3 SÄTZEN]"
+    "titel": "Das erste Kart",
+    "text": "Juni 2024: Luigi bekommt sein erstes Kart – ein gebrauchtes Tony Kart. Weißer Helm, die Nummer 3 vorne drauf und vom ersten Meter an klar: Hier will er bleiben."
   },
   "en": {
     "kurztitel": "The beginning",
     "titel": "The first kart",
-    "text": "How it all began: the first helmet, the first lap, the feeling that never let go. [YOUR STORY IN 2–3 SENTENCES]"
+    "text": "June 2024: Luigi gets his first kart – a used Tony Kart. A white helmet, the number 3 on the front and, from the very first metre, one thing was clear: this is where he belongs.",
+    "jahr": "June 2024"
   },
   "it": {
     "kurztitel": "L'inizio",
     "titel": "Il primo kart",
-    "text": "Come è iniziato tutto: il primo casco, il primo giro, la sensazione che non ti lascia più. [LA VOSTRA STORIA IN 2–3 FRASI]"
+    "text": "Giugno 2024: Luigi riceve il suo primo kart – un Tony Kart usato. Casco bianco, il numero 3 sul musetto e fin dal primo metro una certezza: è qui che vuole stare.",
+    "jahr": "Giugno 2024"
   }
 }

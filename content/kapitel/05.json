@@ -1,20 +1,20 @@
 {
   "de": {
     "nummer": "05",
-    "jahr": "2026",
-    "bild": "/uploads/helm/helm-front.jpg",
-    "kurztitel": "Sein Helm",
-    "titel": "Sein Helm, sein Design",
-    "text": "Selbst entworfen: eine klare gelbe Linie – so klar wie sein Ziel. Die Nummer 3 in Gold und Silber, die Farben Italiens und Deutschlands. Ein Helm als Versprechen an sich selbst."
+    "jahr": "2026 / 27",
+    "bild": "/uploads/ampfing-2026/duell-um-position.jpg",
+    "kurztitel": "Italien",
+    "titel": "Auf nach Italien",
+    "text": "Die Heimat des Kartsports ist kein Abstecher, sondern ein Muss auf dem Weg nach oben. Die ersten Rennen in Italien sind in Planung – gegen die Besten, auf den Strecken der Profis."
   },
   "en": {
-    "kurztitel": "His helmet",
-    "titel": "His helmet, his design",
-    "text": "Designed by himself: one clear yellow line – as clear as his goal. The number 3 in gold and silver, the colours of Italy and Germany. A helmet as a promise to himself."
+    "kurztitel": "Italy",
+    "titel": "Off to Italy",
+    "text": "The home of karting is not a detour but a must on the road to the top. The first races in Italy are being planned – against the best, on the tracks of the pros."
   },
   "it": {
-    "kurztitel": "Il suo casco",
-    "titel": "Il suo casco, il suo design",
-    "text": "Disegnato da lui: una linea gialla netta – chiara come il suo obiettivo. Il numero 3 in oro e argento, i colori dell'Italia e della Germania. Un casco come promessa a se stesso."
+    "kurztitel": "Italia",
+    "titel": "Destinazione Italia",
+    "text": "La patria del karting non è una deviazione, ma una tappa obbligata sulla strada verso la vetta. Le prime gare in Italia sono in programma – contro i migliori, sulle piste dei professionisti."
   }
 }

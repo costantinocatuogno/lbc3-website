@@ -1,20 +1,20 @@
 {
   "de": {
     "nummer": "04",
-    "jahr": "2026 / 27",
-    "bild": "/uploads/ampfing-2026/duell-um-position.jpg",
-    "kurztitel": "Italien",
-    "titel": "Internationale Rennen in Italien",
-    "text": "Die Heimat des Kartsports: erste internationale Rennen auf den Strecken Italiens. [RENNEN / STRECKEN]"
+    "jahr": "2026",
+    "bild": "/uploads/helm/helm-front.jpg",
+    "kurztitel": "Sein Helm",
+    "titel": "Sein Helm, sein Design",
+    "text": "Selbst entworfen: eine klare gelbe Linie – so klar wie sein Ziel. Die Nummer 3 in Gold und Silber, die Farben Italiens und Deutschlands. Ein Helm als Versprechen an sich selbst."
   },
   "en": {
-    "kurztitel": "Italy",
-    "titel": "International races in Italy",
-    "text": "The home of karting: first international races on Italy's tracks. [RACES / TRACKS]"
+    "kurztitel": "His helmet",
+    "titel": "His helmet, his design",
+    "text": "Designed by himself: one clear yellow line – as clear as his goal. The number 3 in gold and silver, the colours of Italy and Germany. A helmet as a promise to himself."
   },
   "it": {
-    "kurztitel": "Italia",
-    "titel": "Gare internazionali in Italia",
-    "text": "La patria del kart: prime gare internazionali sui circuiti italiani. [GARE / CIRCUITI]"
+    "kurztitel": "Il suo casco",
+    "titel": "Il suo casco, il suo design",
+    "text": "Disegnato da lui: una linea gialla netta – chiara come il suo obiettivo. Il numero 3 in oro e argento, i colori dell'Italia e della Germania. Un casco come promessa a se stesso."
   }
 }
