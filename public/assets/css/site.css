@@ -599,13 +599,19 @@ a.plain:hover { color: var(--red); }
 tr.is-dns td { color: var(--muted); }
 .status.is-reg { background: var(--red); color: #fff; }
 
-/* Über Luigi – Helm */
-.helm-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: start; }
+/* Über Luigi – Helm: Fotospalte genau so hoch wie der Text */
+.helm-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: stretch; }
 .helm-text p { margin: 0 0 14px; }
-.helm-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.helm-photo { display: block; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 6px; overflow: hidden; aspect-ratio: 4 / 3; }
-.helm-photo.is-main { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+.helm-text p:last-child { margin-bottom: 0; }
+.helm-photos { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: 1.6fr 1fr 1fr; gap: 10px; height: 100%; min-height: 0; }
+.helm-photo { display: block; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 6px; overflow: hidden; min-height: 0; position: relative; }
+.helm-photo.is-main { grid-column: 1 / -1; }
+.helm-photo picture, .helm-photo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.helm-photo img { object-fit: cover; transition: transform .3s; }
 .helm-photo.is-main img { object-position: center 30%; }
-.helm-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
 .helm-photo:hover img { transform: scale(1.03); }
-@media (max-width: 860px) { .helm-grid { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 860px) {
+  .helm-grid { grid-template-columns: 1fr; gap: 24px; }
+  .helm-photos { height: auto; grid-template-rows: none; }
+  .helm-photo { aspect-ratio: 4 / 3; }
+}
