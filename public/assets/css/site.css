@@ -684,3 +684,9 @@ tr.is-dns td { color: var(--muted); }
 /* Helm: Fotos nie zu flach */
 .helm-photos { min-height: 560px; }
 @media (max-width: 860px) { .helm-photos { min-height: 0; } }
+
+.package-sub { margin-bottom: -4px; }
+.package.is-top .package-sub { color: var(--gold); }
+.package-name { font-size: 40px; }
+.package-note { margin-top: 18px; color: var(--muted); max-width: 70ch; }
+.package-note strong { color: var(--ink); }

@@ -1,0 +1,27 @@
+{
+  "name": "Podio",
+  "reihenfolge": 2,
+  "untertitel": "Der Partner",
+  "untertitel_en": "The partner",
+  "untertitel_it": "Il partner",
+  "hervorheben": false,
+  "preis": "",
+  "leistungen": [
+    "Logo am Seitenkasten und am Rennanzug",
+    "Werbefeld am Gespann",
+    "Logo mit Link auf der Website · 4 eigene Posts",
+    "2 Renntage, 10 Fotos zur freien Nutzung · Partner-Login"
+  ],
+  "leistungen_en": [
+    "Logo on the side pod and race suit",
+    "Ad space on the trailer rig",
+    "Linked logo on the website · 4 dedicated posts",
+    "2 race days, 10 photos for free use · partner login"
+  ],
+  "leistungen_it": [
+    "Logo sulla pancia laterale e sulla tuta",
+    "Spazio pubblicitario sul rimorchio",
+    "Logo con link sul sito · 4 post dedicati",
+    "2 giorni di gara, 10 foto a uso libero · login partner"
+  ]
+}

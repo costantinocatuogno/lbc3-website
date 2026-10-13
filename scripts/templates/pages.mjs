@@ -374,13 +374,19 @@ export function partner(lang, ctx, wall) {
       : `<a class="btn btn-outline" href="${url(lang, '/kontakt/?anliegen=mappe')}">${_('request_kit')}</a>`}
   </div>
   <div class="grid-3">
-    ${pk.map((p, i) => `
-    <div class="package${i === 0 ? ' is-top' : ''}">
+    ${pk.map((p) => {
+      const L = (k) => (lang !== 'de' && Array.isArray(p[`${k}_${lang}`]) && p[`${k}_${lang}`].length ? p[`${k}_${lang}`] : p[k]) || [];
+      const sub = (lang !== 'de' && p[`untertitel_${lang}`]) || p.untertitel || '';
+      return `
+    <div class="package${p.hervorheben ? ' is-top' : ''}">
+      ${sub ? `<div class="eyebrow package-sub">${esc(sub)}</div>` : ''}
       <div class="package-name">${esc(p.name)}</div>
-      <ul>${(p.leistungen || []).map((l) => `<li>${esc(l)}</li>`).join('')}</ul>
-      <div class="package-price">${esc(p.preis || '')}</div>
-    </div>`).join('')}
+      <ul>${L('leistungen').map((l) => `<li>${esc(l)}</li>`).join('')}</ul>
+      ${p.preis ? `<div class="package-price">${esc(p.preis)}</div>` : ''}
+    </div>`;
+    }).join('')}
   </div>
+  <p class="package-note"><strong>${_('pk_from')}</strong> · ${_('pk_extra')}</p>
   <div class="two-col ad-spaces">
     ${picture('/uploads/ampfing-2026/frontal-aus-der-kurve.jpg', 'Kart von vorne mit Werbeflächen', { width: 1000, sizes: '(max-width: 760px) 100vw, 50vw', cls: 'rounded' })}
     <div>
@@ -390,7 +396,7 @@ export function partner(lang, ctx, wall) {
   </div>
   <h3 class="h2 mt">${_('our_sponsors')}</h3>
   <div class="logo-grid">
-    ${c.sponsoren.map((s) => `
+    ${c.sponsoren.filter((s) => s.logo || !/^\s*\[/.test(s.firma || '')).map((s) => `
     <${s.website ? `a href="${esc(s.website)}" rel="noopener" target="_blank"` : 'div'} class="logo-box">
       ${s.logo ? `<img src="${esc(img(s.logo, 600))}" alt="${esc(s.firma)}" loading="lazy">` : `<span>${esc(s.firma)}</span>`}
       <small>${esc(s.paket || '')}</small>
