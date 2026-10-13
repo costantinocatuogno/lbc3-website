@@ -1,4 +1,4 @@
-/* LBC3 – Login, Ausgabenbericht (Sponsoren) und Team-Bereich (Admins).
+/* LBC3 – Login, Ausgabenbericht (Partner) und Team-Bereich (Admins).
    Alle vertraulichen Daten kommen erst nach dem Login aus Supabase.
    Zugriffsrechte werden in der Datenbank per Row-Level-Security durchgesetzt. */
 (function () {
@@ -33,7 +33,7 @@
   async function getProfile() {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) return null;
-    // Wer angemeldet ist (Team/Sponsoren), sieht im Bald-Modus immer die echte Website
+    // Wer angemeldet ist (Team/Partner), sieht im Bald-Modus immer die echte Website
     try { document.cookie = 'lbc3_vorschau=1; Max-Age=' + (60 * 60 * 24 * 365) + '; Path=/; Secure; SameSite=Lax'; } catch (e) { /* egal */ }
     const { data, error } = await sb.from('profiles').select('id, rolle, name, firma, email').eq('id', session.user.id).maybeSingle();
     if (error) throw error;
@@ -51,7 +51,7 @@
       role = tab.dataset.roleTab;
       $$('[data-role-tab]').forEach((t) => { t.classList.toggle('is-active', t === tab); t.setAttribute('aria-selected', String(t === tab)); });
       hint.textContent = role === 'sponsor'
-        ? 'Als Sponsor siehst du hier jederzeit unseren aktuellen Ausgabenbericht.'
+        ? 'Als Partner siehst du hier jederzeit unseren aktuellen Ausgabenbericht.'
         : 'Für das Team: Ausgabenbericht pflegen, Zugänge verwalten, Squadra Tre. Fotos und Texte im CMS.';
     }));
 
@@ -123,7 +123,7 @@
     const p = await getProfile().catch(() => null);
     if (!p || !allowed.includes(p.rolle)) { location.replace('/login/'); return null; }
     const label = $('[data-user-label]');
-    if (label) label.textContent = `Angemeldet als ${p.firma || p.name || p.email || p.session.user.email} · ${p.rolle === 'admin' ? 'Admin' : 'Sponsor'}`;
+    if (label) label.textContent = `Angemeldet als ${p.firma || p.name || p.email || p.session.user.email} · ${p.rolle === 'admin' ? 'Admin' : 'Partner'}`;
     return p;
   }
 
@@ -160,7 +160,7 @@
   });
   const previewInto = (el, blob) => { el.innerHTML = ''; const i = document.createElement('img'); i.alt = ''; i.src = URL.createObjectURL(blob); el.appendChild(i); };
 
-  // Sponsor-Formular (Login des Sponsors und Team-Bereich nutzen dasselbe Formular)
+  // Partner-Formular (Login des Sponsors und Team-Bereich nutzen dasselbe Formular)
   function bindSponsorForm(form, { userId = null, onSaved }) {
     let logoBlob = null;
     const preview = $('[data-sw-preview]', form);
@@ -220,7 +220,7 @@
     (async () => {
       const p = await guard(['sponsor', 'admin']);
       if (!p) return;
-      // Eigener Wall-of-Fame-Eintrag (nur Sponsoren)
+      // Eigener Wall-of-Fame-Eintrag (nur Partner)
       const own = $('[data-sw-own]');
       if (own && p.rolle === 'sponsor') {
         own.hidden = false;
@@ -256,7 +256,7 @@
         $('[data-rows]').innerHTML = (rows || []).map((r) => `<tr><td>${escapeHtml(r.kategorie)}</td><td class="num strong">${eur(r.betrag)}</td><td class="num muted">${total ? Math.round((Number(r.betrag) / total) * 100) : 0} %</td></tr>`).join('')
           + `<tr><td class="strong">Gesamt</td><td class="num strong red">${eur(total)}</td><td class="num strong">100 %</td></tr>`;
         $('[data-finanzierung]').innerHTML = [
-          ['Sponsoren (Pakete)', s.fin_sponsoren], ['Squadra Tre (Unterstützer)', s.fin_squadra], ['Eigenmittel Familie', s.fin_eigen], ['Sonstiges (z. B. Förderungen)', s.fin_sonstiges]
+          ['Partner (Pakete)', s.fin_sponsoren], ['Squadra Tre (Unterstützer)', s.fin_squadra], ['Eigenmittel Familie', s.fin_eigen], ['Sonstiges (z. B. Förderungen)', s.fin_sonstiges]
         ].map(([k, v]) => `<div><dt>${k}</dt><dd>${eur(v)}</dd></div>`).join('');
         $('[data-rueckblick]').innerHTML = escapeHtml(s.rueckblick || '–').replace(/\n/g, '<br>');
         const dl = $('[data-downloads]');
@@ -315,9 +315,9 @@
       const renderStatus = () => {
         const released = current && current.status === 'freigegeben';
         const badge = $('[data-status-badge]');
-        badge.textContent = released ? 'Für Sponsoren sichtbar' : 'Entwurf – nur Admins';
+        badge.textContent = released ? 'Für Partner sichtbar' : 'Entwurf – nur Admins';
         badge.classList.toggle('ok', released);
-        $('[data-toggle-release]').textContent = released ? 'Freigabe zurückziehen' : 'Für Sponsoren freigeben';
+        $('[data-toggle-release]').textContent = released ? 'Freigabe zurückziehen' : 'Für Partner freigeben';
         $('[data-mail-info]').textContent = current && current.mail_versendet_am ? `Jahresbericht an Squadra Tre gesendet am ${new Date(current.mail_versendet_am).toLocaleString('de-DE')}.` : '';
         ['pdf_bericht', 'pdf_belege'].forEach((k) => { $(`[data-pdf-name="${k}"]`).textContent = current && current[k] ? `Hochgeladen: ${current[k]}` : ''; });
       };
@@ -358,7 +358,7 @@
         const release = current.status !== 'freigegeben';
         try {
           await save(release ? { status: 'freigegeben', freigegeben_am: new Date().toISOString() } : { status: 'entwurf' });
-          showMsg(release ? 'Bericht ist jetzt für Sponsoren sichtbar.' : 'Freigabe zurückgezogen.');
+          showMsg(release ? 'Bericht ist jetzt für Partner sichtbar.' : 'Freigabe zurückgezogen.');
         } catch (e) { showMsg('Fehler: ' + e.message, true); }
       });
       $$('[data-pdf]').forEach((input) => input.addEventListener('change', async () => {
@@ -384,7 +384,7 @@
       async function loadProfiles() {
         const { data, error } = await sb.from('profiles').select('id, email, name, firma, rolle').order('rolle').order('firma');
         if (error) { showMsg('Zugänge konnten nicht geladen werden.', true); return; }
-        $('[data-profiles]').innerHTML = data.map((r) => `<tr><td>${escapeHtml(r.firma || r.name || '')}</td><td>${escapeHtml(r.email || '')}</td><td>${r.rolle === 'admin' ? '<strong>Admin</strong>' : 'Sponsor'}</td><td class="actions">${r.id === p.id ? '' : `<button class="small-btn" data-remove="${r.id}">Zugang entfernen</button>`}</td></tr>`).join('');
+        $('[data-profiles]').innerHTML = data.map((r) => `<tr><td>${escapeHtml(r.firma || r.name || '')}</td><td>${escapeHtml(r.email || '')}</td><td>${r.rolle === 'admin' ? '<strong>Admin</strong>' : 'Partner'}</td><td class="actions">${r.id === p.id ? '' : `<button class="small-btn" data-remove="${r.id}">Zugang entfernen</button>`}</td></tr>`).join('');
         $$('[data-remove]').forEach((b) => b.addEventListener('click', async () => {
           if (!confirm('Diesen Zugang wirklich entfernen? Die Person kann sich danach nicht mehr anmelden.')) return;
           try { await api('/api/team-remove', { id: b.dataset.remove }); showMsg('Zugang entfernt.'); loadProfiles(); } catch (e) { showMsg(e.message, true); }
@@ -558,27 +558,27 @@
         a.click();
       });
 
-      /* ----- Sponsoren-Wall ----- */
+      /* ----- Partner-Wall ----- */
       const swForm = $('[data-panel="sponsorwall"] [data-sw-form]');
       const swCtl = bindSponsorForm(swForm, { onSaved: () => { showMsg('Gespeichert.'); loadSponsorWall(); } });
       $('[data-sw-reset]', swForm).addEventListener('click', () => swCtl.fill(null));
       let sw = [];
       async function loadSponsorWall() {
         const { data, error } = await sb.from('sponsor_wall').select('*').order('created_at');
-        if (error) { showMsg('Sponsoren-Wall konnte nicht geladen werden.', true); return; }
+        if (error) { showMsg('Partner-Wall konnte nicht geladen werden.', true); return; }
         sw = data;
         const box = $('[data-sponsorwall]');
         box.innerHTML = data.map((r) => `<article class="member${r.freigegeben ? '' : ' is-pending'}" data-id="${r.id}">
           <div class="member-top"><div class="member-photo logo" data-logo="${escapeHtml(r.logo_pfad || '')}">${escapeHtml(initialsOf(r.firma))}</div>
             <div><div class="member-name">${escapeHtml(r.firma)}</div><div class="member-meta">${escapeHtml(r.ansprechpartner || '')} ${escapeHtml(r.paket || '')}</div></div></div>
-          <div class="tags">${r.freigegeben ? '<span class="t-ok">online</span>' : '<span class="t-warn">wartet auf Freigabe</span>'}${r.user_id ? '<span>vom Sponsor</span>' : '<span>vom Team</span>'}</div>
+          <div class="tags">${r.freigegeben ? '<span class="t-ok">online</span>' : '<span class="t-warn">wartet auf Freigabe</span>'}${r.user_id ? '<span>vom Partner</span>' : '<span>vom Team</span>'}</div>
           <div class="member-meta"><a href="${escapeHtml(r.website)}" target="_blank" rel="noopener">${escapeHtml(r.website)}</a><br>${SOCIAL.filter((k) => r[k]).map((k) => `<a href="${escapeHtml(r[k])}" target="_blank" rel="noopener">${k}</a>`).join(' · ')}</div>
           ${r.text ? `<p class="small">${escapeHtml(r.text)}</p>` : ''}
           <div class="member-actions">
             <button class="small-btn" data-sw="toggle">${r.freigegeben ? 'Freigabe zurückziehen' : '✓ Freigeben'}</button>
             <button class="small-btn" data-sw="edit">Bearbeiten</button>
             <button class="small-btn" data-sw="del">Löschen</button>
-          </div></article>`).join('') || '<p class="muted">Noch keine Einträge. Sponsoren legen ihren Eintrag im Login unter „Ausgabenbericht“ an.</p>';
+          </div></article>`).join('') || '<p class="muted">Noch keine Einträge. Partner legen ihren Eintrag im Login unter „Ausgabenbericht“ an.</p>';
         await Promise.all($$('[data-logo]', box).filter((el) => el.dataset.logo).map(async (el) => {
           const u = await signed('sponsoren', el.dataset.logo);
           if (u) el.innerHTML = `<img src="${escapeHtml(u)}" alt="Logo" style="object-fit:contain">`;

@@ -1,4 +1,4 @@
-// Squadra Tre (Fanclub), Wall of Fame (Mitglieder + Sponsoren) und Druckansicht der Fotowand.
+// Squadra Tre (Fanclub), Wall of Fame (Mitglieder + Partner) und Druckansicht der Fotowand.
 import { esc, icon, img, flagsIT } from '../lib/html.mjs';
 import { url, t } from '../lib/i18n.mjs';
 import { layout } from './layout.mjs';
@@ -26,7 +26,7 @@ export function wallGrid(lang, wall, { limit = 0, cta = true } = {}) {
   </div>`;
 }
 
-/* ---------- Sponsoren-Wall ---------- */
+/* ---------- Partner-Wall ---------- */
 export function sponsorCard(lang, s) {
   const _ = t(lang);
   const web = safeUrl(s.website);
@@ -245,10 +245,10 @@ export function wallPrint(ctx, wall) {
     </select>
   </label>
   <label class="field inline"><span>Inhalt</span>
-    <select data-pw-content><option value="beide">Squadra Tre + Sponsoren</option><option value="squadra">Nur Squadra Tre</option><option value="sponsoren">Nur Sponsoren</option></select>
+    <select data-pw-content><option value="beide">Squadra Tre + Partner</option><option value="squadra">Nur Squadra Tre</option><option value="sponsoren">Nur Partner</option></select>
   </label>
   <button type="button" class="btn btn-red btn-sm" data-pw-print>Drucken / als PDF speichern</button>
-  <span class="muted small">${wall.mitglieder.length} Mitglieder · ${wall.sponsoren.length} Sponsoren${wall.beispiel ? ' · <strong>Beispieldaten</strong>' : ''}</span>
+  <span class="muted small">${wall.mitglieder.length} Mitglieder · ${wall.sponsoren.length} Partner${wall.beispiel ? ' · <strong>Beispieldaten</strong>' : ''}</span>
 </div>
 <p class="pw-help no-print">Tipp: Im Druckdialog „Als PDF speichern“ wählen, Ränder auf „Keine“ und „Hintergrundgrafiken“ einschalten. Die PDF-Datei geht dann an die Druckerei. Es erscheinen nur freigegebene Fotos und Einträge.</p>
 <div class="pw-stage" data-pw-stage>

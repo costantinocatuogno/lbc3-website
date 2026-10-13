@@ -30,7 +30,7 @@ export default handle(async (req) => {
     <p>die Saison ${year} ist vorbei – und du warst als Teil der <strong>Squadra Tre</strong> dabei. Danke! Wie versprochen zeigen wir dir, wofür die Unterstützung eingesetzt wurde.</p>
     <table style="width:100%;border-collapse:collapse;font-size:15px;margin:16px 0">${tabelle}
       <tr><td style="padding:10px 0"><strong>Gesamt</strong></td><td style="padding:10px 0;text-align:right;color:#B00E28"><strong>${eur(total)}</strong></td></tr></table>
-    <p>Davon getragen durch Sponsoren und Squadra Tre: <strong>${eur(Number(s.fin_sponsoren || 0) + Number(s.fin_squadra || 0))}</strong>.</p>
+    <p>Davon getragen durch Partner und Squadra Tre: <strong>${eur(Number(s.fin_sponsoren || 0) + Number(s.fin_squadra || 0))}</strong>.</p>
     ${s.rueckblick ? `<h2 style="font-size:18px;margin:24px 0 8px">Saisonrückblick</h2><p>${escapeHtml(s.rueckblick).replace(/\n/g, '<br>')}</p>` : ''}
     ${pdfUrl ? '<p>Den ausführlichen Jahresbericht findest du im Anhang.</p>' : ''}
     <p>Forza #LBC3!<br>Luigi &amp; Familie</p>

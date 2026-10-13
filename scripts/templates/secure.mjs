@@ -1,4 +1,4 @@
-// Login, Ausgabenbericht (Sponsoren) und Team-Bereich (Admins).
+// Login, Ausgabenbericht (Partner) und Team-Bereich (Admins).
 // Diese Seiten enthalten KEINE vertraulichen Daten – alles wird erst nach dem Login
 // aus Supabase geladen und dort per Row-Level-Security geschützt.
 import { esc, icon, img } from '../lib/html.mjs';
@@ -16,7 +16,7 @@ export const KATEGORIEN = [
 ];
 
 
-// Formular für den eigenen Wall-of-Fame-Eintrag (Sponsor im Login – oder Admin für einen Sponsor)
+// Formular für den eigenen Wall-of-Fame-Eintrag (Partner im Login – oder Admin für einen Partner)
 function sponsorWallForm(admin = false) {
   return `
 <form class="form" data-sw-form>
@@ -66,16 +66,16 @@ export function loginPage(ctx) {
   <div class="login-visual">
     <img src="${esc(img(site.login_bild, 1400))}" alt="" aria-hidden="true">
     <a class="brand light" href="/"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="48" height="60"><span>← Zurück zur Website</span></a>
-    <div class="login-claim"><div class="h1 big light">Team<br><span class="gold">#LBC3</span></div><p class="lead light">Der geschützte Bereich für unsere Sponsoren und das Team.</p></div>
+    <div class="login-claim"><div class="h1 big light">Team<br><span class="gold">#LBC3</span></div><p class="lead light">Der geschützte Bereich für unsere Partner und das Team.</p></div>
   </div>
   <div class="login-panel">
     <div class="login-box">
       <h1 class="h1">Anmelden</h1>
       <div class="segmented" role="tablist">
-        <button type="button" role="tab" aria-selected="true" class="is-active" data-role-tab="sponsor">Sponsor</button>
+        <button type="button" role="tab" aria-selected="true" class="is-active" data-role-tab="sponsor">Partner</button>
         <button type="button" role="tab" aria-selected="false" data-role-tab="admin">Team / Admin</button>
       </div>
-      <p class="muted" data-role-hint>Als Sponsor siehst du hier jederzeit unseren aktuellen Ausgabenbericht.</p>
+      <p class="muted" data-role-hint>Als Partner siehst du hier jederzeit unseren aktuellen Ausgabenbericht.</p>
 
       <form class="form" data-login-form>
         <label class="field"><span>E-Mail</span><input name="email" type="email" required autocomplete="email"></label>
@@ -97,7 +97,7 @@ export function loginPage(ctx) {
       <div class="form-msg" data-msg role="status" hidden></div>
 
       <div class="note-red">Mitglied der <strong>Squadra Tre</strong>? Du brauchst keinen Login – unseren Jahresbericht bekommst du am Saisonende per E-Mail. <a href="/squadra-tre/">Mehr erfahren</a></div>
-      <p class="muted small">Zugänge werden von uns vergeben. Sponsoren erhalten ihre Einladung per E-Mail.</p>
+      <p class="muted small">Zugänge werden von uns vergeben. Partner erhalten ihre Einladung per E-Mail.</p>
     </div>
   </div>
 </main>`;
@@ -113,7 +113,7 @@ ${topbar('AUSGABENBERICHT · NUR FÜR SPONSOREN')}
   <div data-content hidden>
     <div class="section-head">
       <div>
-        <div class="eyebrow">Ausgabenbericht für unsere Sponsoren · jederzeit aktuell</div>
+        <div class="eyebrow">Ausgabenbericht für unsere Partner · jederzeit aktuell</div>
         <h1 class="h1 big">Saison <span data-year></span></h1>
         <p class="lead">Transparenz ist uns wichtig. Hier zeigen wir, wofür eure Unterstützung eingesetzt wird.</p>
       </div>
@@ -124,7 +124,7 @@ ${topbar('AUSGABENBERICHT · NUR FÜR SPONSOREN')}
     </div>
     <div class="kpis">
       <div class="kpi dark"><span>Gesamtausgaben Saison</span><strong data-k="gesamt"></strong></div>
-      <div class="kpi"><span>Davon durch Sponsoren &amp; Squadra Tre</span><strong data-k="partner"></strong></div>
+      <div class="kpi"><span>Davon durch Partner &amp; Squadra Tre</span><strong data-k="partner"></strong></div>
       <div class="kpi"><span>Rennwochenenden</span><strong data-k="rennwochenenden"></strong></div>
       <div class="kpi"><span>Kilometer zu Rennen</span><strong data-k="kilometer"></strong></div>
     </div>
@@ -140,7 +140,7 @@ ${topbar('AUSGABENBERICHT · NUR FÜR SPONSOREN')}
         </div>
         <div class="card dark">
           <h2 class="h3 gold">Gut zu wissen</h2>
-          <p>Als Sponsor siehst du diesen Bericht jederzeit und immer auf dem aktuellen Stand. Die Mitglieder der Squadra Tre erhalten eine Zusammenfassung am Saisonende per E-Mail.</p>
+          <p>Als Partner siehst du diesen Bericht jederzeit und immer auf dem aktuellen Stand. Die Mitglieder der Squadra Tre erhalten eine Zusammenfassung am Saisonende per E-Mail.</p>
           <a class="btn btn-gold btn-sm" href="/partner/">Zur Partnerseite</a>
         </div>
       </div>
@@ -150,7 +150,7 @@ ${topbar('AUSGABENBERICHT · NUR FÜR SPONSOREN')}
   </div>
   <section class="card mt" data-sw-own hidden>
     <div class="row-between"><h2 class="h2">Euer Eintrag auf der Wall of Fame</h2><span class="badge" data-sw-status></span></div>
-    <p class="muted">Jeder Sponsor bekommt auf Luigis Partnerseite einen eigenen Eintrag – mit Logo, Link zu eurer Website und euren Social-Media-Kanälen. Am Saisonende steht er auch auf der gedruckten Wall of Fame am Rennzelt. Nach jeder Änderung prüfen wir den Eintrag kurz und schalten ihn frei.</p>
+    <p class="muted">Jeder Partner bekommt auf Luigis Partnerseite einen eigenen Eintrag – mit Logo, Link zu eurer Website und euren Social-Media-Kanälen. Am Saisonende steht er auch auf der gedruckten Wall of Fame am Rennzelt. Nach jeder Änderung prüfen wir den Eintrag kurz und schalten ihn frei.</p>
     ${sponsorWallForm(false)}
   </section>
 </main>`;
@@ -164,9 +164,9 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
 <div class="app" data-team>
   <nav class="app-nav" aria-label="Team-Menü">
     <button type="button" class="is-active" data-tab="bericht">Ausgabenbericht</button>
-    <button type="button" data-tab="zugaenge">Sponsoren &amp; Admins</button>
+    <button type="button" data-tab="zugaenge">Partner &amp; Admins</button>
     <button type="button" data-tab="squadra">Squadra Tre</button>
-    <button type="button" data-tab="sponsorwall">Sponsoren-Wall</button>
+    <button type="button" data-tab="sponsorwall">Partner-Wall</button>
     <button type="button" data-tab="einladen">Squadra einladen</button>
     <a href="/admin/">Fotos, News, Rennen, Texte ↗</a>
   </nav>
@@ -195,41 +195,41 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         </div>
         <div class="card">
           <h2 class="h3">Finanzierung (€)</h2>
-          <label class="field"><span>Sponsoren (Pakete)</span><input type="number" min="0" step="0.01" data-f="fin_sponsoren"></label>
+          <label class="field"><span>Partner (Pakete)</span><input type="number" min="0" step="0.01" data-f="fin_sponsoren"></label>
           <label class="field"><span>Squadra Tre (Unterstützer)</span><input type="number" min="0" step="0.01" data-f="fin_squadra"></label>
           <label class="field"><span>Eigenmittel Familie</span><input type="number" min="0" step="0.01" data-f="fin_eigen"></label>
           <label class="field"><span>Sonstiges (z. B. Förderungen)</span><input type="number" min="0" step="0.01" data-f="fin_sonstiges"></label>
         </div>
       </div>
       <div class="card mt">
-        <label class="field"><span>Saisonrückblick für Sponsoren und Squadra Tre</span><textarea rows="6" data-f="rueckblick"></textarea></label>
+        <label class="field"><span>Saisonrückblick für Partner und Squadra Tre</span><textarea rows="6" data-f="rueckblick"></textarea></label>
         <div class="grid-2">
           <label class="field"><span>Jahresbericht (PDF)</span><input type="file" accept="application/pdf" data-pdf="pdf_bericht"><small class="muted" data-pdf-name="pdf_bericht"></small></label>
           <label class="field"><span>Belegübersicht (PDF)</span><input type="file" accept="application/pdf" data-pdf="pdf_belege"><small class="muted" data-pdf-name="pdf_belege"></small></label>
         </div>
       </div>
       <div class="grid-2 mt">
-        <div class="note-box"><strong>Sponsoren</strong> sehen den Bericht über ihren Login – jederzeit, sobald er freigegeben ist.</div>
+        <div class="note-box"><strong>Partner</strong> sehen den Bericht über ihren Login – jederzeit, sobald er freigegeben ist.</div>
         <div class="note-box"><strong>Squadra Tre</strong> bekommt den Bericht am Saisonende per E-Mail (nur bestätigte Mitglieder mit Häkchen „Jahresbericht“).</div>
       </div>
       <div class="btn-row mt">
         <button type="button" class="btn btn-dark" data-save>Speichern</button>
         <button type="button" class="btn btn-red" data-toggle-release></button>
         <button type="button" class="btn btn-outline" data-send-report>Jahresbericht an Squadra Tre senden</button>
-        <a class="btn btn-outline" href="/bericht/" target="_blank">Vorschau als Sponsor</a>
+        <a class="btn btn-outline" href="/bericht/" target="_blank">Vorschau als Partner</a>
       </div>
       <p class="muted small" data-mail-info></p>
     </section>
 
     <section data-panel="zugaenge" hidden>
-      <h1 class="h1">Sponsoren &amp; Admins</h1>
+      <h1 class="h1">Partner &amp; Admins</h1>
       <div class="grid-2 align-start">
         <div class="card flush"><div class="table-box plain"><table class="table"><thead><tr><th>Name / Firma</th><th>E-Mail</th><th>Rolle</th><th></th></tr></thead><tbody data-profiles></tbody></table></div></div>
         <form class="card form" data-invite-form>
           <h2 class="h3">Zugang einladen</h2>
           <label class="field"><span>E-Mail</span><input type="email" name="email" required></label>
           <label class="field"><span>Name / Firma</span><input name="firma" required></label>
-          <label class="field"><span>Rolle</span><select name="rolle"><option value="sponsor">Sponsor – Login für den Ausgabenbericht</option><option value="admin">Admin – darf alles bearbeiten</option></select></label>
+          <label class="field"><span>Rolle</span><select name="rolle"><option value="sponsor">Partner – Login für den Ausgabenbericht</option><option value="admin">Admin – darf alles bearbeiten</option></select></label>
           <button class="btn btn-dark" type="submit">Einladung senden</button>
           <p class="muted small">Die Person bekommt eine E-Mail und legt beim ersten Login ihr Passwort fest.</p>
         </form>
@@ -293,11 +293,11 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     </section>
 
     <section data-panel="sponsorwall" hidden>
-      <div class="section-head"><h1 class="h1">Sponsoren-Wall</h1><button type="button" class="btn btn-red" data-publish>Wall of Fame veröffentlichen</button></div>
-      <p class="muted">Sponsoren legen ihren Eintrag im eigenen Login an (Website + mindestens ein Social-Media-Kanal sind Pflicht). Nach jeder Änderung muss der Eintrag hier neu freigegeben werden. Das Logo-Laufband auf der Startseite bleibt davon unberührt – es wird weiter im CMS gepflegt.</p>
+      <div class="section-head"><h1 class="h1">Partner-Wall</h1><button type="button" class="btn btn-red" data-publish>Wall of Fame veröffentlichen</button></div>
+      <p class="muted">Partner legen ihren Eintrag im eigenen Login an (Website + mindestens ein Social-Media-Kanal sind Pflicht). Nach jeder Änderung muss der Eintrag hier neu freigegeben werden. Das Logo-Laufband auf der Startseite bleibt davon unberührt – es wird weiter im CMS gepflegt.</p>
       <div class="member-grid" data-sponsorwall></div>
       <div class="card mt">
-        <h2 class="h3">Eintrag für einen Sponsor anlegen oder bearbeiten</h2>
+        <h2 class="h3">Eintrag für einen Partner anlegen oder bearbeiten</h2>
         ${sponsorWallForm(true)}
       </div>
     </section>
