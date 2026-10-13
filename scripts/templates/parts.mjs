@@ -28,8 +28,11 @@ export function countdownCard(lang, ctx, { compact = false, image = '' } = {}) {
 // Animiertes Sponsoren-Laufband (Inhalte doppelt für die Endlosschleife).
 export function sponsorMarquee(lang, ctx) {
   const _ = t(lang);
-  const list = ctx.content.sponsoren.filter((s) => s.im_laufband !== false);
+  // Platzhalter wie „[SPONSOR 1]“ ohne Logo werden nicht gezeigt – stattdessen freie Plätze „Dein Logo hier“.
+  const list = ctx.content.sponsoren.filter((s) => s.im_laufband !== false && (s.logo || !/^\s*\[/.test(s.firma || '')));
   const items = [...list.map((s) => ({ ...s })), { firma: _('your_logo'), cta: true }];
+  // Noch keine echten Sponsoren: freie Plätze (gestrichelt) im Wechsel mit „Dein Logo hier“
+  if (!list.length) items.push({ firma: _('free_spot'), cta: true, free: true }, { firma: _('free_spot'), cta: true, free: true });
   while (items.length < 7) items.push(...items.slice(0, 7 - items.length));
   const cell = (s, hidden) => {
     const inner = s.logo
@@ -38,7 +41,7 @@ export function sponsorMarquee(lang, ctx) {
     const href = s.cta ? url(lang, '/partner/#sponsoren') : s.website;
     const attrs = hidden ? ' aria-hidden="true" tabindex="-1"' : '';
     return href
-      ? `<a class="logo-cell${s.cta ? ' is-cta' : ''}" href="${esc(href)}"${s.cta ? '' : ' rel="noopener" target="_blank"'}${attrs}>${inner}</a>`
+      ? `<a class="logo-cell${s.cta && !s.free ? ' is-cta' : ''}${s.free ? ' is-free' : ''}" href="${esc(href)}"${s.cta ? '' : ' rel="noopener" target="_blank"'}${attrs}>${inner}</a>`
       : `<div class="logo-cell"${attrs}>${inner}</div>`;
   };
   return `

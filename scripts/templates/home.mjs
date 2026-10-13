@@ -1,7 +1,7 @@
 import { esc, picture, icon, flagsDE, flagsIT, img } from '../lib/html.mjs';
 import { url, t } from '../lib/i18n.mjs';
 import { layout } from './layout.mjs';
-import { countdownCard, sponsorMarquee } from './parts.mjs';
+import { countdownCard } from './parts.mjs';
 
 export function home(lang, ctx) {
   const _ = t(lang);
@@ -124,7 +124,6 @@ ${album ? `
   </div>
 </section>
 
-${sponsorMarquee(lang, ctx)}
 `;
 
   return layout({

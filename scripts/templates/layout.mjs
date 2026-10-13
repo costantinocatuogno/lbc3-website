@@ -1,5 +1,6 @@
 import { esc, icon, img } from '../lib/html.mjs';
 import { LANGS, url, t } from '../lib/i18n.mjs';
+import { sponsorMarquee } from './parts.mjs';
 
 const NAV = [
   ['nav_news', '/news/'],
@@ -13,7 +14,7 @@ const NAV = [
 
 export function layout({
   lang = 'de', path = '/', title, description, body, ctx, active = '', bodyClass = '',
-  noindex = false, scripts = [], ogImage = '/assets/img/og-lbc3.jpg', showReplay = false, alternates = true, jsonLd = null
+  noindex = false, scripts = [], ogImage = '/assets/img/og-lbc3.jpg', showReplay = false, alternates = true, jsonLd = null, sponsorBanner = null
 }) {
   const _ = t(lang);
   const site = ctx.content.site;
@@ -81,6 +82,7 @@ ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script
 <main id="main">
 ${body}
 </main>
+${(sponsorBanner ?? !noindex) ? sponsorMarquee(lang, ctx) : ''}
 ${footer(lang, ctx)}
 <script src="/assets/js/site.js?v=${ctx.version}" defer></script>
 ${scripts.map((s) => `<script src="${s}?v=${ctx.version}" defer></script>`).join('\n')}

@@ -165,8 +165,8 @@ button { font: inherit; color: inherit; }
 .ticker-track { display: flex; width: max-content; animation: lbc3-marquee 26s linear infinite; }
 .ticker-track span { font-family: var(--display); font-weight: 900; font-size: clamp(32px, 4vw, 46px); text-transform: uppercase; color: #6B707A; padding: 0 22px; }
 .ticker-track span.gold { color: var(--gold); }
-.marquee-section { background: #fff; border-top: 1px solid var(--line); padding: 40px 0 44px; overflow: hidden; }
-.marquee-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 22px; }
+.marquee-section { background: #fff; border-top: 1px solid var(--line); padding: 28px 0 30px; overflow: hidden; }
+.marquee-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
 .marquee { overflow: hidden; }
 .marquee-track { display: flex; width: max-content; animation: lbc3-marquee 38s linear infinite; }
 .marquee:hover .marquee-track, .ticker:hover .ticker-track { animation-play-state: paused; }
@@ -659,3 +659,7 @@ tr.is-dns td { color: var(--muted); }
 .film figcaption strong { font-size: clamp(26px, 3vw, 40px); line-height: 1.05; }
 .reel-player { grid-template-columns: minmax(240px, 320px) 1fr; }
 @media (max-width: 860px) { .film { grid-template-columns: 1fr; gap: 14px; } .film figcaption { font-size: 15px; } .film figcaption strong { font-size: 22px; } }
+.logo-cell { height: 110px; width: 260px; }
+.logo-cell.is-free { color: #9a9ea5; font-weight: 600; transition: border-color .2s, color .2s; }
+.logo-cell.is-free:hover { border-color: var(--gold); color: var(--ink); }
+@media (max-width: 600px) { .logo-cell { width: 200px; height: 90px; } }
