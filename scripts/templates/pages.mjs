@@ -105,6 +105,20 @@ ${(c.site.videos || []).filter((v) => v && v.datei).length ? `
   </div>
 </section>
 
+${tx.helm_titel && (tx.helm_bilder || []).length ? `
+<section class="wrap section helm-section">
+  <div class="helm-grid">
+    <div class="helm-text">
+      <div class="eyebrow">${_('helm_kicker')}</div>
+      <h2 class="h2">${esc(tx.helm_titel)}</h2>
+      ${String(tx.helm_text || '').split(/\n\s*\n/).filter(Boolean).map((para, i) => `<p${i === 0 ? ' class="lead"' : ''}>${esc(para.trim())}</p>`).join('')}
+    </div>
+    <div class="helm-photos" data-lightbox-group>
+      ${tx.helm_bilder.filter((b) => b && b.bild).map((b, i) => `<button type="button" class="helm-photo${i === 0 ? ' is-main' : ''}" data-lightbox-index="${i}" data-full="${esc(img(b.bild, 1800))}" data-caption="${esc(b.text || '')}" aria-label="${_('enlarge')}: ${esc(b.text || '')}">${picture(b.bild, b.text || '', { width: i === 0 ? 900 : 500, sizes: '(max-width: 760px) 100vw, 25vw' })}</button>`).join('')}
+    </div>
+  </div>
+</section>` : ''}
+
 <section class="wrap section" data-chapters>
   <div class="section-head"><h2 class="h2 xl">${_('chapters_title')}</h2><span class="muted"><span data-chapter-pos>1</span> / ${kap.length}</span></div>
   <div class="pill-row" role="tablist">
@@ -138,7 +152,7 @@ ${(c.site.videos || []).filter((v) => v && v.datei).length ? `
 <section class="wrap section cta-row">
   <h2 class="h2">${_('next_chapter')}</h2>
   <a class="btn btn-red" href="${url(lang, '/partner/')}">${_('btn_partner')}</a>
-</section>`;
+</section>${(tx.helm_bilder || []).length ? lightbox(lang) : ''}`;
   return layout({ lang, path: '/ueber-luigi/', title: _('nav_ueber'), body, ctx, active: '/ueber-luigi/' });
 }
 

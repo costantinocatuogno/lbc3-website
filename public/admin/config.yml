@@ -187,6 +187,18 @@ collections:
           - { label: Partner – Einleitung, name: partner_intro, widget: text, i18n: true }
           - { label: Squadra Tre – Text, name: squadra_text, widget: text, i18n: true }
           - { label: Kontakt – Einleitung, name: kontakt_intro, widget: text, i18n: true }
+          - { label: Helm – Überschrift, name: helm_titel, widget: string, i18n: true, required: false }
+          - { label: Helm – Text (Absätze mit Leerzeile trennen), name: helm_text, widget: text, i18n: true, required: false }
+          - label: Helm – Fotos
+            name: helm_bilder
+            widget: list
+            i18n: duplicate
+            required: false
+            summary: '{{fields.text}}'
+            hint: 'Das erste Foto wird groß angezeigt'
+            fields:
+              - { label: Foto, name: bild, widget: image, media_folder: /public/uploads/helm, public_folder: /uploads/helm }
+              - { label: Bildunterschrift, name: text, widget: string, required: false }
       - name: fahrer
         label: Steckbrief & Rennwoche – DE/EN/IT
         file: content/einstellungen/fahrer.json

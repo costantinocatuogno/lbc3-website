@@ -598,3 +598,14 @@ a.plain:hover { color: var(--red); }
 .status-why { display: block; margin-top: 4px; }
 tr.is-dns td { color: var(--muted); }
 .status.is-reg { background: var(--red); color: #fff; }
+
+/* Über Luigi – Helm */
+.helm-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: start; }
+.helm-text p { margin: 0 0 14px; }
+.helm-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.helm-photo { display: block; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 6px; overflow: hidden; aspect-ratio: 4 / 3; }
+.helm-photo.is-main { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+.helm-photo.is-main img { object-position: center 30%; }
+.helm-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.helm-photo:hover img { transform: scale(1.03); }
+@media (max-width: 860px) { .helm-grid { grid-template-columns: 1fr; gap: 24px; } }

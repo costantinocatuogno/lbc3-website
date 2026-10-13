@@ -5,7 +5,31 @@
     "sponsor_aufruf": "Bist du bereit, Teil von #LBC3 zu werden?",
     "partner_intro": "Ob als Unternehmen mit einem Sponsoring-Paket oder als Fan, Freund oder Familie in der Squadra Tre – jede Unterstützung bringt Luigi eine Runde weiter.",
     "squadra_text": "Die Squadra Tre ist Luigis Team hinter dem Team: Freunde, Familie, Nachbarn und Fans. Dabei sein ist kostenlos – wer möchte, unterstützt mit einem Beitrag. Jeder Euro fließt in Reifen, Nenngelder und Kilometer zur nächsten Strecke.",
-    "kontakt_intro": "Sponsoring, Presse oder einfach Daumen drücken – wir freuen uns über jede Nachricht."
+    "kontakt_intro": "Sponsoring, Presse oder einfach Daumen drücken – wir freuen uns über jede Nachricht.",
+    "helm_titel": "Sein Helm. Sein Design. Sein Weg.",
+    "helm_text": "Diesen Helm hat Luigi selbst entworfen – und jedes Detail erzählt, wer er ist und wohin er will.\n\nDie klare gelbe Linie zieht sich ohne Umweg über den ganzen Helm. Sie ist so klar definiert wie sein Ziel: ganz nach oben, an die Spitze – zu den 22 besten Fahrern der Welt in der Formel 1. Kein Zickzack, kein Zögern. Eine Linie, ein Ziel.\n\nDie Nummer 3 zeigt sich in verschiedenen Ausführungen – in Gold und Silber, groß und klein, mal fein umrandet, mal kraftvoll ausgefüllt. Sie steht für Eleganz und Selbstbewusstsein: Luigi weiß, wofür er fährt, und zeigt es mit Stolz.\n\nDie italienischen und die deutschen Farben vereinen seine Herkunft. Er steht für beide – mit Herz und Überzeugung.\n\nUnd es bleibt bewusst genug Platz für die Partner, die ihn auf diesem Weg begleiten möchten.\n\nEin Helm ist mehr als Schutz. Für Luigi ist er ein Versprechen an sich selbst: harte Arbeit in jedem Training, Willenskraft in jeder Runde und der feste Glaube daran, dass große Träume mit klaren Zielen beginnen.",
+    "helm_bilder": [
+      {
+        "bild": "/uploads/helm/helm-front.jpg",
+        "text": "Luigi mit seinem neuen Helm"
+      },
+      {
+        "bild": "/uploads/helm/helm-oben.jpg",
+        "text": "Von oben: die Trikolore und zweimal #LBC3"
+      },
+      {
+        "bild": "/uploads/helm/helm-seite.jpg",
+        "text": "Seitenansicht – die klare gelbe Linie und „L. Catuogno“"
+      },
+      {
+        "bild": "/uploads/helm/helm-hinten.jpg",
+        "text": "Die Nummer 3 in Gold und Silber – und die deutschen Farben"
+      },
+      {
+        "bild": "/uploads/helm/helm-hinten-2.jpg",
+        "text": "Eine Nummer, viele Ausführungen"
+      }
+    ]
   },
   "en": {
     "hero_text": "From the first kart to the big dream. Racing in the ADAC Kart Masters and on Italy's tracks – with Formula 1 as the goal.",
@@ -13,7 +37,9 @@
     "sponsor_aufruf": "Ready to become part of #LBC3?",
     "partner_intro": "Whether as a company with a sponsorship package or as a fan, friend or family member in the Squadra Tre – every bit of support takes Luigi one lap further.",
     "squadra_text": "The Squadra Tre is Luigi's team behind the team: friends, family, neighbours and fans. Joining is free – anyone who wants can support with a contribution. Every euro goes into tyres, entry fees and the kilometres to the next track.",
-    "kontakt_intro": "Sponsorship, press or just keeping your fingers crossed – we look forward to every message."
+    "kontakt_intro": "Sponsorship, press or just keeping your fingers crossed – we look forward to every message.",
+    "helm_titel": "His helmet. His design. His path.",
+    "helm_text": "Luigi designed this helmet himself – and every detail tells you who he is and where he is heading.\n\nThe clear yellow line runs across the whole helmet without a detour. It is as sharply defined as his goal: all the way to the top – to be one of the 22 best drivers in the world in Formula 1. No zigzag, no hesitation. One line, one goal.\n\nThe number 3 appears in different versions – in gold and silver, large and small, sometimes finely outlined, sometimes boldly filled. It stands for elegance and self-confidence: Luigi knows what he races for, and he shows it with pride.\n\nThe Italian and German colours bring his roots together. He stands for both – with heart and conviction.\n\nAnd there is deliberately enough room for the partners who want to join him on this journey.\n\nA helmet is more than protection. For Luigi it is a promise to himself: hard work in every training session, willpower in every lap and the firm belief that big dreams begin with clear goals."
   },
   "it": {
     "hero_text": "Dal primo kart al grande sogno. In pista nell'ADAC Kart Masters e sui circuiti italiani – con un obiettivo: la Formula 1.",
@@ -21,6 +47,8 @@
     "sponsor_aufruf": "Sei pronto a far parte di #LBC3?",
     "partner_intro": "Come azienda con un pacchetto sponsor o come fan, amico o familiare nella Squadra Tre – ogni supporto porta Luigi un giro più avanti.",
     "squadra_text": "La Squadra Tre è il team dietro il team di Luigi: amici, famiglia, vicini e tifosi. Partecipare è gratis – chi vuole può sostenerlo con un contributo. Ogni euro va in gomme, iscrizioni e chilometri verso il prossimo circuito.",
-    "kontakt_intro": "Sponsorizzazioni, stampa o semplicemente fare il tifo – ogni messaggio è benvenuto."
+    "kontakt_intro": "Sponsorizzazioni, stampa o semplicemente fare il tifo – ogni messaggio è benvenuto.",
+    "helm_titel": "Il suo casco. Il suo design. La sua strada.",
+    "helm_text": "Questo casco l'ha disegnato Luigi in persona – e ogni dettaglio racconta chi è e dove vuole arrivare.\n\nLa linea gialla netta attraversa tutto il casco senza deviazioni. È definita come il suo obiettivo: arrivare in cima – tra i 22 migliori piloti del mondo, in Formula 1. Nessuno zigzag, nessuna esitazione. Una linea, un obiettivo.\n\nIl numero 3 compare in diverse versioni – in oro e argento, grande e piccolo, a volte con un contorno sottile, a volte pieno e deciso. Rappresenta eleganza e sicurezza: Luigi sa per cosa corre e lo mostra con orgoglio.\n\nI colori italiani e tedeschi uniscono le sue origini. Lui rappresenta entrambi – con il cuore e con convinzione.\n\nE c'è volutamente abbastanza spazio per i partner che vogliono accompagnarlo in questo percorso.\n\nUn casco è più di una protezione. Per Luigi è una promessa a se stesso: duro lavoro in ogni allenamento, forza di volontà in ogni giro e la ferma convinzione che i grandi sogni iniziano con obiettivi chiari."
   }
 }
