@@ -57,7 +57,8 @@ ${site.story_video ? `
     <a class="btn btn-dark" href="${url(lang, '/ueber-luigi/')}">${_('story_more')}</a>
   </div>
   <figure class="story-video">
-    <video src="${esc(site.story_video)}"${site.story_vorschau ? ` poster="${esc(site.story_vorschau)}"` : ''} controls playsinline preload="none"></video>
+    <video data-story-video src="${esc(site.story_video)}"${site.story_vorschau ? ` poster="${esc(site.story_vorschau)}"` : ''} controls playsinline preload="none"></video>
+    <figcaption><button type="button" class="link-btn" data-fullscreen>⛶ ${_('fullscreen')}</button></figcaption>
   </figure>
 </section>` : ''}
 

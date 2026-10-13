@@ -136,6 +136,16 @@
 
 
 
+
+  /* ---------- Story-Video: kleines Fenster, auf Wunsch Vollbild ---------- */
+  $$('[data-fullscreen]').forEach((btn) => btn.addEventListener('click', () => {
+    const v = btn.closest('figure').querySelector('video');
+    if (!v) return;
+    const p = v.play(); if (p && p.catch) p.catch(() => {});
+    if (v.requestFullscreen) v.requestFullscreen().catch(() => {});
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+  }));
+
   /* ---------- Video-Tabs: Film | Reels ---------- */
   $$('[data-vtab]').forEach((btn) => btn.addEventListener('click', () => {
     const sec = btn.closest('section');

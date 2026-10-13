@@ -673,3 +673,14 @@ tr.is-dns td { color: var(--muted); }
 .fold .fold-icon { grid-column: 2; grid-row: 1 / span 2; font-size: 34px; font-weight: 300; line-height: 1; color: var(--red, #c8102e); transition: transform .2s; }
 .fold[open] .fold-icon { transform: rotate(45deg); }
 .fold .steps { padding-bottom: 24px; }
+
+/* Startseite: Story im Breitformat als kleines Fenster */
+.story { grid-template-columns: 1fr minmax(300px, 560px); }
+.story-video video { aspect-ratio: 16 / 9; object-fit: cover; }
+.story-video figcaption { margin-top: 10px; text-align: right; }
+.link-btn { background: none; border: 0; padding: 4px 0; cursor: pointer; font: inherit; font-weight: 700; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.link-btn:hover { color: var(--red, #c8102e); }
+@media (max-width: 760px) { .story-video { max-width: none; } }
+/* Helm: Fotos nie zu flach */
+.helm-photos { min-height: 560px; }
+@media (max-width: 860px) { .helm-photos { min-height: 0; } }
