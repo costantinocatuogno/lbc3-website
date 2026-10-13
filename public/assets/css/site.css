@@ -663,3 +663,13 @@ tr.is-dns td { color: var(--muted); }
 .logo-cell.is-free { color: #9a9ea5; font-weight: 600; transition: border-color .2s, color .2s; }
 .logo-cell.is-free:hover { border-color: var(--gold); color: var(--ink); }
 @media (max-width: 600px) { .logo-cell { width: 200px; height: 90px; } }
+
+/* Einklappbarer Abschnitt (z. B. Transparenz auf der Partner-Seite) */
+.fold { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.fold summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; padding: 22px 0; }
+.fold summary::-webkit-details-marker { display: none; }
+.fold summary .eyebrow { grid-column: 1; }
+.fold summary .h2 { grid-column: 1; margin: 0; }
+.fold .fold-icon { grid-column: 2; grid-row: 1 / span 2; font-size: 34px; font-weight: 300; line-height: 1; color: var(--red, #c8102e); transition: transform .2s; }
+.fold[open] .fold-icon { transform: rotate(45deg); }
+.fold .steps { padding-bottom: 24px; }

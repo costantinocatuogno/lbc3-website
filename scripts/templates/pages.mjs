@@ -164,19 +164,6 @@ ${tx.helm_titel && (tx.helm_bilder || []).length ? `
   </div>`).join('')}
 </section>
 
-<section class="band-dark">
-  <div class="wrap section">
-    <div class="section-head"><h2 class="h2 light">${_('week_title')}</h2><span class="muted-light">/off-track</span></div>
-    <div class="week">
-      ${(f.woche || []).map((w) => `
-      <div class="week-day">
-        ${w.bild ? picture(w.bild, w.tag, { width: 400, sizes: '(max-width: 760px) 45vw, 14vw' }) : '<div class="photo-ph" aria-hidden="true"></div>'}
-        <div class="week-tag">${esc(w.tag)}</div><div class="week-was">${esc(w.was)}</div>
-      </div>`).join('')}
-    </div>
-  </div>
-</section>
-
 <section class="wrap section cta-row">
   <h2 class="h2">${_('next_chapter')}</h2>
   <a class="btn btn-red" href="${url(lang, '/partner/')}">${_('btn_partner')}</a>
@@ -414,33 +401,15 @@ export function partner(lang, ctx, wall) {
 
 ${sponsorWall(lang, wall)}
 
-<section class="band-dark" id="squadra">
-  <div class="wrap section two-col squadra">
-    <div>
-      ${flagsIT()}
-      <h2 class="h1 big light">Squadra<br><span class="gold">Tre</span></h2>
-      <h3 class="h3 light">${_('squadra_teaser_t')}</h3>
-      <p class="lead light">${_('squadra_teaser')}</p>
-      <div class="btn-row">
-        <a class="btn btn-red" href="${url(lang, '/squadra-tre/#beitreten')}">${_('join_now')}</a>
-        <a class="btn btn-ghost-light" href="${url(lang, '/squadra-tre/#wall')}">${_('wall_title')}</a>
-      </div>
-    </div>
-    <div>
-      <div class="eyebrow muted-light">${_('wall_title')} · ${esc(c.site.squadra_hashtag || '#SquadraLBC3')}</div>
-      ${wallGrid(lang, wall, { limit: 11 })}
-    </div>
-  </div>
-</section>
-
 <section class="wrap section">
-  <div class="eyebrow">${_('transparency')}</div>
-  <h2 class="h2">${_('transparency_title')}</h2>
-  <div class="grid-3 steps">
-    <div class="card"><div class="step-num">01</div><h3 class="h3">${_('tr1_t')}</h3><p>${_('tr1')}</p></div>
-    <div class="card"><div class="step-num">02</div><h3 class="h3">${_('tr2_t')}</h3><p>${_('tr2')}</p></div>
-    <div class="card"><div class="step-num">03</div><h3 class="h3">${_('tr3_t')}</h3><p>${_('tr3')}</p></div>
-  </div>
+  <details class="fold">
+    <summary><span class="eyebrow">${_('transparency')}</span><span class="h2">${_('transparency_title')}</span><span class="fold-icon" aria-hidden="true">+</span></summary>
+    <div class="grid-3 steps">
+      <div class="card"><div class="step-num">01</div><h3 class="h3">${_('tr1_t')}</h3><p>${_('tr1')}</p></div>
+      <div class="card"><div class="step-num">02</div><h3 class="h3">${_('tr2_t')}</h3><p>${_('tr2')}</p></div>
+      <div class="card"><div class="step-num">03</div><h3 class="h3">${_('tr3_t')}</h3><p>${_('tr3')}</p></div>
+    </div>
+  </details>
   <a class="btn btn-dark" href="/login/">${icon.lock}<span>${_('login_sponsors')}</span></a>
 </section>`;
   return layout({ lang, path: '/partner/', title: _('nav_partner'), body, ctx, active: '/partner/', sponsorBanner: false });

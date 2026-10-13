@@ -113,14 +113,11 @@ ${album ? `
   </div>
 </section>` : ''}
 
-<section class="wrap">
-  <div class="cta-dark">
-    ${picture(site.partner_bild, '', { width: 1600, cls: 'cta-bg' })}
-    <h2 class="cta-title">${esc(tx.sponsor_aufruf).replace('#LBC3', '<span class="gold">#LBC3</span>')}</h2>
-    <div class="btn-row">
-      <a class="btn btn-gold" href="${url(lang, '/partner/#sponsoren')}">${_('btn_sponsor')}</a>
-      <a class="btn btn-ghost-light" href="${url(lang, '/squadra-tre/')}">${_('btn_squadra')}</a>
-    </div>
+<section class="wrap section cta-row">
+  <h2 class="h2">${_('next_chapter')}</h2>
+  <div class="btn-row">
+    <a class="btn btn-red" href="${url(lang, '/partner/')}">${_('btn_partner')}</a>
+    <a class="btn btn-outline" href="${url(lang, '/squadra-tre/')}">${_('btn_squadra')}</a>
   </div>
 </section>
 
