@@ -1,20 +1,20 @@
 {
   "de": {
     "nummer": "05",
-    "jahr": "Zukunft",
-    "bild": "/uploads/ampfing-2026/helm-portraet.jpg",
-    "kurztitel": "Das Ziel",
-    "titel": "Formel 1",
-    "text": "Der Traum ist klar. Jede Runde, jedes Training und jedes Rennen ist ein Schritt auf diesem Weg."
+    "jahr": "2026",
+    "bild": "/uploads/helm/helm-front.jpg",
+    "kurztitel": "Sein Helm",
+    "titel": "Sein Helm, sein Design",
+    "text": "Selbst entworfen: eine klare gelbe Linie – so klar wie sein Ziel. Die Nummer 3 in Gold und Silber, die Farben Italiens und Deutschlands. Ein Helm als Versprechen an sich selbst."
   },
   "en": {
-    "kurztitel": "The goal",
-    "titel": "Formula 1",
-    "text": "The dream is clear. Every lap, every training session and every race is a step along the way."
+    "kurztitel": "His helmet",
+    "titel": "His helmet, his design",
+    "text": "Designed by himself: one clear yellow line – as clear as his goal. The number 3 in gold and silver, the colours of Italy and Germany. A helmet as a promise to himself."
   },
   "it": {
-    "kurztitel": "L'obiettivo",
-    "titel": "Formula 1",
-    "text": "Il sogno è chiaro. Ogni giro, ogni allenamento e ogni gara è un passo su questa strada."
+    "kurztitel": "Il suo casco",
+    "titel": "Il suo casco, il suo design",
+    "text": "Disegnato da lui: una linea gialla netta – chiara come il suo obiettivo. Il numero 3 in oro e argento, i colori dell'Italia e della Germania. Un casco come promessa a se stesso."
   }
 }

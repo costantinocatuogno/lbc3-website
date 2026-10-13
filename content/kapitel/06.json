@@ -1,0 +1,20 @@
+{
+  "de": {
+    "nummer": "06",
+    "jahr": "Zukunft",
+    "bild": "/uploads/ampfing-2026/helm-portraet.jpg",
+    "kurztitel": "Das Ziel",
+    "titel": "Formel 1",
+    "text": "Der Traum ist klar. Jede Runde, jedes Training und jedes Rennen ist ein Schritt auf diesem Weg."
+  },
+  "en": {
+    "kurztitel": "The goal",
+    "titel": "Formula 1",
+    "text": "The dream is clear. Every lap, every training session and every race is a step along the way."
+  },
+  "it": {
+    "kurztitel": "L'obiettivo",
+    "titel": "Formula 1",
+    "text": "Il sogno è chiaro. Ogni giro, ogni allenamento e ogni gara è un passo su questa strada."
+  }
+}
