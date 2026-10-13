@@ -241,7 +241,7 @@ collections:
             fields:
               - { label: Titel, name: titel, widget: string }
               - { label: Kurztext, name: text, widget: string, required: false }
-              - { label: Video (MP4), name: datei, widget: file, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
+              - { label: Video (MP4), name: datei, widget: file, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos, hint: 'Leer lassen = Platzhalter „Video folgt“' }
               - { label: Vorschaubild, name: vorschau, widget: image, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
           - { label: E-Mail für Sponsoren-Anfragen, name: business_email, widget: string }
           - { label: Instagram-Link, name: instagram, widget: string }

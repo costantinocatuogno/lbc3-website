@@ -615,3 +615,6 @@ tr.is-dns td { color: var(--muted); }
   .helm-photos { height: auto; grid-template-rows: none; }
   .helm-photo { aspect-ratio: 4 / 3; }
 }
+.reel-soon { aspect-ratio: 9 / 16; border-radius: 14px; border: 2px dashed rgba(18, 20, 24, .18); background: rgba(18, 20, 24, .04); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--muted, #6b6f76); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: 13px; }
+.reel-soon img { width: 72px; height: auto; opacity: .35; }
+.reel.is-soon figcaption strong { color: var(--muted, #6b6f76); }
