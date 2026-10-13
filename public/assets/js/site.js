@@ -134,6 +134,32 @@
     }));
   });
 
+
+  /* ---------- Reel-Player (ein Player, Auswahlliste) ---------- */
+  $$('[data-reels]').forEach((root) => {
+    const video = $('[data-reel-video]', root);
+    const items = $$('.reel-item', root);
+    const title = $('[data-reel-title]', root), text = $('[data-reel-text]', root), pos = $('[data-reel-pos]', root);
+    const select = (btn, play) => {
+      items.forEach((b) => { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
+      video.pause();
+      video.poster = btn.dataset.reelPoster || '';
+      video.src = btn.dataset.reelSrc;
+      title.textContent = btn.dataset.reelTitel || '';
+      text.textContent = btn.dataset.reelInfo || '';
+      pos.textContent = btn.dataset.reelIndex || '';
+      if (play) { const p = video.play(); if (p && p.catch) p.catch(() => {}); }
+    };
+    items.forEach((b) => b.addEventListener('click', () => {
+      select(b, true);
+      if (window.matchMedia('(max-width: 860px)').matches) video.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }));
+    video.addEventListener('ended', () => {
+      const i = items.findIndex((b) => b.classList.contains('is-active'));
+      if (i > -1 && i < items.length - 1) select(items[i + 1], true);
+    });
+  });
+
   /* ---------- Lightbox ---------- */
   const lb = $('[data-lightbox]');
   if (lb) {

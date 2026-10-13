@@ -83,16 +83,34 @@ export function ueber(lang, ctx) {
   </div>
 </section>
 
-${(c.site.videos || []).filter((v) => v && (v.datei || v.titel)).length ? `
+${(() => {
+  const vids = (c.site.videos || []).filter((v) => v && v.datei);
+  if (!vids.length) return '';
+  const first = vids[0];
+  const pad = (n) => String(n).padStart(2, '0');
+  return `
 <section class="wrap section">
   <div class="section-head"><div><div class="eyebrow">${_('videos_kicker')}</div><h2 class="h2">${_('videos_title')}</h2></div></div>
-  <div class="reels">${c.site.videos.filter((v) => v && (v.datei || v.titel)).map((v) => `
-    <figure class="reel${v.datei ? '' : ' is-soon'}">
-      ${v.datei ? `<video src="${esc(v.datei)}"${v.vorschau ? ` poster="${esc(v.vorschau)}"` : ''} controls playsinline preload="none"></video>` : `<div class="reel-soon" aria-hidden="true"><img src="/assets/img/lbc3-logo.png" alt=""><span>${_('videos_soon')}</span></div>`}
-      <figcaption><strong>${esc(v.titel || '')}</strong>${v.text ? `<span>${esc(v.text)}</span>` : ''}</figcaption>
-    </figure>`).join('')}
+  <div class="reel-player" data-reels>
+    <div class="reel-stage">
+      <video data-reel-video src="${esc(first.datei)}"${first.vorschau ? ` poster="${esc(first.vorschau)}"` : ''} controls playsinline preload="metadata"></video>
+    </div>
+    <div class="reel-side">
+      <div class="reel-now" aria-live="polite">
+        <div class="eyebrow"><span data-reel-pos>01</span> / ${pad(vids.length)}</div>
+        <h3 class="h2" data-reel-title>${esc(first.titel || '')}</h3>
+        <p class="lead" data-reel-text>${esc(first.text || '')}</p>
+      </div>
+      <ol class="reel-list">${vids.map((v, i) => `
+        <li><button type="button" class="reel-item${i === 0 ? ' is-active' : ''}" aria-pressed="${i === 0}" data-reel-src="${esc(v.datei)}" data-reel-poster="${esc(v.vorschau || '')}" data-reel-titel="${esc(v.titel || '')}" data-reel-info="${esc(v.text || '')}" data-reel-index="${pad(i + 1)}">
+          <span class="reel-thumb">${v.vorschau ? `<img src="${esc(img(v.vorschau, 300))}" alt="" loading="lazy">` : ''}<span class="reel-play" aria-hidden="true">▶</span></span>
+          <span class="reel-meta"><span class="reel-num">${pad(i + 1)}</span><span class="reel-name">${esc(v.titel || '')}</span></span>
+        </button></li>`).join('')}
+      </ol>
+    </div>
   </div>
-</section>` : ''}
+</section>`;
+})()}
 
 <section class="band-white">
   <div class="wrap section">
