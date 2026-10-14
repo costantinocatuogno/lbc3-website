@@ -126,9 +126,19 @@ ${album ? `
 
   return layout({
     lang, path: '/', body, ctx, showReplay: true, bodyClass: 'page-home',
-    jsonLd: {
-      '@context': 'https://schema.org', '@type': 'Person', name: 'Luigi Battista Catuogno',
-      alternateName: 'LBC3', jobTitle: 'Kartfahrer', url: ctx.siteUrl, sameAs: [site.instagram]
-    }
+    jsonLd: [
+      {
+        '@context': 'https://schema.org', '@type': 'Person', '@id': `${ctx.siteUrl}/#luigi`,
+        name: 'Luigi Battista Catuogno', alternateName: ['LBC3', 'Luigi Catuogno'],
+        jobTitle: _('kartfahrer'), description: ctx.content.texte(lang).hero_text,
+        url: ctx.siteUrl, image: `${ctx.siteUrl}/assets/img/og-lbc3.jpg`,
+        nationality: [{ '@type': 'Country', name: 'Germany' }, { '@type': 'Country', name: 'Italy' }],
+        knowsLanguage: ['de', 'it'],
+        memberOf: { '@type': 'SportsTeam', name: ctx.content.fahrerFor(lang).team || '7L Performance', sport: 'Karting', url: ctx.content.fahrerFor(lang).team_link || undefined },
+        award: (site.auszeichnungen || []).filter(Boolean),
+        sameAs: [site.instagram, ...(site.weitere_profile || [])].filter(Boolean)
+      },
+      { '@context': 'https://schema.org', '@type': 'WebSite', name: 'LBC3 · Luigi Battista Catuogno', url: ctx.siteUrl, inLanguage: ['de', 'en', 'it'] }
+    ]
   });
 }

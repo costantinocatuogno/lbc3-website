@@ -40,6 +40,22 @@
   to = "/partner/"
   status = 301
 
+# Kurze Adresse für die Ergebnisse
+[[redirects]]
+  from = "/ergebnisse/*"
+  to = "/kalender/"
+  status = 301
+
+[[redirects]]
+  from = "/en/results/*"
+  to = "/en/kalender/"
+  status = 301
+
+[[redirects]]
+  from = "/it/risultati/*"
+  to = "/it/kalender/"
+  status = 301
+
 # Sicherheits-Header für alle Seiten
 [[headers]]
   for = "/*"

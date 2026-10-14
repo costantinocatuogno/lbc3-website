@@ -39,7 +39,7 @@ ${lead ? `
 <section class="wrap section">
   <div class="grid-3" data-filter-items="news">${rest.map(card).join('')}</div>
 </section>`;
-  return layout({ lang, path: '/news/', title: _('nav_news'), body, ctx, active: '/news/' });
+  return layout({ lang, path: '/news/', title: _('nav_news'), description: _('desc_news'), body, ctx, active: '/news/' });
 }
 
 export function newsDetail(lang, ctx, n) {
@@ -56,7 +56,17 @@ export function newsDetail(lang, ctx, n) {
   ${gal.length ? `<div class="grid-3 article-gallery" data-lightbox-group>${gal.map((g, i) => `<button type="button" class="square-photo" data-lightbox-index="${i}" data-full="${esc(img(g, 1800))}" data-caption="${esc(n.titel)}" aria-label="${_('enlarge')}">${picture(g, n.titel, { width: 600 })}</button>`).join('')}</div>` : ''}
 </article>
 ${lightbox(lang)}`;
-  return layout({ lang, path: `/news/${n.slug}/`, title: n.titel, description: n.teaser, body, ctx, active: '/news/', ogImage: img(n.vorschaubild || n.titelbild, 1200) });
+  return layout({
+    lang, path: `/news/${n.slug}/`, title: n.titel, description: n.teaser, body, ctx, active: '/news/', ogType: 'article',
+    ogImage: img(n.vorschaubild || n.titelbild, 1200),
+    jsonLd: {
+      '@context': 'https://schema.org', '@type': 'NewsArticle', headline: n.titel, description: n.teaser || undefined,
+      datePublished: n.datum, image: [`${ctx.siteUrl}${n.vorschaubild || n.titelbild}`],
+      inLanguage: 'de', mainEntityOfPage: `${ctx.siteUrl}${url(lang, `/news/${n.slug}/`)}`,
+      about: { '@type': 'Person', name: 'Luigi Battista Catuogno' },
+      author: { '@type': 'Organization', name: 'LBC3', url: ctx.siteUrl }
+    }
+  });
 }
 
 /* ---------------- ÜBER LUIGI ---------------- */
@@ -168,10 +178,26 @@ ${tx.helm_titel && (tx.helm_bilder || []).length ? `
   <h2 class="h2">${_('next_chapter')}</h2>
   <a class="btn btn-red" href="${url(lang, '/partner/')}">${_('btn_partner')}</a>
 </section>${(tx.helm_bilder || []).length ? lightbox(lang) : ''}`;
-  return layout({ lang, path: '/ueber-luigi/', title: _('nav_ueber'), body, ctx, active: '/ueber-luigi/' });
+  return layout({ lang, path: '/ueber-luigi/', title: _('nav_ueber'), description: _('desc_ueber'), body, ctx, active: '/ueber-luigi/' });
 }
 
 /* ---------------- KALENDER ---------------- */
+// Strukturierte Daten für kommende Rennen (Google kann sie als Event anzeigen).
+function raceEvents(c, ctx) {
+  const now = new Date().toISOString().slice(0, 10);
+  return c.rennen
+    .filter((r) => ['bevorstehend', 'angemeldet'].includes(r.status) && String(r.start || '').slice(0, 10) >= now)
+    .filter((r) => !/\[/.test(`${r.serie}${r.strecke}`)) // Platzhalter-Einträge auslassen
+    .map((r) => ({
+      '@context': 'https://schema.org', '@type': 'SportsEvent',
+      name: `${r.serie}${r.klasse ? ` · ${r.klasse}` : ''}`,
+      startDate: r.start, sport: 'Karting',
+      eventStatus: 'https://schema.org/EventScheduled',
+      location: { '@type': 'Place', name: r.strecke, address: r.land || undefined },
+      competitor: { '@type': 'Person', name: 'Luigi Battista Catuogno', url: ctx.siteUrl }
+    }));
+}
+
 export function kalender(lang, ctx) {
   const _ = t(lang);
   const c = ctx.content;
@@ -205,7 +231,7 @@ ${pageHead('/on-track', _('kal_title'))}
   <div class="stat"><div class="stat-num">${c.stats.siege}</div><div class="stat-label">${_('stat_wins')}</div></div>
   <div class="stat"><div class="stat-num">${c.stats.beste ? `P${c.stats.beste}` : '–'}</div><div class="stat-label">${_('best')}</div></div>
 </section>`;
-  return layout({ lang, path: '/kalender/', title: _('nav_kalender'), body, ctx, active: '/kalender/' });
+  return layout({ lang, path: '/kalender/', title: `${_('kal_title')} ${current}`, description: _('desc_kalender'), body, ctx, active: '/kalender/', jsonLd: raceEvents(c, ctx) });
 }
 
 /* ---------------- GALERIE: Serie → Jahr → Strecke ---------------- */
@@ -244,7 +270,7 @@ export function galerie(lang, ctx) {
     ${kulissen.length && rennserien.length ? '<div class="gal-divider" role="separator" aria-hidden="true"></div>' : ''}
     ${rennserien.length ? `<div class="gal-grid">${rennserien.map(card).join('')}</div>` : ''}` : `<p class="muted">${_('gal_empty')}</p>`;
   const body = `${pageHead(_('gal_kicker'), _('nav_galerie'), `<p class="lead">${_('gal_intro')}</p>`)}<section class="wrap section">${grid}</section>`;
-  return layout({ lang, path: '/galerie/', title: _('nav_galerie'), body, ctx, active: '/galerie/' });
+  return layout({ lang, path: '/galerie/', title: _('nav_galerie'), description: _('desc_galerie'), body, ctx, active: '/galerie/' });
 }
 
 export function galerieSerie(lang, ctx, serie) {
@@ -418,7 +444,7 @@ ${sponsorWall(lang, wall)}
   </details>
   <a class="btn btn-dark" href="/login/">${icon.lock}<span>${_('login_sponsors')}</span></a>
 </section>`;
-  return layout({ lang, path: '/partner/', title: _('nav_partner'), body, ctx, active: '/partner/', sponsorBanner: false });
+  return layout({ lang, path: '/partner/', title: _('nav_partner'), description: _('desc_partner'), body, ctx, active: '/partner/', sponsorBanner: false });
 }
 
 /* ---------------- KONTAKT ---------------- */
@@ -455,7 +481,7 @@ export function kontakt(lang, ctx) {
     </form>
   </div>
 </section>`;
-  return layout({ lang, path: '/kontakt/', title: _('nav_kontakt'), body, ctx, active: '/kontakt/' });
+  return layout({ lang, path: '/kontakt/', title: _('nav_kontakt'), description: _('desc_kontakt'), body, ctx, active: '/kontakt/' });
 }
 
 /* ---------------- RECHTLICHES & HINWEISSEITEN ---------------- */

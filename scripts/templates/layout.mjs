@@ -2,6 +2,8 @@ import { esc, icon, img } from '../lib/html.mjs';
 import { LANGS, url, t } from '../lib/i18n.mjs';
 import { sponsorMarquee } from './parts.mjs';
 
+const OG_LOCALE = { de: 'de_DE', en: 'en_GB', it: 'it_IT' };
+
 const NAV = [
   ['nav_news', '/news/'],
   ['nav_ueber', '/ueber-luigi/'],
@@ -14,12 +16,12 @@ const NAV = [
 
 export function layout({
   lang = 'de', path = '/', title, description, body, ctx, active = '', bodyClass = '',
-  noindex = false, scripts = [], ogImage = '/assets/img/og-lbc3.jpg', showReplay = false, alternates = true, jsonLd = null, sponsorBanner = null
+  noindex = false, scripts = [], ogImage = '/assets/img/og-lbc3.jpg', showReplay = false, alternates = true, jsonLd = null, sponsorBanner = null, ogType = 'website'
 }) {
   const _ = t(lang);
   const site = ctx.content.site;
   const base = ctx.siteUrl;
-  const fullTitle = title ? `${title} · LBC3 Luigi Battista Catuogno` : 'LBC3 · Luigi Battista Catuogno – Kartfahrer #3';
+  const fullTitle = title ? `${title} · LBC3 Luigi Battista Catuogno` : `LBC3 · Luigi Battista Catuogno – ${_('kartfahrer')} #3`;
   const desc = description || ctx.content.texte(lang).hero_text;
   const canonical = `${base}${url(lang, path)}`;
   const hreflang = alternates
@@ -47,7 +49,9 @@ export function layout({
 <meta name="description" content="${esc(desc)}">
 ${noindex ? '<meta name="robots" content="noindex, nofollow">' : `<link rel="canonical" href="${canonical}">`}
 ${noindex ? '' : hreflang}
-<meta property="og:type" content="website">
+<meta property="og:type" content="${ogType}">
+<meta property="og:locale" content="${OG_LOCALE[lang] || 'de_DE'}">
+<meta property="og:site_name" content="LBC3 · Luigi Battista Catuogno">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:image" content="${base}${ogImage}">
@@ -57,7 +61,7 @@ ${noindex ? '' : hreflang}
 <link rel="icon" type="image/png" href="/assets/img/favicon.png">
 <link rel="preload" href="/fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/site.css?v=${ctx.version}">
-${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
+${(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []).map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n')}
 </head>
 <body class="${bodyClass}">
 <a class="skip" href="#main">${_('skip')}</a>
