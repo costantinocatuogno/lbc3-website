@@ -1,15 +1,15 @@
 {
+  "grund": "Unfall in Quali Heat 2",
+  "heat1": "",
+  "heat2": "",
   "start": "2026-08-09T09:00",
-  "saison": 2026,
-  "serie": "ADAC Kart Masters",
   "klasse": "Mini B",
   "strecke": "Kerpen",
   "land": "Deutschland",
-  "qualifying": "",
-  "heat1": "",
-  "heat2": "",
   "finale": null,
   "status": "nicht_gefahren",
-  "grund": "Unfall",
-  "bericht": ""
+  "bericht": "",
+  "qualifying": "",
+  "saison": 2026,
+  "serie": "ADAC Kart Masters"
 }
