@@ -262,7 +262,7 @@ collections:
           - { label: Instagram-Link, name: instagram, widget: string }
           - { label: Instagram-Name, name: instagram_handle, widget: string }
           - { label: Haupt-Hashtag, name: hashtag, widget: string, default: '#LBC3' }
-          - { label: Hashtag Squadra Tre, name: squadra_hashtag, widget: string, default: '#SquadraLBC3' }
+          - { label: Hashtag Squadra Tre, name: squadra_hashtag, widget: string, default: '#SquadraTre' }
           - { label: Saison auf der gedruckten Wall of Fame, name: saison_wall, widget: string, default: '2026' }
           - { label: Intro-Video (MP4, Hochformat, max. ca. 2 MB), name: intro_video, widget: file }
           - { label: Helm-Bild (rund, freigestellt), name: helm_bild, widget: image }

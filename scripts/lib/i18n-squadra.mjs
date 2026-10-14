@@ -17,7 +17,7 @@ export const squadraUi = {
     sq_types: 'Wie bist du dabei?',
     sq_free_t: 'Freund / Fan', sq_free_p: 'kostenlos – auch ohne Beitrag willkommen', sq_free_b1: 'Foto oder Name auf der Wall of Fame', sq_free_b2: 'Renn-Updates per E-Mail (optional)', sq_free_b3: 'Platz auf der Fotowand am Rennzelt',
     sq_sup_t: 'Unterstützer', sq_sup_p: 'mit Beitrag – frei wählbar', sq_sup_b1: 'Foto oder Name auf der Wall of Fame – als Unterstützer hervorgehoben', sq_sup_b2: 'Jahresbericht: wofür jeder Euro eingesetzt wurde', sq_sup_b3: 'Einladung zu einem Rennwochenende im Fahrerlager',
-    sq_hashtag_t: 'Unser Hashtag', sq_hashtag: 'Poste deine Fotos, Videos und Daumen-hoch vom Streckenrand mit <strong>#SquadraLBC3</strong> und <strong>#LBC3</strong> und markiere <strong>{handle}</strong>. Die schönsten Posts teilen wir in Luigis Story.',
+    sq_hashtag_t: 'Unser Hashtag', sq_hashtag: 'Poste deine Fotos, Videos und Daumen-hoch vom Streckenrand mit <strong>#SquadraTre</strong> und <strong>#LBC3</strong> und markiere <strong>{handle}</strong>. Die schönsten Posts teilen wir in Luigis Story.',
     wall_title: 'Wall of Fame', wall_members: 'Mitglieder', wall_example: 'Beispiel – echte Mitglieder erscheinen hier, sobald die Anmeldung freigeschaltet ist.',
     wall_empty_you: 'Du?', wall_print_note: 'Am Saisonende drucken wir die Wall of Fame und bauen sie als Fotowand am Rennzelt auf.',
     join_title: 'Squadra Tre beitreten',
@@ -36,7 +36,7 @@ export const squadraUi = {
     to_squadra: 'Zur Squadra Tre', squadra_teaser_t: 'Kein Unternehmen? Dann gehörst du in die Squadra Tre.',
     squadra_teaser: 'Freunde, Familie und Fans sind kostenlos dabei – mit Foto auf der Wall of Fame. Wer möchte, unterstützt mit einem Beitrag.',
     tr3_t: 'Squadra Tre: zum Saisonende', tr3: 'Alle Unterstützer der Squadra Tre bekommen den Jahresbericht am Saisonende per E-Mail.',
-    confirmed_title: 'Benvenuto in der Squadra Tre!', confirmed_text: 'Deine Anmeldung ist bestätigt. Sobald wir dein Foto geprüft haben, erscheinst du auf der Wall of Fame. Poste mit #SquadraLBC3!'
+    confirmed_title: 'Benvenuto in der Squadra Tre!', confirmed_text: 'Deine Anmeldung ist bestätigt. Sobald wir dein Foto geprüft haben, erscheinst du auf der Wall of Fame. Poste mit #SquadraTre!'
   },
   en: {
     nav_squadra: 'Squadra Tre',
@@ -55,7 +55,7 @@ export const squadraUi = {
     sq_types: 'How do you join?',
     sq_free_t: 'Friend / Fan', sq_free_p: 'free – welcome without a contribution', sq_free_b1: 'Photo or name on the Wall of Fame', sq_free_b2: 'Race updates by email (optional)', sq_free_b3: 'A spot on the photo wall at the race tent',
     sq_sup_t: 'Supporter', sq_sup_p: 'with a contribution – any amount', sq_sup_b1: 'Photo or name on the Wall of Fame – highlighted as a supporter', sq_sup_b2: 'Annual report: where every euro went', sq_sup_b3: 'Invitation to a race weekend in the paddock',
-    sq_hashtag_t: 'Our hashtag', sq_hashtag: 'Post your photos, videos and thumbs-up from the trackside with <strong>#SquadraLBC3</strong> and <strong>#LBC3</strong> and tag <strong>{handle}</strong>. We share the best posts in Luigi’s story.',
+    sq_hashtag_t: 'Our hashtag', sq_hashtag: 'Post your photos, videos and thumbs-up from the trackside with <strong>#SquadraTre</strong> and <strong>#LBC3</strong> and tag <strong>{handle}</strong>. We share the best posts in Luigi’s story.',
     wall_title: 'Wall of Fame', wall_members: 'members', wall_example: 'Example – real members appear here once sign-up is live.',
     wall_empty_you: 'You?', wall_print_note: 'At season end we print the Wall of Fame and build it as a photo wall at the race tent.',
     join_title: 'Join the Squadra Tre',
@@ -74,7 +74,7 @@ export const squadraUi = {
     to_squadra: 'To the Squadra Tre', squadra_teaser_t: 'Not a company? Then you belong in the Squadra Tre.',
     squadra_teaser: 'Friends, family and fans join for free – with their photo on the Wall of Fame. Anyone who wants can support with a contribution.',
     tr3_t: 'Squadra Tre: at season end', tr3: 'All Squadra Tre supporters receive the annual report by email at season end.',
-    confirmed_title: 'Benvenuto in the Squadra Tre!', confirmed_text: 'Your sign-up is confirmed. Once we have reviewed your photo you will appear on the Wall of Fame. Post with #SquadraLBC3!'
+    confirmed_title: 'Benvenuto in the Squadra Tre!', confirmed_text: 'Your sign-up is confirmed. Once we have reviewed your photo you will appear on the Wall of Fame. Post with #SquadraTre!'
   },
   it: {
     nav_squadra: 'Squadra Tre',
@@ -93,7 +93,7 @@ export const squadraUi = {
     sq_types: 'Come partecipi?',
     sq_free_t: 'Amico / Tifoso', sq_free_p: 'gratis – benvenuto anche senza contributo', sq_free_b1: 'Foto o nome sulla Wall of Fame', sq_free_b2: 'Aggiornamenti via e-mail (facoltativo)', sq_free_b3: 'Un posto sulla parete fotografica alla tenda',
     sq_sup_t: 'Sostenitore', sq_sup_p: 'con un contributo libero', sq_sup_b1: 'Foto o nome sulla Wall of Fame – in evidenza come sostenitore', sq_sup_b2: 'Resoconto annuale: dove è andato ogni euro', sq_sup_b3: 'Invito a un weekend di gara nel paddock',
-    sq_hashtag_t: 'Il nostro hashtag', sq_hashtag: 'Pubblica foto, video e pollici in su da bordo pista con <strong>#SquadraLBC3</strong> e <strong>#LBC3</strong> e tagga <strong>{handle}</strong>. I post più belli li condividiamo nella storia di Luigi.',
+    sq_hashtag_t: 'Il nostro hashtag', sq_hashtag: 'Pubblica foto, video e pollici in su da bordo pista con <strong>#SquadraTre</strong> e <strong>#LBC3</strong> e tagga <strong>{handle}</strong>. I post più belli li condividiamo nella storia di Luigi.',
     wall_title: 'Wall of Fame', wall_members: 'membri', wall_example: 'Esempio – i membri veri appariranno qui appena l’iscrizione sarà attiva.',
     wall_empty_you: 'Tu?', wall_print_note: 'A fine stagione stampiamo la Wall of Fame e la montiamo come parete fotografica alla tenda.',
     join_title: 'Entra nella Squadra Tre',
@@ -112,6 +112,6 @@ export const squadraUi = {
     to_squadra: 'Alla Squadra Tre', squadra_teaser_t: 'Non sei un’azienda? Allora il tuo posto è nella Squadra Tre.',
     squadra_teaser: 'Amici, famiglia e tifosi entrano gratis – con la loro foto sulla Wall of Fame. Chi vuole può sostenere con un contributo.',
     tr3_t: 'Squadra Tre: a fine stagione', tr3: 'Tutti i sostenitori della Squadra Tre ricevono il resoconto annuale via e-mail a fine stagione.',
-    confirmed_title: 'Benvenuto nella Squadra Tre!', confirmed_text: 'La tua iscrizione è confermata. Appena avremo controllato la tua foto apparirai sulla Wall of Fame. Pubblica con #SquadraLBC3!'
+    confirmed_title: 'Benvenuto nella Squadra Tre!', confirmed_text: 'La tua iscrizione è confermata. Appena avremo controllato la tua foto apparirai sulla Wall of Fame. Pubblica con #SquadraTre!'
   }
 };

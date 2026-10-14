@@ -133,7 +133,7 @@ export function squadra(lang, ctx, wall) {
   const _ = t(lang);
   const c = ctx.content;
   const site = c.site;
-  const tag = site.squadra_hashtag || '#SquadraLBC3';
+  const tag = site.squadra_hashtag || '#SquadraTre';
   const main = site.hashtag || '#LBC3';
   const n = wall.mitglieder.length;
   const body = `
@@ -205,7 +205,7 @@ export function squadra(lang, ctx, wall) {
 /* ---------- Druckansicht /wall-of-fame/druck/ ---------- */
 export function wallPrint(ctx, wall) {
   const site = ctx.content.site;
-  const tag = site.squadra_hashtag || '#SquadraLBC3';
+  const tag = site.squadra_hashtag || '#SquadraTre';
   const saison = site.saison_wall || String(new Date().getFullYear());
   const tiles = wall.mitglieder.map(fameTile).join('');
   const sponsors = wall.sponsoren.map((s) => `

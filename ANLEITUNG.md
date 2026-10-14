@@ -63,7 +63,7 @@ Wichtig: Fotos, auf denen andere Kinder oder Erwachsene erkennbar sind, nur mit 
 4. Unter dem Knopf steht danach, wann gesendet wurde. Bitte nur einmal pro Saison senden.
 
 ## 8. Squadra Tre – Luigis Fanclub (kostenlos)
-**Hashtag:** `#SquadraLBC3` (zusammen mit `#LBC3`). In jedem Post und jeder Story verwenden – dann finden sich alle Fans.
+**Hashtag:** `#SquadraTre` (zusammen mit `#LBC3`). In jedem Post und jeder Story verwenden – dann finden sich alle Fans.
 
 **Anmeldungen prüfen:** `/team/` → **Squadra Tre**
 - Gelb umrandete Karten = Foto wartet auf Prüfung. Foto anklicken = groß ansehen.

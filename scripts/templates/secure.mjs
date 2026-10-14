@@ -311,7 +311,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
           <div class="copy-box" data-copy-src data-invite-link></div>
           <button class="btn btn-outline btn-sm" data-copy-btn>Kopieren</button>
           <h2 class="h3 mt">2 · Hashtags</h2>
-          <div class="copy-box" data-copy-src>#SquadraLBC3 #LBC3 #SquadraTre</div>
+          <div class="copy-box" data-copy-src>#SquadraTre #LBC3</div>
           <button class="btn btn-outline btn-sm" data-copy-btn>Kopieren</button>
           <h2 class="h3 mt">3 · So geht’s auf Instagram</h2>
           <ul class="lines small">

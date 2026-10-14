@@ -605,9 +605,9 @@
       /* ----- Einladen: fertige Texte für Instagram ----- */
       const site = (cfg.siteUrl || location.origin).replace(/\/$/, '');
       const INVITE = [
-        ['Beitrag / Story (Deutsch)', `🏁 Werde Teil der SQUADRA TRE!\nLuigis Fanclub ist kostenlos – lade dein Foto hoch und du stehst auf unserer Wall of Fame. Am Saisonende drucken wir sie und bauen sie am Rennzelt auf 📸\n👉 Link in Bio: ${site}/squadra-tre/\n#SquadraLBC3 #LBC3`],
-        ['Post / Storia (Italiano)', `🏁 Entra nella SQUADRA TRE!\nIl fan club di Luigi è gratis – carica la tua foto e sarai sulla nostra Wall of Fame. A fine stagione la stampiamo e la montiamo alla tenda 📸\n👉 Link in bio: ${site}/it/squadra-tre/\n#SquadraLBC3 #LBC3`],
-        ['Post / Story (English)', `🏁 Join the SQUADRA TRE!\nLuigi's fan club is free – upload your photo and you're on our Wall of Fame. At season end we print it and put it up at the race tent 📸\n👉 Link in bio: ${site}/en/squadra-tre/\n#SquadraLBC3 #LBC3`],
+        ['Beitrag / Story (Deutsch)', `🏁 Werde Teil der SQUADRA TRE!\nLuigis Fanclub ist kostenlos – lade dein Foto hoch und du stehst auf unserer Wall of Fame. Am Saisonende drucken wir sie und bauen sie am Rennzelt auf 📸\n👉 Link in Bio: ${site}/squadra-tre/\n#SquadraTre #LBC3`],
+        ['Post / Storia (Italiano)', `🏁 Entra nella SQUADRA TRE!\nIl fan club di Luigi è gratis – carica la tua foto e sarai sulla nostra Wall of Fame. A fine stagione la stampiamo e la montiamo alla tenda 📸\n👉 Link in bio: ${site}/it/squadra-tre/\n#SquadraTre #LBC3`],
+        ['Post / Story (English)', `🏁 Join the SQUADRA TRE!\nLuigi's fan club is free – upload your photo and you're on our Wall of Fame. At season end we print it and put it up at the race tent 📸\n👉 Link in bio: ${site}/en/squadra-tre/\n#SquadraTre #LBC3`],
         ['DM an neue Follower (Deutsch)', `Ciao und danke fürs Folgen! 🙌 Hast du Lust, in Luigis Squadra Tre zu kommen? Kostenlos, mit deinem Foto auf der Wall of Fame: ${site}/squadra-tre/`],
         ['DM ai nuovi follower (Italiano)', `Ciao e grazie per il follow! 🙌 Ti va di entrare nella Squadra Tre di Luigi? È gratis, con la tua foto sulla Wall of Fame: ${site}/it/squadra-tre/`]
       ];
