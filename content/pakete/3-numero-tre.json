@@ -1,27 +1,33 @@
 {
-  "name": "Numero Tre",
-  "reihenfolge": 3,
-  "untertitel": "Der Hauptpartner",
-  "untertitel_en": "The main partner",
-  "untertitel_it": "Il partner principale",
-  "hervorheben": true,
-  "preis": "",
-  "leistungen": [
-    "Frontverkleidung, Seitenkästen, Anzug (Brust + Rücken), Helm oben",
-    "Premium-Felder am Gespann · Logo auf der Startseite",
-    "8 eigene Posts · Fotos & Videos für eure Kommunikation",
-    "Firmen-Kartevent mit Luigi · Branchenschutz"
-  ],
   "leistungen_en": [
-    "Front fairing, side pods, suit (chest + back), top of helmet",
+    "Front fairing",
+    "side pods",
+    "suit (chest + back)",
+    "top of helmet",
     "Premium spaces on the trailer rig · logo on the home page",
-    "8 dedicated posts · photos & videos for your communication",
-    "Company karting event with Luigi · category exclusivity"
+    "8 dedicated posts · photos & videos for your communication"
   ],
   "leistungen_it": [
-    "Carenatura anteriore, pance laterali, tuta (petto + schiena), casco in alto",
+    "Carenatura anteriore",
+    "pance laterali",
+    "tuta (petto + schiena)",
+    "casco in alto",
     "Spazi premium sul rimorchio · logo in homepage",
-    "8 post dedicati · foto e video per la vostra comunicazione",
-    "Evento kart aziendale con Luigi · esclusiva di settore"
-  ]
+    "8 post dedicati · foto e video per la vostra comunicazione"
+  ],
+  "leistungen": [
+    "Frontverkleidung",
+    "Seitenkästen",
+    "Anzug (Brust oder Rücken)",
+    "Helm oben",
+    "Premium-Felder am Gespann · Logo auf der Startseite",
+    "8 eigene Posts · Fotos & Videos für eure Kommunikation"
+  ],
+  "reihenfolge": 3,
+  "untertitel_en": "The main partner",
+  "hervorheben": true,
+  "name": "Numero Tre",
+  "untertitel_it": "Il partner principale",
+  "preis": "",
+  "untertitel": "Der Hauptpartner"
 }
