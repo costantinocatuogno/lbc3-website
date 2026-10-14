@@ -198,7 +198,6 @@ collections:
           - label: Helm – Fotos
             name: helm_bilder
             widget: list
-            i18n: duplicate
             required: false
             summary: '{{fields.text}}'
             hint: 'Das erste Foto wird groß angezeigt'
