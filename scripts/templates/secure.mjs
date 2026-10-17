@@ -285,7 +285,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <form class="card form" data-message-form>
           <h2 class="h3">Nachricht an die Squadra</h2>
           <p class="muted small">Geht an alle bestätigten Mitglieder mit Häkchen „Renn-Updates“ (<strong data-updates-count>0</strong>).</p>
-          <label class="field"><span>Betreff</span><input name="betreff" required maxlength="150" placeholder="Nächstes Rennen: Lonato, 14. März!"></label>
+          <label class="field"><span>Betreff</span><input name="betreff" required maxlength="150" placeholder="Nächstes Rennen: Ampfing, 2. Mai!"></label>
           <label class="field"><span>Text</span><textarea name="text" rows="7" required maxlength="5000"></textarea></label>
           <div class="btn-row"><button class="btn btn-outline" type="button" data-msg-test>Testmail an uns</button><button class="btn btn-red" type="submit">An alle senden</button></div>
         </form>
