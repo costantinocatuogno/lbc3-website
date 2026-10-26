@@ -29,6 +29,9 @@ const filled = (v) => typeof v === 'string' && v.trim() !== '';
 const readJSON = (p) => JSON.parse(readFileSync(p, 'utf8'));
 const writeJSON = (p, d) => writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
 
+// Kontakt-Adresse der Website für MyMemory (erhöht das Gratis-Kontingent auf 50.000 Zeichen pro Tag)
+const SITE = readJSON(join(C, 'einstellungen/site.json'));
+const MM_EMAIL = process.env.MYMEMORY_EMAIL || SITE.kontakt_email || '';
 const glossar = existsSync(join(C, 'einstellungen/glossar.json')) ? readJSON(join(C, 'einstellungen/glossar.json')) : {};
 const NIE = (glossar.nie_uebersetzen || []).filter(filled).sort((a, b) => b.length - a.length);
 const FACH = (glossar.fachbegriffe || []).filter((f) => f && filled(f.de));
@@ -72,7 +75,7 @@ const providers = {
         const u = new URL('https://api.mymemory.translated.net/get');
         u.searchParams.set('q', part);
         u.searchParams.set('langpair', `${from}|${to}`);
-        if (process.env.MYMEMORY_EMAIL) u.searchParams.set('de', process.env.MYMEMORY_EMAIL);
+        if (MM_EMAIL) u.searchParams.set('de', MM_EMAIL);
         const res = await fetch(u);
         if (!res.ok) throw new Error(`MyMemory ${res.status}`);
         const data = await res.json();
