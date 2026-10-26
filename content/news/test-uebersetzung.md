@@ -6,6 +6,7 @@
   "teaser": "Dieser Beitrag prüft, ob die automatische Übersetzung funktioniert.",
   "highlight": false,
   "entwurf": true,
+  "neu_uebersetzen": true,
   "galerie": [],
   "it": {
     "titel": "Contributo di prova: traduzione automatica",

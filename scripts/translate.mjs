@@ -9,7 +9,7 @@
 //   • Impressum und Datenschutz nur, wenn noch gar keine Übersetzung existiert (danach von Hand pflegen)
 //
 // Glossar (content/einstellungen/glossar.json): Namen, Serien und Strecken bleiben unverändert,
-// Fachbegriffe bekommen die festgelegte Übersetzung.
+// Fachbegriffe: Der Lauf meldet, wenn die festgelegte Übersetzung nicht vorkommt (dann im CMS kurz anpassen).
 //
 // Dienst (kostenlos, ohne Konto): MyMemory (Translated srl, Rom). Optional per Umgebungsvariable:
 //   DEEPL_API_KEY  → DeepL (Köln)    ·    AZURE_TRANSLATOR_KEY + AZURE_TRANSLATOR_REGION → Microsoft Azure
@@ -118,7 +118,7 @@ function splitBytes(text, max) {
 
 /* ---------------- Schutz: Glossar, Links, Platzhalter ---------------- */
 // Ersetzt geschützte Stellen durch <x id="n"/>, damit der Dienst sie nicht verändert.
-function protect(text, from, to) {
+function protect(text, from, to, strict = false) {
   const keep = [];
   const token = (value) => { keep.push(value); return `\u0000${keep.length - 1}\u0000`; };
   let s = text;
@@ -130,18 +130,10 @@ function protect(text, from, to) {
   s = s.replace(/#[\p{L}0-9_]+/gu, (m) => token(m));
   s = s.replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, (m) => token(m));
   s = s.replace(/https?:\/\/\S+/g, (m) => token(m));
-  // Nie übersetzen
-  for (const term of NIE) {
+  // Nie übersetzen – nur im zweiten Versuch fest geschützt (Platzhalter verschlechtern sonst den Satzbau)
+  if (strict) for (const term of NIE) {
     const re = new RegExp(`(?<![\\p{L}\\p{N}])${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'gu');
     s = s.replace(re, (m) => token(m));
-  }
-  // Fachbegriffe: feste Übersetzung in der Zielsprache
-  for (const f of FACH) {
-    const src = f[from];
-    const dst = f[to];
-    if (!filled(src) || !filled(dst)) continue;
-    const re = new RegExp(`(?<![\\p{L}\\p{N}])${src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'gu');
-    s = s.replace(re, (m) => token(m[0] === m[0].toUpperCase() && m[0] !== m[0].toLowerCase() ? dst[0].toUpperCase() + dst.slice(1) : dst));
   }
   const xml = esc(s).replace(/\u0000(\d+)\u0000/g, '<x id="$1"/>');
   return { xml, keep };
@@ -169,18 +161,37 @@ let chars = 0;
 const warnings = [];
 const cache = new Map();
 
+const present = (hay, term) => hay.toLowerCase().includes(term.toLowerCase());
+
+async function runOnce(text, from, to, strict) {
+  const { xml, keep } = protect(text, from, to, strict);
+  const [out] = await providers[PROVIDER]([xml], from, to);
+  const { text: result, missing } = restore(out, keep);
+  const lost = NIE.filter((t) => present(text, t) && !present(result, t));
+  return { result, missing, lost };
+}
+
 async function translateText(text, from, to) {
   if (!filled(text) || from === to) return text;
   const key = `${from}|${to}|${text}`;
   if (cache.has(key)) return cache.get(key);
   chars += text.length;
   if (DRY) { cache.set(key, `[${to}] ${text}`); return `[${to}] ${text}`; }
-  const { xml, keep } = protect(text, from, to);
-  const [out] = await providers[PROVIDER]([xml], from, to);
-  const { text: result, missing } = restore(out, keep);
-  if (missing.length) warnings.push(`Glossar-Begriff ging verloren (${to}): ${missing.slice(0, 3).join(', ')} – in „${text.slice(0, 50)}…“ bitte prüfen`);
-  cache.set(key, result);
-  return result;
+  // 1. Versuch: natürlicher Satz. Ging ein Glossar-Name verloren, 2. Versuch mit fest geschützten Namen.
+  let r = await runOnce(text, from, to, false);
+  if (r.lost.length) {
+    const r2 = await runOnce(text, from, to, true);
+    if (r2.lost.length <= r.lost.length && !r2.missing.length) r = r2;
+  }
+  if (r.missing.length || r.lost.length) warnings.push(`Glossar prüfen (${to}): ${[...r.missing, ...r.lost].slice(0, 3).join(', ')} – in „${text.slice(0, 50)}…“`);
+  // Fachbegriffe: Hinweis, wenn die festgelegte Übersetzung nicht vorkommt
+  for (const f of FACH) {
+    if (filled(f[from]) && filled(f[to]) && present(text, f[from]) && !present(r.result, f[to])) {
+      warnings.push(`Fachbegriff prüfen (${to}): „${f[from]}“ sollte „${f[to]}“ heißen – in „${text.slice(0, 50)}…“`);
+    }
+  }
+  cache.set(key, r.result);
+  return r.result;
 }
 
 // Markdown blockweise übersetzen; Überschriften-, Listen- und Zitatzeichen bleiben erhalten
@@ -337,6 +348,7 @@ console.log(`Übersetzungsdienst: ${PROVIDER}${DRY ? ' (Probelauf)' : ''} · ${c
 log.forEach((l) => console.log('  ✔ ' + l));
 warnings.forEach((w) => console.log('  ⚠ ' + w));
 if (!log.length && !failed) console.log('  Alles ist bereits übersetzt.');
+if (process.env.GITHUB_STEP_SUMMARY) writeFileSync(process.env.GITHUB_STEP_SUMMARY, `### Übersetzung (${PROVIDER})\n\n${log.map((l) => `- ✔ ${l}`).join('\n') || '- Alles ist bereits übersetzt.'}\n${warnings.map((w) => `- ⚠ ${w}`).join('\n')}\n`, { flag: 'a' });
 if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, `changed=${changed.size ? 'true' : 'false'}\nsummary=${log.slice(0, 5).join('; ').replace(/\n/g, ' ')}\n`, { flag: 'a' });
 if (failed) {
   console.error(`✖ Übersetzung abgebrochen: ${failed.message}`);

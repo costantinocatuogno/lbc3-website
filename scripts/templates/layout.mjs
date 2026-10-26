@@ -100,7 +100,7 @@ ${scripts.map((s) => `<script src="${s}?v=${ctx.version}" defer></script>`).join
 // Sprachvorschlag: erscheint nur, wenn Browser-Sprache oder gemerkte Wahl nicht zur Seite passt. Keine Umleitung.
 function langBanner(lang, path) {
   const data = Object.fromEntries(LANGS.filter((l) => l !== lang).map((l) => [l, {
-    href: url(l, path), text: ui[l].lang_suggest, yes: ui[l].lang_switch, no: ui[l].lang_stay.replace('{lang}', LANG_NAMES[lang])
+    href: url(l, path), text: ui[l].lang_suggest, yes: ui[l].lang_switch, no: ui[l].lang_stay.replace('{lang}', ui[l][`lang_name_${lang}`])
   }]));
   return `<div class="lang-banner" data-lang-banner data-page-lang="${lang}" hidden role="region" aria-label="Language">
   <div class="wrap lang-banner-inner"><p data-lb-text></p><div class="lang-banner-btns"><a class="btn btn-red btn-sm" data-lb-yes href="#"></a><button type="button" class="btn btn-outline btn-sm" data-lb-no></button></div></div>
