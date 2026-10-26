@@ -1,0 +1,48 @@
+# Automatische Übersetzung: läuft nach jedem Speichern im CMS (Änderung unter content/).
+# Fehlende Sprachfassungen (IT/EN/FR bzw. DE) werden ergänzt und als eigener Commit gespeichert.
+# Danach baut Netlify die Website wie gewohnt neu. Schlägt der Lauf fehl, schickt GitHub eine E-Mail.
+name: Inhalte übersetzen
+
+on:
+  push:
+    branches: [main, mehrsprachig]
+    paths: ['content/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: uebersetzen-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  uebersetzen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fehlende Übersetzungen erzeugen
+        id: tr
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          AZURE_TRANSLATOR_KEY: ${{ secrets.AZURE_TRANSLATOR_KEY }}
+          AZURE_TRANSLATOR_REGION: ${{ secrets.AZURE_TRANSLATOR_REGION }}
+          MYMEMORY_EMAIL: ${{ secrets.MYMEMORY_EMAIL }}
+        run: node scripts/translate.mjs
+      - name: Übersetzungen speichern
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain content)" ]; then
+            git config user.name "LBC3 Übersetzung"
+            git config user.email "actions@users.noreply.github.com"
+            git add content
+            git commit -m "Automatisch übersetzt: ${{ steps.tr.outputs.summary }}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          else
+            echo "Nichts zu speichern."
+          fi

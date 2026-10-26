@@ -1,0 +1,345 @@
+// Automatische Übersetzung neuer Inhalte (läuft als GitHub Action nach jedem Speichern im CMS).
+// Übersetzt nur, was noch fehlt – Korrekturen von Hand werden nie überschrieben.
+// Ausnahme: News mit Häkchen „Neu übersetzen“ werden komplett neu übersetzt.
+//
+// Was übersetzt wird:
+//   • News (Titel, Kurztext, Text) aus der Original-Sprache (Deutsch oder Italienisch) in die drei anderen Sprachen
+//   • Galerie: Bildunterschriften (text_it/_en/_fr) sowie Albumtitel, Serie „Hinter den Kulissen“ usw.
+//   • Videos (Titel, Kurztext), Helm-Bildunterschriften, Seitentexte, Kapitel, Steckbrief, Partner-Pakete
+//   • Impressum und Datenschutz nur, wenn noch gar keine Übersetzung existiert (danach von Hand pflegen)
+//
+// Glossar (content/einstellungen/glossar.json): Namen, Serien und Strecken bleiben unverändert,
+// Fachbegriffe bekommen die festgelegte Übersetzung.
+//
+// Dienst (kostenlos, ohne Konto): MyMemory (Translated srl, Rom). Optional per Umgebungsvariable:
+//   DEEPL_API_KEY  → DeepL (Köln)    ·    AZURE_TRANSLATOR_KEY + AZURE_TRANSLATOR_REGION → Microsoft Azure
+//   MYMEMORY_EMAIL → höheres Gratis-Kontingent bei MyMemory (50.000 statt 5.000 Zeichen pro Tag)
+// Aufruf:  node scripts/translate.mjs            (übersetzt und schreibt die Dateien)
+//          node scripts/translate.mjs --dry      (zeigt nur, was übersetzt würde)
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { readJsonFrontmatter, writeJsonFrontmatter } from './lib/content.mjs';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const C = join(ROOT, 'content');
+const LANGS = ['de', 'it', 'en', 'fr'];
+const DRY = process.argv.includes('--dry');
+const filled = (v) => typeof v === 'string' && v.trim() !== '';
+const readJSON = (p) => JSON.parse(readFileSync(p, 'utf8'));
+const writeJSON = (p, d) => writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
+
+const glossar = existsSync(join(C, 'einstellungen/glossar.json')) ? readJSON(join(C, 'einstellungen/glossar.json')) : {};
+const NIE = (glossar.nie_uebersetzen || []).filter(filled).sort((a, b) => b.length - a.length);
+const FACH = (glossar.fachbegriffe || []).filter((f) => f && filled(f.de));
+
+/* ---------------- Dienste ---------------- */
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const unesc = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+
+const providers = {
+  // DeepL: Developer-/Growth-Schlüssel. Schlüssel mit „:fx“ am Ende laufen über den Gratis-Server.
+  async deepl(texts, from, to) {
+    const key = process.env.DEEPL_API_KEY;
+    const host = key.endsWith(':fx') ? 'https://api-free.deepl.com' : 'https://api.deepl.com';
+    const target = { en: 'EN-GB', it: 'IT', fr: 'FR', de: 'DE' }[to];
+    const res = await fetch(`${host}/v2/translate`, {
+      method: 'POST',
+      headers: { Authorization: `DeepL-Auth-Key ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: texts, source_lang: from.toUpperCase(), target_lang: target, tag_handling: 'xml', preserve_formatting: true })
+    });
+    if (!res.ok) throw new Error(`DeepL ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    const data = await res.json();
+    return data.translations.map((t) => t.text);
+  },
+  async azure(texts, from, to) {
+    const res = await fetch(`https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=${from}&to=${to}&textType=html`, {
+      method: 'POST',
+      headers: { 'Ocp-Apim-Subscription-Key': process.env.AZURE_TRANSLATOR_KEY, 'Ocp-Apim-Subscription-Region': process.env.AZURE_TRANSLATOR_REGION || 'westeurope', 'Content-Type': 'application/json' },
+      body: JSON.stringify(texts.map((Text) => ({ Text })))
+    });
+    if (!res.ok) throw new Error(`Azure ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    const data = await res.json();
+    return data.map((d) => d.translations[0].text);
+  },
+  // MyMemory: max. 500 Byte pro Anfrage – längere Texte werden satzweise aufgeteilt
+  async mymemory(texts, from, to) {
+    const out = [];
+    for (const text of texts) {
+      const parts = splitBytes(text, 450);
+      const done = [];
+      for (const part of parts) {
+        const u = new URL('https://api.mymemory.translated.net/get');
+        u.searchParams.set('q', part);
+        u.searchParams.set('langpair', `${from}|${to}`);
+        if (process.env.MYMEMORY_EMAIL) u.searchParams.set('de', process.env.MYMEMORY_EMAIL);
+        const res = await fetch(u);
+        if (!res.ok) throw new Error(`MyMemory ${res.status}`);
+        const data = await res.json();
+        const t = data?.responseData?.translatedText || '';
+        if (Number(data.responseStatus) !== 200 || /MYMEMORY WARNING|QUERY LENGTH LIMIT|INVALID/i.test(t)) throw new Error(`MyMemory: ${t || data.responseDetails || data.responseStatus}`);
+        done.push(t);
+        await new Promise((r) => setTimeout(r, 250)); // freundlich zum Gratis-Dienst
+      }
+      out.push(done.join(' '));
+    }
+    return out;
+  },
+  // Nur für Tests: markiert den Text, statt ihn zu übersetzen
+  async test(texts, from, to) {
+    return texts.map((t) => `[${to}] ${t}`);
+  }
+};
+
+const PROVIDER = process.env.TRANSLATE_PROVIDER || (process.env.DEEPL_API_KEY ? 'deepl' : process.env.AZURE_TRANSLATOR_KEY ? 'azure' : 'mymemory');
+
+function splitBytes(text, max) {
+  if (Buffer.byteLength(text) <= max) return [text];
+  const sentences = text.match(/[^.!?…]+[.!?…]+["“”»«)]*\s*|[^.!?…]+$/g) || [text];
+  const out = [];
+  let cur = '';
+  for (const s of sentences) {
+    if (Buffer.byteLength(cur + s) > max && cur) { out.push(cur.trim()); cur = ''; }
+    if (Buffer.byteLength(s) > max) {
+      // sehr langer Satz: an Kommas/Leerzeichen teilen
+      let rest = s;
+      while (Buffer.byteLength(rest) > max) {
+        let cut = rest.lastIndexOf(' ', Math.floor(max / 2));
+        if (cut < 20) cut = Math.floor(max / 2);
+        out.push(rest.slice(0, cut).trim());
+        rest = rest.slice(cut);
+      }
+      cur = rest;
+    } else cur += s;
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+
+/* ---------------- Schutz: Glossar, Links, Platzhalter ---------------- */
+// Ersetzt geschützte Stellen durch <x id="n"/>, damit der Dienst sie nicht verändert.
+function protect(text, from, to) {
+  const keep = [];
+  const token = (value) => { keep.push(value); return `\u0000${keep.length - 1}\u0000`; };
+  let s = text;
+  // Markdown-Links: Linkziel schützen, Linktext übersetzen
+  s = s.replace(/\]\(([^)\s]+)\)/g, (m, href) => `](${token(href)})`);
+  // Platzhalter wie [DETAILS] oder [TEXT ZUM QUALIFYING]
+  s = s.replace(/\[[A-ZÄÖÜ][A-ZÄÖÜ0-9 :,?–\-]{2,}\]/g, (m) => token(m));
+  // Hashtags, E-Mail-Adressen, Webadressen
+  s = s.replace(/#[\p{L}0-9_]+/gu, (m) => token(m));
+  s = s.replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, (m) => token(m));
+  s = s.replace(/https?:\/\/\S+/g, (m) => token(m));
+  // Nie übersetzen
+  for (const term of NIE) {
+    const re = new RegExp(`(?<![\\p{L}\\p{N}])${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'gu');
+    s = s.replace(re, (m) => token(m));
+  }
+  // Fachbegriffe: feste Übersetzung in der Zielsprache
+  for (const f of FACH) {
+    const src = f[from];
+    const dst = f[to];
+    if (!filled(src) || !filled(dst)) continue;
+    const re = new RegExp(`(?<![\\p{L}\\p{N}])${src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'gu');
+    s = s.replace(re, (m) => token(m[0] === m[0].toUpperCase() && m[0] !== m[0].toLowerCase() ? dst[0].toUpperCase() + dst.slice(1) : dst));
+  }
+  const xml = esc(s).replace(/\u0000(\d+)\u0000/g, '<x id="$1"/>');
+  return { xml, keep };
+}
+
+function restore(xml, keep) {
+  const missing = [];
+  let s = xml.replace(/<x\s+id\s*=\s*"(\d+)"\s*\/?>(?:<\/x>)?/gi, (m, n) => (keep[Number(n)] ?? ''));
+  keep.forEach((v, i) => { if (!xml.match(new RegExp(`<x\\s+id\\s*=\\s*"${i}"`, 'i'))) missing.push(v); });
+  s = unesc(s).replace(/\s+([,.;:!?])(?=\s|$)/g, (m, p) => (/[:;!?]/.test(p) ? m : p));
+  return { text: s, missing };
+}
+
+/* ---------------- Übersetzen ---------------- */
+// Lohnt sich eine Übersetzung? Nicht bei reinen Zahlen oder Texten, die nur aus Glossar-Namen bestehen
+// (z. B. „ADAC Kart Masters Ampfing 2026“) – dort zeigt die Website automatisch das Original.
+function worth(text) {
+  if (!filled(text)) return false;
+  let s = String(text);
+  for (const term of NIE) s = s.split(term).join(' ');
+  return /\p{L}{2,}/u.test(s.replace(/#[\p{L}0-9_]+/gu, ' '));
+}
+
+let chars = 0;
+const warnings = [];
+const cache = new Map();
+
+async function translateText(text, from, to) {
+  if (!filled(text) || from === to) return text;
+  const key = `${from}|${to}|${text}`;
+  if (cache.has(key)) return cache.get(key);
+  chars += text.length;
+  if (DRY) { cache.set(key, `[${to}] ${text}`); return `[${to}] ${text}`; }
+  const { xml, keep } = protect(text, from, to);
+  const [out] = await providers[PROVIDER]([xml], from, to);
+  const { text: result, missing } = restore(out, keep);
+  if (missing.length) warnings.push(`Glossar-Begriff ging verloren (${to}): ${missing.slice(0, 3).join(', ')} – in „${text.slice(0, 50)}…“ bitte prüfen`);
+  cache.set(key, result);
+  return result;
+}
+
+// Markdown blockweise übersetzen; Überschriften-, Listen- und Zitatzeichen bleiben erhalten
+async function translateMarkdown(md, from, to) {
+  if (!filled(md)) return md;
+  const lines = md.replace(/\r\n/g, '\n').split('\n');
+  const out = [];
+  for (const line of lines) {
+    if (!line.trim()) { out.push(line); continue; }
+    const m = line.match(/^(\s*(?:#{1,6}\s+|[-*]\s+|\d+[.)]\s+|>\s?)?)(.*)$/);
+    const pre = m[1] || '';
+    const body = m[2] || '';
+    // Bilder ![alt](src) nicht anfassen
+    if (/^!\[[^\]]*\]\([^)]+\)\s*$/.test(body)) { out.push(line); continue; }
+    out.push(pre + await translateText(body, from, to));
+  }
+  return out.join('\n');
+}
+
+const others = (src) => LANGS.filter((l) => l !== src);
+const changed = new Set();
+const log = [];
+
+/* ---------------- News ---------------- */
+async function doNews() {
+  const dir = join(C, 'news');
+  if (!existsSync(dir)) return;
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.md'))) {
+    const p = join(dir, f);
+    const { data, body } = readJsonFrontmatter(p);
+    const src = LANGS.includes(data.sprache) ? data.sprache : 'de';
+    const force = data.neu_uebersetzen === true;
+    let touched = false;
+    for (const to of others(src)) {
+      const block = { ...(data[to] || {}) };
+      const need = (k) => force || !filled(block[k]);
+      if (filled(data.titel) && need('titel')) { block.titel = await translateText(data.titel, src, to); touched = true; }
+      if (filled(data.teaser) && need('teaser')) { block.teaser = await translateText(data.teaser, src, to); touched = true; }
+      if (filled(body) && need('text')) { block.text = await translateMarkdown(body, src, to); touched = true; }
+      data[to] = block;
+    }
+    if (touched || force) {
+      if (force) data.neu_uebersetzen = false;
+      if (!DRY) writeJsonFrontmatter(p, data, body);
+      changed.add(`content/news/${f}`); log.push(`News „${data.titel}“ → ${others(src).join(', ')}`);
+    }
+  }
+}
+
+/* ---------------- Galerie ---------------- */
+async function doAlben() {
+  const dir = join(C, 'alben');
+  if (!existsSync(dir)) return;
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+    const p = join(dir, f);
+    const a = readJSON(p);
+    let n = 0;
+    for (const b of a.bilder || []) {
+      if (!b || !worth(b.text)) continue;
+      for (const to of others('de')) {
+        if (!filled(b[`text_${to}`])) {
+          b[`text_${to}`] = await translateText(b.text, 'de', to); n++;
+        }
+      }
+    }
+    // Albumtexte: Titel immer; Serie/Strecke nur, wenn sie kein Eigenname aus dem Glossar sind
+    const isName = (v) => NIE.some((t) => t.toLowerCase() === String(v || '').trim().toLowerCase());
+    for (const to of others('de')) {
+      const block = { ...(a[to] || {}) };
+      for (const k of ['titel', 'serie', 'strecke', 'unteralbum']) {
+        if (!worth(a[k]) || filled(block[k])) continue;
+        if (k !== 'titel' && isName(a[k])) continue;
+        if (k === 'strecke' && isName(a.serie)) continue; // Rennalben: Strecke ist ein Ort und bleibt
+        block[k] = await translateText(a[k], 'de', to); n++;
+      }
+      if (Object.keys(block).length) a[to] = block;
+    }
+    if (n) { if (!DRY) writeJSON(p, a); changed.add(`content/alben/${f}`); log.push(`Album „${a.titel || f}“: ${n} Texte`); }
+  }
+}
+
+/* ---------------- Einstellungen, Kapitel, Pakete ---------------- */
+async function doI18nObject(p, label, skip = []) {
+  const d = readJSON(p);
+  const de = d.de || {};
+  let n = 0;
+  for (const to of others('de')) {
+    const block = d[to] || (d[to] = {});
+    for (const [k, v] of Object.entries(de)) {
+      if (skip.includes(k) || typeof v !== 'string' || !worth(v) || filled(block[k])) continue;
+      block[k] = await translateText(v, 'de', to); n++;
+    }
+  }
+  if (Array.isArray(de.helm_bilder)) {
+    for (const b of de.helm_bilder) {
+      if (!b || !filled(b.text)) continue;
+      for (const to of others('de')) if (!filled(b[`text_${to}`])) { b[`text_${to}`] = await translateText(b.text, 'de', to); n++; }
+    }
+  }
+  if (n) { if (!DRY) writeJSON(p, d); changed.add(p.slice(ROOT.length + 1)); log.push(`${label}: ${n} Texte`); }
+}
+
+async function doSite() {
+  const p = join(C, 'einstellungen/site.json');
+  const d = readJSON(p);
+  let n = 0;
+  const vids = [...(d.videos || []), d.video_breit].filter(Boolean);
+  for (const v of vids) for (const k of ['titel', 'text']) {
+    if (!worth(v[k])) continue;
+    for (const to of others('de')) if (!filled(v[`${k}_${to}`])) { v[`${k}_${to}`] = await translateText(v[k], 'de', to); n++; }
+  }
+  for (const k of ['impressum', 'datenschutz']) {
+    if (!filled(d[k])) continue;
+    for (const to of others('de')) if (!filled(d[`${k}_${to}`])) { d[`${k}_${to}`] = await translateMarkdown(d[k], 'de', to); n++; }
+  }
+  if (n) { if (!DRY) writeJSON(p, d); changed.add('content/einstellungen/site.json'); log.push(`Einstellungen (Videos/Rechtliches): ${n} Texte`); }
+}
+
+async function doPakete() {
+  const dir = join(C, 'pakete');
+  if (!existsSync(dir)) return;
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+    const p = join(dir, f);
+    const d = readJSON(p);
+    let n = 0;
+    for (const to of others('de')) {
+      if (filled(d.untertitel) && !filled(d[`untertitel_${to}`])) { d[`untertitel_${to}`] = await translateText(d.untertitel, 'de', to); n++; }
+      if (Array.isArray(d.leistungen) && d.leistungen.length && !(Array.isArray(d[`leistungen_${to}`]) && d[`leistungen_${to}`].length)) {
+        d[`leistungen_${to}`] = [];
+        for (const l of d.leistungen) d[`leistungen_${to}`].push(await translateText(l, 'de', to));
+        n++;
+      }
+    }
+    if (n) { if (!DRY) writeJSON(p, d); changed.add(`content/pakete/${f}`); log.push(`Paket „${d.name}“: ${n} Texte`); }
+  }
+}
+
+/* ---------------- Ablauf ---------------- */
+let failed = null;
+try {
+  await doNews();
+  await doAlben();
+  await doSite();
+  await doI18nObject(join(C, 'einstellungen/texte.json'), 'Seitentexte');
+  await doI18nObject(join(C, 'einstellungen/fahrer.json'), 'Steckbrief', ['team_link']);
+  const kdir = join(C, 'kapitel');
+  if (existsSync(kdir)) for (const f of readdirSync(kdir).filter((x) => x.endsWith('.json'))) await doI18nObject(join(kdir, f), `Kapitel ${f}`, ['nummer', 'bild']);
+  await doPakete();
+} catch (err) {
+  failed = err;
+}
+
+console.log(`Übersetzungsdienst: ${PROVIDER}${DRY ? ' (Probelauf)' : ''} · ${chars} Zeichen`);
+log.forEach((l) => console.log('  ✔ ' + l));
+warnings.forEach((w) => console.log('  ⚠ ' + w));
+if (!log.length && !failed) console.log('  Alles ist bereits übersetzt.');
+if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, `changed=${changed.size ? 'true' : 'false'}\nsummary=${log.slice(0, 5).join('; ').replace(/\n/g, ' ')}\n`, { flag: 'a' });
+if (failed) {
+  console.error(`✖ Übersetzung abgebrochen: ${failed.message}`);
+  console.error('  Bereits fertige Übersetzungen wurden gespeichert. Der Rest wird beim nächsten Speichern erneut versucht.');
+  process.exit(1);
+}
