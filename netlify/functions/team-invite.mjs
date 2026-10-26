@@ -15,7 +15,8 @@ export default handle(async (req) => {
 
   if (email === String(me.email || '').toLowerCase()) throw new HttpError(400, 'Das ist deine eigene Adresse – dein Admin-Zugang bleibt unverändert. Für einen Test bitte eine andere Adresse verwenden (z. B. contact@).');
 
-  const redirectTo = `${siteUrl()}${langPrefix(sprache)}/login/`;
+  // Immer /login/ (in Supabase als erlaubte Adresse eingetragen); die Login-Seite leitet in die Sprache aus der Einladung weiter
+  const redirectTo = `${siteUrl()}/login/`;
   let user;
   let link = null;
   try {

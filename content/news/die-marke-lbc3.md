@@ -11,17 +11,20 @@
   "it": {
     "titel": "È nato il marchio LBC3",
     "teaser": "Logo, casco, hashtag: come le iniziali e il numero di gara sono diventati un marchio.",
-    "text": "Logo, casco, hashtag: come le iniziali **L**uigi **B**attista **C**atuogno e il numero di gara **3** sono diventati un marchio. [DETAILS]"
+    "text": "Logo, casco, hashtag: come le iniziali **L**uigi **B**attista **C**atuogno e il numero di gara **3** sono diventati un marchio. [DETAILS]",
+    "_quelle": "8872cb896dac"
   },
   "en": {
     "titel": "The LBC3 brand is born",
     "teaser": "Logo, helmet, hashtag: how the initials and the race number became a brand.",
-    "text": "Logo, helmet, hashtag: how the initials **L**uigi **B**attista **C**atuogno and race number **3** became a brand. [DETAILS]"
+    "text": "Logo, helmet, hashtag: how the initials **L**uigi **B**attista **C**atuogno and race number **3** became a brand. [DETAILS]",
+    "_quelle": "8872cb896dac"
   },
   "fr": {
     "titel": "La marque LBC3 est née",
     "teaser": "Logo, casque, hashtag : comment les initiales et le numéro de course sont devenus une marque.",
-    "text": "Logo, casque, hashtag : comment les initiales **L**uigi **B**attista **C**atuogno et le numéro de course **3** sont devenus une marque. [DETAILS]"
+    "text": "Logo, casque, hashtag : comment les initiales **L**uigi **B**attista **C**atuogno et le numéro de course **3** sont devenus une marque. [DETAILS]",
+    "_quelle": "8872cb896dac"
   }
 }
 

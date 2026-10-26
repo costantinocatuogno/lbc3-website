@@ -19,6 +19,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 import { readJsonFrontmatter, writeJsonFrontmatter } from './lib/content.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -109,6 +110,9 @@ function splitBytes(text, max) {
       while (Buffer.byteLength(rest) > max) {
         let cut = rest.lastIndexOf(' ', Math.floor(max / 2));
         if (cut < 20) cut = Math.floor(max / 2);
+        // nie mitten in einem Schutz-Platzhalter <x id="…"/> trennen
+        const lt = rest.lastIndexOf('<', cut);
+        if (lt > rest.lastIndexOf('>', cut) && lt > 0) cut = lt;
         out.push(rest.slice(0, cut).trim());
         rest = rest.slice(cut);
       }
@@ -186,7 +190,17 @@ async function translateText(text, from, to) {
     const r2 = await runOnce(text, from, to, true);
     if (r2.lost.length <= r.lost.length && !r2.missing.length) r = r2;
   }
-  if (r.missing.length || r.lost.length) warnings.push(`Glossar prüfen (${to}): ${[...r.missing, ...r.lost].slice(0, 3).join(', ')} – in „${text.slice(0, 50)}…“`);
+  if (r.missing.length) {
+    // Links oder Platzhalter gingen kaputt: lieber den Originalsatz behalten als einen beschädigten Link speichern
+    const r3 = await runOnce(text, from, to, true);
+    if (!r3.missing.length) r = r3;
+    else {
+      warnings.push(`Nicht übersetzt (${to}), Link/Platzhalter wäre beschädigt worden – bitte von Hand übersetzen: „${text.slice(0, 60)}…“`);
+      cache.set(key, text);
+      return text;
+    }
+  }
+  if (r.lost.length) warnings.push(`Glossar prüfen (${to}): ${r.lost.slice(0, 3).join(', ')} – in „${text.slice(0, 50)}…“`);
   // Fachbegriffe: Hinweis, wenn die festgelegte Übersetzung nicht vorkommt
   for (const f of FACH) {
     if (filled(f[from]) && filled(f[to]) && present(text, f[from]) && !present(r.result, f[to])) {
@@ -219,6 +233,10 @@ const changed = new Set();
 const log = [];
 
 /* ---------------- News ---------------- */
+// Prüfsumme: erkennt, ob sich das Original seit der letzten Übersetzung geändert hat
+const hash = (...parts) => createHash('sha1').update(parts.map((x) => String(x ?? '')).join('\u0001')).digest('hex').slice(0, 12);
+const blockHash = (b) => hash(b.titel, b.teaser, b.text);
+
 async function doNews() {
   const dir = join(C, 'news');
   if (!existsSync(dir)) return;
@@ -227,14 +245,32 @@ async function doNews() {
     const { data, body } = readJsonFrontmatter(p);
     const src = LANGS.includes(data.sprache) ? data.sprache : 'de';
     const force = data.neu_uebersetzen === true;
+    const srcHash = hash(data.titel, data.teaser, body);
     let touched = false;
+    const w0 = warnings.length;
     for (const to of others(src)) {
       const block = { ...(data[to] || {}) };
-      const need = (k) => force || !filled(block[k]);
-      if (filled(data.titel) && need('titel')) { block.titel = await translateText(data.titel, src, to); touched = true; }
-      if (filled(data.teaser) && need('teaser')) { block.teaser = await translateText(data.teaser, src, to); touched = true; }
-      if (filled(body) && need('text')) { block.text = await translateMarkdown(body, src, to); touched = true; }
+      // Original geändert? Automatische Übersetzung (unverändert) → neu übersetzen.
+      // Von Hand korrigierte Übersetzung → nicht überschreiben, nur Hinweis.
+      let redo = force;
+      if (!force && block._quelle && block._quelle !== srcHash) {
+        if (block._auto && block._auto === blockHash(block)) redo = true;
+        else warnings.push(`News „${data.titel}“ (${to}): Das Original wurde geändert, die Übersetzung ist von Hand angepasst – bitte prüfen oder „Neu übersetzen“ anhaken.`);
+      }
+      const need = (k) => redo || !filled(block[k]);
+      let did = false;
+      if (filled(data.titel) && need('titel')) { block.titel = await translateText(data.titel, src, to); did = true; }
+      if (filled(data.teaser) && need('teaser')) { block.teaser = await translateText(data.teaser, src, to); did = true; }
+      if (filled(body) && need('text')) { block.text = await translateMarkdown(body, src, to); did = true; }
+      if (did) { block._auto = blockHash(block); touched = true; }
+      if (block._quelle !== srcHash && (did || !block._quelle)) { block._quelle = srcHash; touched = true; }
       data[to] = block;
+    }
+    // Hinweise direkt im Beitrag anzeigen (Feld „Hinweis zur Übersetzung“ im CMS)
+    const hinweis = warnings.slice(w0).map((w) => w.replace(/^News „[^“]*“ /, '')).join(' · ').slice(0, 900);
+    if ((data.uebersetzung_hinweis || '') !== hinweis && (touched || hinweis || data.uebersetzung_hinweis)) {
+      if (hinweis) data.uebersetzung_hinweis = hinweis; else delete data.uebersetzung_hinweis;
+      touched = true;
     }
     if (touched || force) {
       if (force) data.neu_uebersetzen = false;

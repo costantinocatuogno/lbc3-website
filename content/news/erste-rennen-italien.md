@@ -11,17 +11,20 @@
   "it": {
     "titel": "Prime gare internazionali in Italia",
     "teaser": "Il prossimo passo: Luigi correrà nel 2026/27 sulle piste di kart italiane.",
-    "text": "Il prossimo passo: Luigi correrà nel 2026/27 sulle piste di kart italiane. [DETAILS: Serie, Strecken, Team]"
+    "text": "Il prossimo passo: Luigi correrà nel 2026/27 sulle piste di kart italiane. [DETAILS: Serie, Strecken, Team]",
+    "_quelle": "d00ddceb1a94"
   },
   "en": {
     "titel": "First international races in Italy",
     "teaser": "The next step: Luigi will race on Italy’s kart tracks in 2026/27.",
-    "text": "The next step: Luigi will race on Italy’s kart tracks in 2026/27. [DETAILS: Serie, Strecken, Team]"
+    "text": "The next step: Luigi will race on Italy’s kart tracks in 2026/27. [DETAILS: Serie, Strecken, Team]",
+    "_quelle": "d00ddceb1a94"
   },
   "fr": {
     "titel": "Premières courses internationales en Italie",
     "teaser": "L’étape suivante : Luigi courra en 2026/27 sur les circuits de karting italiens.",
-    "text": "L’étape suivante : Luigi courra en 2026/27 sur les circuits de karting italiens. [DETAILS: Serie, Strecken, Team]"
+    "text": "L’étape suivante : Luigi courra en 2026/27 sur les circuits de karting italiens. [DETAILS: Serie, Strecken, Team]",
+    "_quelle": "d00ddceb1a94"
   }
 }
 

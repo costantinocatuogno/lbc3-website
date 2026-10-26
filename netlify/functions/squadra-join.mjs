@@ -1,7 +1,7 @@
 // Beitritt zur Squadra Tre (kostenlos als Freund/Fan oder als Unterstützer mit Beitrag).
 // Nimmt Formular-Daten inkl. optionalem Foto entgegen, speichert alles privat und schickt eine Bestätigungs-E-Mail (Double-Opt-in).
 // Nichts wird öffentlich, bevor die E-Mail bestätigt UND das Foto von der Familie freigegeben wurde.
-import { handle, json, sb, sbUpload, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, kurzName, cleanHandle } from './_lib/common.mjs';
+import { handle, json, sb, sbUpload, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, kurzName, cleanHandle, looksLikeBot } from './_lib/common.mjs';
 import { JOIN as TEXT, ERR, pickLang, langPrefix } from './_lib/texte.mjs';
 
 const yes = (v) => !!v && v !== 'false' && v !== '0';
@@ -13,7 +13,7 @@ export default handle(async (req) => {
   const lang = pickLang(b.lang);
   const E = ERR[lang];
   const wantsJson = (req.headers.get('accept') || '').includes('application/json');
-  if (b.website) return json({ ok: true }); // Honeypot: Bots still ignorieren
+  if (b.website || looksLikeBot(b)) return json({ ok: true }); // Bots still ignorieren (Honeypot + Zeitstempel)
 
   const name = String(b.name || '').trim().slice(0, 120);
   const email = String(b.email || '').trim().toLowerCase().slice(0, 200);

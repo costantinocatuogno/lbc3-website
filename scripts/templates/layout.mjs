@@ -81,7 +81,7 @@ ${alternates && !noindex ? langBanner(lang, path) : ''}
         ${langSwitch}
         <a class="icon-btn" href="${esc(site.instagram)}" rel="noopener" target="_blank" aria-label="Instagram ${esc(site.instagram_handle)}">${icon.instagram}</a>
         ${showReplay ? `<button class="icon-btn" type="button" data-intro-replay aria-label="${_('intro_replay')}">${icon.play}</button>` : ''}
-        <a class="btn btn-outline btn-sm" href="/login/">${icon.lock}<span>${_('login')}</span></a>
+        <a class="btn btn-outline btn-sm" href="${url(lang, '/login/')}">${icon.lock}<span>${_('login')}</span></a>
       </div>
     </nav>
   </div>
@@ -102,7 +102,7 @@ function langBanner(lang, path) {
   const data = Object.fromEntries(LANGS.filter((l) => l !== lang).map((l) => [l, {
     href: url(l, path), text: ui[l].lang_suggest, yes: ui[l].lang_switch, no: ui[l].lang_stay.replace('{lang}', ui[l][`lang_name_${lang}`])
   }]));
-  return `<div class="lang-banner" data-lang-banner data-page-lang="${lang}" hidden role="region" aria-label="Language">
+  return `<div class="lang-banner" data-lang-banner data-page-lang="${lang}" hidden role="region" aria-label="${esc(ui[lang].lang_choose)}">
   <div class="wrap lang-banner-inner"><p data-lb-text></p><div class="lang-banner-btns"><a class="btn btn-red btn-sm" data-lb-yes href="#"></a><button type="button" class="btn btn-outline btn-sm" data-lb-no></button></div></div>
   <script type="application/json" data-lb-data>${JSON.stringify(data).replace(/</g, '\\u003c')}</script>
 </div>`;
@@ -122,7 +122,7 @@ function footer(lang, ctx) {
       ${NAV.slice(4).map(([k, h]) => `<a href="${url(lang, h)}">${_(k)}</a>`).join('')}
       <a href="mailto:${esc(site.kontakt_email)}">${esc(site.kontakt_email)}</a>
       <a href="${esc(site.instagram)}" rel="noopener" target="_blank">Instagram ${esc(site.instagram_handle)}</a>
-      <a href="/login/" class="gold">${_('login_sponsors')}</a>
+      <a href="${url(lang, '/login/')}" class="gold">${_('login_sponsors')}</a>
     </div>
   </div>
   <div class="wrap footer-legal">

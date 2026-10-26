@@ -70,6 +70,7 @@ export function joinForm(lang, ctx) {
 <div class="card form-card" id="beitreten">
   <form class="form" data-squadra-form method="post" action="/api/squadra-join" enctype="multipart/form-data" novalidate>
     <input type="hidden" name="lang" value="${lang}">
+    <input type="hidden" name="t" value="" data-ts>
     <p class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></p>
     <h3 class="h2">${_('join_title')}</h3>
 

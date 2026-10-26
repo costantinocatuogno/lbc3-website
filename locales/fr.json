@@ -372,5 +372,6 @@
   "lang_name_de": "allemand",
   "lang_name_it": "italien",
   "lang_name_en": "anglais",
-  "lang_name_fr": "français"
+  "lang_name_fr": "français",
+  "kontakt_err": "Merci d’indiquer ton nom, une adresse e-mail valide et ton message, et d’accepter la politique de confidentialité."
 }

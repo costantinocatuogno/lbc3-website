@@ -372,5 +372,6 @@
   "lang_name_de": "Deutsch",
   "lang_name_it": "Italienisch",
   "lang_name_en": "Englisch",
-  "lang_name_fr": "Französisch"
+  "lang_name_fr": "Französisch",
+  "kontakt_err": "Bitte Name, eine gültige E-Mail-Adresse und deine Nachricht angeben und der Datenschutzerklärung zustimmen."
 }

@@ -372,5 +372,6 @@
   "lang_name_de": "German",
   "lang_name_it": "Italian",
   "lang_name_en": "English",
-  "lang_name_fr": "French"
+  "lang_name_fr": "French",
+  "kontakt_err": "Please enter your name, a valid email address and your message, and accept the privacy policy."
 }

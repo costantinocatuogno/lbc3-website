@@ -62,7 +62,7 @@ ${lightbox(lang)}`;
     ogImage: img(n.vorschaubild || n.titelbild, 1200),
     jsonLd: {
       '@context': 'https://schema.org', '@type': 'NewsArticle', headline: n.titel, description: n.teaser || undefined,
-      datePublished: n.datum, image: [`${ctx.siteUrl}${n.vorschaubild || n.titelbild}`],
+      datePublished: n.datum, image: (n.vorschaubild || n.titelbild) ? [`${ctx.siteUrl}${n.vorschaubild || n.titelbild}`] : undefined,
       inLanguage: n.sprache_angezeigt || lang, mainEntityOfPage: `${ctx.siteUrl}${url(lang, `/news/${n.slug}/`)}`,
       about: { '@type': 'Person', name: 'Luigi Battista Catuogno' },
       author: { '@type': 'Organization', name: 'LBC3', url: ctx.siteUrl }
@@ -208,7 +208,7 @@ export function kalender(lang, ctx) {
     <tr${r.status === 'nicht_gefahren' ? ' class="is-dns"' : ''}>
       <td>${formatDate(r.start, lang)}</td><td>${esc(r.serie)}</td><td><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(_(`land_${r.land}`) === `land_${r.land}` ? r.land : _(`land_${r.land}`))}</span>` : ''}</td>
       <td>${esc(r.qualifying || '–')}</td><td>${esc(r.heat1 || '–')}</td><td>${esc(r.heat2 || '–')}</td><td class="red strong">${r.finale ? `P${esc(r.finale)}` : '–'}</td>
-      <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'angemeldet' ? 'is-reg' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
+      <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'angemeldet' ? 'is-reg' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? (lang !== 'de' && r[`grund_${lang}`]) || r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
     </tr>`).join('');
   const body = `
 ${pageHead('/on-track', _('kal_title'))}
@@ -443,7 +443,7 @@ ${sponsorWall(lang, wall)}
       <div class="card"><div class="step-num">03</div><h3 class="h3">${_('tr3_t')}</h3><p>${_('tr3')}</p></div>
     </div>
   </details>
-  <a class="btn btn-dark" href="/login/">${icon.lock}<span>${_('login_sponsors')}</span></a>
+  <a class="btn btn-dark" href="${url(lang, '/login/')}">${icon.lock}<span>${_('login_sponsors')}</span></a>
 </section>`;
   return layout({ lang, path: '/partner/', title: _('nav_partner'), description: _('desc_partner'), body, ctx, active: '/partner/', sponsorBanner: false });
 }
@@ -463,10 +463,12 @@ export function kontakt(lang, ctx) {
     ${picture(c.site.off_track_bild, _('alt_kart_check'), { width: 900, cls: 'rounded' })}
   </div>
   <div class="card form-card">
-    <form class="form" name="kontakt" method="POST" action="/api/kontakt">
+    <form class="form" name="kontakt" method="POST" action="/api/kontakt" data-ts-form>
+      <input type="hidden" name="t" value="">
       <input type="hidden" name="sprache" value="${lang}">
       <p class="hp" aria-hidden="true"><label>${_('honeypot')} <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-      <h2 class="h2">${_('write_msg')}</h2>
+      <h2 class="h2" id="nachricht">${_('write_msg')}</h2>
+      <p class="form-msg is-error" data-kontakt-err hidden>${_('kontakt_err')}</p>
       <label class="field"><span>${_('f_name')}</span><input name="name" required autocomplete="name"></label>
       <label class="field"><span>${_('f_email')}</span><input name="email" type="email" required autocomplete="email"></label>
       <label class="field"><span>${_('f_company')}</span><input name="firma" autocomplete="organization"></label>

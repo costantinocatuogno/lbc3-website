@@ -73,7 +73,7 @@ const topbar = (title, extra = '', lang = 'de', path = '') => {
       <span class="muted-light small" data-user-label></span>
       ${extra}
       ${path ? langLinks(lang, path) : ''}
-      <a class="app-link" href="/vorschau/">${_('p_to_site')}</a>
+      <a class="app-link" href="${url(lang, '/')}">${_('p_to_site')}</a>
       <button type="button" class="btn btn-ghost-light btn-sm" data-logout>${_('p_logout')}</button>
     </div>
   </div>

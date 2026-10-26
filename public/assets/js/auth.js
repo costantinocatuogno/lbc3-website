@@ -81,7 +81,9 @@
 
     const setPwForm = $('[data-setpw-form]');
     const hash = new URLSearchParams(location.hash.slice(1));
-    const isInviteOrReset = ['invite', 'recovery'].includes(hash.get('type'));
+    // Links aus E-Mails (Einladung, Passwort, Login-Link) führen immer auf /login/ – nur diese Adresse ist in Supabase erlaubt.
+    // Von dort geht es in die Sprache des Partners weiter: gewählte Sprache, sonst die Sprache aus der Einladung.
+    const isInviteOrReset = ['invite', 'recovery'].includes(hash.get('type')) || new URLSearchParams(location.search).get('setpw') === '1';
 
     sb.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') { loginForm.hidden = true; setPwForm.hidden = false; }
@@ -89,7 +91,13 @@
 
     (async () => {
       const { data: { session } } = await sb.auth.getSession();
-      if (session && isInviteOrReset) { loginForm.hidden = true; setPwForm.hidden = false; return; }
+      if (session && isInviteOrReset) {
+        let want = null;
+        try { want = localStorage.getItem('lbc3-lang'); } catch (e) { /* privat */ }
+        want = want || (session.user && session.user.user_metadata && session.user.user_metadata.sprache) || LANG;
+        if (LANG === 'de' && want !== 'de' && ['it', 'en', 'fr'].includes(want)) { location.replace(`/${want}/login/?setpw=1`); return; }
+        loginForm.hidden = true; setPwForm.hidden = false; return;
+      }
       if (session) goToArea();
     })();
 
@@ -114,14 +122,14 @@
     $('[data-magic]').addEventListener('click', async () => {
       const email = loginForm.email.value.trim();
       if (!email) { showMsg(T('pj_need_email', 'Bitte zuerst die E-Mail-Adresse eingeben.'), true); return; }
-      const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}${LOGIN}` } });
+      const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/login/` } });
       showMsg(error ? T('pj_magic_err', 'Login-Link konnte nicht gesendet werden.') : T('pj_magic_ok', 'Falls ein Zugang existiert, ist der Login-Link unterwegs. Bitte Postfach prüfen.'), !!error);
     });
 
     $('[data-reset]').addEventListener('click', async () => {
       const email = loginForm.email.value.trim();
       if (!email) { showMsg(T('pj_need_email', 'Bitte zuerst die E-Mail-Adresse eingeben.'), true); return; }
-      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}${LOGIN}` });
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/login/` });
       showMsg(error ? T('pj_reset_err', 'E-Mail konnte nicht gesendet werden.') : T('pj_reset_ok', 'Falls ein Zugang existiert, haben wir dir einen Link zum Zurücksetzen geschickt.'), !!error);
     });
 

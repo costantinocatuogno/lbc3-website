@@ -57,6 +57,7 @@ collections:
         required: false
         field: { label: Foto, name: foto, widget: image, media_folder: /public/uploads/news, public_folder: /uploads/news }
       - { label: Text, name: body, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote], editor_components: [image] }
+      - { label: Hinweis zur Übersetzung (automatisch), name: uebersetzung_hinweis, widget: text, required: false, hint: 'Steht hier etwas, bitte die Übersetzungen unten kurz prüfen. Wird beim nächsten Lauf automatisch aktualisiert.' }
       - { label: Neu übersetzen (nach Änderung des Originals anhaken), name: neu_uebersetzen, widget: boolean, default: false, required: false, hint: 'Überschreibt die Übersetzungen beim nächsten Speichern. Ohne Häkchen bleiben deine Korrekturen erhalten.' }
       - { label: 'Übersetzung Deutsch (nur bei italienischem Original)', name: de, widget: object, collapsed: true, required: false, fields: [{ label: Titel, name: titel, widget: string, required: false }, { label: Kurztext, name: teaser, widget: text, required: false }, { label: Text, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
       - { label: 'Übersetzung Italienisch', name: it, widget: object, collapsed: true, required: false, fields: [{ label: Titolo, name: titel, widget: string, required: false }, { label: Testo breve, name: teaser, widget: text, required: false }, { label: Testo, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
@@ -83,7 +84,10 @@ collections:
       - { label: Strecke, name: strecke, widget: string }
       - { label: Land, name: land, widget: select, options: [Deutschland, Italien, Österreich, Schweiz, Frankreich, Belgien, Niederlande, Spanien, Tschechien, Sonstiges], default: Deutschland }
       - { label: Status, name: status, widget: select, options: [{ label: geplant, value: bevorstehend }, { label: angemeldet, value: angemeldet }, { label: gefahren, value: gefahren }, { label: nicht gefahren, value: nicht_gefahren }], default: bevorstehend }
-      - { label: Grund (nur bei „nicht gefahren“), name: grund, widget: string, required: false, hint: 'z. B. Unfall – leer lassen, wenn kein Grund angezeigt werden soll' }
+      - { label: Grund (nur bei „nicht gefahren“), name: grund, widget: string, required: false, hint: 'z. B. Unfall – leer lassen, wenn kein Grund angezeigt werden soll. IT/EN/FR werden automatisch übersetzt.' }
+      - { label: Grund IT (automatisch), name: grund_it, widget: string, required: false }
+      - { label: Grund EN (automatisch), name: grund_en, widget: string, required: false }
+      - { label: Grund FR (automatisch), name: grund_fr, widget: string, required: false }
       - { label: Qualifying (z. B. P4), name: qualifying, widget: string, required: false }
       - { label: Heat 1 (z. B. P3), name: heat1, widget: string, required: false }
       - { label: Heat 2 (z. B. P2), name: heat2, widget: string, required: false }
@@ -141,7 +145,7 @@ collections:
     i18n: true
     fields:
       - { label: Nummer (z. B. 01), name: nummer, widget: string, i18n: duplicate }
-      - { label: Jahr, name: jahr, widget: string, i18n: duplicate }
+      - { label: Jahr, name: jahr, widget: string, i18n: true }
       - { label: Kurztitel (Knopf), name: kurztitel, widget: string, i18n: true }
       - { label: Titel, name: titel, widget: string, i18n: true }
       - { label: Text, name: text, widget: text, i18n: true }

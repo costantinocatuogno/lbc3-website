@@ -51,6 +51,13 @@
     }
   }
 
+  /* ---------- Formulare: Zeitstempel gegen automatisierte Spam-Absendungen ---------- */
+  const tsNow = String(Date.now());
+  $$('[data-ts-form] input[name="t"], input[data-ts]').forEach((i) => { i.value = tsNow; });
+
+  const kErr = $('[data-kontakt-err]');
+  if (kErr && /[?&]fehler=1/.test(location.search)) kErr.hidden = false;
+
   /* ---------- Intro-Video (einmal pro Sitzung) ---------- */
   const intro = $('[data-intro]');
   if (intro) {
