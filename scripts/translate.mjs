@@ -368,6 +368,19 @@ async function doPakete() {
   }
 }
 
+async function doRennen() {
+  const dir = join(C, 'rennen');
+  if (!existsSync(dir)) return;
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+    const p = join(dir, f);
+    const d = readJSON(p);
+    if (!worth(d.grund) || /^unfall$/i.test(String(d.grund).trim())) continue; // „Unfall“ steht fest in den Sprachdateien
+    let n = 0;
+    for (const to of others('de')) if (!filled(d[`grund_${to}`])) { d[`grund_${to}`] = await translateText(d.grund, 'de', to); n++; }
+    if (n) { if (!DRY) writeJSON(p, d); changed.add(`content/rennen/${f}`); log.push(`Rennen ${f}: Grund übersetzt`); }
+  }
+}
+
 /* ---------------- Ablauf ---------------- */
 let failed = null;
 try {
@@ -379,6 +392,7 @@ try {
   const kdir = join(C, 'kapitel');
   if (existsSync(kdir)) for (const f of readdirSync(kdir).filter((x) => x.endsWith('.json'))) await doI18nObject(join(kdir, f), `Kapitel ${f}`, ['nummer', 'bild']);
   await doPakete();
+  await doRennen();
 } catch (err) {
   failed = err;
 }
