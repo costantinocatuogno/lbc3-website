@@ -203,7 +203,11 @@ export function kalender(lang, ctx) {
   const _ = t(lang);
   const c = ctx.content;
   const seasons = c.saisons.length ? c.saisons : [new Date().getFullYear()];
-  const current = seasons.find((s) => c.rennen.some((r) => Number(r.saison) === s && r.status === 'gefahren')) || seasons[0];
+  // Immer der aktuelle Kalender: die erste Saison, in der noch ein Rennen bevorsteht.
+  // Sind im laufenden Jahr keine Rennen mehr geplant, erscheint automatisch das nächste Jahr. Gibt es keine kommenden Rennen, die neueste Saison.
+  const today = new Date().toISOString().slice(0, 10);
+  const lastDate = (s) => c.rennen.filter((r) => Number(r.saison) === s).map((r) => String(r.start || '').slice(0, 10)).sort().pop() || '';
+  const current = seasons.find((s) => lastDate(s) >= today) || seasons[seasons.length - 1];
   const rows = (s) => c.rennen.filter((r) => Number(r.saison) === s).sort((a, b) => String(a.start).localeCompare(String(b.start))).map((r) => `
     <tr${r.status === 'nicht_gefahren' ? ' class="is-dns"' : ''}>
       <td>${formatDate(r.start, lang)}</td><td>${esc(r.serie)}</td><td><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(_(`land_${r.land}`) === `land_${r.land}` ? r.land : _(`land_${r.land}`))}</span>` : ''}</td>
@@ -216,7 +220,7 @@ ${pageHead('/on-track', _('kal_title'))}
 <section class="wrap section" data-seasons>
   <div class="section-head">
     <h2 class="h2">${_('season')}</h2>
-    <div class="pill-row">${seasons.map((s) => `<button type="button" class="pill${s === current ? ' is-active' : ''}" data-season="${s}" aria-pressed="${s === current}">${s}</button>`).join('')}</div>
+    <div class="pill-row">${[...seasons].reverse().map((s) => `<button type="button" class="pill${s === current ? ' is-active' : ''}" data-season="${s}" data-season-end="${lastDate(s)}" aria-pressed="${s === current}">${s}</button>`).join('')}</div>
   </div>
   ${seasons.map((s) => `
   <div class="table-box" data-season-panel="${s}"${s === current ? '' : ' hidden'}>

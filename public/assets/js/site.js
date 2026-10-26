@@ -162,9 +162,18 @@
 
   /* ---------- Saison-Umschalter ---------- */
   $$('[data-seasons]').forEach((root) => {
-    $$('[data-season]', root).forEach((btn) => btn.addEventListener('click', () => {
-      $$('[data-season]', root).forEach((b) => { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
+    const btns = $$('[data-season]', root);
+    const show = (btn) => {
+      btns.forEach((b) => { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
       $$('[data-season-panel]', root).forEach((p) => { p.hidden = p.dataset.seasonPanel !== btn.dataset.season; });
+    };
+    // Auch ohne neuen Build (z. B. am Jahreswechsel): erste Saison mit noch kommenden Rennen, sonst die neueste
+    const today = new Date().toISOString().slice(0, 10);
+    const asc = [...btns].sort((a, b) => Number(a.dataset.season) - Number(b.dataset.season));
+    const pick = asc.find((b) => (b.dataset.seasonEnd || '') >= today) || asc[asc.length - 1];
+    if (pick && !pick.classList.contains('is-active')) show(pick);
+    btns.forEach((btn) => btn.addEventListener('click', () => {
+      show(btn);
     }));
   });
 
