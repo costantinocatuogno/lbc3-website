@@ -50,9 +50,10 @@ export function newsDetail(lang, ctx, n) {
   <a class="link back" href="${url(lang, '/news/')}">${icon.prev} ${_('back_news')}</a>
   <div class="meta"><span class="badge-red">${_(`cat_${n.kategorie}`)}</span><span>${formatDate(n.datum, lang, { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
   <h1 class="h1">${esc(n.titel)}</h1>
-  ${n.teaser ? `<p class="lead">${esc(n.teaser)}</p>` : ''}
+  ${n.unuebersetzt ? `<p class="note-box small">${_('news_untranslated')}</p>` : ''}
+  ${n.teaser ? `<p class="lead"${n.unuebersetzt ? ` lang="${n.sprache_angezeigt}"` : ''}>${esc(n.teaser)}</p>` : ''}
   ${picture(n.titelbild, n.titel, { width: 1600, cls: 'article-hero', eager: true })}
-  <div class="prose">${markdown(n.body)}</div>
+  <div class="prose"${n.unuebersetzt ? ` lang="${n.sprache_angezeigt}"` : ''}>${markdown(n.body, lang)}</div>
   ${gal.length ? `<div class="grid-3 article-gallery" data-lightbox-group>${gal.map((g, i) => `<button type="button" class="square-photo" data-lightbox-index="${i}" data-full="${esc(img(g, 1800))}" data-caption="${esc(n.titel)}" aria-label="${_('enlarge')}">${picture(g, n.titel, { width: 600 })}</button>`).join('')}</div>` : ''}
 </article>
 ${lightbox(lang)}`;
@@ -62,7 +63,7 @@ ${lightbox(lang)}`;
     jsonLd: {
       '@context': 'https://schema.org', '@type': 'NewsArticle', headline: n.titel, description: n.teaser || undefined,
       datePublished: n.datum, image: [`${ctx.siteUrl}${n.vorschaubild || n.titelbild}`],
-      inLanguage: 'de', mainEntityOfPage: `${ctx.siteUrl}${url(lang, `/news/${n.slug}/`)}`,
+      inLanguage: n.sprache_angezeigt || lang, mainEntityOfPage: `${ctx.siteUrl}${url(lang, `/news/${n.slug}/`)}`,
       about: { '@type': 'Person', name: 'Luigi Battista Catuogno' },
       author: { '@type': 'Organization', name: 'LBC3', url: ctx.siteUrl }
     }
@@ -88,7 +89,7 @@ export function ueber(lang, ctx) {
     <p class="lead">${esc(tx.ueber_intro)}</p>
   </div>
   <div class="about-photo">
-    ${picture(c.site.hero_bild, 'Luigi im Kart', { width: 1000, sizes: '(max-width: 760px) 100vw, 45vw', eager: true })}
+    ${picture(c.site.hero_bild, _('alt_hero'), { width: 1000, sizes: '(max-width: 760px) 100vw, 45vw', eager: true })}
     <span class="about-3" aria-hidden="true">3</span>
   </div>
 </section>
@@ -205,7 +206,7 @@ export function kalender(lang, ctx) {
   const current = seasons.find((s) => c.rennen.some((r) => Number(r.saison) === s && r.status === 'gefahren')) || seasons[0];
   const rows = (s) => c.rennen.filter((r) => Number(r.saison) === s).sort((a, b) => String(a.start).localeCompare(String(b.start))).map((r) => `
     <tr${r.status === 'nicht_gefahren' ? ' class="is-dns"' : ''}>
-      <td>${formatDate(r.start, lang)}</td><td>${esc(r.serie)}</td><td><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(r.land)}</span>` : ''}</td>
+      <td>${formatDate(r.start, lang)}</td><td>${esc(r.serie)}</td><td><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(_(`land_${r.land}`) === `land_${r.land}` ? r.land : _(`land_${r.land}`))}</span>` : ''}</td>
       <td>${esc(r.qualifying || '–')}</td><td>${esc(r.heat1 || '–')}</td><td>${esc(r.heat2 || '–')}</td><td class="red strong">${r.finale ? `P${esc(r.finale)}` : '–'}</td>
       <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'angemeldet' ? 'is-reg' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
     </tr>`).join('');
@@ -300,12 +301,12 @@ export function galerieAlbum(lang, ctx, a) {
   const serie = c.serien.find((s) => s.slug === a.serieSlug);
   const top = a.parent || a;
   const siblings = serie ? serie.alben.filter((x) => x !== top).slice(0, 3) : [];
-  const name = a.parent ? `${a.strecke} – ${a.unteralbum}` : a.strecke;
+  const name = a.parent ? `${a.strecke} – ${(a.unteralbum_titel || a.unteralbum)}` : a.strecke;
   const crumbs = [[a.serie, `/galerie/${a.serieSlug}/`], [a.jahr, `/galerie/${a.serieSlug}/${a.jahr}/`], [a.strecke, top.path]];
-  if (a.parent) crumbs.push([a.unteralbum, a.path]);
+  if (a.parent) crumbs.push([a.unteralbum_titel || a.unteralbum, a.path]);
   const subs = a.parent ? [a.parent, ...a.parent.unteralben.filter((x) => x !== a)] : a.unteralben;
   const subCards = subs.length ? `<div class="gal-grid mb-s">${subs.map((x) => galCard(lang, _, {
-    href: x.path, cover: x.cover, kicker: x.parent ? a.strecke : '', title: x.parent ? x.unteralbum : x.strecke,
+    href: x.path, cover: x.cover, kicker: x.parent ? a.strecke : '', title: x.parent ? (x.unteralbum_titel || x.unteralbum) : x.strecke,
     meta: `<span>${x.bilder.length ? fotosLabel(_, x.bilder.length) : _('gal_soon')}</span>`
   })).join('')}</div>` : '';
   const body = `
@@ -414,7 +415,7 @@ export function partner(lang, ctx, wall) {
   </div>
   <p class="package-note"><strong>${_('pk_from')}</strong> · ${_('pk_extra')}</p>
   <div class="two-col ad-spaces">
-    ${picture('/uploads/ampfing-2026/frontal-aus-der-kurve.jpg', 'Kart von vorne mit Werbeflächen', { width: 1000, sizes: '(max-width: 760px) 100vw, 50vw', cls: 'rounded' })}
+    ${picture('/uploads/ampfing-2026/frontal-aus-der-kurve.jpg', _('alt_kart_front'), { width: 1000, sizes: '(max-width: 760px) 100vw, 50vw', cls: 'rounded' })}
     <div>
       <h3 class="h2">${_('ad_spaces')}</h3>
       <ul class="lines strong">${['ad1', 'ad2', 'ad3', 'ad4', 'ad5'].map((k) => `<li>${_(k)}</li>`).join('')}</ul>
@@ -459,13 +460,13 @@ export function kontakt(lang, ctx) {
     <h1 class="h1 big">${_('kontakt_title')}</h1>
     <p class="lead">${esc(c.texte(lang).kontakt_intro)}</p>
     <p class="contact-links"><a href="mailto:${esc(c.site.kontakt_email)}">${esc(c.site.kontakt_email)}</a><br><a href="${esc(c.site.instagram)}" rel="noopener" target="_blank">Instagram ${esc(c.site.instagram_handle)} · #LBC3</a></p>
-    ${picture(c.site.off_track_bild, 'Luigi prüft konzentriert sein Kart', { width: 900, cls: 'rounded' })}
+    ${picture(c.site.off_track_bild, _('alt_kart_check'), { width: 900, cls: 'rounded' })}
   </div>
   <div class="card form-card">
     <form class="form" name="kontakt" method="POST" action="${url(lang, '/danke/')}" data-netlify="true" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="kontakt">
       <input type="hidden" name="sprache" value="${lang}">
-      <p class="hp" aria-hidden="true"><label>Nicht ausfüllen <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <p class="hp" aria-hidden="true"><label>${_('honeypot')} <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
       <h2 class="h2">${_('write_msg')}</h2>
       <label class="field"><span>${_('f_name')}</span><input name="name" required autocomplete="name"></label>
       <label class="field"><span>${_('f_email')}</span><input name="email" type="email" required autocomplete="email"></label>
@@ -488,7 +489,7 @@ export function kontakt(lang, ctx) {
 export function rechtliches(lang, ctx, which) {
   const _ = t(lang);
   const text = which === 'impressum' ? ctx.content.site.impressum : ctx.content.site.datenschutz;
-  const body = `${pageHead('LBC3', _(which))}<section class="wrap section"><div class="prose card">${markdown(text)}</div></section>`;
+  const body = `${pageHead('LBC3', _(which))}<section class="wrap section"><div class="prose card">${_('legal_note') ? `<p class="muted small"><em>${_('legal_note')}</em></p>` : ''}${markdown(text, lang)}</div></section>`;
   return layout({ lang, path: `/${which}/`, title: _(which), body, ctx });
 }
 

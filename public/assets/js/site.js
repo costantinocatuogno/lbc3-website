@@ -15,6 +15,42 @@
     });
   }
 
+  /* ---------- Sprache: Vorschlag nach Browser-Einstellung, gemerkte Wahl, keine Umleitung ---------- */
+  const LANG_KEY = 'lbc3-lang';
+  const store = {
+    get() { try { return localStorage.getItem(LANG_KEY); } catch (e) { return null; } },
+    set(v) { try { localStorage.setItem(LANG_KEY, v); } catch (e) { /* privat */ } }
+  };
+  $$('[data-set-lang]').forEach((a) => a.addEventListener('click', () => store.set(a.dataset.setLang)));
+  const banner = $('[data-lang-banner]');
+  if (banner) {
+    const pageLang = banner.dataset.pageLang;
+    let data = {};
+    try { data = JSON.parse($('[data-lb-data]', banner).textContent); } catch (e) { data = {}; }
+    const saved = store.get();
+    let wish = null;
+    if (saved) {
+      if (saved !== pageLang && data[saved]) wish = saved;
+    } else {
+      const prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map((l) => String(l).slice(0, 2).toLowerCase());
+      const first = prefs.find((l) => l === pageLang || data[l]);
+      if (first && first !== pageLang) wish = first;
+    }
+    if (wish) {
+      const d = data[wish];
+      banner.setAttribute('lang', wish);
+      $('[data-lb-text]', banner).textContent = d.text;
+      const yes = $('[data-lb-yes]', banner);
+      yes.textContent = d.yes;
+      yes.href = d.href + location.search + location.hash;
+      yes.addEventListener('click', () => store.set(wish));
+      const no = $('[data-lb-no]', banner);
+      no.textContent = d.no;
+      no.addEventListener('click', () => { store.set(pageLang); banner.hidden = true; });
+      banner.hidden = false;
+    }
+  }
+
   /* ---------- Intro-Video (einmal pro Sitzung) ---------- */
   const intro = $('[data-intro]');
   if (intro) {
@@ -51,7 +87,7 @@
     let races = [];
     try { races = JSON.parse(el.dataset.races || '[]'); } catch (e) { races = []; }
     const lang = el.dataset.lang || 'de';
-    const locale = { de: 'de-DE', en: 'en-GB', it: 'it-IT' }[lang] || 'de-DE';
+    const locale = { de: 'de-DE', en: 'en-GB', it: 'it-IT', fr: 'fr-FR' }[lang] || 'de-DE';
     // Startzeiten sind deutsche Ortszeit (Europe/Berlin)
     const berlinTime = (s) => {
       if (!s) return NaN;

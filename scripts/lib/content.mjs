@@ -1,6 +1,7 @@
 // Lädt alle Inhalte aus /content (vom Decap CMS gepflegt) und berechnet abgeleitete Daten.
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, basename, extname, dirname } from 'node:path';
+import { loc, DEFAULT_LANG } from './i18n.mjs';
 
 function readJSON(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
@@ -35,9 +36,15 @@ function readJsonFrontmatter(path) {
 
 const pick = (obj, lang) => ({ ...(obj?.de || {}), ...(obj?.[lang] || {}) });
 
-export function loadContent(root) {
+export function loadContent(root, lang = DEFAULT_LANG) {
   const C = join(root, 'content');
   const site = readJSON(join(C, 'einstellungen/site.json'));
+  site.impressum = loc(site, 'impressum', lang);
+  site.datenschutz = loc(site, 'datenschutz', lang);
+  const locVideo = (v) => (v ? { ...v, titel: loc(v, 'titel', lang), text: loc(v, 'text', lang) } : v);
+  site.videos = (site.videos || []).map(locVideo);
+  site.video_breit = locVideo(site.video_breit);
+  const glossar = existsSync(join(C, 'einstellungen/glossar.json')) ? readJSON(join(C, 'einstellungen/glossar.json')) : { begriffe: [] };
   const texte = readJSON(join(C, 'einstellungen/texte.json'));
   const fahrer = readJSON(join(C, 'einstellungen/fahrer.json'));
   const wandBeispiel = existsSync(join(C, 'einstellungen/squadra-wand-beispiel.json'))
@@ -47,20 +54,32 @@ export function loadContent(root) {
   const news = listDir(join(C, 'news'), '.md')
     .map((f) => {
       const { data, body } = readJsonFrontmatter(join(C, 'news', f));
-      return { slug: basename(f, extname(f)), ...data, body };
+      const n = { slug: basename(f, extname(f)), ...data, body };
+      // Original-Sprache des Beitrags (Deutsch oder Italienisch). Übersetzungen stehen je Sprache in einem Block:
+      // "en": { "titel": …, "teaser": …, "text": … } – automatisch erzeugt und im CMS prüfbar.
+      const src = n.sprache || DEFAULT_LANG;
+      const tr = lang === src ? null : (n[lang] || {});
+      const has = (k) => tr && typeof tr[k] === 'string' && tr[k].trim() !== '';
+      const untranslated = !!tr && (!has('titel') || (String(n.body || '').trim() && !has('text')));
+      return {
+        ...n, quelle: src, sprache_angezeigt: untranslated ? src : lang, unuebersetzt: untranslated,
+        titel: untranslated ? n.titel : (tr ? tr.titel : n.titel),
+        teaser: untranslated ? n.teaser : (tr ? (has('teaser') ? tr.teaser : n.teaser) : n.teaser),
+        body: untranslated ? n.body : (tr ? (has('text') ? tr.text : n.body) : n.body)
+      };
     })
     .filter((n) => !n.entwurf)
     .sort((a, b) => String(b.datum).localeCompare(String(a.datum)));
 
   const rennen = listDir(join(C, 'rennen'), '.json')
-    .map((f) => ({ id: basename(f, '.json'), ...readJSON(join(C, 'rennen', f)) }))
+    .map((f) => { const r = { id: basename(f, '.json'), ...readJSON(join(C, 'rennen', f)) }; return { ...r, bericht: loc(r, 'bericht', lang) }; })
     .sort((a, b) => String(a.start).localeCompare(String(b.start)));
 
   // Galerie-Aufbau: Serie → Jahr → Strecke
   const alben = listDir(join(C, 'alben'), '.json')
     .map((f) => {
       const a = { slug: basename(f, '.json'), ...readJSON(join(C, 'alben', f)) };
-      a.bilder = (a.bilder || []).filter((b) => b && b.bild);
+      a.bilder = (a.bilder || []).filter((b) => b && b.bild).map((b) => ({ ...b, text: loc(b, 'text', lang) }));
       a.serie = String(a.serie || '').trim() || 'Weitere Rennen';
       a.jahr = String(a.jahr || String(a.datum || '').slice(0, 4) || '').trim() || 'Ohne Jahr';
       a.strecke = String(a.strecke || '').trim() || a.titel || a.slug;
@@ -68,6 +87,11 @@ export function loadContent(root) {
       a.streckeSlug = urlSlug(a.strecke);
       a.unteralbum = String(a.unteralbum || '').trim();
       a.path = `/galerie/${a.serieSlug}/${a.jahr}/${a.streckeSlug}/${a.unteralbum ? `${urlSlug(a.unteralbum)}/` : ''}`;
+      // Anzeige-Texte erst nach der Adresse übersetzen – die Adresse bleibt in allen Sprachen gleich
+      if (a.titel) a.titel = loc(a, 'titel', lang);
+      a.strecke = loc(a, 'strecke', lang);
+      a.serie = loc(a, 'serie', lang);
+      if (a.unteralbum) a.unteralbum_titel = loc(a, 'unteralbum', lang);
       a.unteralben = [];
       a.cover = a.titelbild || (a.bilder.find((b) => !/\.(mp4|webm|mov)$/i.test(b.bild)) || {}).bild || '';
       a.sortKey = String(a.datum || `${a.jahr}-00`);
@@ -121,8 +145,12 @@ export function loadContent(root) {
   const saisons = [...new Set(rennen.map((r) => Number(r.saison)).filter(Boolean))].sort((a, b) => a - b);
 
   return {
-    site, fahrer, kapitel, news, rennen, alben, serien, sponsoren, pakete, stats, upcoming, saisons, wandBeispiel,
-    texte: (lang) => pick(texte, lang),
+    lang, glossar, site, fahrer, kapitel, news, rennen, alben, serien, sponsoren, pakete, stats, upcoming, saisons, wandBeispiel,
+    texte: (l) => {
+      const tx = pick(texte, l);
+      if (Array.isArray(tx.helm_bilder)) tx.helm_bilder = tx.helm_bilder.map((b) => (b ? { ...b, text: loc(b, 'text', l) } : b));
+      return tx;
+    },
     fahrerFor: (lang) => pick(fahrer, lang),
     kapitelFor: (lang) => kapitel.map((k) => pick(k, lang)),
     highlights: news.filter((n) => n.highlight)

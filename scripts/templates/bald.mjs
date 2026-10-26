@@ -159,7 +159,7 @@ export function baldRedirects() {
   const frei = [
     '/bald/*', '/vorschau/*', '/assets/*', '/fonts/*', '/uploads/*', '/wall/*', '/admin/*',
     '/login/*', '/team/*', '/bericht/*', '/wall-of-fame/*', '/squadra-bestaetigt/*',
-    '/impressum/*', '/datenschutz/*', '/en/impressum/*', '/en/datenschutz/*', '/it/impressum/*', '/it/datenschutz/*',
+    '/impressum/*', '/datenschutz/*', '/en/impressum/*', '/en/datenschutz/*', '/it/impressum/*', '/it/datenschutz/*', '/fr/impressum/*', '/fr/datenschutz/*',
     '/robots.txt', '/favicon.ico'
   ];
   return [

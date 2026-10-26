@@ -1,8 +1,7 @@
 import { esc, icon, img } from '../lib/html.mjs';
-import { LANGS, url, t } from '../lib/i18n.mjs';
+import { LANGS, LANG_NAMES, OG_LOCALE, url, t, ui } from '../lib/i18n.mjs';
 import { sponsorMarquee } from './parts.mjs';
 
-const OG_LOCALE = { de: 'de_DE', en: 'en_GB', it: 'it_IT' };
 
 const NAV = [
   ['nav_news', '/news/'],
@@ -32,7 +31,7 @@ export function layout({
   const langSwitch = alternates
     ? LANGS.map((l) => (l === lang
       ? `<span class="lang is-active" aria-current="true">${l.toUpperCase()}</span>`
-      : `<a class="lang" href="${url(l, path)}" hreflang="${l}" lang="${l}">${l.toUpperCase()}</a>`)).join('')
+      : `<a class="lang" href="${url(l, path)}" hreflang="${l}" lang="${l}" data-set-lang="${l}" title="${LANG_NAMES[l]}">${l.toUpperCase()}</a>`)).join('')
     : '';
 
   const nav = NAV.map(([key, href]) => {
@@ -65,14 +64,18 @@ ${(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []).map((d) => `<script 
 </head>
 <body class="${bodyClass}">
 <a class="skip" href="#main">${_('skip')}</a>
+${alternates && !noindex ? langBanner(lang, path) : ''}
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="${url(lang, '/')}">
       <img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="40" height="50">
       <span class="brand-text"><strong>LUIGI BATTISTA CATUOGNO</strong><small>${_('kartfahrer')} · #3</small></span>
     </a>
+    ${alternates ? `<details class="lang-mini"><summary aria-label="${_('lang_choose')}">${lang.toUpperCase()} <span aria-hidden="true">▾</span></summary><div class="lang-mini-list">${LANGS.map((l) => (l === lang
+      ? `<span class="is-active" aria-current="true">${LANG_NAMES[l]}</span>`
+      : `<a href="${url(l, path)}" hreflang="${l}" lang="${l}" data-set-lang="${l}">${LANG_NAMES[l]}</a>`)).join('')}</div></details>` : ''}
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="${_('menu')}">${icon.menu}</button>
-    <nav id="site-nav" class="site-nav" aria-label="Hauptmenü">
+    <nav id="site-nav" class="site-nav" aria-label="${_('nav_main')}">
       <div class="nav-links">${nav}</div>
       <div class="nav-tools">
         ${langSwitch}
@@ -92,6 +95,17 @@ ${footer(lang, ctx)}
 ${scripts.map((s) => `<script src="${s}?v=${ctx.version}" defer></script>`).join('\n')}
 </body>
 </html>`;
+}
+
+// Sprachvorschlag: erscheint nur, wenn Browser-Sprache oder gemerkte Wahl nicht zur Seite passt. Keine Umleitung.
+function langBanner(lang, path) {
+  const data = Object.fromEntries(LANGS.filter((l) => l !== lang).map((l) => [l, {
+    href: url(l, path), text: ui[l].lang_suggest, yes: ui[l].lang_switch, no: ui[l].lang_stay.replace('{lang}', LANG_NAMES[lang])
+  }]));
+  return `<div class="lang-banner" data-lang-banner data-page-lang="${lang}" hidden role="region" aria-label="Language">
+  <div class="wrap lang-banner-inner"><p data-lb-text></p><div class="lang-banner-btns"><a class="btn btn-red btn-sm" data-lb-yes href="#"></a><button type="button" class="btn btn-outline btn-sm" data-lb-no></button></div></div>
+  <script type="application/json" data-lb-data>${JSON.stringify(data).replace(/</g, '\\u003c')}</script>
+</div>`;
 }
 
 function footer(lang, ctx) {

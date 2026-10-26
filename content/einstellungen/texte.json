@@ -11,23 +11,38 @@
     "helm_bilder": [
       {
         "bild": "/uploads/helm/helm-front.jpg",
-        "text": "Luigi mit seinem neuen Helm"
+        "text": "Luigi mit seinem neuen Helm",
+        "text_en": "Luigi with his new helmet",
+        "text_it": "Luigi con il suo nuovo casco",
+        "text_fr": "Luigi avec son nouveau casque"
       },
       {
         "bild": "/uploads/helm/helm-oben.jpg",
-        "text": "Von oben: die Trikolore und zweimal #LBC3"
+        "text": "Von oben: die Trikolore und zweimal #LBC3",
+        "text_en": "From above: the Italian tricolour and #LBC3 twice",
+        "text_it": "Dall’alto: il tricolore e due volte #LBC3",
+        "text_fr": "Vu d’en haut : le drapeau italien et deux fois #LBC3"
       },
       {
         "bild": "/uploads/helm/helm-seite.jpg",
-        "text": "Seitenansicht – die klare gelbe Linie und „L. Catuogno“"
+        "text": "Seitenansicht – die klare gelbe Linie und „L. Catuogno“",
+        "text_en": "Side view – the clear yellow line and “L. Catuogno”",
+        "text_it": "Vista laterale – la linea gialla netta e “L. Catuogno”",
+        "text_fr": "Vue de côté – la ligne jaune nette et « L. Catuogno »"
       },
       {
         "bild": "/uploads/helm/helm-hinten.jpg",
-        "text": "Die Nummer 3 in Gold und Silber – und die deutschen Farben"
+        "text": "Die Nummer 3 in Gold und Silber – und die deutschen Farben",
+        "text_en": "The number 3 in gold and silver – and the German colours",
+        "text_it": "Il numero 3 in oro e argento – e i colori tedeschi",
+        "text_fr": "Le numéro 3 en or et argent – et les couleurs allemandes"
       },
       {
         "bild": "/uploads/helm/helm-hinten-2.jpg",
-        "text": "Eine Nummer, viele Ausführungen"
+        "text": "Eine Nummer, viele Ausführungen",
+        "text_en": "One number, many versions",
+        "text_it": "Un numero, tante versioni",
+        "text_fr": "Un numéro, plusieurs versions"
       }
     ]
   },
@@ -50,5 +65,15 @@
     "kontakt_intro": "Sponsorizzazioni, stampa o semplicemente fare il tifo – ogni messaggio è benvenuto.",
     "helm_titel": "Il suo casco. Il suo design. La sua strada.",
     "helm_text": "Questo casco l'ha disegnato Luigi in persona – e ogni dettaglio racconta chi è e dove vuole arrivare.\n\nLa linea gialla netta attraversa tutto il casco senza deviazioni. È chiara come il suo obiettivo: arrivare in cima, tra i 22 migliori piloti del mondo in Formula 1. Una linea, un obiettivo.\n\nIl numero 3 in oro e argento rappresenta eleganza e sicurezza. I colori dell'Italia e della Germania uniscono le sue origini – lui rappresenta entrambi.\n\nE c'è volutamente spazio per i partner che lo accompagnano. Perché per Luigi questo casco è una promessa a se stesso: duro lavoro, forza di volontà e la ferma convinzione che i grandi sogni iniziano con obiettivi chiari."
+  },
+  "fr": {
+    "hero_text": "Du premier kart au grand rêve. En course dans l’ADAC Kart Masters et sur les circuits d’Italie – avec la Formule 1 pour objectif.",
+    "ueber_intro": "Luigi Battista Catuogno, numéro 3. Deux drapeaux sur le casque, une passion – et un objectif clair : la Formule 1.",
+    "sponsor_aufruf": "Prêt à faire partie de #LBC3 ?",
+    "partner_intro": "Comme entreprise avec une offre de sponsoring ou comme fan, ami ou membre de la famille dans la Squadra Tre – chaque soutien fait avancer Luigi d’un tour de plus.",
+    "squadra_text": "La Squadra Tre, c’est l’équipe derrière l’équipe de Luigi : amis, famille, voisins et fans. La participation est gratuite – qui le souhaite peut soutenir par une contribution. Chaque euro va aux pneus, aux frais d’inscription et aux kilomètres jusqu’au prochain circuit.",
+    "kontakt_intro": "Sponsoring, presse ou simplement croiser les doigts – nous nous réjouissons de chaque message.",
+    "helm_titel": "Son casque. Son design. Son chemin.",
+    "helm_text": "Luigi a dessiné ce casque lui-même – et chaque détail dit qui il est et où il va.\n\nLa ligne jaune nette traverse tout le casque sans détour. Elle est aussi claire que son objectif : tout en haut, parmi les 22 meilleurs pilotes du monde en Formule 1. Une ligne, un objectif.\n\nLe numéro 3 en or et argent représente l’élégance et la confiance en soi. Les couleurs de l’Italie et de l’Allemagne réunissent ses racines – il défend les deux.\n\nEt il y a volontairement de la place pour les partenaires qui l’accompagnent. Car pour Luigi, ce casque est une promesse faite à lui-même : travail acharné, volonté et la conviction profonde que les grands rêves commencent par des objectifs clairs."
   }
 }

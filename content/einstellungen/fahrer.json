@@ -139,5 +139,52 @@
       }
     ],
     "team_link": "https://www.7l-performance.de/"
+  },
+  "fr": {
+    "nationalitaet": "Allemand · Italien",
+    "chassis": "Tony Kart Rookie",
+    "klasse": "Mini",
+    "team": "7L Performance",
+    "lieblingsstrecke": "Mülsen",
+    "idole": "Juan Manuel Fangio",
+    "ziel": "Formule 1",
+    "woche": [
+      {
+        "tag": "Lundi",
+        "was": "École et récupération",
+        "bild": ""
+      },
+      {
+        "tag": "Mardi",
+        "was": "Condition physique et réflexes",
+        "bild": ""
+      },
+      {
+        "tag": "Mercredi",
+        "was": "Étude du circuit",
+        "bild": ""
+      },
+      {
+        "tag": "Jeudi",
+        "was": "Atelier et réglages",
+        "bild": "/uploads/ampfing-2026/vor-dem-start.jpg"
+      },
+      {
+        "tag": "Vendredi",
+        "was": "Essais libres",
+        "bild": "/uploads/ampfing-2026/volle-fahrt-gerade.jpg"
+      },
+      {
+        "tag": "Samedi",
+        "was": "Qualifications et manches",
+        "bild": "/uploads/ampfing-2026/startaufstellung.jpg"
+      },
+      {
+        "tag": "Dimanche",
+        "was": "Finale",
+        "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg"
+      }
+    ],
+    "team_link": "https://www.7l-performance.de/"
   }
 }

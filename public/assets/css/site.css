@@ -110,6 +110,17 @@ button { font: inherit; color: inherit; }
 .lang { padding: 8px 4px; color: var(--muted); text-decoration: none; }
 .lang.is-active { color: var(--ink); font-weight: 700; }
 .menu-toggle { display: none; }
+.lang-mini { display: none; position: relative; margin-left: auto; }
+.lang-mini summary { list-style: none; cursor: pointer; min-height: 44px; min-width: 44px; padding: 0 10px; display: inline-flex; align-items: center; gap: 4px; font-weight: 700; font-size: 14px; border: 1px solid var(--line); border-radius: 6px; }
+.lang-mini summary::-webkit-details-marker { display: none; }
+.lang-mini-list { position: absolute; right: 0; top: calc(100% + 6px); background: #fff; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 12px 24px rgba(0,0,0,.1); min-width: 150px; padding: 6px 0; z-index: 50; }
+.lang-mini-list a, .lang-mini-list span { display: block; padding: 10px 16px; text-decoration: none; color: var(--ink); }
+.lang-mini-list .is-active { font-weight: 700; color: var(--red); }
+.lang-banner { background: var(--ink); color: #fff; font-size: 15px; }
+.lang-banner-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px; }
+.lang-banner p { margin: 0; }
+.lang-banner-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.lang-banner .btn-outline { color: #fff; border-color: rgba(255,255,255,.5); background: transparent; }
 @media (max-width: 1120px) {
   .menu-toggle { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border: 1px solid var(--line); background: #fff; border-radius: 6px; cursor: pointer; }
   .site-nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: #fff; border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; padding: 8px var(--gutter) 20px; gap: 8px; box-shadow: 0 12px 24px rgba(0,0,0,.08); }
@@ -118,6 +129,8 @@ button { font: inherit; color: inherit; }
   .nav-links a { padding: 12px 0; border-bottom: 1px solid var(--line-2); }
   .nav-links a.is-active { border-bottom-color: var(--red); }
   .nav-tools { flex-wrap: wrap; }
+  .nav-tools .lang { display: none; }
+  .lang-mini { display: block; }
 }
 @media (max-width: 520px) { .brand-text strong { font-size: 17px; } .brand img { height: 40px; } }
 

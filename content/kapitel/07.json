@@ -18,5 +18,11 @@
     "titel": "Formula 1",
     "text": "Il sogno è chiaro. Ogni giro, ogni allenamento e ogni gara è un passo su questa strada.",
     "jahr": "Futuro"
+  },
+  "fr": {
+    "kurztitel": "L’objectif",
+    "titel": "Formule 1",
+    "text": "Le rêve est clair. Chaque tour, chaque entraînement et chaque course est un pas sur ce chemin.",
+    "jahr": "Avenir"
   }
 }

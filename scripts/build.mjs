@@ -4,7 +4,8 @@ import { rmSync, mkdirSync, cpSync, writeFileSync, existsSync, readFileSync } fr
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadContent, loadWall } from './lib/content.mjs';
-import { LANGS, url } from './lib/i18n.mjs';
+import { LANGS, url, missingKeys } from './lib/i18n.mjs';
+import { readdirSync, statSync } from 'node:fs';
 import { home } from './templates/home.mjs';
 import { baldPage, vorschauPage, baldRedirects, baldJs, vorschauJs } from './templates/bald.mjs';
 import { newsList, newsDetail, ueber, kalender, galerie, galerieSerie, galerieJahr, galerieAlbum, partner, kontakt, rechtliches, message } from './templates/pages.mjs';
@@ -76,9 +77,16 @@ writeFileSync(join(DIST, 'assets/js/config.js'), `window.LBC3_CONFIG = ${JSON.st
 })};\n`);
 
 // ---------- Inhalte ----------
+const missing = missingKeys();
+if (Object.keys(missing).length) {
+  for (const [l, keys] of Object.entries(missing)) console.error(`✖ locales/${l}.json: es fehlen ${keys.length} Texte: ${keys.slice(0, 12).join(', ')}${keys.length > 12 ? ' …' : ''}`);
+  process.exit(1);
+}
 const content = loadContent(ROOT);
 const wall = await loadWall(content, DIST);
-const ctx = { content, siteUrl, version: Date.now().toString(36) };
+const version = Date.now().toString(36);
+const ctx = { content, siteUrl, version };
+const ctxFor = Object.fromEntries(LANGS.map((l) => [l, { content: l === 'de' ? content : loadContent(ROOT, l), siteUrl, version }]));
 
 const pages = [];
 function out(path, htmlText) {
@@ -88,7 +96,10 @@ function out(path, htmlText) {
   pages.push(path);
 }
 
+const langPages = Object.fromEntries(LANGS.map((l) => [l, []]));
 for (const lang of LANGS) {
+  const ctx = ctxFor[lang];
+  const start = pages.length;
   out(url(lang, '/'), home(lang, ctx));
   out(url(lang, '/news/'), newsList(lang, ctx));
   for (const n of content.news) out(url(lang, `/news/${n.slug}/`), newsDetail(lang, ctx, n));
@@ -107,6 +118,7 @@ for (const lang of LANGS) {
   out(url(lang, '/datenschutz/'), rechtliches(lang, ctx, 'datenschutz'));
   out(url(lang, '/danke/'), message(lang, ctx, { path: '/danke/', titleKey: 'thanks_title', textKey: 'thanks_text' }));
   out(url(lang, '/squadra-bestaetigt/'), message(lang, ctx, { path: '/squadra-bestaetigt/', titleKey: 'confirmed_title', textKey: 'confirmed_text' }));
+  langPages[lang] = pages.slice(start);
 }
 out('/404.html', message('de', ctx, { path: '/404/', titleKey: 'not_found', textKey: 'back_home' }));
 out('/login/', loginPage(ctx));
@@ -125,13 +137,51 @@ if (baldModus) {
   writeFileSync(join(DIST, '_headers'), '/*\n  X-Robots-Tag: noindex\n');
 }
 
-// ---------- SEO ----------
-const publicPages = pages.filter((p) => !/\/(login|bericht|team|danke|squadra-bestaetigt|wall-of-fame|bald|vorschau)\/|404/.test(p));
-writeFileSync(join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${publicPages.map((p) => `  <url><loc>${siteUrl}${p}</loc></url>`).join('\n')}
+// ---------- SEO: eine Sitemap je Sprache, jede Adresse mit ihren Sprachfassungen (hreflang) ----------
+const isPublic = (p) => !/\/(login|bericht|team|danke|squadra-bestaetigt|wall-of-fame|bald|vorschau)\/|404/.test(p);
+const stripLang = (p) => p.replace(/^\/(en|it|fr)(?=\/)/, '');
+const alternatesXml = (p) => {
+  const base = stripLang(p);
+  return LANGS.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${siteUrl}${url(l, base)}"/>`).join('\n') +
+    `\n    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${base}"/>`;
+};
+for (const lang of LANGS) {
+  const list = langPages[lang].filter(isPublic);
+  writeFileSync(join(DIST, `sitemap-${lang}.xml`), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${list.map((p) => `  <url>\n    <loc>${siteUrl}${p}</loc>\n${alternatesXml(p)}\n  </url>`).join('\n')}
 </urlset>
 `);
+}
+writeFileSync(join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${LANGS.map((l) => `  <sitemap><loc>${siteUrl}/sitemap-${l}.xml</loc></sitemap>`).join('\n')}
+</sitemapindex>
+`);
+
+// ---------- Schutz von Luigi: verbotene Angaben dürfen in keiner Sprachfassung stehen ----------
+// Liste in content/einstellungen/glossar.json → "schutz". Impressum/Datenschutz sind ausgenommen (gesetzliche Anbieter-Angaben).
+const schutz = (content.glossar.schutz || []).map((x) => String(x || '').trim()).filter((x) => x.length >= 3);
+if (schutz.length) {
+  const hits = [];
+  const walk = (dir) => {
+    for (const f of readdirSync(dir)) {
+      const full = join(dir, f);
+      if (statSync(full).isDirectory()) { if (!/^(uploads|assets|fonts|admin|wall)$/.test(f)) walk(full); continue; }
+      if (!f.endsWith('.html')) continue;
+      const rel = full.slice(DIST.length).replace(/\\/g, '/');
+      if (/\/(impressum|datenschutz)\//.test(rel)) continue;
+      const text = readFileSync(full, 'utf8').toLowerCase();
+      for (const w of schutz) if (text.includes(w.toLowerCase())) hits.push(`${rel}: „${w}“`);
+    }
+  };
+  walk(DIST);
+  if (hits.length) {
+    console.error(`✖ Schutz von Luigi: geschützte Angaben gefunden – Build abgebrochen:\n  ${hits.slice(0, 20).join('\n  ')}`);
+    process.exit(1);
+  }
+}
+
 // KI-Crawler ausschließen (Nutzungsvorbehalt nach § 44b UrhG), Suchmaschinen bleiben erlaubt
 const AI_BOTS = ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot', 'CCBot', 'Google-Extended', 'ClaudeBot', 'anthropic-ai', 'PerplexityBot', 'Bytespider', 'Applebot-Extended', 'meta-externalagent', 'Amazonbot', 'cohere-ai', 'Diffbot'];
 writeFileSync(join(DIST, 'robots.txt'), `${AI_BOTS.map((b) => `User-agent: ${b}\nDisallow: /\n`).join('\n')}

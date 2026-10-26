@@ -29,5 +29,14 @@
   "name": "Numero Tre",
   "untertitel_it": "Il partner principale",
   "preis": "",
-  "untertitel": "Der Hauptpartner"
+  "untertitel": "Der Hauptpartner",
+  "untertitel_fr": "Le partenaire principal",
+  "leistungen_fr": [
+    "Carénage avant",
+    "Pontons latéraux",
+    "Combinaison (poitrine ou dos)",
+    "Dessus du casque",
+    "Emplacements premium sur l’attelage · logo sur la page d’accueil",
+    "8 posts dédiés · photos et vidéos pour votre communication"
+  ]
 }

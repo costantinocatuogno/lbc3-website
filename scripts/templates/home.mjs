@@ -1,5 +1,5 @@
 import { esc, picture, icon, flagsDE, flagsIT, img } from '../lib/html.mjs';
-import { url, t } from '../lib/i18n.mjs';
+import { url, t, LANGS } from '../lib/i18n.mjs';
 import { layout } from './layout.mjs';
 import { countdownCard } from './parts.mjs';
 
@@ -36,7 +36,7 @@ export function home(lang, ctx) {
   <div class="hero-side">
     <div class="helmet-card">
       <img class="helmet-watermark" src="/assets/img/lbc3-logo.png" alt="" aria-hidden="true">
-      <img class="helmet-img" src="${esc(img(site.helm_bild, 640))}" alt="Luigis schwarz-goldener Helm mit Tricolore" width="420" height="420" fetchpriority="high">
+      <img class="helmet-img" src="${esc(img(site.helm_bild, 640))}" alt="${_('alt_helm')}" width="420" height="420" fetchpriority="high">
       <span class="helmet-tag">#LBC3</span>
       <span class="helmet-3" aria-hidden="true">3</span>
     </div>
@@ -138,7 +138,7 @@ ${album ? `
         award: (site.auszeichnungen || []).filter(Boolean),
         sameAs: [site.instagram, ...(site.weitere_profile || [])].filter(Boolean)
       },
-      { '@context': 'https://schema.org', '@type': 'WebSite', name: 'LBC3 · Luigi Battista Catuogno', url: ctx.siteUrl, inLanguage: ['de', 'en', 'it'] }
+      { '@context': 'https://schema.org', '@type': 'WebSite', name: 'LBC3 · Luigi Battista Catuogno', url: ctx.siteUrl, inLanguage: LANGS }
     ]
   });
 }
