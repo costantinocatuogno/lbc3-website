@@ -5,7 +5,7 @@
   "kategorie": "Team",
   "teaser": "Dieser Beitrag prüft, ob die automatische Übersetzung funktioniert.",
   "highlight": false,
-  "entwurf": true,
+  "entwurf": false,
   "neu_uebersetzen": false,
   "galerie": [],
   "it": {
