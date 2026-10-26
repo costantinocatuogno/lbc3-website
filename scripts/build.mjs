@@ -102,15 +102,15 @@ for (const lang of LANGS) {
   const start = pages.length;
   out(url(lang, '/'), home(lang, ctx));
   out(url(lang, '/news/'), newsList(lang, ctx));
-  for (const n of content.news) out(url(lang, `/news/${n.slug}/`), newsDetail(lang, ctx, n));
+  for (const n of ctx.content.news) out(url(lang, `/news/${n.slug}/`), newsDetail(lang, ctx, n));
   out(url(lang, '/ueber-luigi/'), ueber(lang, ctx));
   out(url(lang, '/kalender/'), kalender(lang, ctx));
   out(url(lang, '/galerie/'), galerie(lang, ctx));
-  for (const se of content.serien) {
+  for (const se of ctx.content.serien) {
     out(url(lang, se.path), galerieSerie(lang, ctx, se));
     for (const j of se.jahre) out(url(lang, j.path), galerieJahr(lang, ctx, se, j));
   }
-  for (const a of content.alben) out(url(lang, a.path), galerieAlbum(lang, ctx, a));
+  for (const a of ctx.content.alben) out(url(lang, a.path), galerieAlbum(lang, ctx, a));
   out(url(lang, '/squadra-tre/'), squadra(lang, ctx, wall));
   out(url(lang, '/partner/'), partner(lang, ctx, wall));
   out(url(lang, '/kontakt/'), kontakt(lang, ctx));
@@ -121,8 +121,10 @@ for (const lang of LANGS) {
   langPages[lang] = pages.slice(start);
 }
 out('/404.html', message('de', ctx, { path: '/404/', titleKey: 'not_found', textKey: 'back_home' }));
-out('/login/', loginPage(ctx));
-out('/bericht/', berichtPage(ctx));
+for (const l of LANGS) {
+  out(url(l, '/login/'), loginPage(ctxFor[l], l));
+  out(url(l, '/bericht/'), berichtPage(ctxFor[l], l));
+}
 out('/team/', teamPage(ctx));
 out('/wall-of-fame/druck/', wallPrint(ctx, wall));
 out('/bald/', baldPage(ctx));
@@ -189,6 +191,7 @@ User-agent: *
 Disallow: /admin/
 Disallow: /login/
 Disallow: /bericht/
+${['it', 'en', 'fr'].map((l) => `Disallow: /${l}/login/\nDisallow: /${l}/bericht/`).join('\n')}
 Disallow: /team/
 Disallow: /wall-of-fame/
 Sitemap: ${siteUrl}/sitemap.xml

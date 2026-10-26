@@ -9,266 +9,437 @@
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/anfahrt-sonnenaufgang.jpg",
-      "text": "Ankunft bei Sonnenaufgang: die Kartbahn von oben"
+      "text": "Ankunft bei Sonnenaufgang: die Kartbahn von oben",
+      "text_it": "Arrivo all’alba: la pista dall’alto",
+      "text_en": "Arriving at sunrise: the kart track from above",
+      "text_fr": "Arrivée au lever du soleil : la piste vue d’en haut"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/kart-check.jpg",
-      "text": "Volle Konzentration: Luigi prüft sein Kart"
+      "text": "Volle Konzentration: Luigi prüft sein Kart",
+      "text_it": "Massima concentrazione: Luigi controlla il suo kart",
+      "text_en": "Full concentration: Luigi checks his kart",
+      "text_fr": "Concentration maximale : Luigi vérifie son kart"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/teamzelt.jpg",
-      "text": "Im Teamzelt wird geschraubt"
+      "text": "Im Teamzelt wird geschraubt",
+      "text_it": "Al lavoro nella tenda del team",
+      "text_en": "Wrenching in the team tent",
+      "text_fr": "On bricole sous la tente de l’équipe"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/selbst-hand-anlegen.jpg",
-      "text": "Selbst Hand anlegen: Luigi pflegt sein Kart"
+      "text": "Selbst Hand anlegen: Luigi pflegt sein Kart",
+      "text_it": "Mettere mano di persona: Luigi si prende cura del suo kart",
+      "text_en": "Hands-on: Luigi looks after his kart",
+      "text_fr": "Mettre la main à la pâte : Luigi entretient son kart"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/jedes-detail.jpg",
-      "text": "Jedes Detail zählt"
+      "text": "Jedes Detail zählt",
+      "text_it": "Ogni dettaglio conta",
+      "text_en": "Every detail counts",
+      "text_fr": "Chaque détail compte"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/genau-hinschauen.jpg",
-      "text": "Genau hinschauen"
+      "text": "Genau hinschauen",
+      "text_it": "Guardare con attenzione",
+      "text_en": "Taking a close look",
+      "text_fr": "Regarder de près"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/check-lenkrad.jpg",
-      "text": "Letzter Check am Lenkrad"
+      "text": "Letzter Check am Lenkrad",
+      "text_it": "Ultimo controllo al volante",
+      "text_en": "Final check on the steering wheel",
+      "text_fr": "Dernier contrôle au volant"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mit-dem-mechaniker.jpg",
-      "text": "Gute Stimmung mit Papa"
+      "text": "Gute Stimmung mit Papa",
+      "text_it": "Buon umore con papà",
+      "text_en": "Good spirits with Dad",
+      "text_fr": "Bonne ambiance avec papa"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mit-mechaniker-portraet.jpg",
-      "text": "Luigi und Papa – ein eingespieltes Team"
+      "text": "Luigi und Papa – ein eingespieltes Team",
+      "text_it": "Luigi e papà – una squadra affiatata",
+      "text_en": "Luigi and Dad – a well-oiled team",
+      "text_fr": "Luigi et papa – une équipe bien rodée"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/mechaniker-335.jpg",
-      "text": "Papa bereitet die 335 vor"
+      "text": "Papa bereitet die 335 vor",
+      "text_it": "Papà prepara il 335",
+      "text_en": "Dad prepares number 335",
+      "text_fr": "Papa prépare le 335"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/unter-dem-kart.jpg",
-      "text": "Papa arbeitet unter dem Kart"
+      "text": "Papa arbeitet unter dem Kart",
+      "text_it": "Papà al lavoro sotto il kart",
+      "text_en": "Dad working under the kart",
+      "text_fr": "Papa travaille sous le kart"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/feinarbeit.jpg",
-      "text": "Feinarbeit im Teamzelt – Papa als Mechaniker"
+      "text": "Feinarbeit im Teamzelt – Papa als Mechaniker",
+      "text_it": "Lavori di precisione nella tenda del team – papà meccanico",
+      "text_en": "Fine-tuning in the team tent – Dad as mechanic",
+      "text_fr": "Travail de précision sous la tente – papa mécanicien"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/helm-bereit.jpg",
-      "text": "Helm bereit, Kart bereit"
+      "text": "Helm bereit, Kart bereit",
+      "text_it": "Casco pronto, kart pronto",
+      "text_en": "Helmet ready, kart ready",
+      "text_fr": "Casque prêt, kart prêt"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/ab-zum-vorstart.jpg",
-      "text": "Ab zum Vorstart"
+      "text": "Ab zum Vorstart",
+      "text_it": "Via alla pre-griglia",
+      "text_en": "Off to the pre-grid",
+      "text_fr": "Direction la pré-grille"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/durchatmen.jpg",
-      "text": "Kurz durchatmen vor dem Rennen"
+      "text": "Kurz durchatmen vor dem Rennen",
+      "text_it": "Un respiro prima della gara",
+      "text_en": "A deep breath before the race",
+      "text_fr": "Souffler avant la course"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/zum-vorstart.jpg",
-      "text": "Auf dem Weg zum Vorstart"
+      "text": "Auf dem Weg zum Vorstart",
+      "text_it": "Verso la pre-griglia",
+      "text_en": "On the way to the pre-grid",
+      "text_fr": "En route vers la pré-grille"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/absprache-team.jpg",
-      "text": "Letzte Absprache mit dem Team"
+      "text": "Letzte Absprache mit dem Team",
+      "text_it": "Ultimo confronto con il team",
+      "text_en": "Final word with the team",
+      "text_fr": "Dernier échange avec l’équipe"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/abklatschen.jpg",
-      "text": "Abklatschen vor dem Start"
+      "text": "Abklatschen vor dem Start",
+      "text_it": "Batti cinque prima della partenza",
+      "text_en": "High five before the start",
+      "text_fr": "Check avant le départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/kartbahn-tag/teamwork.jpg",
-      "text": "Teamwork vor dem Rennen"
+      "text": "Teamwork vor dem Rennen",
+      "text_it": "Lavoro di squadra prima della gara",
+      "text_en": "Teamwork before the race",
+      "text_fr": "Travail d’équipe avant la course"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/helm-zurechtruecken.jpg",
-      "text": "Helm zurechtrücken – gleich geht es los"
+      "text": "Helm zurechtrücken – gleich geht es los",
+      "text_it": "Sistemare il casco – si parte tra poco",
+      "text_en": "Adjusting the helmet – almost time to go",
+      "text_fr": "Ajuster le casque – ça va bientôt commencer"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/bereit.jpg",
-      "text": "#LBC3 – bereit für die Strecke"
+      "text": "#LBC3 – bereit für die Strecke",
+      "text_it": "#LBC3 – pronto per la pista",
+      "text_en": "#LBC3 – ready for the track",
+      "text_fr": "#LBC3 – prêt pour la piste"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/blick-vor-dem-start.jpg",
-      "text": "Der Blick vor dem Start"
+      "text": "Der Blick vor dem Start",
+      "text_it": "Lo sguardo prima della partenza",
+      "text_en": "The look before the start",
+      "text_fr": "Le regard avant le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/vorstart-335.jpg",
-      "text": "Startnummer 335 im Vorstart"
+      "text": "Startnummer 335 im Vorstart",
+      "text_it": "Numero 335 in pre-griglia",
+      "text_en": "Race number 335 on the pre-grid",
+      "text_fr": "Numéro 335 en pré-grille"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/mitten-im-feld.jpg",
-      "text": "Mitten im Feld: der Blick der #3"
+      "text": "Mitten im Feld: der Blick der #3",
+      "text_it": "In mezzo al gruppo: lo sguardo del #3",
+      "text_en": "In the middle of the pack: the look of #3",
+      "text_fr": "Au milieu du peloton : le regard du #3"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/letzte-ansage.jpg",
-      "text": "Die letzte Ansage"
+      "text": "Die letzte Ansage",
+      "text_it": "L’ultima indicazione",
+      "text_en": "The final instruction",
+      "text_fr": "La dernière consigne"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/tipps-adac-zelt.jpg",
-      "text": "Letzte Tipps unter dem ADAC-Zelt"
+      "text": "Letzte Tipps unter dem ADAC-Zelt",
+      "text_it": "Ultimi consigli sotto la tenda ADAC",
+      "text_en": "Last tips under the ADAC tent",
+      "text_fr": "Derniers conseils sous la tente ADAC"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/ruhe-vor-dem-start.jpg",
-      "text": "Ruhe vor dem Start"
+      "text": "Ruhe vor dem Start",
+      "text_it": "Calma prima della partenza",
+      "text_en": "Calm before the start",
+      "text_fr": "Le calme avant le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/debriefing.jpg",
-      "text": "Debriefing nach dem Lauf"
+      "text": "Debriefing nach dem Lauf",
+      "text_it": "Debriefing dopo la manche",
+      "text_en": "Debriefing after the heat",
+      "text_fr": "Débriefing après la manche"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/was-sagen-die-daten.jpg",
-      "text": "Was sagen die Daten?"
+      "text": "Was sagen die Daten?",
+      "text_it": "Cosa dicono i dati?",
+      "text_en": "What does the data say?",
+      "text_fr": "Que disent les données ?"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/konzentration-vorstart.jpg",
-      "text": "Volle Konzentration im Vorstart"
+      "text": "Volle Konzentration im Vorstart",
+      "text_it": "Massima concentrazione in pre-griglia",
+      "text_en": "Full concentration on the pre-grid",
+      "text_fr": "Concentration maximale en pré-grille"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/blick-durchs-visier.jpg",
-      "text": "Der Blick durchs Visier"
+      "text": "Der Blick durchs Visier",
+      "text_it": "Lo sguardo attraverso la visiera",
+      "text_en": "The look through the visor",
+      "text_fr": "Le regard à travers la visière"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/fahrerbesprechung.jpg",
-      "text": "Fahrerbesprechung vor dem Rennen"
+      "text": "Fahrerbesprechung vor dem Rennen",
+      "text_it": "Briefing piloti prima della gara",
+      "text_en": "Drivers’ briefing before the race",
+      "text_fr": "Briefing des pilotes avant la course"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/aufstellung-mauer.jpg",
-      "text": "Aufstellung an der Mauer – Papa gibt letzte Tipps"
+      "text": "Aufstellung an der Mauer – Papa gibt letzte Tipps",
+      "text_it": "Schierati al muretto – papà dà gli ultimi consigli",
+      "text_en": "Lined up at the wall – Dad gives last tips",
+      "text_fr": "Alignés au muret – papa donne les derniers conseils"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/bereit-an-der-mauer.jpg",
-      "text": "Bereit an der Mauer"
+      "text": "Bereit an der Mauer",
+      "text_it": "Pronto al muretto",
+      "text_en": "Ready at the wall",
+      "text_fr": "Prêt au muret"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/letzte-worte.jpg",
-      "text": "Letzte Worte vor dem Rollout"
+      "text": "Letzte Worte vor dem Rollout",
+      "text_it": "Ultime parole prima del rollout",
+      "text_en": "Last words before the rollout",
+      "text_fr": "Derniers mots avant la sortie"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/raus-auf-die-strecke.jpg",
-      "text": "Raus auf die Strecke"
+      "text": "Raus auf die Strecke",
+      "text_it": "Fuori in pista",
+      "text_en": "Out onto the track",
+      "text_fr": "En piste"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/startaufstellung-boxengasse.jpg",
-      "text": "Startaufstellung in der Boxengasse"
+      "text": "Startaufstellung in der Boxengasse",
+      "text_it": "Griglia di partenza in pit lane",
+      "text_en": "Starting grid in the pit lane",
+      "text_fr": "Grille de départ dans la pit lane"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/im-fokus.jpg",
-      "text": "Im Fokus der Kameras"
+      "text": "Im Fokus der Kameras",
+      "text_it": "Al centro dell’attenzione delle telecamere",
+      "text_en": "In front of the cameras",
+      "text_fr": "Sous l’œil des caméras"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/vollgas-kurve.jpg",
-      "text": "Vollgas durch die Kurve"
+      "text": "Vollgas durch die Kurve",
+      "text_it": "A tutto gas in curva",
+      "text_en": "Flat out through the corner",
+      "text_fr": "À fond dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/am-kerb.jpg",
-      "text": "Am Kerb entlang"
+      "text": "Am Kerb entlang",
+      "text_it": "Lungo il cordolo",
+      "text_en": "Along the kerb",
+      "text_fr": "Le long du vibreur"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/mitzieher-1.jpg",
-      "text": "Mitzieher bei voller Fahrt"
+      "text": "Mitzieher bei voller Fahrt",
+      "text_it": "Foto in panning a tutta velocità",
+      "text_en": "Panning shot at full speed",
+      "text_fr": "Filé à pleine vitesse"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/speed-gerade.jpg",
-      "text": "Speed auf der Geraden"
+      "text": "Speed auf der Geraden",
+      "text_it": "Velocità sul rettilineo",
+      "text_en": "Speed on the straight",
+      "text_fr": "Vitesse dans la ligne droite"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/vorne-im-pulk.jpg",
-      "text": "Vorne im Pulk"
+      "text": "Vorne im Pulk",
+      "text_it": "Davanti nel gruppo",
+      "text_en": "At the front of the pack",
+      "text_fr": "En tête du peloton"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/mitten-im-feld-rennen.jpg",
-      "text": "Mitten im Feld"
+      "text": "Mitten im Feld",
+      "text_it": "In mezzo al gruppo",
+      "text_en": "In the middle of the pack",
+      "text_fr": "Au milieu du peloton"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/duell-kurve.jpg",
-      "text": "Duell in der Kurve"
+      "text": "Duell in der Kurve",
+      "text_it": "Duello in curva",
+      "text_en": "Battle in the corner",
+      "text_fr": "Duel dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/auf-der-jagd.jpg",
-      "text": "Auf der Jagd"
+      "text": "Auf der Jagd",
+      "text_it": "All’inseguimento",
+      "text_en": "On the hunt",
+      "text_fr": "À la chasse"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/kurvenausgang.jpg",
-      "text": "Kurvenausgang mit Blick nach vorn"
+      "text": "Kurvenausgang mit Blick nach vorn",
+      "text_it": "Uscita di curva con lo sguardo avanti",
+      "text_en": "Corner exit, eyes ahead",
+      "text_fr": "Sortie de virage, le regard devant"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/mitzieher-2.jpg",
-      "text": "Mitzieher in der Kurve"
+      "text": "Mitzieher in der Kurve",
+      "text_it": "Foto in panning in curva",
+      "text_en": "Panning shot in the corner",
+      "text_fr": "Filé dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/ideallinie.jpg",
-      "text": "Volle Konzentration auf der Ideallinie"
+      "text": "Volle Konzentration auf der Ideallinie",
+      "text_it": "Massima concentrazione sulla traiettoria ideale",
+      "text_en": "Full concentration on the racing line",
+      "text_fr": "Concentration maximale sur la trajectoire idéale"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/letzte-handgriffe.jpg",
-      "text": "Letzte Handgriffe von Papa"
+      "text": "Letzte Handgriffe von Papa",
+      "text_it": "Ultimi ritocchi di papà",
+      "text_en": "Dad’s final touches",
+      "text_fr": "Les derniers gestes de papa"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/strecke-luft.jpg",
-      "text": "Die Strecke aus der Luft"
+      "text": "Die Strecke aus der Luft",
+      "text_it": "La pista dall’alto",
+      "text_en": "The track from the air",
+      "text_fr": "La piste vue du ciel"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/fahrerlager-von-oben.jpg",
-      "text": "Fahrerlager und Strecke von oben"
+      "text": "Fahrerlager und Strecke von oben",
+      "text_it": "Paddock e pista dall’alto",
+      "text_en": "Paddock and track from above",
+      "text_fr": "Paddock et piste vus d’en haut"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/kartbahn-tag/luftbild.jpg"
     }
-  ]
+  ],
+  "it": {
+    "titel": "Una giornata con Luigi in pista",
+    "strecke": "Una giornata in pista",
+    "serie": "Dietro le quinte"
+  },
+  "en": {
+    "titel": "A day at the kart track with Luigi",
+    "strecke": "A day at the kart track",
+    "serie": "Behind the scenes"
+  },
+  "fr": {
+    "titel": "Une journée avec Luigi sur la piste de karting",
+    "strecke": "Une journée sur la piste",
+    "serie": "Dans les coulisses"
+  }
 }

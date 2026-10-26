@@ -6,8 +6,18 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const cfg = window.LBC3_CONFIG || {};
-  const eur = (n) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
-  const num = (n) => new Intl.NumberFormat('de-DE').format(Number(n) || 0);
+  // Sprache der Seite (Login und Bericht gibt es in DE/IT/EN/FR; der Team-Bereich ist deutsch)
+  const LANG = (document.documentElement.lang || 'de').slice(0, 2);
+  const LOCALE = { de: 'de-DE', it: 'it-IT', en: 'en-GB', fr: 'fr-FR' }[LANG] || 'de-DE';
+  const PFX = LANG === 'de' ? '' : '/' + LANG;
+  let TX = {};
+  try { TX = JSON.parse((document.getElementById('lbc3-texte') || {}).textContent || '{}'); } catch (e) { TX = {}; }
+  const T = (k, fallback) => (TX[k] !== undefined && TX[k] !== '' ? TX[k] : fallback);
+  const kat = (name) => (TX.kat && TX.kat[name]) || name;
+  const eur = (n) => new Intl.NumberFormat(LOCALE, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
+  const num = (n) => new Intl.NumberFormat(LOCALE).format(Number(n) || 0);
+  const LOGIN = PFX + '/login/';
+  const BERICHT = PFX + '/bericht/';
   const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   function showMsg(text, isError = false) {
@@ -22,7 +32,7 @@
   if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase || window.__supabaseMissing) {
     const loading = $('[data-loading]');
     if (loading) loading.hidden = true;
-    showMsg('Der Login ist noch nicht eingerichtet (Supabase-Zugangsdaten fehlen). Siehe README, Abschnitt „Supabase“.', true);
+    showMsg(T('pj_not_configured', 'Der Login ist noch nicht eingerichtet (Supabase-Zugangsdaten fehlen). Siehe README, Abschnitt „Supabase“.'), true);
     return;
   }
 
@@ -35,12 +45,13 @@
     if (!session) return null;
     // Wer angemeldet ist (Team/Partner), sieht im Bald-Modus immer die echte Website
     try { document.cookie = 'lbc3_vorschau=1; Max-Age=' + (60 * 60 * 24 * 365) + '; Path=/; Secure; SameSite=Lax'; } catch (e) { /* egal */ }
-    const { data, error } = await sb.from('profiles').select('id, rolle, name, firma, email').eq('id', session.user.id).maybeSingle();
+    const { data, error } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
     if (error) throw error;
     return data ? { ...data, session } : { rolle: null, session };
   }
 
-  $$('[data-logout]').forEach((b) => b.addEventListener('click', async () => { await sb.auth.signOut(); location.href = '/login/'; }));
+  $$('[data-set-lang]').forEach((a) => a.addEventListener('click', () => { try { localStorage.setItem('lbc3-lang', a.dataset.setLang); } catch (e) { /* privat */ } }));
+  $$('[data-logout]').forEach((b) => b.addEventListener('click', async () => { await sb.auth.signOut(); location.href = LOGIN; }));
 
   /* ======================= LOGIN ======================= */
   const loginForm = $('[data-login-form]');
@@ -51,16 +62,21 @@
       role = tab.dataset.roleTab;
       $$('[data-role-tab]').forEach((t) => { t.classList.toggle('is-active', t === tab); t.setAttribute('aria-selected', String(t === tab)); });
       hint.textContent = role === 'sponsor'
-        ? 'Als Partner siehst du hier jederzeit unseren aktuellen Ausgabenbericht.'
-        : 'Für das Team: Ausgabenbericht pflegen, Zugänge verwalten, Squadra Tre. Fotos und Texte im CMS.';
+        ? T('p_hint_partner', 'Als Partner siehst du hier jederzeit unseren aktuellen Ausgabenbericht.')
+        : T('p_hint_admin', 'Für das Team: Ausgabenbericht pflegen, Zugänge verwalten, Squadra Tre. Fotos und Texte im CMS.');
     }));
 
     const goToArea = async () => {
       const p = await getProfile();
       if (!p) return;
-      if (p.rolle === 'admin') location.href = role === 'sponsor' ? '/bericht/' : '/team/';
-      else if (p.rolle === 'sponsor') location.href = '/bericht/';
-      else { showMsg('Dein Konto hat noch keine Freigabe. Bitte melde dich bei uns.', true); await sb.auth.signOut(); }
+      // Partner landen im Bericht in ihrer Sprache: gewählte Sprache dieser Seite, sonst die Sprache im Profil
+      let saved = null;
+      try { saved = localStorage.getItem('lbc3-lang'); } catch (e) { /* privat */ }
+      const pl = !saved && p.sprache && ['de', 'it', 'en', 'fr'].includes(p.sprache) ? p.sprache : LANG;
+      const bericht = (pl === 'de' ? '' : '/' + pl) + '/bericht/';
+      if (p.rolle === 'admin') location.href = role === 'sponsor' ? BERICHT : '/team/';
+      else if (p.rolle === 'sponsor') location.href = bericht;
+      else { showMsg(T('pj_no_access', 'Dein Konto hat noch keine Freigabe. Bitte melde dich bei uns.'), true); await sb.auth.signOut(); }
     };
 
     const setPwForm = $('[data-setpw-form]');
@@ -81,15 +97,15 @@
       e.preventDefault();
       const email = loginForm.email.value.trim();
       const password = loginForm.password.value;
-      if (!password) { showMsg('Bitte Passwort eingeben – oder „Login-Link per E-Mail“ nutzen.', true); return; }
+      if (!password) { showMsg(T('pj_need_pw', 'Bitte Passwort eingeben – oder „Login-Link per E-Mail“ nutzen.'), true); return; }
       const { error } = await sb.auth.signInWithPassword({ email, password });
       if (error) {
         const m = String(error.message || '');
-        const hint = /confirm/i.test(m) ? 'Die E-Mail-Adresse ist noch nicht bestätigt (in Supabase „Auto Confirm User“ anhaken oder Einladungslink öffnen).'
-          : /invalid login|credentials/i.test(m) ? 'E-Mail oder Passwort stimmen nicht.'
-          : /api key|apikey|jwt|unauthorized|fetch/i.test(m) ? 'Verbindung zu Supabase fehlgeschlagen – bitte SUPABASE_URL und SUPABASE_ANON_KEY in Netlify prüfen.'
-          : 'Bitte E-Mail und Passwort prüfen.';
-        showMsg(`Anmeldung fehlgeschlagen. ${hint} (Technische Meldung: ${m || error.status || 'unbekannt'})`, true);
+        const hint = /confirm/i.test(m) ? T('pj_err_confirm', 'Die E-Mail-Adresse ist noch nicht bestätigt (in Supabase „Auto Confirm User“ anhaken oder Einladungslink öffnen).')
+          : /invalid login|credentials/i.test(m) ? T('pj_err_invalid', 'E-Mail oder Passwort stimmen nicht.')
+          : /api key|apikey|jwt|unauthorized|fetch/i.test(m) ? T('pj_err_conn', 'Verbindung zu Supabase fehlgeschlagen – bitte SUPABASE_URL und SUPABASE_ANON_KEY in Netlify prüfen.')
+          : T('pj_err_generic', 'Bitte E-Mail und Passwort prüfen.');
+        showMsg(`${T('pj_login_failed', 'Anmeldung fehlgeschlagen.')} ${hint} (${T('pj_tech', 'Technische Meldung')}: ${m || error.status || T('pj_unknown', 'unbekannt')})`, true);
         return;
       }
       goToArea();
@@ -97,33 +113,33 @@
 
     $('[data-magic]').addEventListener('click', async () => {
       const email = loginForm.email.value.trim();
-      if (!email) { showMsg('Bitte zuerst die E-Mail-Adresse eingeben.', true); return; }
-      const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}/login/` } });
-      showMsg(error ? 'Login-Link konnte nicht gesendet werden.' : 'Falls ein Zugang existiert, ist der Login-Link unterwegs. Bitte Postfach prüfen.', !!error);
+      if (!email) { showMsg(T('pj_need_email', 'Bitte zuerst die E-Mail-Adresse eingeben.'), true); return; }
+      const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: `${location.origin}${LOGIN}` } });
+      showMsg(error ? T('pj_magic_err', 'Login-Link konnte nicht gesendet werden.') : T('pj_magic_ok', 'Falls ein Zugang existiert, ist der Login-Link unterwegs. Bitte Postfach prüfen.'), !!error);
     });
 
     $('[data-reset]').addEventListener('click', async () => {
       const email = loginForm.email.value.trim();
-      if (!email) { showMsg('Bitte zuerst die E-Mail-Adresse eingeben.', true); return; }
-      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/login/` });
-      showMsg(error ? 'E-Mail konnte nicht gesendet werden.' : 'Falls ein Zugang existiert, haben wir dir einen Link zum Zurücksetzen geschickt.', !!error);
+      if (!email) { showMsg(T('pj_need_email', 'Bitte zuerst die E-Mail-Adresse eingeben.'), true); return; }
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}${LOGIN}` });
+      showMsg(error ? T('pj_reset_err', 'E-Mail konnte nicht gesendet werden.') : T('pj_reset_ok', 'Falls ein Zugang existiert, haben wir dir einen Link zum Zurücksetzen geschickt.'), !!error);
     });
 
     setPwForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const { error } = await sb.auth.updateUser({ password: setPwForm.password.value });
-      if (error) { showMsg('Passwort konnte nicht gespeichert werden: ' + error.message, true); return; }
-      history.replaceState(null, '', '/login/');
-      showMsg('Passwort gespeichert – du wirst weitergeleitet …');
+      if (error) { showMsg(T('pj_pw_err', 'Passwort konnte nicht gespeichert werden:') + ' ' + error.message, true); return; }
+      history.replaceState(null, '', LOGIN);
+      showMsg(T('pj_pw_ok', 'Passwort gespeichert – du wirst weitergeleitet …'));
       setTimeout(goToArea, 800);
     });
   }
 
   async function guard(allowed) {
     const p = await getProfile().catch(() => null);
-    if (!p || !allowed.includes(p.rolle)) { location.replace('/login/'); return null; }
+    if (!p || !allowed.includes(p.rolle)) { location.replace(LOGIN); return null; }
     const label = $('[data-user-label]');
-    if (label) label.textContent = `Angemeldet als ${p.firma || p.name || p.email || p.session.user.email} · ${p.rolle === 'admin' ? 'Admin' : 'Partner'}`;
+    if (label) label.textContent = `${T('pj_logged_as', 'Angemeldet als')} ${p.firma || p.name || p.email || p.session.user.email} · ${p.rolle === 'admin' ? T('pj_role_admin', 'Admin') : T('pj_role_partner', 'Partner')}`;
     return p;
   }
 
@@ -167,12 +183,12 @@
     $('[data-sw-logo]', form).addEventListener('change', async (e) => {
       const f = e.target.files[0];
       if (!f) return;
-      if (f.size > 5 * 1024 * 1024) { showMsg('Logo ist zu groß (max. 5 MB).', true); return; }
+      if (f.size > 5 * 1024 * 1024) { showMsg(T('pj_logo_big', 'Logo ist zu groß (max. 5 MB).'), true); return; }
       logoBlob = await resizeImage(f, 1200, 'image/png');
       previewInto(preview, logoBlob);
     });
     const fill = async (row) => {
-      form.reset(); logoBlob = null; preview.textContent = 'Logo';
+      form.reset(); logoBlob = null; preview.textContent = T('pj_logo', 'Logo');
       if (!row) return;
       ['id', 'firma', 'ansprechpartner', 'website', 'text', 'paket', ...SOCIAL].forEach((k) => { if (form[k]) form[k].value = row[k] || ''; });
       form.einwilligung.checked = true;
@@ -188,8 +204,8 @@
       };
       if (form.paket) row.paket = form.paket.value.trim() || null;
       SOCIAL.forEach((k) => { row[k] = normUrl(k, form[k].value); });
-      if (!row.website) { showMsg('Bitte eine gültige Website angeben (https://…).', true); return; }
-      if (!SOCIAL.some((k) => row[k])) { showMsg('Bitte mindestens einen Social-Media-Kanal angeben.', true); return; }
+      if (!row.website) { showMsg(T('pj_web_invalid', 'Bitte eine gültige Website angeben (https://…).'), true); return; }
+      if (!SOCIAL.some((k) => row[k])) { showMsg(T('pj_social_needed', 'Bitte mindestens einen Social-Media-Kanal angeben.'), true); return; }
       try {
         let id = form.id.value || null;
         if (userId) row.user_id = userId;
@@ -209,7 +225,7 @@
         const { data: fresh } = await sb.from('sponsor_wall').select('*').eq('id', id).single();
         await fill(fresh);
         onSaved && onSaved(fresh);
-      } catch (err) { showMsg('Speichern fehlgeschlagen: ' + err.message, true); }
+      } catch (err) { showMsg(T('pj_save_failed', 'Speichern fehlgeschlagen:') + ' ' + err.message, true); }
     });
     return { fill };
   }
@@ -226,10 +242,10 @@
         own.hidden = false;
         const status = $('[data-sw-status]');
         const setStatus = (r) => {
-          status.textContent = !r ? 'Noch kein Eintrag' : r.freigegeben ? 'Online auf der Website' : 'Wartet auf Freigabe';
+          status.textContent = !r ? T('pj_sw_none', 'Noch kein Eintrag') : r.freigegeben ? T('pj_sw_online', 'Online auf der Website') : T('pj_sw_pending', 'Wartet auf Freigabe');
           status.classList.toggle('ok', !!(r && r.freigegeben));
         };
-        const ctl = bindSponsorForm($('[data-sw-form]', own), { userId: p.id, onSaved: (r) => { setStatus(r); showMsg('Gespeichert – wir prüfen den Eintrag und schalten ihn frei.'); } });
+        const ctl = bindSponsorForm($('[data-sw-form]', own), { userId: p.id, onSaved: (r) => { setStatus(r); showMsg(T('pj_sw_saved', 'Gespeichert – wir prüfen den Eintrag und schalten ihn frei.')); } });
         const { data: mine } = await sb.from('sponsor_wall').select('*').eq('user_id', p.id).maybeSingle();
         if (mine) await ctl.fill(mine);
         else { const f = $('[data-sw-form]', own); f.firma.value = p.firma || ''; f.ansprechpartner.value = p.name || ''; }
@@ -237,35 +253,40 @@
       }
       const { data: seasons, error } = await sb.from('bericht_saison').select('*').order('saison', { ascending: false });
       $('[data-loading]').hidden = true;
-      if (error) { showMsg('Bericht konnte nicht geladen werden.', true); return; }
-      if (!seasons.length) { showMsg('Es ist noch kein Bericht freigegeben. Wir melden uns, sobald es so weit ist.'); return; }
+      if (error) { showMsg(T('pj_load_err', 'Bericht konnte nicht geladen werden.'), true); return; }
+      if (!seasons.length) { showMsg(T('pj_none_released', 'Es ist noch kein Bericht freigegeben. Wir melden uns, sobald es so weit ist.')); return; }
       const select = $('[data-season-select]');
-      select.innerHTML = seasons.map((s) => `<option value="${s.saison}">${s.saison}${s.status !== 'freigegeben' ? ' (Entwurf – nur Admins)' : ''}</option>`).join('');
+      select.innerHTML = seasons.map((s) => `<option value="${s.saison}">${s.saison}${s.status !== 'freigegeben' ? T('pj_draft_suffix', ' (Entwurf – nur Admins)') : ''}</option>`).join('');
       const render = async (saison) => {
         const s = seasons.find((x) => String(x.saison) === String(saison));
         const { data: rows } = await sb.from('ausgaben').select('kategorie, betrag').eq('saison', s.saison).order('id');
         const total = (rows || []).reduce((a, r) => a + Number(r.betrag || 0), 0);
         $('[data-year]').textContent = s.saison;
         $('[data-status]').textContent = s.status === 'freigegeben'
-          ? `Freigegeben${s.freigegeben_am ? ' am ' + new Date(s.freigegeben_am).toLocaleDateString('de-DE') : ''} · Stand ${new Date(s.updated_at).toLocaleDateString('de-DE')}`
-          : 'Entwurf – nur für Admins sichtbar';
+          ? `${T('pj_released', 'Freigegeben')}${s.freigegeben_am ? T('pj_released_on', ' am ') + new Date(s.freigegeben_am).toLocaleDateString(LOCALE) : ''} · ${T('pj_as_of', 'Stand')} ${new Date(s.updated_at).toLocaleDateString(LOCALE)}`
+          : T('pj_draft_admin', 'Entwurf – nur für Admins sichtbar');
         $('[data-k="gesamt"]').textContent = eur(total);
         $('[data-k="partner"]').textContent = eur(Number(s.fin_sponsoren || 0) + Number(s.fin_squadra || 0));
         $('[data-k="rennwochenenden"]').textContent = num(s.rennwochenenden);
         $('[data-k="kilometer"]').textContent = `${num(s.kilometer)} km`;
-        $('[data-rows]').innerHTML = (rows || []).map((r) => `<tr><td>${escapeHtml(r.kategorie)}</td><td class="num strong">${eur(r.betrag)}</td><td class="num muted">${total ? Math.round((Number(r.betrag) / total) * 100) : 0} %</td></tr>`).join('')
-          + `<tr><td class="strong">Gesamt</td><td class="num strong red">${eur(total)}</td><td class="num strong">100 %</td></tr>`;
+        $('[data-rows]').innerHTML = (rows || []).map((r) => `<tr><td>${escapeHtml(kat(r.kategorie))}</td><td class="num strong">${eur(r.betrag)}</td><td class="num muted">${total ? Math.round((Number(r.betrag) / total) * 100) : 0} %</td></tr>`).join('')
+          + `<tr><td class="strong">${T('pj_total', 'Gesamt')}</td><td class="num strong red">${eur(total)}</td><td class="num strong">100 %</td></tr>`;
         $('[data-finanzierung]').innerHTML = [
-          ['Partner (Pakete)', s.fin_sponsoren], ['Squadra Tre (Unterstützer)', s.fin_squadra], ['Eigenmittel Familie', s.fin_eigen], ['Sonstiges (z. B. Förderungen)', s.fin_sonstiges]
+          [T('pj_fin_partner', 'Partner (Pakete)'), s.fin_sponsoren], [T('pj_fin_squadra', 'Squadra Tre (Unterstützer)'), s.fin_squadra], [T('pj_fin_own', 'Eigenmittel Familie'), s.fin_eigen], [T('pj_fin_other', 'Sonstiges (z. B. Förderungen)'), s.fin_sonstiges]
         ].map(([k, v]) => `<div><dt>${k}</dt><dd>${eur(v)}</dd></div>`).join('');
-        $('[data-rueckblick]').innerHTML = escapeHtml(s.rueckblick || '–').replace(/\n/g, '<br>');
+        // Saisonrückblick in der Sprache der Seite, wenn das Team ihn übersetzt hat – sonst Deutsch mit Hinweis
+        const rbOwn = LANG !== 'de' ? s['rueckblick_' + LANG] : '';
+        const rb = rbOwn || s.rueckblick || '–';
+        const rbEl = $('[data-rueckblick]');
+        rbEl.innerHTML = escapeHtml(rb).replace(/\n/g, '<br>') + (LANG !== 'de' && !rbOwn && s.rueckblick ? ` <span class="muted small">${escapeHtml(T('pj_review_de', ''))}</span>` : '');
+        if (LANG !== 'de' && !rbOwn) rbEl.setAttribute('lang', 'de'); else rbEl.removeAttribute('lang');
         const dl = $('[data-downloads]');
-        const files = [['Jahresbericht ' + s.saison + ' (PDF)', s.pdf_bericht], ['Belegübersicht ' + s.saison + ' (PDF)', s.pdf_belege]].filter(([, f]) => f);
-        dl.innerHTML = files.length ? files.map(([label, f]) => `<a href="#" data-file="${escapeHtml(f)}"><span>${label}</span><span class="muted small">Herunterladen</span></a>`).join('') : '<p class="muted">Noch keine Dateien hochgeladen.</p>';
+        const files = [[T('pj_dl_report', 'Jahresbericht {y} (PDF)').replace('{y}', s.saison), s.pdf_bericht], [T('pj_dl_receipts', 'Belegübersicht {y} (PDF)').replace('{y}', s.saison), s.pdf_belege]].filter(([, f]) => f);
+        dl.innerHTML = files.length ? files.map(([label, f]) => `<a href="#" data-file="${escapeHtml(f)}"><span>${escapeHtml(label)}</span><span class="muted small">${escapeHtml(T('pj_dl_download', 'Herunterladen'))}</span></a>`).join('') : `<p class="muted">${escapeHtml(T('pj_dl_none', 'Noch keine Dateien hochgeladen.'))}</p>`;
         $$('[data-file]', dl).forEach((a) => a.addEventListener('click', async (e) => {
           e.preventDefault();
           const { data, error: err } = await sb.storage.from('berichte').createSignedUrl(a.dataset.file, 120);
-          if (err) { showMsg('Datei konnte nicht geöffnet werden.', true); return; }
+          if (err) { showMsg(T('pj_file_err', 'Datei konnte nicht geöffnet werden.'), true); return; }
           window.open(data.signedUrl, '_blank', 'noopener');
         }));
       };
@@ -342,7 +363,13 @@
           row[f.dataset.f] = f.tagName === 'TEXTAREA' ? v : (v === '' ? null : Number(v));
         });
         row.status = extra.status || current.status || 'entwurf';
-        const { data, error } = await sb.from('bericht_saison').upsert(row, { onConflict: 'saison' }).select().single();
+        let { data, error } = await sb.from('bericht_saison').upsert(row, { onConflict: 'saison' }).select().single();
+        if (error && /rueckblick_(it|en|fr)/.test(error.message || '')) {
+          // Spalten für Übersetzungen fehlen noch (Supabase-Migration 003) – ohne sie speichern
+          ['rueckblick_it', 'rueckblick_en', 'rueckblick_fr'].forEach((k) => delete row[k]);
+          ({ data, error } = await sb.from('bericht_saison').upsert(row, { onConflict: 'saison' }).select().single());
+          if (!error) showMsg('Gespeichert – die Übersetzungen des Rückblicks konnten noch nicht gespeichert werden (Supabase-Migration 003 fehlt).', true);
+        }
         if (error) throw error;
         const ausg = ausgabeInputs.map((i) => ({ saison, kategorie: i.dataset.ausgabe, betrag: Number(i.value) || 0 }));
         const { error: e2 } = await sb.from('ausgaben').upsert(ausg, { onConflict: 'saison,kategorie' });
@@ -382,9 +409,9 @@
 
       /* ----- Zugänge ----- */
       async function loadProfiles() {
-        const { data, error } = await sb.from('profiles').select('id, email, name, firma, rolle').order('rolle').order('firma');
+        const { data, error } = await sb.from('profiles').select('*').order('rolle').order('firma');
         if (error) { showMsg('Zugänge konnten nicht geladen werden.', true); return; }
-        $('[data-profiles]').innerHTML = data.map((r) => `<tr><td>${escapeHtml(r.firma || r.name || '')}</td><td>${escapeHtml(r.email || '')}</td><td>${r.rolle === 'admin' ? '<strong>Admin</strong>' : 'Partner'}</td><td class="actions">${r.id === p.id ? '' : `<button class="small-btn" data-remove="${r.id}">Zugang entfernen</button>`}</td></tr>`).join('');
+        $('[data-profiles]').innerHTML = data.map((r) => `<tr><td>${escapeHtml(r.firma || r.name || '')}</td><td>${escapeHtml(r.email || '')}</td><td>${r.rolle === 'admin' ? '<strong>Admin</strong>' : 'Partner'}</td><td>${escapeHtml(String(r.sprache || 'de').toUpperCase())}</td><td class="actions">${r.id === p.id ? '' : `<button class="small-btn" data-remove="${r.id}">Zugang entfernen</button>`}</td></tr>`).join('');
         $$('[data-remove]').forEach((b) => b.addEventListener('click', async () => {
           if (!confirm('Diesen Zugang wirklich entfernen? Die Person kann sich danach nicht mehr anmelden.')) return;
           try { await api('/api/team-remove', { id: b.dataset.remove }); showMsg('Zugang entfernt.'); loadProfiles(); } catch (e) { showMsg(e.message, true); }
@@ -394,7 +421,7 @@
         e.preventDefault();
         const f = e.target;
         try {
-          await api('/api/team-invite', { email: f.email.value.trim(), firma: f.firma.value.trim(), rolle: f.rolle.value });
+          await api('/api/team-invite', { email: f.email.value.trim(), firma: f.firma.value.trim(), rolle: f.rolle.value, sprache: f.sprache.value });
           showMsg('Einladung gesendet.'); f.reset(); loadProfiles();
         } catch (err) { showMsg('Einladung fehlgeschlagen: ' + err.message, true); }
       });

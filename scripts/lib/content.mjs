@@ -13,7 +13,7 @@ function listDir(dir, ext) {
 }
 
 // News im Format "json-frontmatter": JSON-Objekt am Anfang, danach Markdown.
-function readJsonFrontmatter(path) {
+export function readJsonFrontmatter(path) {
   const raw = readFileSync(path, 'utf8').replace(/^﻿/, '');
   const trimmed = raw.trimStart();
   if (!trimmed.startsWith('{')) return { data: {}, body: raw };
@@ -72,7 +72,7 @@ export function loadContent(root, lang = DEFAULT_LANG) {
     .sort((a, b) => String(b.datum).localeCompare(String(a.datum)));
 
   const rennen = listDir(join(C, 'rennen'), '.json')
-    .map((f) => { const r = { id: basename(f, '.json'), ...readJSON(join(C, 'rennen', f)) }; return { ...r, bericht: loc(r, 'bericht', lang) }; })
+    .map((f) => ({ id: basename(f, '.json'), ...readJSON(join(C, 'rennen', f)) }))
     .sort((a, b) => String(a.start).localeCompare(String(b.start)));
 
   // Galerie-Aufbau: Serie → Jahr → Strecke
@@ -220,4 +220,9 @@ export function urlSlug(text) {
     .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'album';
+}
+
+// News-Datei zurückschreiben (gleiches Format wie das CMS: JSON-Block, Leerzeile, Markdown-Text).
+export function writeJsonFrontmatter(path, data, body) {
+  writeFileSync(path, `${JSON.stringify(data, null, 2)}\n\n${String(body || '').trim()}\n`);
 }

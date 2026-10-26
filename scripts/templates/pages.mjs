@@ -463,8 +463,7 @@ export function kontakt(lang, ctx) {
     ${picture(c.site.off_track_bild, _('alt_kart_check'), { width: 900, cls: 'rounded' })}
   </div>
   <div class="card form-card">
-    <form class="form" name="kontakt" method="POST" action="${url(lang, '/danke/')}" data-netlify="true" netlify-honeypot="bot-field">
-      <input type="hidden" name="form-name" value="kontakt">
+    <form class="form" name="kontakt" method="POST" action="/api/kontakt">
       <input type="hidden" name="sprache" value="${lang}">
       <p class="hp" aria-hidden="true"><label>${_('honeypot')} <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
       <h2 class="h2">${_('write_msg')}</h2>

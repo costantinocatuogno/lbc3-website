@@ -9,52 +9,97 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/fruehstueck.jpg",
-      "text": "Lieblingsplatz: Frühstück im Wohnmobil – in Ruhe in den Tag starten"
+      "text": "Lieblingsplatz: Frühstück im Wohnmobil – in Ruhe in den Tag starten",
+      "text_it": "Posto preferito: colazione in camper – iniziare la giornata con calma",
+      "text_en": "Favourite spot: breakfast in the motorhome – a calm start to the day",
+      "text_fr": "Endroit préféré : petit-déjeuner au camping-car – commencer la journée au calme"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/mit-mama-im-fahrerlager.jpg",
-      "text": "Mit Mama unterwegs im Fahrerlager"
+      "text": "Mit Mama unterwegs im Fahrerlager",
+      "text_it": "In giro per il paddock con la mamma",
+      "text_en": "Out and about in the paddock with Mum",
+      "text_fr": "Au paddock avec maman"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/rueckweg.jpg",
-      "text": "Gemeinsam mit Mama zurück zum Wohnmobil"
+      "text": "Gemeinsam mit Mama zurück zum Wohnmobil",
+      "text_it": "Insieme alla mamma, di ritorno al camper",
+      "text_en": "Heading back to the motorhome with Mum",
+      "text_fr": "Retour au camping-car avec maman"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/tag-zu-ende.jpg",
-      "text": "Mama ist da – ein ruhiger Moment nach einem langen Tag"
+      "text": "Mama ist da – ein ruhiger Moment nach einem langen Tag",
+      "text_it": "C’è la mamma – un momento tranquillo dopo una lunga giornata",
+      "text_en": "Mum is here – a quiet moment after a long day",
+      "text_fr": "Maman est là – un moment calme après une longue journée"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/abendsonne-rennanzug.jpg",
-      "text": "Abendsonne am Wohnmobil – der Rennanzug hat Feierabend"
+      "text": "Abendsonne am Wohnmobil – der Rennanzug hat Feierabend",
+      "text_it": "Sole della sera al camper – la tuta ha finito il turno",
+      "text_en": "Evening sun at the motorhome – the race suit is off duty",
+      "text_fr": "Soleil du soir au camping-car – la combinaison a fini sa journée"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/abendsonne-rennanzug-2.jpg",
-      "text": "Kurz durchatmen und den Tag sacken lassen"
+      "text": "Kurz durchatmen und den Tag sacken lassen",
+      "text_it": "Un attimo per respirare e lasciar sedimentare la giornata",
+      "text_en": "A moment to breathe and let the day sink in",
+      "text_fr": "Souffler un instant et laisser la journée retomber"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/grillen.jpg",
-      "text": "Grillen mit Papa"
+      "text": "Grillen mit Papa",
+      "text_it": "Grigliata con papà",
+      "text_en": "Barbecue with Dad",
+      "text_fr": "Barbecue avec papa"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/grillen-2.jpg",
-      "text": "Papa am Grill, Luigi schaut genau hin"
+      "text": "Papa am Grill, Luigi schaut genau hin",
+      "text_it": "Papà alla griglia, Luigi osserva attento",
+      "text_en": "Dad at the grill, Luigi watching closely",
+      "text_fr": "Papa au barbecue, Luigi regarde attentivement"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/abendessen.jpg",
-      "text": "Abendessen mit der Familie am Wohnmobil"
+      "text": "Abendessen mit der Familie am Wohnmobil",
+      "text_it": "Cena in famiglia al camper",
+      "text_en": "Family dinner at the motorhome",
+      "text_fr": "Dîner en famille au camping-car"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/familie/abendessen-2.jpg",
-      "text": "Gemeinsam am Tisch – so lädt Luigi die Akkus wieder auf"
+      "text": "Gemeinsam am Tisch – so lädt Luigi die Akkus wieder auf",
+      "text_it": "Insieme a tavola – così Luigi ricarica le batterie",
+      "text_en": "Together at the table – this is how Luigi recharges his batteries",
+      "text_fr": "Ensemble à table – c’est ainsi que Luigi recharge ses batteries"
     }
-  ]
+  ],
+  "it": {
+    "titel": "Pit stop famiglia – qui Luigi ricarica le batterie",
+    "strecke": "Pit stop famiglia",
+    "serie": "Dietro le quinte"
+  },
+  "en": {
+    "titel": "Family pit stop – where Luigi recharges his batteries",
+    "strecke": "Family pit stop",
+    "serie": "Behind the scenes"
+  },
+  "fr": {
+    "titel": "Pit stop en famille – ici Luigi recharge ses batteries",
+    "strecke": "Pit stop en famille",
+    "serie": "Dans les coulisses"
+  }
 }

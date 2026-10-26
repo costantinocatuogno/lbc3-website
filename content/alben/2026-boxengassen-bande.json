@@ -9,77 +9,137 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-liedolsheim-gruppe.jpg",
-      "text": "SAKC Liedolsheim: die Bande komplett – Leon, Luigi, Max, Nico und Lewis"
+      "text": "SAKC Liedolsheim: die Bande komplett – Leon, Luigi, Max, Nico und Lewis",
+      "text_it": "SAKC Liedolsheim: la banda al completo – Leon, Luigi, Max, Nico e Lewis",
+      "text_en": "SAKC Liedolsheim: the whole gang – Leon, Luigi, Max, Nico and Lewis",
+      "text_fr": "SAKC Liedolsheim : toute la bande – Leon, Luigi, Max, Nico et Lewis"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-wackersdorf-elias-pokal.jpg",
-      "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2"
+      "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2",
+      "text_it": "Wackersdorf: vicecampione! Luigi ed Elias con la coppa del 2° posto",
+      "text_en": "Wackersdorf: runner-up! Luigi and Elias with the 2nd-place trophy",
+      "text_fr": "Wackersdorf : vice-champion ! Luigi et Elias avec la coupe de la 2e place"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/wackersdorf-milly-luigi-meister.jpg",
-      "text": "Wackersdorf: Meisterin Milly und Vizemeister Luigi unter der Startampel"
+      "text": "Wackersdorf: Meisterin Milly und Vizemeister Luigi unter der Startampel",
+      "text_it": "Wackersdorf: la campionessa Milly e il vicecampione Luigi sotto il semaforo di partenza",
+      "text_en": "Wackersdorf: champion Milly and runner-up Luigi under the start lights",
+      "text_fr": "Wackersdorf : la championne Milly et le vice-champion Luigi sous les feux de départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-ampfing-lui.jpg",
-      "text": "Ampfing: Luigi und Lui – Teamkollegen bei 7L Performance"
+      "text": "Ampfing: Luigi und Lui – Teamkollegen bei 7L Performance",
+      "text_it": "Ampfing: Luigi e Lui – compagni di squadra in 7L Performance",
+      "text_en": "Ampfing: Luigi and Lui – teammates at 7L Performance",
+      "text_fr": "Ampfing : Luigi et Lui – coéquipiers chez 7L Performance"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-ampfing-elias.jpg",
-      "text": "Ampfing: Warten auf den Vorstart – mit Elias, Papa und Basti"
+      "text": "Ampfing: Warten auf den Vorstart – mit Elias, Papa und Basti",
+      "text_it": "Ampfing: in attesa della pre-griglia – con Elias, papà e Basti",
+      "text_en": "Ampfing: waiting for the pre-grid – with Elias, Dad and Basti",
+      "text_fr": "Ampfing : en attendant la pré-grille – avec Elias, papa et Basti"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-ampfing-tom.jpg",
-      "text": "Ampfing: Handschlag mit Tom nach dem Lauf"
+      "text": "Ampfing: Handschlag mit Tom nach dem Lauf",
+      "text_it": "Ampfing: stretta di mano con Tom dopo la manche",
+      "text_en": "Ampfing: handshake with Tom after the heat",
+      "text_fr": "Ampfing : poignée de main avec Tom après la manche"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-muelsen-alex-scooter.jpg",
-      "text": "Mülsen: Luigi und Alex – Doppelpack auf dem Scooter"
+      "text": "Mülsen: Luigi und Alex – Doppelpack auf dem Scooter",
+      "text_it": "Mülsen: Luigi e Alex – in due sullo scooter",
+      "text_en": "Mülsen: Luigi and Alex – double act on the scooter",
+      "text_fr": "Mülsen : Luigi et Alex – à deux sur le scooter"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/muelsen-2026-17.jpg",
-      "text": "Mülsen: mit Alex im Fahrerlager-Taxi unterwegs"
+      "text": "Mülsen: mit Alex im Fahrerlager-Taxi unterwegs",
+      "text_it": "Mülsen: in giro con Alex sul taxi del paddock",
+      "text_en": "Mülsen: riding the paddock taxi with Alex",
+      "text_fr": "Mülsen : en route avec Alex dans le taxi du paddock"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-muelsen-oscar.jpg",
-      "text": "Mülsen: Handschlag mit Oscar nach dem Rennen"
+      "text": "Mülsen: Handschlag mit Oscar nach dem Rennen",
+      "text_it": "Mülsen: stretta di mano con Oscar dopo la gara",
+      "text_en": "Mülsen: handshake with Oscar after the race",
+      "text_fr": "Mülsen : poignée de main avec Oscar après la course"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-nico.jpg",
-      "text": "SAKC Wackersdorf: Abklatschen mit Nico vor dem Start"
+      "text": "SAKC Wackersdorf: Abklatschen mit Nico vor dem Start",
+      "text_it": "SAKC Wackersdorf: batti cinque con Nico prima della partenza",
+      "text_en": "SAKC Wackersdorf: high five with Nico before the start",
+      "text_fr": "SAKC Wackersdorf : check avec Nico avant le départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-devin.jpg",
-      "text": "Luigi und Devin – Fachsimpeln am Kart"
+      "text": "Luigi und Devin – Fachsimpeln am Kart",
+      "text_it": "Luigi e Devin – chiacchiere tecniche al kart",
+      "text_en": "Luigi and Devin – talking shop at the kart",
+      "text_fr": "Luigi et Devin – discussion technique au kart"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-leon-deniz.jpg",
-      "text": "Zu Besuch bei Freunden: Leon und Papa Deniz im Teamzelt"
+      "text": "Zu Besuch bei Freunden: Leon und Papa Deniz im Teamzelt",
+      "text_it": "In visita dagli amici: Leon e papà Deniz nella tenda del team",
+      "text_en": "Visiting friends: Leon and his dad Deniz in the team tent",
+      "text_fr": "En visite chez des amis : Leon et son papa Deniz sous la tente de l’équipe"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/bande-briefing-von-hinten.jpg",
-      "text": "Fahrerbesprechung in Ampfing: die ganze Bande hört zu"
+      "text": "Fahrerbesprechung in Ampfing: die ganze Bande hört zu",
+      "text_it": "Briefing piloti ad Ampfing: tutta la banda ascolta",
+      "text_en": "Drivers’ briefing in Ampfing: the whole gang is listening",
+      "text_fr": "Briefing des pilotes à Ampfing : toute la bande écoute"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/bande-briefing-nah.jpg",
-      "text": "Ohren auf: die letzten Infos vor dem Rennen"
+      "text": "Ohren auf: die letzten Infos vor dem Rennen",
+      "text_it": "Orecchie aperte: le ultime informazioni prima della gara",
+      "text_en": "Ears open: the last information before the race",
+      "text_fr": "Oreilles grandes ouvertes : les dernières infos avant la course"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/bande-briefing-gruppe.jpg",
-      "text": "Schulter an Schulter in der Fahrerbesprechung"
+      "text": "Schulter an Schulter in der Fahrerbesprechung",
+      "text_it": "Spalla a spalla al briefing piloti",
+      "text_en": "Shoulder to shoulder at the drivers’ briefing",
+      "text_fr": "Épaule contre épaule au briefing des pilotes"
     }
-  ]
+  ],
+  "it": {
+    "titel": "La banda della pit lane – rivali in pista, migliori amici fuori",
+    "strecke": "La banda della pit lane",
+    "serie": "Dietro le quinte"
+  },
+  "en": {
+    "titel": "The pit lane gang – rivals on track, best mates off it",
+    "strecke": "The pit lane gang",
+    "serie": "Behind the scenes"
+  },
+  "fr": {
+    "titel": "La bande de la pit lane – rivaux en piste, meilleurs potes en dehors",
+    "strecke": "La bande de la pit lane",
+    "serie": "Dans les coulisses"
+  }
 }

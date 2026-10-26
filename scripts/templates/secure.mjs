@@ -1,8 +1,10 @@
 // Login, Ausgabenbericht (Partner) und Team-Bereich (Admins).
 // Diese Seiten enthalten KEINE vertraulichen Daten – alles wird erst nach dem Login
 // aus Supabase geladen und dort per Row-Level-Security geschützt.
+// Login und Ausgabenbericht gibt es in allen Sprachen (/login/, /it/login/ …); der Team-Bereich ist nur auf Deutsch.
 import { esc, icon, img } from '../lib/html.mjs';
 import { bareLayout } from './layout.mjs';
+import { t, ui, url, LANGS, LANG_NAMES } from '../lib/i18n.mjs';
 
 export const KATEGORIEN = [
   'Reisekosten Deutschland & Italien',
@@ -15,146 +17,168 @@ export const KATEGORIEN = [
   'Team & Betreuung'
 ];
 
+// Texte für auth.js (Meldungen im Browser) in der Sprache der Seite
+function jsTexts(lang) {
+  const _ = t(lang);
+  const dict = Object.fromEntries(Object.keys(ui.de).filter((k) => k.startsWith('pj_') || k.startsWith('p_hint_')).map((k) => [k, _(k)]));
+  dict.kat = Object.fromEntries(KATEGORIEN.map((k, i) => [k, _(`kat_${i + 1}`)]));
+  return dict;
+}
+
+// Kleiner Sprachumschalter für Login und Bericht
+function langLinks(lang, path) {
+  return `<span class="app-langs">${LANGS.map((l) => (l === lang
+    ? `<strong aria-current="true">${l.toUpperCase()}</strong>`
+    : `<a href="${url(l, path)}" hreflang="${l}" lang="${l}" data-set-lang="${l}" title="${LANG_NAMES[l]}">${l.toUpperCase()}</a>`)).join(' ')}</span>`;
+}
 
 // Formular für den eigenen Wall-of-Fame-Eintrag (Partner im Login – oder Admin für einen Partner)
-function sponsorWallForm(admin = false) {
+function sponsorWallForm(admin = false, lang = 'de') {
+  const _ = t(lang);
   return `
 <form class="form" data-sw-form>
   <input type="hidden" name="id">
   <div class="grid-2 tight">
-    <label class="field"><span>Firma *</span><input name="firma" required maxlength="120"></label>
-    <label class="field"><span>Ansprechpartner</span><input name="ansprechpartner" maxlength="120"></label>
+    <label class="field"><span>${_('p_sw_company')}</span><input name="firma" required maxlength="120"></label>
+    <label class="field"><span>${_('p_sw_contact')}</span><input name="ansprechpartner" maxlength="120"></label>
   </div>
-  <label class="field"><span>Website *</span><input name="website" inputmode="url" required placeholder="www.firma.de" maxlength="300"></label>
-  <p class="muted small">Mindestens ein Social-Media-Kanal ist Pflicht:</p>
+  <label class="field"><span>${_('p_sw_web')}</span><input name="website" inputmode="url" required placeholder="www.firma.de" maxlength="300"></label>
+  <p class="muted small">${_('p_sw_social')}</p>
   <div class="grid-2 tight">
-    <label class="field"><span>Instagram</span><input name="instagram" placeholder="https://instagram.com/firma oder @firma" maxlength="300"></label>
-    <label class="field"><span>Facebook</span><input name="facebook" placeholder="https://facebook.com/firma" maxlength="300"></label>
-    <label class="field"><span>LinkedIn</span><input name="linkedin" placeholder="https://linkedin.com/company/firma" maxlength="300"></label>
-    <label class="field"><span>TikTok</span><input name="tiktok" placeholder="https://tiktok.com/@firma" maxlength="300"></label>
-    <label class="field"><span>YouTube</span><input name="youtube" placeholder="https://youtube.com/@firma" maxlength="300"></label>
+    <label class="field"><span>Instagram</span><input name="instagram" placeholder="https://instagram.com/… / @…" maxlength="300"></label>
+    <label class="field"><span>Facebook</span><input name="facebook" placeholder="https://facebook.com/…" maxlength="300"></label>
+    <label class="field"><span>LinkedIn</span><input name="linkedin" placeholder="https://linkedin.com/company/…" maxlength="300"></label>
+    <label class="field"><span>TikTok</span><input name="tiktok" placeholder="https://tiktok.com/@…" maxlength="300"></label>
+    <label class="field"><span>YouTube</span><input name="youtube" placeholder="https://youtube.com/@…" maxlength="300"></label>
     ${admin ? '<label class="field"><span>Paket</span><input name="paket" maxlength="60"></label>' : ''}
   </div>
-  <label class="field"><span>Kurzer Text (max. 280 Zeichen)</span><textarea name="text" rows="3" maxlength="280" placeholder="Was macht eure Firma? Warum unterstützt ihr Luigi?"></textarea></label>
+  <label class="field"><span>${_('p_sw_text')}</span><textarea name="text" rows="3" maxlength="280" placeholder="${esc(_('p_sw_text_ph'))}"></textarea></label>
   <div class="photo-pick">
     <div class="photo-preview logo" data-sw-preview>Logo</div>
-    <div><span class="field-label">Logo (PNG/SVG mit transparentem Hintergrund ideal, max. 5 MB)</span>
-      <label class="btn btn-outline btn-sm"><input type="file" accept="image/png,image/svg+xml,image/jpeg,image/webp" data-sw-logo hidden><span>Logo auswählen</span></label></div>
+    <div><span class="field-label">${_('p_sw_logo')}</span>
+      <label class="btn btn-outline btn-sm"><input type="file" accept="image/png,image/svg+xml,image/jpeg,image/webp" data-sw-logo hidden><span>${_('p_sw_logo_btn')}</span></label></div>
   </div>
-  <label class="check"><input type="checkbox" name="einwilligung" required><span>Wir sind einverstanden, dass Logo, Firmenname, Text und Links auf Luigis Website und auf der gedruckten Wall of Fame am Rennzelt gezeigt werden.</span></label>
-  <div class="btn-row"><button class="btn btn-dark" type="submit">${admin ? 'Eintrag speichern' : 'Eintrag speichern & zur Freigabe senden'}</button>${admin ? '<button type="button" class="btn btn-outline" data-sw-reset>Neu</button>' : ''}</div>
+  <label class="check"><input type="checkbox" name="einwilligung" required><span>${_('p_sw_consent')}</span></label>
+  <div class="btn-row"><button class="btn btn-dark" type="submit">${admin ? 'Eintrag speichern' : _('p_sw_save')}</button>${admin ? '<button type="button" class="btn btn-outline" data-sw-reset>Neu</button>' : ''}</div>
 </form>`;
 }
 
-const topbar = (title, extra = '') => `
+const topbar = (title, extra = '', lang = 'de', path = '') => {
+  const _ = t(lang);
+  return `
 <header class="app-bar">
   <div class="wrap app-bar-inner">
-    <a class="brand light" href="/"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="34" height="42"><strong>${title}</strong></a>
+    <a class="brand light" href="${url(lang, '/')}"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="34" height="42"><strong>${title}</strong></a>
     <div class="app-bar-tools">
       <span class="muted-light small" data-user-label></span>
       ${extra}
-      <a class="app-link" href="/vorschau/">Zur Website</a>
-      <button type="button" class="btn btn-ghost-light btn-sm" data-logout>Abmelden</button>
+      ${path ? langLinks(lang, path) : ''}
+      <a class="app-link" href="/vorschau/">${_('p_to_site')}</a>
+      <button type="button" class="btn btn-ghost-light btn-sm" data-logout>${_('p_logout')}</button>
     </div>
   </div>
 </header>`;
+};
 
-export function loginPage(ctx) {
+export function loginPage(ctx, lang = 'de') {
+  const _ = t(lang);
   const site = ctx.content.site;
   const body = `
 <main class="login">
   <div class="login-visual">
     <img src="${esc(img(site.login_bild, 1400))}" alt="" aria-hidden="true">
-    <a class="brand light" href="/"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="48" height="60"><span>← Zurück zur Website</span></a>
-    <div class="login-claim"><div class="h1 big light">Team<br><span class="gold">#LBC3</span></div><p class="lead light">Der geschützte Bereich für unsere Partner und das Team.</p></div>
+    <a class="brand light" href="${url(lang, '/')}"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="48" height="60"><span>${_('p_back')}</span></a>
+    <div class="login-claim"><div class="h1 big light">Team<br><span class="gold">#LBC3</span></div><p class="lead light">${_('p_claim')}</p></div>
   </div>
   <div class="login-panel">
     <div class="login-box">
-      <h1 class="h1">Anmelden</h1>
+      <div class="login-langs">${langLinks(lang, '/login/')}</div>
+      <h1 class="h1">${_('p_signin')}</h1>
       <div class="segmented" role="tablist">
-        <button type="button" role="tab" aria-selected="true" class="is-active" data-role-tab="sponsor">Partner</button>
-        <button type="button" role="tab" aria-selected="false" data-role-tab="admin">Team / Admin</button>
+        <button type="button" role="tab" aria-selected="true" class="is-active" data-role-tab="sponsor">${_('p_tab_partner')}</button>
+        <button type="button" role="tab" aria-selected="false" data-role-tab="admin">${_('p_tab_admin')}</button>
       </div>
-      <p class="muted" data-role-hint>Als Partner siehst du hier jederzeit unseren aktuellen Ausgabenbericht.</p>
+      <p class="muted" data-role-hint>${_('p_hint_partner')}</p>
 
       <form class="form" data-login-form>
-        <label class="field"><span>E-Mail</span><input name="email" type="email" required autocomplete="email"></label>
-        <label class="field" data-pw-field><span>Passwort</span><input name="password" type="password" autocomplete="current-password"></label>
-        <button class="btn btn-dark btn-block" type="submit">Anmelden</button>
+        <label class="field"><span>${_('f_email')}</span><input name="email" type="email" required autocomplete="email"></label>
+        <label class="field" data-pw-field><span>${_('p_password')}</span><input name="password" type="password" autocomplete="current-password"></label>
+        <button class="btn btn-dark btn-block" type="submit">${_('p_signin')}</button>
         <div class="split-links">
-          <button type="button" class="link-btn" data-magic>Login-Link per E-Mail</button>
-          <button type="button" class="link-btn" data-reset>Passwort vergessen?</button>
+          <button type="button" class="link-btn" data-magic>${_('p_magic')}</button>
+          <button type="button" class="link-btn" data-reset>${_('p_forgot')}</button>
         </div>
       </form>
 
       <form class="form" data-setpw-form hidden>
-        <h2 class="h2">Passwort festlegen</h2>
-        <p class="muted">Willkommen! Lege jetzt dein persönliches Passwort fest (mindestens 10 Zeichen).</p>
-        <label class="field"><span>Neues Passwort</span><input name="password" type="password" minlength="10" required autocomplete="new-password"></label>
-        <button class="btn btn-red btn-block" type="submit">Passwort speichern</button>
+        <h2 class="h2">${_('p_setpw_title')}</h2>
+        <p class="muted">${_('p_setpw_text')}</p>
+        <label class="field"><span>${_('p_newpw')}</span><input name="password" type="password" minlength="10" required autocomplete="new-password"></label>
+        <button class="btn btn-red btn-block" type="submit">${_('p_savepw')}</button>
       </form>
 
       <div class="form-msg" data-msg role="status" hidden></div>
 
-      <div class="note-red">Mitglied der <strong>Squadra Tre</strong>? Du brauchst keinen Login – unseren Jahresbericht bekommst du am Saisonende per E-Mail. <a href="/squadra-tre/">Mehr erfahren</a></div>
-      <p class="muted small">Zugänge werden von uns vergeben. Partner erhalten ihre Einladung per E-Mail.</p>
+      <div class="note-red">${_('p_squadra_note')} <a href="${url(lang, '/squadra-tre/')}">${_('p_more')}</a></div>
+      <p class="muted small">${_('p_access_note')}</p>
     </div>
   </div>
 </main>`;
-  return bareLayout({ title: 'Login', body, ctx, scripts: ['/assets/js/auth.js'], bodyClass: 'page-login' });
+  return bareLayout({ title: _('p_title_login'), body, ctx, scripts: ['/assets/js/auth.js'], bodyClass: 'page-login', lang, texts: jsTexts(lang) });
 }
 
-export function berichtPage(ctx) {
+export function berichtPage(ctx, lang = 'de') {
+  const _ = t(lang);
   const body = `
-${topbar('AUSGABENBERICHT · NUR FÜR SPONSOREN')}
+${topbar(_('p_topbar'), '', lang, '/bericht/')}
 <main class="wrap section" data-bericht>
-  <div class="loading" data-loading>Bericht wird geladen …</div>
+  <div class="loading" data-loading>${_('p_loading')}</div>
   <div class="form-msg" data-msg role="status" hidden></div>
   <div data-content hidden>
     <div class="section-head">
       <div>
-        <div class="eyebrow">Ausgabenbericht für unsere Partner · jederzeit aktuell</div>
-        <h1 class="h1 big">Saison <span data-year></span></h1>
-        <p class="lead">Transparenz ist uns wichtig. Hier zeigen wir, wofür eure Unterstützung eingesetzt wird.</p>
+        <div class="eyebrow">${_('p_eyebrow')}</div>
+        <h1 class="h1 big">${_('season')} <span data-year></span></h1>
+        <p class="lead">${_('p_lead')}</p>
       </div>
       <div class="stack-end">
-        <label class="field inline"><span>Saison</span><select data-season-select></select></label>
+        <label class="field inline"><span>${_('season')}</span><select data-season-select></select></label>
         <span class="muted small" data-status></span>
       </div>
     </div>
     <div class="kpis">
-      <div class="kpi dark"><span>Gesamtausgaben Saison</span><strong data-k="gesamt"></strong></div>
-      <div class="kpi"><span>Davon durch Partner &amp; Squadra Tre</span><strong data-k="partner"></strong></div>
-      <div class="kpi"><span>Rennwochenenden</span><strong data-k="rennwochenenden"></strong></div>
-      <div class="kpi"><span>Kilometer zu Rennen</span><strong data-k="kilometer"></strong></div>
+      <div class="kpi dark"><span>${_('p_k_total')}</span><strong data-k="gesamt"></strong></div>
+      <div class="kpi"><span>${_('p_k_partner')}</span><strong data-k="partner"></strong></div>
+      <div class="kpi"><span>${_('p_k_weekends')}</span><strong data-k="rennwochenenden"></strong></div>
+      <div class="kpi"><span>${_('p_k_km')}</span><strong data-k="kilometer"></strong></div>
     </div>
     <div class="grid-2 align-start">
       <div class="card flush">
-        <h2 class="h3 pad">Ausgaben nach Kategorie</h2>
-        <div class="table-box plain"><table class="table compact"><thead><tr><th>Kategorie</th><th class="num">Betrag</th><th class="num">Anteil</th></tr></thead><tbody data-rows></tbody></table></div>
+        <h2 class="h3 pad">${_('p_by_cat')}</h2>
+        <div class="table-box plain"><table class="table compact"><thead><tr><th>${_('p_col_cat')}</th><th class="num">${_('p_col_amount')}</th><th class="num">${_('p_col_share')}</th></tr></thead><tbody data-rows></tbody></table></div>
       </div>
       <div class="stack">
         <div class="card">
-          <h2 class="h3">Finanzierung</h2>
+          <h2 class="h3">${_('p_financing')}</h2>
           <dl class="kv" data-finanzierung></dl>
         </div>
         <div class="card dark">
-          <h2 class="h3 gold">Gut zu wissen</h2>
-          <p>Als Partner siehst du diesen Bericht jederzeit und immer auf dem aktuellen Stand. Die Mitglieder der Squadra Tre erhalten eine Zusammenfassung am Saisonende per E-Mail.</p>
-          <a class="btn btn-gold btn-sm" href="/partner/">Zur Partnerseite</a>
+          <h2 class="h3 gold">${_('p_good')}</h2>
+          <p>${_('p_good_text')}</p>
+          <a class="btn btn-gold btn-sm" href="${url(lang, '/partner/')}">${_('p_to_partner')}</a>
         </div>
       </div>
     </div>
-    <div class="card mt"><h2 class="h3">Saisonrückblick</h2><div class="prose" data-rueckblick></div></div>
-    <div class="card mt"><h2 class="h3">Downloads</h2><div class="downloads" data-downloads></div></div>
+    <div class="card mt"><h2 class="h3">${_('p_review')}</h2><div class="prose" data-rueckblick></div></div>
+    <div class="card mt"><h2 class="h3">${_('p_downloads')}</h2><div class="downloads" data-downloads></div></div>
   </div>
   <section class="card mt" data-sw-own hidden>
-    <div class="row-between"><h2 class="h2">Euer Eintrag auf der Wall of Fame</h2><span class="badge" data-sw-status></span></div>
-    <p class="muted">Jeder Partner bekommt auf Luigis Partnerseite einen eigenen Eintrag – mit Logo, Link zu eurer Website und euren Social-Media-Kanälen. Am Saisonende steht er auch auf der gedruckten Wall of Fame am Rennzelt. Nach jeder Änderung prüfen wir den Eintrag kurz und schalten ihn frei.</p>
-    ${sponsorWallForm(false)}
+    <div class="row-between"><h2 class="h2">${_('p_wall_title')}</h2><span class="badge" data-sw-status></span></div>
+    <p class="muted">${_('p_wall_text')}</p>
+    ${sponsorWallForm(false, lang)}
   </section>
 </main>`;
-  return bareLayout({ title: 'Ausgabenbericht', body, ctx, scripts: ['/assets/js/auth.js'], bodyClass: 'page-app' });
+  return bareLayout({ title: _('p_title_bericht'), body, ctx, scripts: ['/assets/js/auth.js'], bodyClass: 'page-app', lang, texts: jsTexts(lang) });
 }
 
 export function teamPage(ctx) {
@@ -202,7 +226,13 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         </div>
       </div>
       <div class="card mt">
-        <label class="field"><span>Saisonrückblick für Partner und Squadra Tre</span><textarea rows="6" data-f="rueckblick"></textarea></label>
+        <label class="field"><span>Saisonrückblick für Partner und Squadra Tre (Deutsch)</span><textarea rows="6" data-f="rueckblick"></textarea></label>
+        <details class="fold"><summary>Saisonrückblick in weiteren Sprachen (Italienisch, Englisch, Französisch)</summary>
+          <p class="muted small">Partner und Squadra-Mitglieder sehen den Rückblick in ihrer Sprache. Leer gelassen erscheint der deutsche Text. Vertrauliche Texte übersetzen wir nicht automatisch über Dienste außerhalb der EU – hier selbst eintragen oder prüfen.</p>
+          <label class="field"><span>Italiano</span><textarea rows="5" data-f="rueckblick_it" lang="it"></textarea></label>
+          <label class="field"><span>English</span><textarea rows="5" data-f="rueckblick_en" lang="en"></textarea></label>
+          <label class="field"><span>Français</span><textarea rows="5" data-f="rueckblick_fr" lang="fr"></textarea></label>
+        </details>
         <div class="grid-2">
           <label class="field"><span>Jahresbericht (PDF)</span><input type="file" accept="application/pdf" data-pdf="pdf_bericht"><small class="muted" data-pdf-name="pdf_bericht"></small></label>
           <label class="field"><span>Belegübersicht (PDF)</span><input type="file" accept="application/pdf" data-pdf="pdf_belege"><small class="muted" data-pdf-name="pdf_belege"></small></label>
@@ -224,14 +254,15 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     <section data-panel="zugaenge" hidden>
       <h1 class="h1">Partner &amp; Admins</h1>
       <div class="grid-2 align-start">
-        <div class="card flush"><div class="table-box plain"><table class="table"><thead><tr><th>Name / Firma</th><th>E-Mail</th><th>Rolle</th><th></th></tr></thead><tbody data-profiles></tbody></table></div></div>
+        <div class="card flush"><div class="table-box plain"><table class="table"><thead><tr><th>Name / Firma</th><th>E-Mail</th><th>Rolle</th><th>Sprache</th><th></th></tr></thead><tbody data-profiles></tbody></table></div></div>
         <form class="card form" data-invite-form>
           <h2 class="h3">Zugang einladen</h2>
           <label class="field"><span>E-Mail</span><input type="email" name="email" required></label>
           <label class="field"><span>Name / Firma</span><input name="firma" required></label>
           <label class="field"><span>Rolle</span><select name="rolle"><option value="sponsor">Partner – Login für den Ausgabenbericht</option><option value="admin">Admin – darf alles bearbeiten</option></select></label>
+          <label class="field"><span>Sprache (Einladung, E-Mails, Bericht)</span><select name="sprache"><option value="de">Deutsch</option><option value="it">Italiano</option><option value="en">English</option><option value="fr">Français</option></select></label>
           <button class="btn btn-dark" type="submit">Einladung senden</button>
-          <p class="muted small">Die Person bekommt eine E-Mail und legt beim ersten Login ihr Passwort fest.</p>
+          <p class="muted small">Die Person bekommt eine E-Mail in der gewählten Sprache und legt beim ersten Login ihr Passwort fest.</p>
         </form>
       </div>
     </section>

@@ -1,7 +1,8 @@
 // Saisonende: Jahresbericht an alle bestätigten Squadra-3-Mitglieder mit Häkchen "Jahresbericht" senden.
 import { handle, json, sb, requireAdmin, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, env } from './_lib/common.mjs';
+import { REPORT, LOCALE, pickLang, kategorie } from './_lib/texte.mjs';
 
-const eur = (n) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
+const eur = (n, lang = 'de') => new Intl.NumberFormat(LOCALE[lang], { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
 
 export default handle(async (req) => {
   if (req.method !== 'POST') throw new HttpError(405, 'Nur POST.');
@@ -14,7 +15,7 @@ export default handle(async (req) => {
   if (!s || s.status !== 'freigegeben') throw new HttpError(400, 'Der Bericht muss zuerst freigegeben werden.');
   const ausgaben = await sb(`/rest/v1/ausgaben?saison=eq.${year}&select=kategorie,betrag&order=id`);
   const total = ausgaben.reduce((a, r) => a + Number(r.betrag || 0), 0);
-  const empfaenger = await sb('/rest/v1/squadra_tre?select=name,email&optin_bestaetigt=eq.true&jahresbericht_optin=eq.true');
+  const empfaenger = await sb('/rest/v1/squadra_tre?select=name,email,sprache&optin_bestaetigt=eq.true&jahresbericht_optin=eq.true');
   if (!empfaenger.length) return json({ ok: true, gesendet: 0 });
 
   // PDF als Anhang (signierter Link, 7 Tage gültig – Brevo lädt die Datei beim Versand)
@@ -24,26 +25,33 @@ export default handle(async (req) => {
     pdfUrl = `${env("SUPABASE_URL")}/storage/v1${signed.signedURL || signed.signedUrl}`;
   }
 
-  const tabelle = ausgaben.map((r) => `<tr><td style="padding:6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(r.kategorie)}</td><td style="padding:6px 0;border-bottom:1px solid #ECEDEF;text-align:right"><strong>${eur(r.betrag)}</strong></td></tr>`).join('');
-  const inhalt = (name) => `
+  // Jede Person bekommt den Bericht in ihrer Sprache. Der Saisonrückblick erscheint übersetzt,
+  // wenn das Team ihn im Team-Bereich übersetzt hat (rueckblick_it/_en/_fr) – sonst auf Deutsch.
+  const inhalt = (name, lang) => {
+    const T = REPORT[lang];
+    const tabelle = ausgaben.map((r) => `<tr><td style="padding:6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(kategorie(r.kategorie, lang))}</td><td style="padding:6px 0;border-bottom:1px solid #ECEDEF;text-align:right"><strong>${eur(r.betrag, lang)}</strong></td></tr>`).join('');
+    const rueck = (lang !== 'de' && s[`rueckblick_${lang}`]) || s.rueckblick;
+    return `
     <p>Ciao ${escapeHtml(name)},</p>
-    <p>die Saison ${year} ist vorbei – und du warst als Teil der <strong>Squadra Tre</strong> dabei. Danke! Wie versprochen zeigen wir dir, wofür die Unterstützung eingesetzt wurde.</p>
+    <p>${T.intro(year)}</p>
     <table style="width:100%;border-collapse:collapse;font-size:15px;margin:16px 0">${tabelle}
-      <tr><td style="padding:10px 0"><strong>Gesamt</strong></td><td style="padding:10px 0;text-align:right;color:#B00E28"><strong>${eur(total)}</strong></td></tr></table>
-    <p>Davon getragen durch Partner und Squadra Tre: <strong>${eur(Number(s.fin_sponsoren || 0) + Number(s.fin_squadra || 0))}</strong>.</p>
-    ${s.rueckblick ? `<h2 style="font-size:18px;margin:24px 0 8px">Saisonrückblick</h2><p>${escapeHtml(s.rueckblick).replace(/\n/g, '<br>')}</p>` : ''}
-    ${pdfUrl ? '<p>Den ausführlichen Jahresbericht findest du im Anhang.</p>' : ''}
-    <p>Forza #LBC3!<br>Luigi &amp; Familie</p>
-    <p style="color:#555A63;font-size:12px">Du bekommst diese E-Mail, weil du bei der Anmeldung zur Squadra Tre den Jahresbericht angefordert hast. Abmelden: Antworte einfach auf diese E-Mail.</p>`;
+      <tr><td style="padding:10px 0"><strong>${T.total}</strong></td><td style="padding:10px 0;text-align:right;color:#B00E28"><strong>${eur(total, lang)}</strong></td></tr></table>
+    <p>${T.carried} <strong>${eur(Number(s.fin_sponsoren || 0) + Number(s.fin_squadra || 0), lang)}</strong></p>
+    ${rueck ? `<h2 style="font-size:18px;margin:24px 0 8px">${T.review}</h2><p>${escapeHtml(rueck).replace(/\n/g, '<br>')}</p>` : ''}
+    ${pdfUrl ? `<p>${T.pdf}</p>` : ''}
+    <p>${T.bye}</p>
+    <p style="color:#555A63;font-size:12px">${T.why}</p>`;
+  };
 
   let gesendet = 0;
   for (const r of empfaenger) {
+    const lang = pickLang(r.sprache);
     await sendMail({
       to: { email: r.email, name: r.name },
-      subject: `Squadra Tre · Jahresbericht ${year}`,
-      html: mailLayout(`Jahresbericht ${year}`, inhalt(r.name)),
+      subject: REPORT[lang].subject(year),
+      html: mailLayout(REPORT[lang].title(year), inhalt(r.name, lang)),
       attachmentUrl: pdfUrl || undefined,
-      attachmentName: `LBC3-Jahresbericht-${year}.pdf`
+      attachmentName: REPORT[lang].file(year)
     });
     gesendet++;
   }

@@ -6,47 +6,74 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/muelsen-2026-01.jpg",
-      "text": "Platz 3 in der Mini B – Podium beim ADAC Kart Masters in Mülsen"
+      "text": "Platz 3 in der Mini B – Podium beim ADAC Kart Masters in Mülsen",
+      "text_it": "3° posto nella Mini B – podio all’ADAC Kart Masters di Mülsen",
+      "text_en": "3rd place in Mini B – podium at the ADAC Kart Masters in Mülsen",
+      "text_fr": "3e place en Mini B – podium à l’ADAC Kart Masters de Mülsen"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/muelsen-2026-02.jpg",
-      "text": "Siegerehrung: der Pokal für Platz 3"
+      "text": "Siegerehrung: der Pokal für Platz 3",
+      "text_it": "Premiazione: la coppa del 3° posto",
+      "text_en": "Prize-giving: the 3rd-place trophy",
+      "text_fr": "Remise des prix : la coupe de la 3e place"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/img_0135.jpeg",
-      "text": "Bereit für das Rennen"
+      "text": "Bereit für das Rennen",
+      "text_it": "Pronto per la gara",
+      "text_en": "Ready for the race",
+      "text_fr": "Prêt pour la course"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/img_0144.jpeg",
-      "text": "Fokus vor dem Start"
+      "text": "Fokus vor dem Start",
+      "text_it": "Concentrazione prima della partenza",
+      "text_en": "Focus before the start",
+      "text_fr": "Concentration avant le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-2026-03.jpg",
-      "text": "Vorne weg: Luigi führt das Feld an"
+      "text": "Vorne weg: Luigi führt das Feld an",
+      "text_it": "Davanti a tutti: Luigi guida il gruppo",
+      "text_en": "Out in front: Luigi leads the field",
+      "text_fr": "En tête : Luigi mène le peloton"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-2026-04.jpg",
-      "text": "Im Zweikampf durch die Kurve"
+      "text": "Im Zweikampf durch die Kurve",
+      "text_it": "In duello in curva",
+      "text_en": "Battling through the corner",
+      "text_fr": "En duel dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-2026-05.jpg",
-      "text": "Am Kerb entlang"
+      "text": "Am Kerb entlang",
+      "text_it": "Lungo il cordolo",
+      "text_en": "Along the kerb",
+      "text_fr": "Le long du vibreur"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-2026-06.jpg",
-      "text": "Konzentriert am Kurvenausgang"
+      "text": "Konzentriert am Kurvenausgang",
+      "text_it": "Concentrato in uscita di curva",
+      "text_en": "Focused at the corner exit",
+      "text_fr": "Concentré en sortie de virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-2026-07.jpg",
-      "text": "Einlenken vor der Tribüne"
+      "text": "Einlenken vor der Tribüne",
+      "text_it": "Inserimento davanti alla tribuna",
+      "text_en": "Turning in in front of the grandstand",
+      "text_fr": "Entrée de virage devant la tribune"
     },
     {
       "kategorie": "strecke",
@@ -55,7 +82,10 @@
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-2026-09.jpg",
-      "text": "Mitzieher bei voller Fahrt"
+      "text": "Mitzieher bei voller Fahrt",
+      "text_it": "Foto in panning a tutta velocità",
+      "text_en": "Panning shot at full speed",
+      "text_fr": "Filé à pleine vitesse"
     },
     {
       "kategorie": "strecke",
@@ -64,7 +94,10 @@
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-2026-11.jpg",
-      "text": "Speed vor dem Fahrerlager"
+      "text": "Speed vor dem Fahrerlager",
+      "text_it": "Velocità davanti al paddock",
+      "text_en": "Speed past the paddock",
+      "text_fr": "Vitesse devant le paddock"
     },
     {
       "kategorie": "strecke",
@@ -81,12 +114,18 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/muelsen-2026-15.jpg",
-      "text": "Warten auf den Start"
+      "text": "Warten auf den Start",
+      "text_it": "In attesa della partenza",
+      "text_en": "Waiting for the start",
+      "text_fr": "En attendant le départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/muelsen-2026-16.jpg",
-      "text": "Fahrerlager-Taxi: mit Alex unterwegs"
+      "text": "Fahrerlager-Taxi: mit Alex unterwegs",
+      "text_it": "Taxi del paddock: in giro con Alex",
+      "text_en": "Paddock taxi: out and about with Alex",
+      "text_fr": "Taxi du paddock : en route avec Alex"
     },
     {
       "kategorie": "fahrerlager",
@@ -95,12 +134,18 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/muelsen-2026-18.jpg",
-      "text": "Das Team hinter dem Team"
+      "text": "Das Team hinter dem Team",
+      "text_it": "La squadra dietro la squadra",
+      "text_en": "The team behind the team",
+      "text_fr": "L’équipe derrière l’équipe"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-muelsen-oscar.jpg",
-      "text": "Mülsen: Handschlag mit Oscar nach dem Rennen"
+      "text": "Mülsen: Handschlag mit Oscar nach dem Rennen",
+      "text_it": "Mülsen: stretta di mano con Oscar dopo la gara",
+      "text_en": "Mülsen: handshake with Oscar after the race",
+      "text_fr": "Mülsen : poignée de main avec Oscar après la course"
     }
   ],
   "titel": "ADAC Kart Masters Mülsen 2026",

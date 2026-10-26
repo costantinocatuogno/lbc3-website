@@ -8,17 +8,26 @@
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/wackersdorf-milly-luigi-meister.jpg",
-      "text": "Wackersdorf: Meisterin Milly und Vizemeister Luigi unter der Startampel"
+      "text": "Wackersdorf: Meisterin Milly und Vizemeister Luigi unter der Startampel",
+      "text_it": "Wackersdorf: la campionessa Milly e il vicecampione Luigi sotto il semaforo di partenza",
+      "text_en": "Wackersdorf: champion Milly and runner-up Luigi under the start lights",
+      "text_fr": "Wackersdorf : la championne Milly et le vice-champion Luigi sous les feux de départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/wackersdorf-siegerehrung-meisterschaft.jpg",
-      "text": "Meisterschafts-Siegerehrung Mini A und Mini B – Luigi mit dem Pokal für Platz 2"
+      "text": "Meisterschafts-Siegerehrung Mini A und Mini B – Luigi mit dem Pokal für Platz 2",
+      "text_it": "Premiazione del campionato Mini A e Mini B – Luigi con la coppa del 2° posto",
+      "text_en": "Championship prize-giving Mini A and Mini B – Luigi with the 2nd-place trophy",
+      "text_fr": "Remise des prix du championnat Mini A et Mini B – Luigi avec la coupe de la 2e place"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-wackersdorf-elias-pokal.jpg",
-      "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2"
+      "text": "Wackersdorf: Vizemeister! Luigi und Elias mit dem Pokal für Platz 2",
+      "text_it": "Wackersdorf: vicecampione! Luigi ed Elias con la coppa del 2° posto",
+      "text_en": "Wackersdorf: runner-up! Luigi and Elias with the 2nd-place trophy",
+      "text_fr": "Wackersdorf : vice-champion ! Luigi et Elias avec la coupe de la 2e place"
     }
   ]
 }

@@ -22,7 +22,7 @@ public_folder: /uploads
 
 i18n:
   structure: single_file
-  locales: [de, en, it]
+  locales: [de, it, en, fr]
   default_locale: de
 
 collections:
@@ -42,6 +42,7 @@ collections:
       - { label: Highlights, field: highlight, pattern: true }
       - { label: Entwürfe, field: entwurf, pattern: true }
     fields:
+      - { label: Sprache, in der du schreibst, name: sprache, widget: select, options: [{ label: Deutsch, value: de }, { label: Italienisch, value: it }], default: de, hint: 'Die anderen Sprachen werden nach dem Speichern automatisch übersetzt (ca. 2 Minuten). Danach unten in den Übersetzungs-Feldern prüfen.' }
       - { label: Titel, name: titel, widget: string }
       - { label: Datum, name: datum, widget: datetime, date_format: DD.MM.YYYY, time_format: false, format: YYYY-MM-DD }
       - { label: Kategorie, name: kategorie, widget: select, options: [Rennen, Team, Partner], default: Rennen }
@@ -56,6 +57,11 @@ collections:
         required: false
         field: { label: Foto, name: foto, widget: image, media_folder: /public/uploads/news, public_folder: /uploads/news }
       - { label: Text, name: body, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote], editor_components: [image] }
+      - { label: Neu übersetzen (nach Änderung des Originals anhaken), name: neu_uebersetzen, widget: boolean, default: false, required: false, hint: 'Überschreibt die Übersetzungen beim nächsten Speichern. Ohne Häkchen bleiben deine Korrekturen erhalten.' }
+      - { label: 'Übersetzung Deutsch (nur bei italienischem Original)', name: de, widget: object, collapsed: true, required: false, fields: [{ label: Titel, name: titel, widget: string, required: false }, { label: Kurztext, name: teaser, widget: text, required: false }, { label: Text, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+      - { label: 'Übersetzung Italienisch', name: it, widget: object, collapsed: true, required: false, fields: [{ label: Titolo, name: titel, widget: string, required: false }, { label: Testo breve, name: teaser, widget: text, required: false }, { label: Testo, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+      - { label: 'Übersetzung Englisch', name: en, widget: object, collapsed: true, required: false, fields: [{ label: Title, name: titel, widget: string, required: false }, { label: Teaser, name: teaser, widget: text, required: false }, { label: Text, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+      - { label: 'Übersetzung Französisch', name: fr, widget: object, collapsed: true, required: false, fields: [{ label: Titre, name: titel, widget: string, required: false }, { label: Résumé, name: teaser, widget: text, required: false }, { label: Texte, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
 
   # ---------------------------------------------------------------- RENNEN
   - name: rennen
@@ -112,8 +118,14 @@ collections:
         fields:
           - { label: Foto oder Video, name: bild, widget: file, media_folder: /public/uploads/galerie, public_folder: /uploads/galerie }
           - { label: Kategorie, name: kategorie, widget: select, options: [{ label: Strecke, value: strecke }, { label: Fahrerlager, value: fahrerlager }], default: strecke }
-          - { label: Bildunterschrift, name: text, widget: string, required: false }
+          - { label: Bildunterschrift, name: text, widget: string, required: false, hint: 'Auf Deutsch. Dient auch als Bildbeschreibung (Alt-Text). IT, EN und FR werden automatisch übersetzt.' }
+          - { label: Bildunterschrift IT (automatisch), name: text_it, widget: string, required: false }
+          - { label: Bildunterschrift EN (automatisch), name: text_en, widget: string, required: false }
+          - { label: Bildunterschrift FR (automatisch), name: text_fr, widget: string, required: false }
           - { label: Fotograf/in, name: fotograf, widget: string, required: false }
+      - { label: 'Übersetzung Italienisch (automatisch)', name: it, widget: object, collapsed: true, required: false, fields: [{ label: Titel, name: titel, widget: string, required: false }, { label: Serie, name: serie, widget: string, required: false, hint: 'Nur bei Namen wie „Hinter den Kulissen“ – Seriennamen wie ADAC Kart Masters bleiben gleich' }, { label: Strecke / Albumname, name: strecke, widget: string, required: false }, { label: Unteralbum, name: unteralbum, widget: string, required: false }] }
+      - { label: 'Übersetzung Englisch (automatisch)', name: en, widget: object, collapsed: true, required: false, fields: [{ label: Titel, name: titel, widget: string, required: false }, { label: Serie, name: serie, widget: string, required: false, hint: 'Nur bei Namen wie „Hinter den Kulissen“ – Seriennamen wie ADAC Kart Masters bleiben gleich' }, { label: Strecke / Albumname, name: strecke, widget: string, required: false }, { label: Unteralbum, name: unteralbum, widget: string, required: false }] }
+      - { label: 'Übersetzung Französisch (automatisch)', name: fr, widget: object, collapsed: true, required: false, fields: [{ label: Titel, name: titel, widget: string, required: false }, { label: Serie, name: serie, widget: string, required: false, hint: 'Nur bei Namen wie „Hinter den Kulissen“ – Seriennamen wie ADAC Kart Masters bleiben gleich' }, { label: Strecke / Albumname, name: strecke, widget: string, required: false }, { label: Unteralbum, name: unteralbum, widget: string, required: false }] }
 
   # ---------------------------------------------------------------- KAPITEL
   - name: kapitel
@@ -175,6 +187,8 @@ collections:
       - { label: Leistungen EN, name: leistungen_en, widget: list, required: false }
       - { label: Untertitel IT, name: untertitel_it, widget: string, required: false }
       - { label: Leistungen IT, name: leistungen_it, widget: list, required: false }
+      - { label: Untertitel FR, name: untertitel_fr, widget: string, required: false }
+      - { label: Leistungen FR, name: leistungen_fr, widget: list, required: false }
 
   # ---------------------------------------------------------------- EINSTELLUNGEN
   - name: einstellungen
@@ -182,7 +196,7 @@ collections:
     editor: { preview: false }
     files:
       - name: texte
-        label: Texte (Startseite, Partner, Kontakt) – DE/EN/IT
+        label: Texte (Startseite, Partner, Kontakt) – DE/IT/EN/FR
         file: content/einstellungen/texte.json
         format: json
         i18n: true
@@ -204,8 +218,11 @@ collections:
             fields:
               - { label: Foto, name: bild, widget: image, media_folder: /public/uploads/helm, public_folder: /uploads/helm }
               - { label: Bildunterschrift, name: text, widget: string, required: false }
+              - { label: Bildunterschrift IT, name: text_it, widget: string, required: false }
+              - { label: Bildunterschrift EN, name: text_en, widget: string, required: false }
+              - { label: Bildunterschrift FR, name: text_fr, widget: string, required: false }
       - name: fahrer
-        label: Steckbrief & Rennwoche – DE/EN/IT
+        label: Steckbrief & Rennwoche – DE/IT/EN/FR
         file: content/einstellungen/fahrer.json
         format: json
         i18n: true
@@ -245,6 +262,12 @@ collections:
             fields:
               - { label: Titel, name: titel, widget: string, required: false }
               - { label: Text, name: text, widget: text, required: false }
+              - { label: Titel IT, name: titel_it, widget: string, required: false }
+              - { label: Titel EN, name: titel_en, widget: string, required: false }
+              - { label: Titel FR, name: titel_fr, widget: string, required: false }
+              - { label: Text IT, name: text_it, widget: text, required: false }
+              - { label: Text EN, name: text_en, widget: text, required: false }
+              - { label: Text FR, name: text_fr, widget: text, required: false }
               - { label: Video (MP4), name: datei, widget: file, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
               - { label: Vorschaubild, name: vorschau, widget: image, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
           - label: Videos (Seite „Über Luigi“)
@@ -256,6 +279,12 @@ collections:
             fields:
               - { label: Titel, name: titel, widget: string }
               - { label: Kurztext, name: text, widget: string, required: false }
+              - { label: Titel IT, name: titel_it, widget: string, required: false }
+              - { label: Titel EN, name: titel_en, widget: string, required: false }
+              - { label: Titel FR, name: titel_fr, widget: string, required: false }
+              - { label: Kurztext IT, name: text_it, widget: string, required: false }
+              - { label: Kurztext EN, name: text_en, widget: string, required: false }
+              - { label: Kurztext FR, name: text_fr, widget: string, required: false }
               - { label: Video (MP4), name: datei, widget: file, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos, hint: 'Leer lassen = Platzhalter „Video folgt“' }
               - { label: Vorschaubild, name: vorschau, widget: image, required: false, media_folder: /public/uploads/videos, public_folder: /uploads/videos }
           - { label: E-Mail für Sponsoren-Anfragen, name: business_email, widget: string }
@@ -276,7 +305,29 @@ collections:
           - { label: Sponsorenmappe (PDF, optional – sonst Anfrage über Kontakt), name: sponsorenmappe_pdf, widget: file, required: false }
           - { label: Zahlungsinfo Squadra Tre (nur Info – der E-Mail-Text kommt aus der Netlify-Einstellung SQUADRA_ZAHLUNGSINFO), name: zahlungsinfo, widget: text, required: false }
           - { label: Impressum, name: impressum, widget: markdown }
-          - { label: Datenschutzerklärung, name: datenschutz, widget: markdown }
+          - { label: Datenschutzerklärung, name: datenschutz, widget: markdown, hint: 'Rechtlich maßgeblich ist die deutsche Fassung. Die Übersetzungen unten bitte nach jeder Änderung anpassen lassen.' }
+          - { label: Impressum IT, name: impressum_it, widget: markdown, required: false }
+          - { label: Impressum EN, name: impressum_en, widget: markdown, required: false }
+          - { label: Impressum FR, name: impressum_fr, widget: markdown, required: false }
+          - { label: Datenschutz IT, name: datenschutz_it, widget: markdown, required: false }
+          - { label: Datenschutz EN, name: datenschutz_en, widget: markdown, required: false }
+          - { label: Datenschutz FR, name: datenschutz_fr, widget: markdown, required: false }
+      - name: glossar
+        label: Glossar (Übersetzungen)
+        file: content/einstellungen/glossar.json
+        format: json
+        fields:
+          - { label: 'Nie übersetzen (Namen, Marken, Serien, Strecken)', name: nie_uebersetzen, widget: list, hint: 'Diese Begriffe bleiben in allen Sprachen genau so stehen.' }
+          - label: Fachbegriffe – feste Übersetzung je Sprache
+            name: fachbegriffe
+            widget: list
+            summary: '{{fields.de}} → {{fields.it}} · {{fields.en}} · {{fields.fr}}'
+            fields:
+              - { label: Deutsch, name: de, widget: string }
+              - { label: Italienisch, name: it, widget: string }
+              - { label: Englisch, name: en, widget: string }
+              - { label: Französisch, name: fr, widget: string }
+          - { label: 'Schutz von Luigi – darf nie auf der Website stehen', name: schutz, widget: list, required: false, hint: 'z. B. Straße, Schule, Verein mit Ort. Steht ein Begriff irgendwo (außer Impressum/Datenschutz), bricht die Veröffentlichung ab.' }
       - name: wand
         label: Squadra-3-Wand (Beispielnamen, solange Supabase nicht verbunden ist)
         file: content/einstellungen/squadra-wand-beispiel.json

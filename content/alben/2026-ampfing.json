@@ -9,90 +9,135 @@
       "bild": "/uploads/ampfing-2026/zweikampf-reifenmauer.jpg",
       "kategorie": "strecke",
       "text": "Zweikampf vor der Reifenmauer",
+      "text_it": "Duello davanti al muro di gomme",
+      "text_en": "Battle in front of the tyre wall",
+      "text_fr": "Duel devant le mur de pneus",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/helm-portraet.jpg",
       "kategorie": "fahrerlager",
       "text": "Helm mit #LBC3 im Fahrerlager",
+      "text_it": "Il casco con #LBC3 nel paddock",
+      "text_en": "Helmet with #LBC3 in the paddock",
+      "text_fr": "Le casque avec #LBC3 au paddock",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/mitzieher-kurvenausgang.jpg",
       "kategorie": "strecke",
       "text": "Mitzieher am Kurvenausgang",
+      "text_it": "Foto in panning all’uscita di curva",
+      "text_en": "Panning shot at the corner exit",
+      "text_fr": "Filé en sortie de virage",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/mitten-im-feld.jpg",
       "kategorie": "strecke",
       "text": "Mitten im Feld",
+      "text_it": "In mezzo al gruppo",
+      "text_en": "In the middle of the pack",
+      "text_fr": "Au milieu du peloton",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/startaufstellung.jpg",
       "kategorie": "fahrerlager",
       "text": "Konzentration in der Startaufstellung",
+      "text_it": "Concentrazione sulla griglia di partenza",
+      "text_en": "Concentration on the starting grid",
+      "text_fr": "Concentration sur la grille de départ",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/gerade-vor-dem-feld.jpg",
       "kategorie": "strecke",
       "text": "Auf der Geraden vor dem Feld",
+      "text_it": "Sul rettilineo davanti al gruppo",
+      "text_en": "On the straight ahead of the pack",
+      "text_fr": "Dans la ligne droite devant le peloton",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/anbremsen-kurve.jpg",
       "kategorie": "strecke",
       "text": "Anbremsen vor der Kurve",
+      "text_it": "In frenata prima della curva",
+      "text_en": "Braking into the corner",
+      "text_fr": "Freinage avant le virage",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/am-scheitelpunkt.jpg",
       "kategorie": "strecke",
       "text": "Am Scheitelpunkt",
+      "text_it": "Al punto di corda",
+      "text_en": "At the apex",
+      "text_fr": "À la corde",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/vor-dem-start.jpg",
       "kategorie": "fahrerlager",
       "text": "Warten auf den Start",
+      "text_it": "In attesa della partenza",
+      "text_en": "Waiting for the start",
+      "text_fr": "En attendant le départ",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/volle-fahrt-gerade.jpg",
       "kategorie": "strecke",
       "text": "Volle Fahrt auf der Geraden",
+      "text_it": "A tutta velocità sul rettilineo",
+      "text_en": "Full speed on the straight",
+      "text_fr": "À pleine vitesse dans la ligne droite",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/frontal-aus-der-kurve.jpg",
       "kategorie": "strecke",
       "text": "Frontal aus der Kurve",
+      "text_it": "Di fronte, in uscita di curva",
+      "text_en": "Head-on out of the corner",
+      "text_fr": "De face en sortie de virage",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/seitenansicht-vollgas.jpg",
       "kategorie": "strecke",
       "text": "Seitenansicht in voller Fahrt",
+      "text_it": "Vista laterale a tutta velocità",
+      "text_en": "Side view at full speed",
+      "text_fr": "Vue de côté à pleine vitesse",
       "fotograf": "Kadicfilms Studios"
     },
     {
       "bild": "/uploads/ampfing-2026/duell-um-position.jpg",
       "kategorie": "strecke",
       "text": "Duell um die Position",
+      "text_it": "Duello per la posizione",
+      "text_en": "Battle for position",
+      "text_fr": "Duel pour la position",
       "fotograf": ""
     },
     {
       "bild": "/uploads/ampfing-2026/einlenken.jpg",
       "kategorie": "strecke",
       "text": "Einlenken in die Kurve",
+      "text_it": "Inserimento in curva",
+      "text_en": "Turning into the corner",
+      "text_fr": "Entrée dans le virage",
       "fotograf": ""
     },
     {
       "bild": "/uploads/ampfing-2026/nummer-3-von-hinten.jpg",
       "kategorie": "strecke",
       "text": "Nummer 3 von hinten",
+      "text_it": "Il numero 3 visto da dietro",
+      "text_en": "Number 3 from behind",
+      "text_fr": "Le numéro 3 vu de dos",
       "fotograf": ""
     }
   ]

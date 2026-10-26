@@ -8,102 +8,162 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-01.jpg",
-      "text": "Blick auf die Strecke – was machen die anderen?"
+      "text": "Blick auf die Strecke – was machen die anderen?",
+      "text_it": "Sguardo sulla pista – cosa fanno gli altri?",
+      "text_en": "Watching the track – what are the others doing?",
+      "text_fr": "Regard sur la piste – que font les autres ?"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-02.jpg",
-      "text": "Am Zaun: die Konkurrenz im Blick"
+      "text": "Am Zaun: die Konkurrenz im Blick",
+      "text_it": "Alla recinzione: occhi sugli avversari",
+      "text_en": "At the fence: keeping an eye on the competition",
+      "text_fr": "À la clôture : un œil sur la concurrence"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-03.jpg",
-      "text": "Warten auf den Start"
+      "text": "Warten auf den Start",
+      "text_it": "In attesa della partenza",
+      "text_en": "Waiting for the start",
+      "text_fr": "En attendant le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-04.jpg",
-      "text": "Unterwegs in Bopfingen"
+      "text": "Unterwegs in Bopfingen",
+      "text_it": "In pista a Bopfingen",
+      "text_en": "On track in Bopfingen",
+      "text_fr": "En piste à Bopfingen"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-05.jpg",
-      "text": "Mit Tempo über die Gerade"
+      "text": "Mit Tempo über die Gerade",
+      "text_it": "A tutta velocità sul rettilineo",
+      "text_en": "At speed down the straight",
+      "text_fr": "À pleine vitesse dans la ligne droite"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-06.jpg",
-      "text": "Volle Fahrt vor dem ADAC-Banner"
+      "text": "Volle Fahrt vor dem ADAC-Banner",
+      "text_it": "A tutto gas davanti al banner ADAC",
+      "text_en": "Full speed past the ADAC banner",
+      "text_fr": "À fond devant la banderole ADAC"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-07.jpg",
-      "text": "Mitzieher in Bopfingen"
+      "text": "Mitzieher in Bopfingen",
+      "text_it": "Foto in panning a Bopfingen",
+      "text_en": "Panning shot in Bopfingen",
+      "text_fr": "Filé à Bopfingen"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-08.jpg",
-      "text": "Regenrennen: Gischt in der Kurve"
+      "text": "Regenrennen: Gischt in der Kurve",
+      "text_it": "Gara sotto la pioggia: spruzzi in curva",
+      "text_en": "Wet race: spray in the corner",
+      "text_fr": "Course sous la pluie : gerbes d’eau dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-09.jpg",
-      "text": "Im Regen hochkonzentriert"
+      "text": "Im Regen hochkonzentriert",
+      "text_it": "Concentratissimo sotto la pioggia",
+      "text_en": "Fully focused in the rain",
+      "text_fr": "Très concentré sous la pluie"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-10.jpg",
-      "text": "Auf trockener Strecke am Limit"
+      "text": "Auf trockener Strecke am Limit",
+      "text_it": "Al limite sull’asciutto",
+      "text_en": "On the limit on a dry track",
+      "text_fr": "À la limite sur piste sèche"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-11.jpg",
-      "text": "Vollgas am Fahrerlager vorbei"
+      "text": "Vollgas am Fahrerlager vorbei",
+      "text_it": "A tutto gas davanti al paddock",
+      "text_en": "Flat out past the paddock",
+      "text_fr": "À fond devant le paddock"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-12.jpg",
-      "text": "Runde um Runde"
+      "text": "Runde um Runde",
+      "text_it": "Giro dopo giro",
+      "text_en": "Lap after lap",
+      "text_fr": "Tour après tour"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-13.jpg",
-      "text": "Auf dem Weg zur Strecke"
+      "text": "Auf dem Weg zur Strecke",
+      "text_it": "Verso la pista",
+      "text_en": "On the way to the track",
+      "text_fr": "En route vers la piste"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-14.jpg",
-      "text": "Kurz vor dem Start"
+      "text": "Kurz vor dem Start",
+      "text_it": "Poco prima della partenza",
+      "text_en": "Just before the start",
+      "text_fr": "Juste avant le départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-15.jpg",
-      "text": "Letzte Worte vor dem Start"
+      "text": "Letzte Worte vor dem Start",
+      "text_it": "Ultime parole prima della partenza",
+      "text_en": "Last words before the start",
+      "text_fr": "Derniers mots avant le départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-16.jpg",
-      "text": "Fokus"
+      "text": "Fokus",
+      "text_it": "Concentrazione",
+      "text_en": "Focus",
+      "text_fr": "Concentration"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-17.jpg",
-      "text": "Bereit für den Regen"
+      "text": "Bereit für den Regen",
+      "text_it": "Pronto per la pioggia",
+      "text_en": "Ready for the rain",
+      "text_fr": "Prêt pour la pluie"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-18.jpg",
-      "text": "Seite an Seite im Feld"
+      "text": "Seite an Seite im Feld",
+      "text_it": "Fianco a fianco nel gruppo",
+      "text_en": "Side by side in the pack",
+      "text_fr": "Côte à côte dans le peloton"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-19.jpg",
-      "text": "Vorne im Pulk"
+      "text": "Vorne im Pulk",
+      "text_it": "Davanti nel gruppo",
+      "text_en": "At the front of the pack",
+      "text_fr": "En tête du peloton"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-bopfingen-2025-20.jpg",
-      "text": "Durch die Kurve, die Verfolger im Rücken"
+      "text": "Durch die Kurve, die Verfolger im Rücken",
+      "text_it": "In curva, con gli inseguitori alle spalle",
+      "text_en": "Through the corner, chasers right behind",
+      "text_fr": "Dans le virage, les poursuivants dans le dos"
     }
   ],
   "unteralbum": "2025",

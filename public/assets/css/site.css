@@ -703,3 +703,9 @@ tr.is-dns td { color: var(--muted); }
 .package-name { font-size: 40px; }
 .package-note { margin-top: 18px; color: var(--muted); max-width: 70ch; }
 .package-note strong { color: var(--ink); }
+
+/* ---------- Sprachwahl in Login und Bericht ---------- */
+.app-langs { display: inline-flex; gap: 8px; font-size: 13px; letter-spacing: .5px; }
+.app-langs a { color: inherit; opacity: .7; text-decoration: none; }
+.app-langs a:hover { opacity: 1; text-decoration: underline; }
+.login-langs { display: flex; justify-content: flex-end; margin-bottom: 12px; color: var(--muted); }

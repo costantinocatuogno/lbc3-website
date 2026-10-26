@@ -9,52 +9,94 @@
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-01.jpg",
-      "text": "Testtag in Mülsen – volle Konzentration auf der Geraden"
+      "text": "Testtag in Mülsen – volle Konzentration auf der Geraden",
+      "text_it": "Test a Mülsen – massima concentrazione sul rettilineo",
+      "text_en": "Test day in Mülsen – full concentration on the straight",
+      "text_fr": "Journée d’essais à Mülsen – concentration maximale dans la ligne droite"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-02.jpg",
-      "text": "Am Limit durch die Kurve"
+      "text": "Am Limit durch die Kurve",
+      "text_it": "Al limite in curva",
+      "text_en": "On the limit through the corner",
+      "text_fr": "À la limite dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-03.jpg",
-      "text": "Blick nach vorne – die Linie sitzt"
+      "text": "Blick nach vorne – die Linie sitzt",
+      "text_it": "Sguardo avanti – la traiettoria è giusta",
+      "text_en": "Eyes ahead – the line is right",
+      "text_fr": "Le regard devant – la trajectoire est bonne"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-04.jpg",
-      "text": "Mit Tempo über die Strecke"
+      "text": "Mit Tempo über die Strecke",
+      "text_it": "A tutta velocità in pista",
+      "text_en": "At speed around the track",
+      "text_fr": "À pleine vitesse sur la piste"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-05.jpg",
-      "text": "Saubere Linie am Kerb"
+      "text": "Saubere Linie am Kerb",
+      "text_it": "Traiettoria pulita sul cordolo",
+      "text_en": "Clean line on the kerb",
+      "text_fr": "Trajectoire propre sur le vibreur"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-06.jpg",
-      "text": "Runde um Runde Erfahrung sammeln"
+      "text": "Runde um Runde Erfahrung sammeln",
+      "text_it": "Accumulare esperienza giro dopo giro",
+      "text_en": "Gaining experience lap after lap",
+      "text_fr": "Prendre de l’expérience tour après tour"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-07.jpg",
-      "text": "Frontal auf die nächste Kurve zu"
+      "text": "Frontal auf die nächste Kurve zu",
+      "text_it": "Di fronte, verso la prossima curva",
+      "text_en": "Head-on towards the next corner",
+      "text_fr": "De face vers le prochain virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-08.jpg",
-      "text": "Volle Fahrt in Mülsen"
+      "text": "Volle Fahrt in Mülsen",
+      "text_it": "A tutto gas a Mülsen",
+      "text_en": "Full speed in Mülsen",
+      "text_fr": "À pleine vitesse à Mülsen"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-09.jpg",
-      "text": "Kurvenfahrt beim Testtag"
+      "text": "Kurvenfahrt beim Testtag",
+      "text_it": "In curva durante i test",
+      "text_en": "Cornering on test day",
+      "text_fr": "En virage pendant la journée d’essais"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/muelsen-testtage-10.jpg",
-      "text": "Im Training ganz vorne"
+      "text": "Im Training ganz vorne",
+      "text_it": "Davanti a tutti in allenamento",
+      "text_en": "Out in front in practice",
+      "text_fr": "En tête à l’entraînement"
     }
-  ]
+  ],
+  "it": {
+    "titel": "Mülsen 2026 – giornate di test",
+    "unteralbum": "Giornate di test"
+  },
+  "en": {
+    "titel": "Mülsen 2026 – test days",
+    "unteralbum": "Test days"
+  },
+  "fr": {
+    "titel": "Mülsen 2026 – journées d’essais",
+    "unteralbum": "Journées d’essais"
+  }
 }

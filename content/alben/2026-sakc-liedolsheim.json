@@ -8,7 +8,10 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/bande-liedolsheim-gruppe.jpg",
-      "text": "SAKC Liedolsheim: die Bande komplett – Leon, Luigi, Max, Nico und Lewis"
+      "text": "SAKC Liedolsheim: die Bande komplett – Leon, Luigi, Max, Nico und Lewis",
+      "text_it": "SAKC Liedolsheim: la banda al completo – Leon, Luigi, Max, Nico e Lewis",
+      "text_en": "SAKC Liedolsheim: the whole gang – Leon, Luigi, Max, Nico and Lewis",
+      "text_fr": "SAKC Liedolsheim : toute la bande – Leon, Luigi, Max, Nico et Lewis"
     }
   ],
   "datum": "2026-03-29"

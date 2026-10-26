@@ -93,10 +93,10 @@ export async function requireAdmin(req) {
 }
 
 // ---------- E-Mail über Brevo (EU) ----------
-export async function sendMail({ to, subject, html, attachmentUrl, attachmentName }) {
+export async function sendMail({ to, subject, html, attachmentUrl, attachmentName, replyTo }) {
   const body = {
     sender: { email: env('MAIL_FROM'), name: process.env.MAIL_FROM_NAME || 'LBC3 · Luigi Battista Catuogno' },
-    replyTo: { email: process.env.MAIL_REPLY_TO || env('MAIL_FROM') },
+    replyTo: replyTo || { email: process.env.MAIL_REPLY_TO || env('MAIL_FROM') },
     to: Array.isArray(to) ? to : [to],
     subject,
     htmlContent: html

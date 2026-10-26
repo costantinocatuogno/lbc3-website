@@ -9,17 +9,41 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/ba-co/ampfing-testtag-basti-costa.jpg",
-      "text": "Ampfing-Testtag: Costa und Basti besprechen den nächsten Run"
+      "text": "Ampfing-Testtag: Costa und Basti besprechen den nächsten Run",
+      "text_it": "Test ad Ampfing: Costa e Basti preparano il prossimo run",
+      "text_en": "Ampfing test day: Costa and Basti discuss the next run",
+      "text_fr": "Journée d’essais à Ampfing : Costa et Basti préparent le prochain run"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/ba-co/muelsen-renntag-gute-laune.jpg",
-      "text": "Mülsen-Renntag: gute Laune an der Boxenmauer"
+      "text": "Mülsen-Renntag: gute Laune an der Boxenmauer",
+      "text_it": "Giorno di gara a Mülsen: buon umore al muretto box",
+      "text_en": "Mülsen race day: good spirits at the pit wall",
+      "text_fr": "Jour de course à Mülsen : bonne humeur au muret des stands"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/ba-co/muelsen-renntag-auf-dem-weg.jpg",
-      "text": "Mülsen-Renntag: auf dem Weg zum Vorstart"
+      "text": "Mülsen-Renntag: auf dem Weg zum Vorstart",
+      "text_it": "Giorno di gara a Mülsen: verso la pre-griglia",
+      "text_en": "Mülsen race day: on the way to the pre-grid",
+      "text_fr": "Jour de course à Mülsen : en route vers la pré-grille"
     }
-  ]
+  ],
+  "it": {
+    "titel": "Momenti Ba-Co – Basti & Costa",
+    "strecke": "Momenti Ba-Co",
+    "serie": "Dietro le quinte"
+  },
+  "en": {
+    "titel": "Ba-Co moments – Basti & Costa",
+    "strecke": "Ba-Co moments",
+    "serie": "Behind the scenes"
+  },
+  "fr": {
+    "titel": "Moments Ba-Co – Basti & Costa",
+    "strecke": "Moments Ba-Co",
+    "serie": "Dans les coulisses"
+  }
 }

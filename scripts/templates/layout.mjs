@@ -134,9 +134,9 @@ function footer(lang, ctx) {
 }
 
 // Für Seiten wie Login/Bericht/Team: eigener, schlanker Rahmen.
-export function bareLayout({ title, body, ctx, scripts = [], bodyClass = '' }) {
+export function bareLayout({ title, body, ctx, scripts = [], bodyClass = '', lang = 'de', texts = null }) {
   return `<!doctype html>
-<html lang="de">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -148,6 +148,7 @@ export function bareLayout({ title, body, ctx, scripts = [], bodyClass = '' }) {
 </head>
 <body class="${bodyClass}">
 ${body}
+${texts ? `<script type="application/json" id="lbc3-texte">${JSON.stringify(texts).replace(/</g, '\\u003c')}</script>` : ''}
 <script src="/assets/js/config.js?v=${ctx.version}"></script>
 <script src="/assets/vendor/supabase.js?v=${ctx.version}"></script>
 ${scripts.map((s) => `<script src="${s}?v=${ctx.version}" defer></script>`).join('\n')}

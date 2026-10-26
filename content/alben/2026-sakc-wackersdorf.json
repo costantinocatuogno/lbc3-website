@@ -8,287 +8,458 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-nico.jpg",
-      "text": "SAKC Wackersdorf: Abklatschen mit Nico vor dem Start"
+      "text": "SAKC Wackersdorf: Abklatschen mit Nico vor dem Start",
+      "text_it": "SAKC Wackersdorf: batti cinque con Nico prima della partenza",
+      "text_en": "SAKC Wackersdorf: high five with Nico before the start",
+      "text_fr": "SAKC Wackersdorf : check avec Nico avant le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-01.jpg",
-      "text": "Volle Konzentration in der Kurve"
+      "text": "Volle Konzentration in der Kurve",
+      "text_it": "Massima concentrazione in curva",
+      "text_en": "Full concentration in the corner",
+      "text_fr": "Concentration maximale dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-02.jpg",
-      "text": "Im Duell auf der Strecke"
+      "text": "Im Duell auf der Strecke",
+      "text_it": "In duello in pista",
+      "text_en": "Battling on track",
+      "text_fr": "En duel sur la piste"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-03.jpg",
-      "text": "Saubere Linie in Wackersdorf"
+      "text": "Saubere Linie in Wackersdorf",
+      "text_it": "Traiettoria pulita a Wackersdorf",
+      "text_en": "Clean line in Wackersdorf",
+      "text_fr": "Trajectoire propre à Wackersdorf"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-04.jpg",
-      "text": "Vollgas vor dem Turm in Wackersdorf"
+      "text": "Vollgas vor dem Turm in Wackersdorf",
+      "text_it": "A tutto gas davanti alla torre di Wackersdorf",
+      "text_en": "Flat out past the tower in Wackersdorf",
+      "text_fr": "À fond devant la tour de Wackersdorf"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-05.jpg",
-      "text": "Mit Tempo über die Gerade"
+      "text": "Mit Tempo über die Gerade",
+      "text_it": "A tutta velocità sul rettilineo",
+      "text_en": "At speed down the straight",
+      "text_fr": "À pleine vitesse dans la ligne droite"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-06.jpg",
-      "text": "Am Kurvenausgang"
+      "text": "Am Kurvenausgang",
+      "text_it": "In uscita di curva",
+      "text_en": "At the corner exit",
+      "text_fr": "En sortie de virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-07.jpg",
-      "text": "Vorbeiflug am Turm"
+      "text": "Vorbeiflug am Turm",
+      "text_it": "Passaggio davanti alla torre",
+      "text_en": "Flying past the tower",
+      "text_fr": "Passage devant la tour"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-08.jpg",
-      "text": "Blauer Himmel, volle Fahrt"
+      "text": "Blauer Himmel, volle Fahrt",
+      "text_it": "Cielo blu, a tutta velocità",
+      "text_en": "Blue sky, full speed",
+      "text_fr": "Ciel bleu, pleine vitesse"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-09.jpg",
-      "text": "Zurück ins Fahrerlager"
+      "text": "Zurück ins Fahrerlager",
+      "text_it": "Ritorno al paddock",
+      "text_en": "Back to the paddock",
+      "text_fr": "Retour au paddock"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-10.jpg",
-      "text": "Gemeinsam auf dem Rückweg"
+      "text": "Gemeinsam auf dem Rückweg",
+      "text_it": "Insieme sulla via del ritorno",
+      "text_en": "Heading back together",
+      "text_fr": "Ensemble sur le chemin du retour"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-11.jpg",
-      "text": "Bereit für den nächsten Run"
+      "text": "Bereit für den nächsten Run",
+      "text_it": "Pronto per il prossimo run",
+      "text_en": "Ready for the next run",
+      "text_fr": "Prêt pour le prochain run"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-12.jpg",
-      "text": "Helm auf, Fokus an"
+      "text": "Helm auf, Fokus an",
+      "text_it": "Casco in testa, concentrazione al massimo",
+      "text_en": "Helmet on, focus on",
+      "text_fr": "Casque sur la tête, concentration au maximum"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-13.jpg",
-      "text": "Kurz vor der Ausfahrt"
+      "text": "Kurz vor der Ausfahrt",
+      "text_it": "Poco prima di uscire",
+      "text_en": "Just before heading out",
+      "text_fr": "Juste avant de sortir"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-14.jpg",
-      "text": "Tempo pur"
+      "text": "Tempo pur",
+      "text_it": "Velocità pura",
+      "text_en": "Pure speed",
+      "text_fr": "Vitesse pure"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-15.jpg",
-      "text": "Mitzieher an der Bande"
+      "text": "Mitzieher an der Bande",
+      "text_it": "Foto in panning lungo le barriere",
+      "text_en": "Panning shot along the barrier",
+      "text_fr": "Filé le long des barrières"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-16.jpg",
-      "text": "In der Startaufstellung"
+      "text": "In der Startaufstellung",
+      "text_it": "Sulla griglia di partenza",
+      "text_en": "On the starting grid",
+      "text_fr": "Sur la grille de départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-17.jpg",
-      "text": "Konzentration vor dem Start"
+      "text": "Konzentration vor dem Start",
+      "text_it": "Concentrazione prima della partenza",
+      "text_en": "Concentration before the start",
+      "text_fr": "Concentration avant le départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-18.jpg",
-      "text": "Auf dem Weg zur Strecke"
+      "text": "Auf dem Weg zur Strecke",
+      "text_it": "Verso la pista",
+      "text_en": "On the way to the track",
+      "text_fr": "En route vers la piste"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-19.jpg",
-      "text": "Vorne im Pulk"
+      "text": "Vorne im Pulk",
+      "text_it": "Davanti nel gruppo",
+      "text_en": "At the front of the pack",
+      "text_fr": "En tête du peloton"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-20.jpg",
-      "text": "Durch die Kurve, die Verfolger im Rücken"
+      "text": "Durch die Kurve, die Verfolger im Rücken",
+      "text_it": "In curva, con gli inseguitori alle spalle",
+      "text_en": "Through the corner, chasers right behind",
+      "text_fr": "Dans le virage, les poursuivants dans le dos"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-21.jpg",
-      "text": "Auf dem Vorstart – bereit für den Lauf"
+      "text": "Auf dem Vorstart – bereit für den Lauf",
+      "text_it": "In pre-griglia – pronto per la manche",
+      "text_en": "On the pre-grid – ready for the heat",
+      "text_fr": "En pré-grille – prêt pour la manche"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-22.jpg",
-      "text": "Allein in der Kurve"
+      "text": "Allein in der Kurve",
+      "text_it": "Da solo in curva",
+      "text_en": "Alone in the corner",
+      "text_fr": "Seul dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-23.jpg",
-      "text": "Vorne im Feld – die Verfolger im Rücken"
+      "text": "Vorne im Feld – die Verfolger im Rücken",
+      "text_it": "Davanti al gruppo – gli inseguitori alle spalle",
+      "text_en": "Leading the pack – chasers right behind",
+      "text_fr": "En tête du peloton – les poursuivants dans le dos"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-24.jpg",
-      "text": "Fokus vor dem Start"
+      "text": "Fokus vor dem Start",
+      "text_it": "Concentrazione prima della partenza",
+      "text_en": "Focus before the start",
+      "text_fr": "Concentration avant le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-25.jpg",
-      "text": "Saubere Linie am Kerb"
+      "text": "Saubere Linie am Kerb",
+      "text_it": "Traiettoria pulita sul cordolo",
+      "text_en": "Clean line on the kerb",
+      "text_fr": "Trajectoire propre sur le vibreur"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-26.jpg",
-      "text": "Konzentriert durch die Kurve"
+      "text": "Konzentriert durch die Kurve",
+      "text_it": "Concentrato in curva",
+      "text_en": "Focused through the corner",
+      "text_fr": "Concentré dans le virage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-27.jpg",
-      "text": "Duell mit der Nummer 11"
+      "text": "Duell mit der Nummer 11",
+      "text_it": "Duello con il numero 11",
+      "text_en": "Battle with number 11",
+      "text_fr": "Duel avec le numéro 11"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-28.jpg",
-      "text": "Mit Vorsprung aus der Kurve"
+      "text": "Mit Vorsprung aus der Kurve",
+      "text_it": "Fuori dalla curva con un vantaggio",
+      "text_en": "Out of the corner with a lead",
+      "text_fr": "Sortie de virage avec de l’avance"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-29.jpg",
-      "text": "Die Linie halten"
+      "text": "Die Linie halten",
+      "text_it": "Tenere la traiettoria",
+      "text_en": "Holding the line",
+      "text_fr": "Tenir la trajectoire"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-30.jpg",
-      "text": "Startaufstellung – gleich geht es los"
+      "text": "Startaufstellung – gleich geht es los",
+      "text_it": "Griglia di partenza – si parte tra poco",
+      "text_en": "Starting grid – almost time to go",
+      "text_fr": "Grille de départ – ça va bientôt commencer"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-31.jpg",
-      "text": "Das Feld in der Startaufstellung"
+      "text": "Das Feld in der Startaufstellung",
+      "text_it": "Il gruppo sulla griglia di partenza",
+      "text_en": "The field on the starting grid",
+      "text_fr": "Le peloton sur la grille de départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v1.mp4",
-      "text": "Video: Luigi in Wackersdorf"
+      "text": "Video: Luigi in Wackersdorf",
+      "text_it": "Video: Luigi a Wackersdorf",
+      "text_en": "Video: Luigi in Wackersdorf",
+      "text_fr": "Vidéo : Luigi à Wackersdorf"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v2.mp4",
-      "text": "Video: Unterwegs auf der Strecke"
+      "text": "Video: Unterwegs auf der Strecke",
+      "text_it": "Video: in pista",
+      "text_en": "Video: out on the track",
+      "text_fr": "Vidéo : sur la piste"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-32.jpg",
-      "text": "Die Nummer 3 wartet im Zelt auf ihren Einsatz"
+      "text": "Die Nummer 3 wartet im Zelt auf ihren Einsatz",
+      "text_it": "Il numero 3 aspetta il suo turno nella tenda",
+      "text_en": "Number 3 waits in the tent for its turn",
+      "text_fr": "Le numéro 3 attend son tour sous la tente"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-33.jpg",
-      "text": "Gute Laune neben der Nummer 3"
+      "text": "Gute Laune neben der Nummer 3",
+      "text_it": "Buon umore accanto al numero 3",
+      "text_en": "Good spirits next to number 3",
+      "text_fr": "Bonne humeur à côté du numéro 3"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-34.jpg",
-      "text": "Letzter Check vor dem Lauf"
+      "text": "Letzter Check vor dem Lauf",
+      "text_it": "Ultimo controllo prima della manche",
+      "text_en": "Final check before the heat",
+      "text_fr": "Dernier contrôle avant la manche"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-35.jpg",
-      "text": "Besprechung nach dem Lauf"
+      "text": "Besprechung nach dem Lauf",
+      "text_it": "Riunione dopo la manche",
+      "text_en": "Debrief after the heat",
+      "text_fr": "Réunion après la manche"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v3.mp4",
-      "text": "Video: „Alle so … und wie läuft’s?“ – Luigi so"
+      "text": "Video: „Alle so … und wie läuft’s?“ – Luigi so",
+      "text_it": "Video: «Tutti… e come va?» – Luigi così",
+      "text_en": "Video: “Everyone’s like … how’s it going?” – Luigi’s like",
+      "text_fr": "Vidéo : « Tout le monde… et ça va ? » – Luigi"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v4.mp4",
-      "text": "Video: Kurzer Clip von der Strecke"
+      "text": "Video: Kurzer Clip von der Strecke",
+      "text_it": "Video: breve clip dalla pista",
+      "text_en": "Video: short clip from the track",
+      "text_fr": "Vidéo : courte séquence de la piste"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v5.mp4",
-      "text": "Video: Blick von der Tribüne"
+      "text": "Video: Blick von der Tribüne",
+      "text_it": "Video: vista dalla tribuna",
+      "text_en": "Video: view from the grandstand",
+      "text_fr": "Vidéo : vue depuis la tribune"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v6.mp4",
-      "text": "Video: Das Feld unterwegs"
+      "text": "Video: Das Feld unterwegs",
+      "text_it": "Video: il gruppo in pista",
+      "text_en": "Video: the field on track",
+      "text_fr": "Vidéo : le peloton en piste"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v7.mp4",
-      "text": "Video: Startaufstellung"
+      "text": "Video: Startaufstellung",
+      "text_it": "Video: griglia di partenza",
+      "text_en": "Video: starting grid",
+      "text_fr": "Vidéo : grille de départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v8.mp4",
-      "text": "Video: Das Feld in der Startaufstellung"
+      "text": "Video: Das Feld in der Startaufstellung",
+      "text_it": "Video: il gruppo sulla griglia di partenza",
+      "text_en": "Video: the field on the starting grid",
+      "text_fr": "Vidéo : le peloton sur la grille de départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v9.mp4",
-      "text": "Video: Vorbeifahrt an der Boxenmauer"
+      "text": "Video: Vorbeifahrt an der Boxenmauer",
+      "text_it": "Video: passaggio davanti al muretto box",
+      "text_en": "Video: passing the pit wall",
+      "text_fr": "Vidéo : passage devant le muret des stands"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-36.jpg",
-      "text": "Blick von der Tribüne auf die Startaufstellung"
+      "text": "Blick von der Tribüne auf die Startaufstellung",
+      "text_it": "Vista dalla tribuna sulla griglia di partenza",
+      "text_en": "View from the grandstand onto the starting grid",
+      "text_fr": "Vue de la tribune sur la grille de départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-37.jpg",
-      "text": "Unterwegs auf der Start-Ziel-Geraden"
+      "text": "Unterwegs auf der Start-Ziel-Geraden",
+      "text_it": "Sul rettilineo di partenza e arrivo",
+      "text_en": "On the start-finish straight",
+      "text_fr": "Dans la ligne droite de départ et d’arrivée"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-38.jpg",
-      "text": "Bestens gelaunt im Fahrerlager"
+      "text": "Bestens gelaunt im Fahrerlager",
+      "text_it": "Di ottimo umore nel paddock",
+      "text_en": "In great spirits in the paddock",
+      "text_fr": "De très bonne humeur au paddock"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-39.jpg",
-      "text": "Letzte Handgriffe in der Startaufstellung"
+      "text": "Letzte Handgriffe in der Startaufstellung",
+      "text_it": "Ultimi ritocchi sulla griglia di partenza",
+      "text_en": "Final touches on the starting grid",
+      "text_fr": "Derniers gestes sur la grille de départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-40.jpg",
-      "text": "Startaufstellung – gleich geht es los"
+      "text": "Startaufstellung – gleich geht es los",
+      "text_it": "Griglia di partenza – si parte tra poco",
+      "text_en": "Starting grid – almost time to go",
+      "text_fr": "Grille de départ – ça va bientôt commencer"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-41.jpg",
-      "text": "Bereit in der Startaufstellung"
+      "text": "Bereit in der Startaufstellung",
+      "text_it": "Pronto sulla griglia di partenza",
+      "text_en": "Ready on the starting grid",
+      "text_fr": "Prêt sur la grille de départ"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-42.jpg",
-      "text": "Der Kartwagen kommt mit"
+      "text": "Der Kartwagen kommt mit",
+      "text_it": "Il carrello del kart viene con noi",
+      "text_en": "The kart trolley comes along",
+      "text_fr": "Le chariot du kart vient avec nous"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-43.jpg",
-      "text": "Aufräumen nach dem Start"
+      "text": "Aufräumen nach dem Start",
+      "text_it": "Riordinare dopo la partenza",
+      "text_en": "Tidying up after the start",
+      "text_fr": "Ranger après le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v10.mp4",
-      "text": "Video: Kurz vor dem Start"
+      "text": "Video: Kurz vor dem Start",
+      "text_it": "Video: poco prima della partenza",
+      "text_en": "Video: just before the start",
+      "text_fr": "Vidéo : juste avant le départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v11.mp4",
-      "text": "Video: Runde um Runde in Wackersdorf"
+      "text": "Video: Runde um Runde in Wackersdorf",
+      "text_it": "Video: giro dopo giro a Wackersdorf",
+      "text_en": "Video: lap after lap in Wackersdorf",
+      "text_fr": "Vidéo : tour après tour à Wackersdorf"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v12.mp4",
-      "text": "Video: Vorbeifahrt"
+      "text": "Video: Vorbeifahrt",
+      "text_it": "Video: passaggio",
+      "text_en": "Video: drive-by",
+      "text_fr": "Vidéo : passage"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/sakc-wackersdorf-2026-v13.mp4",
-      "text": "Video: Mitten im Rennen"
+      "text": "Video: Mitten im Rennen",
+      "text_it": "Video: in piena gara",
+      "text_en": "Video: in the middle of the race",
+      "text_fr": "Vidéo : en pleine course"
     }
   ],
   "datum": "2026-05-17"

@@ -1,7 +1,7 @@
 // Nachricht an alle Squadra-3-Mitglieder, die Renn-Updates abonniert haben (nur Admins).
 import { handle, json, sb, sendMail, mailLayout, escapeHtml, siteUrl, requireAdmin, readBody, HttpError } from './_lib/common.mjs';
 
-const ABMELDEN = { de: 'Keine Updates mehr? Antworte einfach mit „Abmelden“.', en: 'No more updates? Just reply with “unsubscribe”.', it: 'Non vuoi più aggiornamenti? Rispondi con “disiscrivimi”.' };
+import { ABMELDEN, pickLang, langPrefix } from './_lib/texte.mjs';
 
 export default handle(async (req) => {
   if (req.method !== 'POST') throw new HttpError(405, 'Nur POST.');
@@ -27,8 +27,8 @@ export default handle(async (req) => {
       html: mailLayout(escapeHtml(betreff), `
         <p>Ciao ${escapeHtml(r.name || '')},</p>
         <p>${escapeHtml(text).replace(/\n/g, '<br>')}</p>
-        <p><a href="${siteUrl()}/squadra-tre/" style="color:#B00E28;font-weight:bold">#SquadraTre · #LBC3</a></p>
-        <p style="color:#555A63;font-size:12px">${ABMELDEN[r.sprache] || ABMELDEN.de}</p>`)
+        <p><a href="${siteUrl()}${langPrefix(pickLang(r.sprache))}/squadra-tre/" style="color:#B00E28;font-weight:bold">#SquadraTre · #LBC3</a></p>
+        <p style="color:#555A63;font-size:12px">${ABMELDEN[pickLang(r.sprache)]}</p>`)
     });
     gesendet++;
   }
