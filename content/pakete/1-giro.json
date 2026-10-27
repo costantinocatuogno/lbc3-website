@@ -7,28 +7,36 @@
   "hervorheben": false,
   "preis": "",
   "leistungen": [
-    "Logo am Kart (Frontspoiler oder Heck)",
+    "Logo klein am Kart (Frontspoiler oder Heck)",
     "Logo auf der Partnerseite der Website",
     "Vorstellungs- und Dankespost auf Instagram",
-    "1 Renntag im Fahrerlager · Saisonbericht"
+    "1 Renntag im Fahrerlager",
+    "Saisonbericht"
   ],
   "leistungen_en": [
-    "Logo on the kart (front spoiler or rear)",
-    "Logo on the website's partner page",
+    "Small logo on the kart (front spoiler or rear)",
+    "Logo on the website’s partner page",
     "Introduction and thank-you post on Instagram",
-    "1 race day in the paddock · season report"
+    "1 race day in the paddock",
+    "Season report"
   ],
   "leistungen_it": [
-    "Logo sul kart (spoiler anteriore o posteriore)",
+    "Logo piccolo sul kart (spoiler anteriore o posteriore)",
     "Logo nella pagina partner del sito",
-    "Post di presentazione e ringraziamento su Instagram",
-    "1 giorno di gara nel paddock · report di stagione"
+    "Post di presentazione e di ringraziamento su Instagram",
+    "1 giorno di gara nel paddock",
+    "Report di fine stagione"
   ],
   "untertitel_fr": "L’entrée en matière",
   "leistungen_fr": [
-    "Logo sur le kart (spoiler avant ou arrière)",
+    "Petit logo sur le kart (spoiler avant ou arrière)",
     "Logo sur la page partenaires du site",
     "Post de présentation et de remerciement sur Instagram",
-    "1 journée de course dans le paddock · bilan de saison"
-  ]
+    "1 journée de course au paddock",
+    "Bilan de saison"
+  ],
+  "laufzeit": "1 Jahr",
+  "laufzeit_it": "1 anno",
+  "laufzeit_en": "1 year",
+  "laufzeit_fr": "1 an"
 }

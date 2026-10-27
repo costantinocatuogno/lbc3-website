@@ -1,11 +1,11 @@
 {
   "de": {
     "nationalitaet": "Deutsch · Italienisch",
-    "chassis": "Tony Kart Rookie",
-    "klasse": "Mini",
+    "chassis": "Tony Kart",
+    "klasse": "Mini · 2027 erste Tests OK-Junior",
     "team": "7L Performance",
     "lieblingsstrecke": "Mülsen",
-    "idole": "Juan Manuel Fangio",
+    "idole": "Lewis Hamilton & Kimi Antonelli",
     "ziel": "Formel 1",
     "woche": [
       {
@@ -48,11 +48,11 @@
   },
   "en": {
     "nationalitaet": "German · Italian",
-    "chassis": "Tony Kart Rookie",
-    "klasse": "Mini",
+    "chassis": "Tony Kart",
+    "klasse": "Mini · first OK-Junior tests in 2027",
     "team": "7L Performance",
     "lieblingsstrecke": "Mülsen",
-    "idole": "Juan Manuel Fangio",
+    "idole": "Lewis Hamilton & Kimi Antonelli",
     "ziel": "Formula 1",
     "woche": [
       {
@@ -95,11 +95,11 @@
   },
   "it": {
     "nationalitaet": "Tedesca · Italiana",
-    "chassis": "Tony Kart Rookie",
-    "klasse": "Mini",
+    "chassis": "Tony Kart",
+    "klasse": "Mini · nel 2027 primi test OK-Junior",
     "team": "7L Performance",
     "lieblingsstrecke": "Mülsen",
-    "idole": "Juan Manuel Fangio",
+    "idole": "Lewis Hamilton & Kimi Antonelli",
     "ziel": "Formula 1",
     "woche": [
       {
@@ -142,11 +142,11 @@
   },
   "fr": {
     "nationalitaet": "Allemand · Italien",
-    "chassis": "Tony Kart Rookie",
-    "klasse": "Mini",
+    "chassis": "Tony Kart",
+    "klasse": "Mini · premiers tests OK-Junior en 2027",
     "team": "7L Performance",
     "lieblingsstrecke": "Mülsen",
-    "idole": "Juan Manuel Fangio",
+    "idole": "Lewis Hamilton & Kimi Antonelli",
     "ziel": "Formule 1",
     "woche": [
       {

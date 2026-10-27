@@ -411,13 +411,20 @@ export function partner(lang, ctx, wall) {
       return `
     <div class="package${p.hervorheben ? ' is-top' : ''}">
       ${sub ? `<div class="eyebrow package-sub">${esc(sub)}</div>` : ''}
-      <div class="package-name">${esc(p.name)}</div>
+      <div class="package-head"><div class="package-name">${esc(p.name)}</div>${(lang !== 'de' && p[`laufzeit_${lang}`]) || p.laufzeit ? `<span class="package-term" title="${_('pk_term')}">${esc((lang !== 'de' && p[`laufzeit_${lang}`]) || p.laufzeit)}</span>` : ''}</div>
       <ul>${L('leistungen').map((l) => `<li>${esc(l)}</li>`).join('')}</ul>
       ${p.preis ? `<div class="package-price">${esc(p.preis)}</div>` : ''}
     </div>`;
     }).join('')}
   </div>
-  <p class="package-note"><strong>${_('pk_from')}</strong> · ${_('pk_extra')}</p>
+  <div class="package-custom">
+    <div>
+      <h3 class="h2">${_('pk_custom_t')}</h3>
+      <p class="lead">${_('pk_custom')}</p>
+    </div>
+    <a class="btn btn-red" href="${url(lang, '/kontakt/?anliegen=sponsoring')}">${_('pk_custom_btn')}</a>
+  </div>
+  <p class="package-note">${_('pk_extra')}</p>
   <div class="two-col ad-spaces">
     ${picture('/uploads/ampfing-2026/frontal-aus-der-kurve.jpg', _('alt_kart_front'), { width: 1000, sizes: '(max-width: 760px) 100vw, 50vw', cls: 'rounded' })}
     <div>

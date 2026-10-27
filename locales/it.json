@@ -69,7 +69,7 @@
   "f_klasse": "Categoria",
   "f_team": "Team",
   "f_lieblingsstrecke": "Circuito preferito",
-  "f_idole": "Idolo",
+  "f_idole": "Idoli",
   "f_ziel": "Obiettivo",
   "chapters_title": "Scegli il capitolo",
   "week_title": "Una settimana di gara con Luigi",
@@ -102,7 +102,6 @@
   "videos_soon": "Video in arrivo",
   "tab_reels": "Momenti a tutto gas",
   "free_spot": "Posto libero",
-  "pk_from": "Pacchetti da 750 € a stagione",
   "pk_extra": "Prenotabili in aggiunta: padrino di gara, singoli spazi sul rimorchio e sponsorizzazione tecnica. Tutti i dettagli e i prezzi sono nella cartella partner.",
   "fullscreen": "Guarda a schermo intero",
   "tab_story": "La strada verso la vetta",
@@ -373,5 +372,9 @@
   "lang_name_it": "italiano",
   "lang_name_en": "inglese",
   "lang_name_fr": "francese",
-  "kontakt_err": "Inserisci nome, un indirizzo e-mail valido e il tuo messaggio, e accetta l’informativa sulla privacy."
+  "kontakt_err": "Inserisci nome, un indirizzo e-mail valido e il tuo messaggio, e accetta l’informativa sulla privacy.",
+  "pk_custom_t": "I vostri obiettivi. Il vostro pacchetto.",
+  "pk_custom": "Ogni partnership è unica come la vostra azienda. Raccontateci cosa volete raggiungere: insieme creeremo un pacchetto su misura, pensato proprio per voi. Il prossimo passo verso la Formula 1 inizia con una conversazione.",
+  "pk_custom_btn": "Parliamone",
+  "pk_term": "Durata"
 }

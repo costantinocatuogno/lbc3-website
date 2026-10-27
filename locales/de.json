@@ -69,7 +69,7 @@
   "f_klasse": "Klasse",
   "f_team": "Team",
   "f_lieblingsstrecke": "Lieblingsstrecke",
-  "f_idole": "Idol",
+  "f_idole": "Vorbilder",
   "f_ziel": "Ziel",
   "chapters_title": "Wähle dein Kapitel",
   "week_title": "Eine Rennwoche mit Luigi",
@@ -102,7 +102,6 @@
   "videos_soon": "Video folgt",
   "tab_reels": "Vollgas-Momente",
   "free_spot": "Platz frei",
-  "pk_from": "Pakete ab 750 € pro Saison",
   "pk_extra": "Ergänzend buchbar: Rennpate, einzelne Gespann-Felder und Sachsponsoring. Alle Details und Preise stehen in der Partnermappe.",
   "fullscreen": "Im Vollbild ansehen",
   "tab_story": "Der Weg nach oben",
@@ -373,5 +372,9 @@
   "lang_name_it": "Italienisch",
   "lang_name_en": "Englisch",
   "lang_name_fr": "Französisch",
-  "kontakt_err": "Bitte Name, eine gültige E-Mail-Adresse und deine Nachricht angeben und der Datenschutzerklärung zustimmen."
+  "kontakt_err": "Bitte Name, eine gültige E-Mail-Adresse und deine Nachricht angeben und der Datenschutzerklärung zustimmen.",
+  "pk_custom_t": "Ihre Ziele. Ihr Paket.",
+  "pk_custom": "Jede Partnerschaft ist so einzigartig wie Ihr Unternehmen. Erzählen Sie uns, was Sie erreichen möchten – gemeinsam entwickeln wir ein persönliches Paket, das genau zu Ihnen passt. Der nächste Schritt Richtung Formel 1 beginnt mit einem Gespräch.",
+  "pk_custom_btn": "Lassen Sie uns reden",
+  "pk_term": "Laufzeit"
 }

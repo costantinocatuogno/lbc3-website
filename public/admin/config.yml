@@ -187,6 +187,10 @@ collections:
       - { label: Hervorheben (dunkel), name: hervorheben, widget: boolean, default: false, required: false }
       - { label: Preis (leer lassen = kein Preis auf der Website), name: preis, widget: string, required: false }
       - { label: Leistungen, name: leistungen, widget: list }
+      - { label: Laufzeit (z. B. 1 Jahr), name: laufzeit, widget: string, required: false }
+      - { label: Laufzeit IT, name: laufzeit_it, widget: string, required: false }
+      - { label: Laufzeit EN, name: laufzeit_en, widget: string, required: false }
+      - { label: Laufzeit FR, name: laufzeit_fr, widget: string, required: false }
       - { label: Untertitel EN, name: untertitel_en, widget: string, required: false }
       - { label: Leistungen EN, name: leistungen_en, widget: list, required: false }
       - { label: Untertitel IT, name: untertitel_it, widget: string, required: false }

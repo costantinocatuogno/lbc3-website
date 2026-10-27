@@ -1,27 +1,39 @@
 {
   "leistungen_en": [
-    "Front fairing",
-    "side pods",
-    "suit (chest + back)",
-    "top of helmet",
-    "Premium spaces on the trailer rig · logo on the home page",
-    "8 dedicated posts · photos & videos for your communication"
+    "Front fairing + both side pods",
+    "Chest + back of the suit, top of the helmet",
+    "2 premium spaces 40 × 40 cm on the trailer rig",
+    "Logo on the website’s home page",
+    "8 dedicated posts + tags in every report",
+    "Race days on request + karting with Luigi",
+    "Media package: 5 photos & 1 reel",
+    "Photos & videos for your communication",
+    "Quarterly report + expense report",
+    "Industry exclusivity"
   ],
   "leistungen_it": [
-    "Carenatura anteriore",
-    "pance laterali",
-    "tuta (petto + schiena)",
-    "casco in alto",
-    "Spazi premium sul rimorchio · logo in homepage",
-    "8 post dedicati · foto e video per la vostra comunicazione"
+    "Carenatura anteriore + entrambe le pance laterali",
+    "Petto + schiena sulla tuta, parte superiore del casco",
+    "2 spazi premium 40 × 40 cm sul convoglio",
+    "Logo sulla homepage del sito",
+    "8 post dedicati + tag in ogni resoconto",
+    "Giorni di gara su richiesta + giro in kart con Luigi",
+    "Pacchetto media: 5 foto e 1 reel",
+    "Foto e video per la vostra comunicazione",
+    "Report trimestrale + resoconto spese",
+    "Esclusiva di settore"
   ],
   "leistungen": [
-    "Frontverkleidung",
-    "Seitenkästen",
-    "Anzug (Brust oder Rücken)",
-    "Helm oben",
-    "Premium-Felder am Gespann · Logo auf der Startseite",
-    "8 eigene Posts · Fotos & Videos für eure Kommunikation"
+    "Frontverkleidung + beide Seitenkästen",
+    "Brust + Rücken am Anzug, Helm oben",
+    "2 Premium-Felder 40 × 40 cm am Gespann",
+    "Logo auf der Startseite der Website",
+    "8 eigene Posts + Markierung in jedem Bericht",
+    "Renntage nach Absprache + Kartfahren mit Luigi",
+    "Media-Paket: 5 Bilder & 1 Reel",
+    "Fotos & Videos für Ihre Kommunikation",
+    "Quartalsbericht + Ausgabenbericht",
+    "Branchenschutz"
   ],
   "reihenfolge": 3,
   "untertitel_en": "The main partner",
@@ -32,11 +44,19 @@
   "untertitel": "Der Hauptpartner",
   "untertitel_fr": "Le partenaire principal",
   "leistungen_fr": [
-    "Carénage avant",
-    "Pontons latéraux",
-    "Combinaison (poitrine ou dos)",
-    "Dessus du casque",
-    "Emplacements premium sur l’attelage · logo sur la page d’accueil",
-    "8 posts dédiés · photos et vidéos pour votre communication"
-  ]
+    "Carénage avant + les deux pontons",
+    "Poitrine + dos de la combinaison, dessus du casque",
+    "2 emplacements premium 40 × 40 cm sur l’attelage",
+    "Logo sur la page d’accueil du site",
+    "8 posts dédiés + mention dans chaque compte rendu",
+    "Journées de course sur demande + karting avec Luigi",
+    "Pack média : 5 photos et 1 reel",
+    "Photos et vidéos pour votre communication",
+    "Rapport trimestriel + rapport des dépenses",
+    "Exclusivité sectorielle"
+  ],
+  "laufzeit": "2 Jahre",
+  "laufzeit_it": "2 anni",
+  "laufzeit_en": "2 years",
+  "laufzeit_fr": "2 ans"
 }

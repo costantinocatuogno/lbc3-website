@@ -69,7 +69,7 @@
   "f_klasse": "Class",
   "f_team": "Team",
   "f_lieblingsstrecke": "Favourite track",
-  "f_idole": "Idol",
+  "f_idole": "Role models",
   "f_ziel": "Goal",
   "chapters_title": "Choose your chapter",
   "week_title": "A race week with Luigi",
@@ -102,7 +102,6 @@
   "videos_soon": "Video coming soon",
   "tab_reels": "Full-throttle moments",
   "free_spot": "Spot available",
-  "pk_from": "Packages from €750 per season",
   "pk_extra": "Also available: race sponsor, single trailer spaces and in-kind partnerships. All details and prices are in the partner kit.",
   "fullscreen": "Watch full screen",
   "tab_story": "The road to the top",
@@ -373,5 +372,9 @@
   "lang_name_it": "Italian",
   "lang_name_en": "English",
   "lang_name_fr": "French",
-  "kontakt_err": "Please enter your name, a valid email address and your message, and accept the privacy policy."
+  "kontakt_err": "Please enter your name, a valid email address and your message, and accept the privacy policy.",
+  "pk_custom_t": "Your goals. Your package.",
+  "pk_custom": "Every partnership is as unique as your company. Tell us what you want to achieve – together we will create a personal package that fits you perfectly. The next step towards Formula 1 starts with a conversation.",
+  "pk_custom_btn": "Let’s talk",
+  "pk_term": "Term"
 }

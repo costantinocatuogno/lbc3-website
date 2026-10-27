@@ -358,6 +358,7 @@ async function doPakete() {
     let n = 0;
     for (const to of others('de')) {
       if (filled(d.untertitel) && !filled(d[`untertitel_${to}`])) { d[`untertitel_${to}`] = await translateText(d.untertitel, 'de', to); n++; }
+      if (filled(d.laufzeit) && !filled(d[`laufzeit_${to}`])) { d[`laufzeit_${to}`] = await translateText(d.laufzeit, 'de', to); n++; }
       if (Array.isArray(d.leistungen) && d.leistungen.length && !(Array.isArray(d[`leistungen_${to}`]) && d[`leistungen_${to}`].length)) {
         d[`leistungen_${to}`] = [];
         for (const l of d.leistungen) d[`leistungen_${to}`].push(await translateText(l, 'de', to));

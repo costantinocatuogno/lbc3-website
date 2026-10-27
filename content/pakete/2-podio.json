@@ -7,28 +7,44 @@
   "hervorheben": false,
   "preis": "",
   "leistungen": [
-    "Logo am Seitenkasten und am Rennanzug",
-    "Werbefeld am Gespann",
-    "Logo mit Link auf der Website · 4 eigene Posts",
-    "2 Renntage, 10 Fotos zur freien Nutzung · Partner-Login"
+    "Logo am Seitenkasten",
+    "Logo am Rennanzug (Ärmel oder Bein)",
+    "1 Standard-Feld 20 × 40 cm am Gespann",
+    "Logo mit Link auf der Website",
+    "4 eigene Posts + Markierung in Rennberichten",
+    "2 Renntage + 10 Fotos zur freien Nutzung",
+    "Saisonbericht + Partner-Login"
   ],
   "leistungen_en": [
-    "Logo on the side pod and race suit",
-    "Ad space on the trailer rig",
-    "Linked logo on the website · 4 dedicated posts",
-    "2 race days, 10 photos for free use · partner login"
+    "Logo on the side pod",
+    "Logo on the race suit (sleeve or leg)",
+    "1 standard space 20 × 40 cm on the trailer rig",
+    "Linked logo on the website",
+    "4 dedicated posts + tags in race reports",
+    "2 race days + 10 photos for free use",
+    "Season report + partner login"
   ],
   "leistungen_it": [
-    "Logo sulla pancia laterale e sulla tuta",
-    "Spazio pubblicitario sul rimorchio",
-    "Logo con link sul sito · 4 post dedicati",
-    "2 giorni di gara, 10 foto a uso libero · login partner"
+    "Logo sulla pancia laterale",
+    "Logo sulla tuta (manica o gamba)",
+    "1 spazio standard 20 × 40 cm sul convoglio",
+    "Logo con link sul sito",
+    "4 post dedicati + tag nei resoconti di gara",
+    "2 giorni di gara + 10 foto a libero utilizzo",
+    "Report di stagione + login partner"
   ],
   "untertitel_fr": "Le partenaire",
   "leistungen_fr": [
-    "Logo sur le ponton latéral et la combinaison",
-    "Espace publicitaire sur l’attelage",
-    "Logo avec lien sur le site · 4 posts dédiés",
-    "2 journées de course, 10 photos libres de droits · accès partenaire"
-  ]
+    "Logo sur le ponton latéral",
+    "Logo sur la combinaison (manche ou jambe)",
+    "1 emplacement standard 20 × 40 cm sur l’attelage",
+    "Logo avec lien sur le site",
+    "4 posts dédiés + mention dans les comptes rendus de course",
+    "2 journées de course + 10 photos libres de droits",
+    "Bilan de saison + accès partenaire"
+  ],
+  "laufzeit": "1 Jahr",
+  "laufzeit_it": "1 anno",
+  "laufzeit_en": "1 year",
+  "laufzeit_fr": "1 an"
 }

@@ -69,7 +69,7 @@
   "f_klasse": "Catégorie",
   "f_team": "Équipe",
   "f_lieblingsstrecke": "Circuit préféré",
-  "f_idole": "Idole",
+  "f_idole": "Modèles",
   "f_ziel": "Objectif",
   "chapters_title": "Choisis ton chapitre",
   "week_title": "Une semaine de course avec Luigi",
@@ -102,7 +102,6 @@
   "videos_soon": "Vidéo à venir",
   "tab_reels": "Moments à fond",
   "free_spot": "Place libre",
-  "pk_from": "Offres à partir de 750 € par saison",
   "pk_extra": "En complément : parrain de course, emplacements individuels sur la remorque et sponsoring en nature. Tous les détails et les prix figurent dans le dossier partenaires.",
   "fullscreen": "Voir en plein écran",
   "tab_story": "La route vers le sommet",
@@ -373,5 +372,9 @@
   "lang_name_it": "italien",
   "lang_name_en": "anglais",
   "lang_name_fr": "français",
-  "kontakt_err": "Merci d’indiquer ton nom, une adresse e-mail valide et ton message, et d’accepter la politique de confidentialité."
+  "kontakt_err": "Merci d’indiquer ton nom, une adresse e-mail valide et ton message, et d’accepter la politique de confidentialité.",
+  "pk_custom_t": "Vos objectifs. Votre offre.",
+  "pk_custom": "Chaque partenariat est aussi unique que votre entreprise. Dites-nous ce que vous souhaitez atteindre – ensemble, nous créerons une offre personnalisée qui vous correspond parfaitement. La prochaine étape vers la Formule 1 commence par une conversation.",
+  "pk_custom_btn": "Parlons-en",
+  "pk_term": "Durée"
 }
