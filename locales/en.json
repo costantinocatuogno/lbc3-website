@@ -376,5 +376,11 @@
   "pk_custom_t": "Your goals. Your package.",
   "pk_custom": "Every partnership is as unique as your company. Tell us what you want to achieve – together we will create a personal package that fits you perfectly. The next step towards Formula 1 starts with a conversation.",
   "pk_custom_btn": "Let’s talk",
-  "pk_term": "Term"
+  "pk_term": "Term",
+  "cat_Presse": "Press",
+  "press_source": "Source",
+  "press_original_lang": "Original language",
+  "press_read_original": "Read the original article",
+  "press_ai_note": "This text was translated automatically by AI from the original ({lang}). The original article prevails.",
+  "press_excerpt_note": "Excerpt – read the full article on the newspaper’s website."
 }

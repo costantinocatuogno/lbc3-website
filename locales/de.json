@@ -376,5 +376,11 @@
   "pk_custom_t": "Ihre Ziele. Ihr Paket.",
   "pk_custom": "Jede Partnerschaft ist so einzigartig wie Ihr Unternehmen. Erzählen Sie uns, was Sie erreichen möchten – gemeinsam entwickeln wir ein persönliches Paket, das genau zu Ihnen passt. Der nächste Schritt Richtung Formel 1 beginnt mit einem Gespräch.",
   "pk_custom_btn": "Lassen Sie uns reden",
-  "pk_term": "Laufzeit"
+  "pk_term": "Laufzeit",
+  "cat_Presse": "Presse",
+  "press_source": "Quelle",
+  "press_original_lang": "Originalsprache",
+  "press_read_original": "Originalartikel lesen",
+  "press_ai_note": "Dieser Text wurde mit KI automatisch aus dem Original ({lang}) übersetzt. Maßgeblich ist der Originalartikel.",
+  "press_excerpt_note": "Auszug – den vollständigen Artikel lesen Sie bei der Zeitung."
 }

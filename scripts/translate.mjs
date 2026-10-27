@@ -262,6 +262,7 @@ async function doNews() {
       if (filled(data.titel) && need('titel')) { block.titel = await translateText(data.titel, src, to); did = true; }
       if (filled(data.teaser) && need('teaser')) { block.teaser = await translateText(data.teaser, src, to); did = true; }
       if (filled(body) && need('text')) { block.text = await translateMarkdown(body, src, to); did = true; }
+      if (!filled(body) && block.text) { delete block.text; did = true; } // z. B. Pressebericht nur mit Anriss
       if (did) { block._auto = blockHash(block); touched = true; }
       if (block._quelle !== srcHash && (did || !block._quelle)) { block._quelle = srcHash; touched = true; }
       data[to] = block;

@@ -42,10 +42,10 @@ collections:
       - { label: Highlights, field: highlight, pattern: true }
       - { label: Entwürfe, field: entwurf, pattern: true }
     fields:
-      - { label: Sprache, in der du schreibst, name: sprache, widget: select, options: [{ label: Deutsch, value: de }, { label: Italienisch, value: it }], default: de, hint: 'Die anderen Sprachen werden nach dem Speichern automatisch übersetzt (ca. 2 Minuten). Danach unten in den Übersetzungs-Feldern prüfen.' }
+      - { label: Sprache, in der du schreibst, name: sprache, widget: select, options: [{ label: Deutsch, value: de }, { label: Italienisch, value: it }, { label: Englisch, value: en }, { label: Französisch, value: fr }], default: de, hint: 'Die anderen Sprachen werden nach dem Speichern automatisch übersetzt (ca. 2 Minuten). Danach unten in den Übersetzungs-Feldern prüfen.' }
       - { label: Titel, name: titel, widget: string }
       - { label: Datum, name: datum, widget: datetime, date_format: DD.MM.YYYY, time_format: false, format: YYYY-MM-DD }
-      - { label: Kategorie, name: kategorie, widget: select, options: [Rennen, Team, Partner], default: Rennen }
+      - { label: Kategorie, name: kategorie, widget: select, options: [Rennen, Team, Partner, Presse], default: Rennen }
       - { label: Titelbild (im Artikel), name: titelbild, widget: image, media_folder: /public/uploads/news, public_folder: /uploads/news }
       - { label: Vorschaubild (optional), name: vorschaubild, widget: image, required: false, media_folder: /public/uploads/news, public_folder: /uploads/news, hint: 'Bild für die News-Übersicht, die Startseite und Social Media. Ohne Auswahl wird das Titelbild genommen.' }
       - { label: Kurztext (Vorschau), name: teaser, widget: text, required: false }
@@ -63,6 +63,43 @@ collections:
       - { label: 'Übersetzung Italienisch', name: it, widget: object, collapsed: true, required: false, fields: [{ label: Titolo, name: titel, widget: string, required: false }, { label: Testo breve, name: teaser, widget: text, required: false }, { label: Testo, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
       - { label: 'Übersetzung Englisch', name: en, widget: object, collapsed: true, required: false, fields: [{ label: Title, name: titel, widget: string, required: false }, { label: Teaser, name: teaser, widget: text, required: false }, { label: Text, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
       - { label: 'Übersetzung Französisch', name: fr, widget: object, collapsed: true, required: false, fields: [{ label: Titre, name: titel, widget: string, required: false }, { label: Résumé, name: teaser, widget: text, required: false }, { label: Texte, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+
+  # ---------------------------------------------------------------- PRESSE
+  # Presseberichte: nur Link eintragen – Überschrift, Anriss, Zeitung und Datum holt die Website selbst und übersetzt sie.
+  - name: presse
+    label: Presse über Luigi
+    label_singular: Pressebericht
+    folder: content/news
+    create: true
+    format: json-frontmatter
+    extension: md
+    slug: '{{year}}-{{month}}-{{day}}-presse-{{quelle_name}}'
+    identifier_field: quelle_name
+    summary: '{{datum | date("DD.MM.YYYY")}} · {{quelle_name}} · {{titel}}'
+    filter: { field: kategorie, value: Presse }
+    description: 'Link zum Online-Artikel einfügen und speichern. Nach ca. 2 Minuten stehen Überschrift, Anriss und die Übersetzungen im Beitrag. Den ganzen Artikel übernehmen wir nur, wenn die Zeitung es erlaubt hat (Häkchen „Abdruck genehmigt“).'
+    fields:
+      - { label: Kategorie, name: kategorie, widget: hidden, default: Presse }
+      - { label: Link zum Artikel, name: quelle_url, widget: string, hint: 'z. B. https://www.zeitung.it/sport/luigi-catuogno-…' }
+      - { label: Name der Zeitung, name: quelle_name, widget: string, hint: 'kurz, z. B. „Il Mattino“ – wird automatisch ergänzt, wenn leer' }
+      - { label: Sprache des Artikels, name: sprache, widget: select, options: [{ label: Deutsch, value: de }, { label: Italienisch, value: it }, { label: Englisch, value: en }, { label: Französisch, value: fr }], default: it }
+      - { label: 'Abdruck genehmigt (ganzen Artikel übernehmen)', name: abdruck_erlaubt, widget: boolean, default: false, required: false, hint: 'Nur anhaken, wenn die Zeitung schriftlich erlaubt hat, den Artikel vollständig (und übersetzt) zu zeigen. Ohne Häkchen erscheinen Überschrift, kurzer Anriss und der Link zum Original.' }
+      - { label: Entwurf (noch nicht veröffentlichen), name: entwurf, widget: boolean, default: true }
+      - { label: Als Highlight auf der Startseite zeigen, name: highlight, widget: boolean, default: false }
+      - { label: Eigenes Bild (optional), name: titelbild, widget: image, required: false, media_folder: /public/uploads/news, public_folder: /uploads/news, hint: 'Bilder der Zeitung übernehmen wir nicht (Urheberrecht). Ohne Bild erscheint das LBC3-Bild.' }
+      - { label: Neu übernehmen (Artikel erneut abrufen), name: neu_uebernehmen, widget: boolean, default: false, required: false }
+      - { label: Hinweis (automatisch), name: uebersetzung_hinweis, widget: text, required: false }
+      - { label: Überschrift (automatisch), name: titel, widget: string, required: false }
+      - { label: Datum (automatisch), name: datum, widget: datetime, date_format: DD.MM.YYYY, time_format: false, format: YYYY-MM-DD, required: false }
+      - { label: Erscheinungsdatum in der Zeitung (automatisch), name: quelle_datum, widget: string, required: false }
+      - { label: Anriss (automatisch), name: teaser, widget: text, required: false }
+      - { label: Artikeltext (nur mit Genehmigung, automatisch), name: body, widget: markdown, required: false }
+      - { label: Neu übersetzen, name: neu_uebersetzen, widget: boolean, default: false, required: false }
+      - { label: 'Übersetzung Deutsch', name: de, widget: object, collapsed: true, required: false, fields: [{ label: Titel, name: titel, widget: string, required: false }, { label: Kurztext, name: teaser, widget: text, required: false }, { label: Text, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+      - { label: 'Übersetzung Italienisch', name: it, widget: object, collapsed: true, required: false, fields: [{ label: Titolo, name: titel, widget: string, required: false }, { label: Testo breve, name: teaser, widget: text, required: false }, { label: Testo, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+      - { label: 'Übersetzung Englisch', name: en, widget: object, collapsed: true, required: false, fields: [{ label: Title, name: titel, widget: string, required: false }, { label: Teaser, name: teaser, widget: text, required: false }, { label: Text, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+      - { label: 'Übersetzung Französisch', name: fr, widget: object, collapsed: true, required: false, fields: [{ label: Titre, name: titel, widget: string, required: false }, { label: Résumé, name: teaser, widget: text, required: false }, { label: Texte, name: text, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote] }] }
+
 
   # ---------------------------------------------------------------- RENNEN
   - name: rennen

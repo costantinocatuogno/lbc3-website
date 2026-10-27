@@ -5,7 +5,10 @@ import { layout } from './layout.mjs';
 import { countdownCard, pageHead } from './parts.mjs';
 import { wallGrid, sponsorWall } from './squadra.mjs';
 
-const CATS = ['Rennen', 'Team', 'Partner'];
+const CATS = ['Rennen', 'Team', 'Partner', 'Presse'];
+
+// Presse: Bild der Zeitung wird nie übernommen – ohne eigenes Bild ein neutrales LBC3-Bild
+const newsImg = (n) => n.vorschaubild || n.titelbild || (n.kategorie === 'Presse' ? '/assets/img/og-lbc3.jpg' : '');
 
 /* ---------------- NEWS ---------------- */
 export function newsList(lang, ctx) {
@@ -14,9 +17,9 @@ export function newsList(lang, ctx) {
   const filters = ['all', ...CATS].map((c, i) => `<button type="button" class="pill${i === 0 ? ' is-active' : ''}" data-filter="${c}" aria-pressed="${i === 0}">${c === 'all' ? _('all') : _(`cat_${c}`)}</button>`).join('');
   const card = (n) => `
     <article class="news-card" data-cat="${esc(n.kategorie)}">
-      <a href="${url(lang, `/news/${n.slug}/`)}" class="news-card-img">${picture(n.vorschaubild || n.titelbild, n.titel, { width: 800, sizes: '(max-width: 760px) 100vw, 33vw' })}</a>
+      <a href="${url(lang, `/news/${n.slug}/`)}" class="news-card-img">${picture(newsImg(n), n.titel, { width: 800, sizes: '(max-width: 760px) 100vw, 33vw' })}</a>
       <div class="news-card-body">
-        <div class="meta"><span class="red">${_(`cat_${n.kategorie}`)}</span><span>${formatDate(n.datum, lang)}</span></div>
+        <div class="meta"><span class="red">${_(`cat_${n.kategorie}`)}</span>${n.kategorie === 'Presse' && n.quelle_name ? `<span>${esc(n.quelle_name)}</span>` : ''}<span>${formatDate(n.datum, lang)}</span></div>
         <h3 class="h3"><a href="${url(lang, `/news/${n.slug}/`)}">${esc(n.titel)}</a></h3>
         <p>${esc(n.teaser || '')}</p>
         <a class="link" href="${url(lang, `/news/${n.slug}/`)}">${_('read_more')} ${icon.arrow}</a>
@@ -27,7 +30,7 @@ ${pageHead(_('news_kicker'), _('news_title'), `<div class="pill-row" data-filter
 ${lead ? `
 <section class="wrap">
   <a class="news-lead" href="${url(lang, `/news/${lead.slug}/`)}" data-cat="${esc(lead.kategorie)}">
-    ${picture(lead.vorschaubild || lead.titelbild, lead.titel, { width: 1200, sizes: '(max-width: 760px) 100vw, 50vw', eager: true })}
+    ${picture(newsImg(lead), lead.titel, { width: 1200, sizes: '(max-width: 760px) 100vw, 50vw', eager: true })}
     <div class="news-lead-body">
       <div class="meta"><span class="badge-red">${_(`cat_${lead.kategorie}`)}</span><span>${formatDate(lead.datum, lang)}</span></div>
       <h2 class="h2">${esc(lead.titel)}</h2>
@@ -42,6 +45,16 @@ ${lead ? `
   return layout({ lang, path: '/news/', title: _('nav_news'), description: _('desc_news'), body, ctx, active: '/news/' });
 }
 
+// Quellenkasten für Presseberichte: Zeitung, Datum, Originalsprache und KI-Hinweis bei Übersetzungen
+function pressBox(n, lang, _) {
+  const src = n.quelle || 'de';
+  const translated = lang !== src && !n.unuebersetzt;
+  return `<aside class="press-box">
+    <div><strong>${_('press_source')}:</strong> ${n.quelle_url ? `<a href="${esc(n.quelle_url)}" rel="noopener" target="_blank">${esc(n.quelle_name || n.quelle_url)}</a>` : esc(n.quelle_name || '')}${n.quelle_datum ? ` · ${formatDate(n.quelle_datum, lang)}` : ''} · ${_('press_original_lang')}: ${esc(_(`lang_name_${src}`))}</div>
+    ${translated ? `<div class="press-ai">${_('press_ai_note').replace('{lang}', esc(_(`lang_name_${src}`)))}</div>` : ''}
+  </aside>`;
+}
+
 export function newsDetail(lang, ctx, n) {
   const _ = t(lang);
   const gal = (n.galerie || []).filter(Boolean);
@@ -50,22 +63,24 @@ export function newsDetail(lang, ctx, n) {
   <a class="link back" href="${url(lang, '/news/')}">${icon.prev} ${_('back_news')}</a>
   <div class="meta"><span class="badge-red">${_(`cat_${n.kategorie}`)}</span><span>${formatDate(n.datum, lang, { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
   <h1 class="h1">${esc(n.titel)}</h1>
+  ${n.kategorie === 'Presse' ? pressBox(n, lang, _) : ''}
   ${n.unuebersetzt ? `<p class="note-box small">${_('news_untranslated')}</p>` : ''}
   ${n.teaser ? `<p class="lead"${n.unuebersetzt ? ` lang="${n.sprache_angezeigt}"` : ''}>${esc(n.teaser)}</p>` : ''}
-  ${picture(n.titelbild, n.titel, { width: 1600, cls: 'article-hero', eager: true })}
+  ${n.titelbild ? picture(n.titelbild, n.titel, { width: 1600, cls: 'article-hero', eager: true }) : ''}
   <div class="prose"${n.unuebersetzt ? ` lang="${n.sprache_angezeigt}"` : ''}>${markdown(n.body, lang)}</div>
+  ${n.kategorie === 'Presse' && n.quelle_url ? `<p class="press-more"><a class="btn btn-dark" href="${esc(n.quelle_url)}" rel="noopener" target="_blank">${_('press_read_original')} · ${esc(n.quelle_name || '')}</a>${n.importiert !== 'voll' ? `<span class="muted small">${_('press_excerpt_note')}</span>` : ''}</p>` : ''}
   ${gal.length ? `<div class="grid-3 article-gallery" data-lightbox-group>${gal.map((g, i) => `<button type="button" class="square-photo" data-lightbox-index="${i}" data-full="${esc(img(g, 1800))}" data-caption="${esc(n.titel)}" aria-label="${_('enlarge')}">${picture(g, n.titel, { width: 600 })}</button>`).join('')}</div>` : ''}
 </article>
 ${lightbox(lang)}`;
   return layout({
     lang, path: `/news/${n.slug}/`, title: n.titel, description: n.teaser, body, ctx, active: '/news/', ogType: 'article',
-    ogImage: img(n.vorschaubild || n.titelbild, 1200),
+    ogImage: img(newsImg(n), 1200),
     jsonLd: {
       '@context': 'https://schema.org', '@type': 'NewsArticle', headline: n.titel, description: n.teaser || undefined,
-      datePublished: n.datum, image: (n.vorschaubild || n.titelbild) ? [`${ctx.siteUrl}${n.vorschaubild || n.titelbild}`] : undefined,
+      datePublished: n.datum, image: newsImg(n) ? [`${ctx.siteUrl}${newsImg(n)}`] : undefined, isBasedOn: n.kategorie === 'Presse' ? n.quelle_url || undefined : undefined,
       inLanguage: n.sprache_angezeigt || lang, mainEntityOfPage: `${ctx.siteUrl}${url(lang, `/news/${n.slug}/`)}`,
       about: { '@type': 'Person', name: 'Luigi Battista Catuogno' },
-      author: { '@type': 'Organization', name: 'LBC3', url: ctx.siteUrl }
+      author: { '@type': 'Organization', name: n.kategorie === 'Presse' && n.quelle_name ? n.quelle_name : 'LBC3', url: n.kategorie === 'Presse' && n.quelle_url ? new URL(n.quelle_url).origin : ctx.siteUrl }
     }
   });
 }

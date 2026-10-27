@@ -376,5 +376,11 @@
   "pk_custom_t": "I vostri obiettivi. Il vostro pacchetto.",
   "pk_custom": "Ogni partnership è unica come la vostra azienda. Raccontateci cosa volete raggiungere: insieme creeremo un pacchetto su misura, pensato proprio per voi. Il prossimo passo verso la Formula 1 inizia con una conversazione.",
   "pk_custom_btn": "Parliamone",
-  "pk_term": "Durata"
+  "pk_term": "Durata",
+  "cat_Presse": "Stampa",
+  "press_source": "Fonte",
+  "press_original_lang": "Lingua originale",
+  "press_read_original": "Leggi l’articolo originale",
+  "press_ai_note": "Questo testo è stato tradotto automaticamente con l’IA dall’originale ({lang}). Fa fede l’articolo originale.",
+  "press_excerpt_note": "Estratto – l’articolo completo è disponibile sul sito del giornale."
 }

@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Presseberichte übernehmen
+        run: node scripts/import-presse.mjs
       - name: Fehlende Übersetzungen erzeugen
         id: tr
         env:

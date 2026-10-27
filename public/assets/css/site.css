@@ -736,3 +736,9 @@ tr.is-dns td { color: var(--muted); }
 .package-custom .h2 { margin: 0 0 8px; }
 .package-custom .lead { margin: 0; max-width: 62ch; }
 @media (max-width: 600px) { .package-custom { padding: 22px; } }
+
+/* Presseberichte: Quellenkasten und KI-Hinweis */
+.press-box { margin: 18px 0 22px; padding: 16px 18px; border-left: 4px solid var(--gold); background: #fff; border-radius: 8px; font-size: 15px; display: grid; gap: 8px; }
+.press-box a { color: var(--red); font-weight: 700; }
+.press-ai { color: var(--muted); font-size: 14px; }
+.press-more { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 24px 0; }

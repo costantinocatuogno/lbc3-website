@@ -376,5 +376,11 @@
   "pk_custom_t": "Vos objectifs. Votre offre.",
   "pk_custom": "Chaque partenariat est aussi unique que votre entreprise. Dites-nous ce que vous souhaitez atteindre – ensemble, nous créerons une offre personnalisée qui vous correspond parfaitement. La prochaine étape vers la Formule 1 commence par une conversation.",
   "pk_custom_btn": "Parlons-en",
-  "pk_term": "Durée"
+  "pk_term": "Durée",
+  "cat_Presse": "Presse",
+  "press_source": "Source",
+  "press_original_lang": "Langue d’origine",
+  "press_read_original": "Lire l’article original",
+  "press_ai_note": "Ce texte a été traduit automatiquement par IA à partir de l’original ({lang}). L’article original fait foi.",
+  "press_excerpt_note": "Extrait – l’article complet est disponible sur le site du journal."
 }
