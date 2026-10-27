@@ -136,7 +136,7 @@ ${album ? `
         knowsLanguage: ['de', 'it'],
         memberOf: { '@type': 'SportsTeam', name: ctx.content.fahrerFor(lang).team || '7L Performance', sport: 'Karting', url: ctx.content.fahrerFor(lang).team_link || undefined },
         award: (site.auszeichnungen || []).filter(Boolean),
-        sameAs: [site.instagram, site.tiktok, ...(site.weitere_profile || [])].filter(Boolean)
+        sameAs: [site.instagram, site.tiktok, site.youtube, ...(site.weitere_profile || [])].filter(Boolean)
       },
       { '@context': 'https://schema.org', '@type': 'WebSite', name: 'LBC3 · Luigi Battista Catuogno', url: ctx.siteUrl, inLanguage: LANGS }
     ]

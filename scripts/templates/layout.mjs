@@ -81,6 +81,7 @@ ${alternates && !noindex ? langBanner(lang, path) : ''}
         ${langSwitch}
         <a class="icon-btn" href="${esc(site.instagram)}" rel="noopener" target="_blank" aria-label="Instagram ${esc(site.instagram_handle)}">${icon.instagram}</a>
         ${site.tiktok ? `<a class="icon-btn" href="${esc(site.tiktok)}" rel="noopener" target="_blank" aria-label="TikTok ${esc(site.tiktok_handle || '')}">${icon.tiktok}</a>` : ''}
+        ${site.youtube ? `<a class="icon-btn" href="${esc(site.youtube)}" rel="noopener" target="_blank" aria-label="YouTube ${esc(site.youtube_handle || '')}">${icon.youtube}</a>` : ''}
         ${showReplay ? `<button class="icon-btn" type="button" data-intro-replay aria-label="${_('intro_replay')}">${icon.play}</button>` : ''}
         <a class="btn btn-outline btn-sm" href="${url(lang, '/login/')}">${icon.lock}<span>${_('login')}</span></a>
       </div>
@@ -124,6 +125,7 @@ function footer(lang, ctx) {
       <a href="mailto:${esc(site.kontakt_email)}">${esc(site.kontakt_email)}</a>
       <a href="${esc(site.instagram)}" rel="noopener" target="_blank">Instagram ${esc(site.instagram_handle)}</a>
       ${site.tiktok ? `<a href="${esc(site.tiktok)}" rel="noopener" target="_blank">TikTok ${esc(site.tiktok_handle || '')}</a>` : ''}
+      ${site.youtube ? `<a href="${esc(site.youtube)}" rel="noopener" target="_blank">YouTube ${esc(site.youtube_handle || '')}</a>` : ''}
       <a href="${url(lang, '/login/')}" class="gold">${_('login_sponsors')}</a>
     </div>
   </div>
