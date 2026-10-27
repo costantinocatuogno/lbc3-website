@@ -30,6 +30,15 @@ export function sponsorMarquee(lang, ctx) {
   const _ = t(lang);
   // Platzhalter wie „[SPONSOR 1]“ ohne Logo werden nicht gezeigt – stattdessen freie Plätze „Dein Logo hier“.
   const list = ctx.content.sponsoren.filter((s) => s.im_laufband !== false && (s.logo || !/^\s*\[/.test(s.firma || '')));
+  // Dazu alle Partner, die ihren Eintrag im Login angelegt haben und vom Team freigegeben wurden (Wall of Fame)
+  const known = new Set(list.map((s) => String(s.firma || '').trim().toLowerCase()));
+  const wallSp = ctx.wall && !ctx.wall.beispiel ? ctx.wall.sponsoren : [];
+  for (const s of wallSp) {
+    const key = String(s.firma || '').trim().toLowerCase();
+    if (!s.logo || !key || known.has(key)) continue;
+    known.add(key);
+    list.push({ firma: s.firma, logo: s.logo, website: s.website || '' });
+  }
   const items = [...list.map((s) => ({ ...s })), { firma: _('your_logo'), cta: true }];
   // Noch keine echten Sponsoren: freie Plätze (gestrichelt) im Wechsel mit „Dein Logo hier“
   if (!list.length) items.push({ firma: _('free_spot'), cta: true, free: true }, { firma: _('free_spot'), cta: true, free: true });

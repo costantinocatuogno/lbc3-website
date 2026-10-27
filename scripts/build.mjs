@@ -86,7 +86,7 @@ const content = loadContent(ROOT);
 const wall = await loadWall(content, DIST);
 const version = Date.now().toString(36);
 const ctx = { content, siteUrl, version };
-const ctxFor = Object.fromEntries(LANGS.map((l) => [l, { content: l === 'de' ? content : loadContent(ROOT, l), siteUrl, version }]));
+const ctxFor = Object.fromEntries(LANGS.map((l) => [l, { content: l === 'de' ? content : loadContent(ROOT, l), siteUrl, version, wall }]));
 
 const pages = [];
 function out(path, htmlText) {
