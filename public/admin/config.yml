@@ -298,6 +298,8 @@ collections:
           - { label: E-Mail für Sponsoren-Anfragen, name: business_email, widget: string }
           - { label: Instagram-Link, name: instagram, widget: string }
           - { label: Instagram-Name, name: instagram_handle, widget: string }
+          - { label: TikTok-Link, name: tiktok, widget: string, required: false }
+          - { label: TikTok-Name, name: tiktok_handle, widget: string, required: false }
           - { label: Haupt-Hashtag, name: hashtag, widget: string, default: '#LBC3' }
           - { label: Hashtag Squadra Tre, name: squadra_hashtag, widget: string, default: '#SquadraTre' }
           - { label: Erfolge (für Google, je Zeile ein Titel), name: auszeichnungen, widget: list, required: false }

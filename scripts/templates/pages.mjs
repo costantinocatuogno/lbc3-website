@@ -470,7 +470,7 @@ export function kontakt(lang, ctx) {
     <div class="eyebrow">${_('kontakt_kicker')}</div>
     <h1 class="h1 big">${_('kontakt_title')}</h1>
     <p class="lead">${esc(c.texte(lang).kontakt_intro)}</p>
-    <p class="contact-links"><a href="mailto:${esc(c.site.kontakt_email)}">${esc(c.site.kontakt_email)}</a><br><a href="${esc(c.site.instagram)}" rel="noopener" target="_blank">Instagram ${esc(c.site.instagram_handle)} · #LBC3</a></p>
+    <p class="contact-links"><a href="mailto:${esc(c.site.kontakt_email)}">${esc(c.site.kontakt_email)}</a><br><a href="${esc(c.site.instagram)}" rel="noopener" target="_blank">Instagram ${esc(c.site.instagram_handle)} · #LBC3</a>${c.site.tiktok ? `<br><a href="${esc(c.site.tiktok)}" rel="noopener" target="_blank">TikTok ${esc(c.site.tiktok_handle || '')}</a>` : ''}</p>
     ${picture(c.site.off_track_bild, _('alt_kart_check'), { width: 900, cls: 'rounded' })}
   </div>
   <div class="card form-card">

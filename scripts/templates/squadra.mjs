@@ -148,6 +148,7 @@ export function squadra(lang, ctx, wall) {
       <div class="btn-row">
         <a class="btn btn-red" href="#beitreten">${_('join_now')}</a>
         <a class="btn btn-ghost-light" href="${esc(site.instagram)}" rel="noopener" target="_blank">${icon.instagram}<span>${_('sq_follow')}</span></a>
+        ${site.tiktok ? `<a class="btn btn-ghost-light" href="${esc(site.tiktok)}" rel="noopener" target="_blank">${icon.tiktok}<span>TikTok</span></a>` : ''}
       </div>
     </div>
     <div class="sq-tags">
