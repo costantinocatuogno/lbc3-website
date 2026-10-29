@@ -409,7 +409,7 @@
       const saisonInput = $('[data-saison]');
       saisonInput.value = new Date().getFullYear();
       let current = null;
-      const fields = $$('[data-f]');
+      const fields = $$('[data-panel="bericht"] [data-f]'); // nur Felder des Berichts (Squadra-Filter nutzen auch data-f)
       const ausgabeInputs = $$('[data-ausgabe]');
 
       /* Kostenrechner: Einsätze (Rennen & Training) + weitere Ausgaben → Summen je Kategorie */
