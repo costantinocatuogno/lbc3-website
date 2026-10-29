@@ -33,7 +33,6 @@
   "quelle_url": "https://www.capripost.it/la-storia-luigi-battista-catuogno-origini-capresi-il-giovane-campione-di-go-kart-in-germania-che-sogna-la-formula-uno/#google_vignette",
   "sprache": "it",
   "entwurf": false,
-  "uebersetzung_hinweis": "Fachbegriff prüfen (de): „vicecampione“ sollte „Vizemeister“ heißen – in „Da Capri, terra di origine della famiglia, alla Ge…“ · Glossar prüfen (de): Podio – in „Il campionato 2026 si è corso su quattro tappe: Mü…“ · Glossar prüfen (de): Podio – in „Alla finale di Wackersdorf Luigi era di nuovo sul …“ · Glossar prüfen (de): Podio – in „Dietro i risultati c’è tutta la famiglia. Il papà …“ · Fachbegriff prüfen (en): „vicecampione“ sollte „runner-up“ heißen – in „Da Capri, terra di origine della famiglia, alla Ge…“ · Fachbegriff prüfen (en): „vicecampione“ sollte „runner-up“ heißen – in „Le radici di Luigi sono ancorate sull’isola, tra C…“ · Glossar prüfen (en): Podio – in „Il campionato 2026 si è corso su quattro tappe: Mü…“ · Glossar prüfen (en): Podio – in „Alla finale di Wackersdorf Luigi era di nuovo sul …“ · Fachbegriff prüfen (en): „finale“ sollte „final“ heißen – in „Alla finale di ",
   "kategorie": "Presse",
   "neu_uebersetzen": false
 }
