@@ -192,6 +192,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     <button type="button" data-tab="squadra">Squadra Tre</button>
     <button type="button" data-tab="sponsorwall">Partner-Wall</button>
     <button type="button" data-tab="einladen">Squadra einladen</button>
+    <button type="button" data-tab="instagram">Instagram</button>
     <a href="/admin/">Fotos, News, Rennen, Texte ↗</a>
   </nav>
   <main class="app-main">
@@ -330,6 +331,27 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
       <div class="card mt">
         <h2 class="h3">Eintrag für einen Partner anlegen oder bearbeiten</h2>
         ${sponsorWallForm(true)}
+      </div>
+    </section>
+
+    <section data-panel="instagram" hidden>
+      <h1 class="h1">Instagram auf der Website</h1>
+      <p class="lead">Die neuesten Beiträge von Luigis Instagram erscheinen automatisch auf der Startseite und unter News – einmal täglich aktualisiert. Die Bilder liegen auf unserem Server; Besucher laden nichts von Instagram.</p>
+      <div class="grid-2 align-start">
+        <div class="card">
+          <h2 class="h3">Status</h2>
+          <p data-ig-status>Wird geladen …</p>
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline btn-sm" data-ig-rebuild>Jetzt aktualisieren</button>
+            <button type="button" class="btn btn-outline btn-sm" data-ig-disconnect>Trennen</button>
+          </div>
+        </div>
+        <form class="card form" data-ig-form>
+          <h2 class="h3">Instagram verbinden</h2>
+          <p class="muted small">Den Zugangsschlüssel aus dem Meta-Entwicklerbereich (Instagram → „API setup with Instagram login“ → „Generate token“) hier einfügen. Er wird nur auf dem Server gespeichert und alle paar Wochen automatisch verlängert – bitte nie per E-Mail oder Chat verschicken.</p>
+          <label class="field"><span>Zugangsschlüssel</span><input name="token" type="password" autocomplete="off" required minlength="40"></label>
+          <button class="btn btn-dark" type="submit">Verbinden</button>
+        </form>
       </div>
     </section>
 

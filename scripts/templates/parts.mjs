@@ -66,3 +66,27 @@ export function sponsorMarquee(lang, ctx) {
 export function pageHead(kicker, title, extra = '') {
   return `<section class="wrap page-head"><div class="eyebrow">${kicker}</div><h1 class="h1">${title}</h1>${extra}</section>`;
 }
+
+// „Neu auf Instagram“: die neuesten Beiträge als Raster (Bilder liegen auf unserem Server, Klick öffnet Instagram)
+export function instaGrid(lang, ctx, { limit = 6 } = {}) {
+  const posts = (ctx.instagram?.beitraege || []).slice(0, limit);
+  if (!posts.length) return '';
+  const _ = t(lang);
+  const site = ctx.content.site;
+  const short = (s) => { const x = String(s || '').split('\n')[0].trim(); return x.length > 90 ? `${x.slice(0, 90).replace(/\s+\S*$/, '')} …` : x; };
+  return `
+<section class="wrap section insta">
+  <div class="section-head">
+    <div><div class="eyebrow">${_('insta_kicker')}</div><h2 class="h2">${_('insta_title')}</h2></div>
+    <a class="link" href="${esc(site.instagram)}" rel="noopener" target="_blank">${_('sq_follow')} · ${esc(site.instagram_handle)}</a>
+  </div>
+  <div class="insta-grid">
+    ${posts.map((p) => `<a class="insta-item" href="${esc(p.link)}" rel="noopener" target="_blank">
+      <img src="${esc(p.bild)}" alt="${esc(short(p.text) || 'Instagram')}" loading="lazy" decoding="async">
+      ${p.typ === 'VIDEO' ? '<span class="insta-badge" aria-hidden="true">▶</span>' : ''}
+      ${p.text ? `<span class="insta-text" lang="und">${esc(short(p.text))}</span>` : ''}
+    </a>`).join('')}
+  </div>
+  ${lang !== 'de' ? `<p class="muted small">${_('insta_note')}</p>` : ''}
+</section>`;
+}

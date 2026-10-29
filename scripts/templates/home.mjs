@@ -1,7 +1,7 @@
 import { esc, picture, icon, flagsDE, flagsIT, img } from '../lib/html.mjs';
 import { url, t, LANGS } from '../lib/i18n.mjs';
 import { layout } from './layout.mjs';
-import { countdownCard } from './parts.mjs';
+import { countdownCard, instaGrid } from './parts.mjs';
 
 export function home(lang, ctx) {
   const _ = t(lang);
@@ -80,6 +80,8 @@ ${highlights.length ? `
     </a>`).join('')}
   </div>
 </section>` : ''}
+
+${instaGrid(lang, ctx)}
 
 <section class="wrap tiles">
   <a class="tile" href="${url(lang, '/kalender/')}">

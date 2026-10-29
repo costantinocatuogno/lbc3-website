@@ -382,5 +382,8 @@
   "press_original_lang": "Originalsprache",
   "press_read_original": "Originalartikel lesen",
   "press_ai_note": "Dieser Text wurde mit KI automatisch aus dem Original ({lang}) übersetzt. Maßgeblich ist der Originalartikel.",
-  "press_excerpt_note": "Auszug – den vollständigen Artikel lesen Sie bei der Zeitung."
+  "press_excerpt_note": "Auszug – den vollständigen Artikel lesen Sie bei der Zeitung.",
+  "insta_kicker": "Instagram",
+  "insta_title": "Neu auf Instagram",
+  "insta_note": ""
 }

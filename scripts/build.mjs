@@ -85,8 +85,39 @@ if (Object.keys(missing).length) {
 const content = loadContent(ROOT);
 const wall = await loadWall(content, DIST);
 const version = Date.now().toString(36);
+
+// ---------- Instagram: neueste Beiträge holen und Bilder selbst hosten (Besucher laden nichts von Instagram) ----------
+async function loadInstagram() {
+  const empty = { beitraege: [] };
+  if (!process.env.NETLIFY || !process.env.URL) return empty; // nur beim Bauen auf Netlify
+  try {
+    const res = await fetch(`${process.env.URL.replace(/\/$/, '')}/api/instagram-feed`, { headers: { Accept: 'application/json' } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const feed = await res.json();
+    const schutzWoerter = (content.glossar.schutz || []).map((x) => String(x || '').trim().toLowerCase()).filter((x) => x.length >= 3);
+    const out = [];
+    for (const b of (feed.beitraege || []).slice(0, 12)) {
+      // Schutz von Luigi: Beiträge mit geschützten Angaben im Text werden nicht übernommen
+      if (schutzWoerter.some((w) => String(b.text || '').toLowerCase().includes(w))) continue;
+      try {
+        const img = await fetch(b.bild);
+        if (!img.ok) continue;
+        const file = `insta/${String(b.id).replace(/[^0-9a-z_]/gi, '')}.jpg`;
+        mkdirSync(join(DIST, 'insta'), { recursive: true });
+        writeFileSync(join(DIST, file), Buffer.from(await img.arrayBuffer()));
+        out.push({ ...b, bild: `/${file}` });
+      } catch { /* einzelnes Bild überspringen */ }
+      if (out.length >= 6) break;
+    }
+    return { konto: feed.konto || '', beitraege: out };
+  } catch (err) {
+    console.warn('⚠ Instagram-Beiträge nicht geladen:', err.message);
+    return empty;
+  }
+}
+const instagram = await loadInstagram();
 const ctx = { content, siteUrl, version };
-const ctxFor = Object.fromEntries(LANGS.map((l) => [l, { content: l === 'de' ? content : loadContent(ROOT, l), siteUrl, version, wall }]));
+const ctxFor = Object.fromEntries(LANGS.map((l) => [l, { content: l === 'de' ? content : loadContent(ROOT, l), siteUrl, version, wall, instagram }]));
 
 const pages = [];
 function out(path, htmlText) {
@@ -197,4 +228,4 @@ Disallow: /wall-of-fame/
 Sitemap: ${siteUrl}/sitemap.xml
 `);
 
-console.log(`${baldModus ? '⏳ Bald-Modus AN · ' : ''}✔ ${pages.length} Seiten erzeugt in ${Date.now() - t0} ms · Schriften: ${fontsOk}/${FONTS.length} · Wall of Fame: ${wall.beispiel ? 'Beispieldaten' : `${wall.mitglieder.length} Mitglieder, ${wall.sponsoren.length} Sponsoren`}`);
+console.log(`${baldModus ? '⏳ Bald-Modus AN · ' : ''}✔ ${pages.length} Seiten erzeugt · Instagram: ${instagram.beitraege.length} Beiträge in ${Date.now() - t0} ms · Schriften: ${fontsOk}/${FONTS.length} · Wall of Fame: ${wall.beispiel ? 'Beispieldaten' : `${wall.mitglieder.length} Mitglieder, ${wall.sponsoren.length} Sponsoren`}`);

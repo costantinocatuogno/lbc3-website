@@ -329,8 +329,40 @@
         if (name === 'squadra') loadSquadra();
         if (name === 'sponsorwall') loadSponsorWall();
         if (name === 'einladen') renderInvite();
+        if (name === 'instagram') loadInstagram();
       };
       tabs.forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
+
+      /* ----- Instagram ----- */
+      const igCall = async (method, body) => {
+        const { data: { session } } = await sb.auth.getSession();
+        const res = await fetch('/api/instagram-connect', { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session ? session.access_token : token()}` }, body: body ? JSON.stringify(body) : undefined });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json.error || `Fehler ${res.status}`);
+        return json;
+      };
+      async function loadInstagram() {
+        const el = $('[data-ig-status]');
+        try {
+          const s = await igCall('GET');
+          el.innerHTML = s.verbunden
+            ? `<strong>Verbunden</strong> mit @${escapeHtml(s.konto)} · Schlüssel gespeichert am ${new Date(s.gespeichert_am).toLocaleDateString('de-DE')}${s.gueltig_bis ? ` · gültig bis ${new Date(s.gueltig_bis).toLocaleDateString('de-DE')} (wird automatisch verlängert)` : ''}`
+            : 'Noch nicht verbunden.';
+        } catch (e) { el.textContent = 'Status nicht abrufbar: ' + e.message; }
+      }
+      $('[data-ig-form]').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const f = e.target;
+        try { const r = await igCall('POST', { token: f.token.value.trim() }); f.reset(); showMsg(`Instagram verbunden (@${r.konto}). Die Website wird neu gebaut – die Beiträge erscheinen in 1–2 Minuten.`); loadInstagram(); }
+        catch (err) { showMsg('Verbinden fehlgeschlagen: ' + err.message, true); }
+      });
+      $('[data-ig-rebuild]').addEventListener('click', async () => {
+        try { await igCall('POST', { aktion: 'neu-bauen' }); showMsg('Website wird neu gebaut – neue Beiträge erscheinen in 1–2 Minuten.'); } catch (err) { showMsg(err.message, true); }
+      });
+      $('[data-ig-disconnect]').addEventListener('click', async () => {
+        if (!confirm('Instagram wirklich trennen? Die Beiträge verschwinden beim nächsten Neubau von der Website.')) return;
+        try { await igCall('DELETE'); showMsg('Instagram getrennt.'); loadInstagram(); } catch (err) { showMsg(err.message, true); }
+      });
 
       /* ----- Ausgabenbericht ----- */
       const saisonInput = $('[data-saison]');

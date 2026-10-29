@@ -2,7 +2,7 @@ import { esc, picture, icon, img, flagsIT } from '../lib/html.mjs';
 import { url, t, formatDate } from '../lib/i18n.mjs';
 import { markdown } from '../lib/markdown.mjs';
 import { layout } from './layout.mjs';
-import { countdownCard, pageHead } from './parts.mjs';
+import { countdownCard, pageHead, instaGrid } from './parts.mjs';
 import { wallGrid, sponsorWall } from './squadra.mjs';
 
 const CATS = ['Rennen', 'Team', 'Partner', 'Presse'];
@@ -41,7 +41,8 @@ ${lead ? `
 </section>` : ''}
 <section class="wrap section">
   <div class="grid-3" data-filter-items="news">${rest.map(card).join('')}</div>
-</section>`;
+</section>
+${instaGrid(lang, ctx)}`;
   return layout({ lang, path: '/news/', title: _('nav_news'), description: _('desc_news'), body, ctx, active: '/news/' });
 }
 

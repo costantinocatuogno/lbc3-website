@@ -382,5 +382,8 @@
   "press_original_lang": "Lingua originale",
   "press_read_original": "Leggi l’articolo originale",
   "press_ai_note": "Questo testo è stato tradotto automaticamente con l’IA dall’originale ({lang}). Fa fede l’articolo originale.",
-  "press_excerpt_note": "Estratto – l’articolo completo è disponibile sul sito del giornale."
+  "press_excerpt_note": "Estratto – l’articolo completo è disponibile sul sito del giornale.",
+  "insta_kicker": "Instagram",
+  "insta_title": "Novità su Instagram",
+  "insta_note": "I post sono nella lingua originale."
 }
