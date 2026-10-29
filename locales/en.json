@@ -384,6 +384,11 @@
   "press_ai_note": "This text was translated automatically by AI from the original ({lang}). The original article prevails.",
   "press_excerpt_note": "Excerpt – read the full article on the newspaper’s website.",
   "insta_kicker": "Instagram",
-  "insta_title": "New on Instagram",
-  "insta_note": "Posts are shown in their original language."
+  "insta_title": "Follow Luigi on Instagram",
+  "insta_note": "Posts are shown in their original language.",
+  "insta_lead": "Race weekends, training and behind-the-scenes moments – the latest straight from the paddock.",
+  "insta_follow_btn": "Follow",
+  "insta_partner_kicker": "Instagram",
+  "insta_partner_title": "Our partners on Instagram",
+  "insta_partner_lead": "Our partners race with us – on Luigi’s channel too. Here are a few posts that feature them."
 }

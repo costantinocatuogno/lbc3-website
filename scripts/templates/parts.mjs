@@ -67,26 +67,29 @@ export function pageHead(kicker, title, extra = '') {
   return `<section class="wrap page-head"><div class="eyebrow">${kicker}</div><h1 class="h1">${title}</h1>${extra}</section>`;
 }
 
-// „Neu auf Instagram“: die neuesten Beiträge als Raster (Bilder liegen auf unserem Server, Klick öffnet Instagram)
-export function instaGrid(lang, ctx, { limit = 6 } = {}) {
-  const posts = (ctx.instagram?.beitraege || []).slice(0, limit);
+// Instagram-Block: Startseite („Folge Luigi“, 4 Beiträge) oder Partner-Seite („Partner auf Instagram“, 3 Beiträge).
+// Bilder liegen auf unserem Server, Klick öffnet den Beitrag auf Instagram.
+export function instaGrid(lang, ctx, { art = 'start' } = {}) {
+  const partner = art === 'partner';
+  const posts = partner ? (ctx.instagram?.partner || []).slice(0, 3) : (ctx.instagram?.beitraege || []).slice(0, 4);
   if (!posts.length) return '';
   const _ = t(lang);
   const site = ctx.content.site;
   const short = (s) => { const x = String(s || '').split('\n')[0].trim(); return x.length > 90 ? `${x.slice(0, 90).replace(/\s+\S*$/, '')} …` : x; };
+  const follow = `<a class="btn ${partner ? 'btn-outline' : 'btn-red'}" href="${esc(site.instagram)}" rel="noopener" target="_blank">${_('insta_follow_btn')} ${esc(site.instagram_handle)}</a>`;
   return `
-<section class="wrap section insta">
+<section class="wrap section insta insta-${partner ? 'partner' : 'start'}">
   <div class="section-head">
-    <div><div class="eyebrow">${_('insta_kicker')}</div><h2 class="h2">${_('insta_title')}</h2></div>
-    <a class="link" href="${esc(site.instagram)}" rel="noopener" target="_blank">${_('sq_follow')} · ${esc(site.instagram_handle)}</a>
+    <div><div class="eyebrow">${_(partner ? 'insta_partner_kicker' : 'insta_kicker')}</div><h2 class="h2">${_(partner ? 'insta_partner_title' : 'insta_title')}</h2>
+    <p class="insta-lead">${_(partner ? 'insta_partner_lead' : 'insta_lead')}</p></div>
   </div>
-  <div class="insta-grid">
+  <div class="insta-grid n${posts.length}">
     ${posts.map((p) => `<a class="insta-item" href="${esc(p.link)}" rel="noopener" target="_blank">
       <img src="${esc(p.bild)}" alt="${esc(short(p.text) || 'Instagram')}" loading="lazy" decoding="async">
       ${p.typ === 'VIDEO' ? '<span class="insta-badge" aria-hidden="true">▶</span>' : ''}
       ${p.text ? `<span class="insta-text" lang="und">${esc(short(p.text))}</span>` : ''}
     </a>`).join('')}
   </div>
-  ${lang !== 'de' ? `<p class="muted small">${_('insta_note')}</p>` : ''}
+  <div class="insta-foot">${follow}${lang !== 'de' && _('insta_note') ? `<p class="muted small">${_('insta_note')}</p>` : ''}</div>
 </section>`;
 }

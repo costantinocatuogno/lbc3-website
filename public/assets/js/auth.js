@@ -348,8 +348,48 @@
           el.innerHTML = s.verbunden
             ? `<strong>Verbunden</strong> mit @${escapeHtml(s.konto)} · Schlüssel gespeichert am ${new Date(s.gespeichert_am).toLocaleDateString('de-DE')}${s.gueltig_bis ? ` · gültig bis ${new Date(s.gueltig_bis).toLocaleDateString('de-DE')} (wird automatisch verlängert)` : ''}`
             : 'Noch nicht verbunden.';
+          if (s.verbunden) loadIgList(); else $('[data-ig-pick]').hidden = true;
         } catch (e) { el.textContent = 'Status nicht abrufbar: ' + e.message; }
       }
+      async function loadIgList() {
+        const box = $('[data-ig-pick]');
+        const list = $('[data-ig-list]');
+        box.hidden = false;
+        list.innerHTML = '<p class="muted">Beiträge werden geladen …</p>';
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          const res = await fetch('/api/instagram-connect?liste=1', { headers: { Authorization: `Bearer ${session ? session.access_token : token()}` } });
+          const j = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(j.error || `Fehler ${res.status}`);
+          const posts = j.beitraege || [];
+          if (!posts.length) { list.innerHTML = '<p class="muted">Noch keine Beiträge auf Instagram.</p>'; return; }
+          list.innerHTML = posts.map((p) => `
+            <div class="ig-pick" data-id="${escapeHtml(p.id)}" data-tag="${p.partner_tag ? '1' : ''}">
+              <a href="${escapeHtml(p.link)}" target="_blank" rel="noopener"><img src="${escapeHtml(p.bild)}" alt="" loading="lazy" referrerpolicy="no-referrer"></a>
+              <div class="ig-pick-body">
+                <div class="small muted">${new Date(p.datum).toLocaleDateString('de-DE')}${p.partner_tag ? ' · <strong>#LBC3Partner</strong>' : ''}</div>
+                <div class="small ig-pick-text">${escapeHtml(String(p.text || '').slice(0, 140))}</div>
+                <label class="check"><input type="checkbox" data-ig-start ${p.start ? 'checked' : ''}> Startseite</label>
+                <label class="check"><input type="checkbox" data-ig-partner ${p.partner ? 'checked' : ''}> Partner-Seite</label>
+              </div>
+            </div>`).join('');
+        } catch (e) { list.innerHTML = `<p class="muted">Beiträge nicht abrufbar: ${escapeHtml(e.message)}</p>`; }
+      }
+      $('[data-ig-save]').addEventListener('click', async () => {
+        const auswahl = { ausblenden: [], partner: [], partner_aus: [] };
+        $$('.ig-pick').forEach((row) => {
+          const id = row.dataset.id;
+          const tag = row.dataset.tag === '1';
+          const p = row.querySelector('[data-ig-partner]').checked;
+          if (!row.querySelector('[data-ig-start]').checked) auswahl.ausblenden.push(id);
+          if (p && !tag) auswahl.partner.push(id);
+          if (!p && tag) auswahl.partner_aus.push(id);
+        });
+        try {
+          const r = await igCall('POST', { aktion: 'auswahl', auswahl });
+          showMsg(r.neu_gebaut ? 'Gespeichert – die Website wird aktualisiert (1–2 Minuten).' : 'Gespeichert – erscheint beim nächsten Aktualisieren.');
+        } catch (err) { showMsg('Speichern fehlgeschlagen: ' + err.message, true); }
+      });
       $('[data-ig-form]').addEventListener('submit', async (e) => {
         e.preventDefault();
         const f = e.target;

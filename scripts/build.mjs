@@ -88,28 +88,33 @@ const version = Date.now().toString(36);
 
 // ---------- Instagram: neueste Beiträge holen und Bilder selbst hosten (Besucher laden nichts von Instagram) ----------
 async function loadInstagram() {
-  const empty = { beitraege: [] };
+  const empty = { beitraege: [], partner: [] };
   if (!process.env.NETLIFY || !process.env.URL) return empty; // nur beim Bauen auf Netlify
   try {
     const res = await fetch(`${process.env.URL.replace(/\/$/, '')}/api/instagram-feed`, { headers: { Accept: 'application/json' } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const feed = await res.json();
     const schutzWoerter = (content.glossar.schutz || []).map((x) => String(x || '').trim().toLowerCase()).filter((x) => x.length >= 3);
-    const out = [];
-    for (const b of (feed.beitraege || []).slice(0, 12)) {
-      // Schutz von Luigi: Beiträge mit geschützten Angaben im Text werden nicht übernommen
-      if (schutzWoerter.some((w) => String(b.text || '').toLowerCase().includes(w))) continue;
+    // Startseite: die 4 neuesten nicht ausgeblendeten Beiträge · Partner-Seite: die 3 neuesten mit #LBC3Partner oder angehakt
+    const ok = (feed.beitraege || []).filter((b) => !schutzWoerter.some((w) => String(b.text || '').toLowerCase().includes(w))); // Schutz von Luigi
+    const wanted = [...ok.filter((b) => b.start !== false).slice(0, 6), ...ok.filter((b) => b.partner).slice(0, 5)];
+    const saved = new Map();
+    for (const b of wanted) {
+      if (saved.has(b.id)) continue;
       try {
         const img = await fetch(b.bild);
         if (!img.ok) continue;
         const file = `insta/${String(b.id).replace(/[^0-9a-z_]/gi, '')}.jpg`;
         mkdirSync(join(DIST, 'insta'), { recursive: true });
         writeFileSync(join(DIST, file), Buffer.from(await img.arrayBuffer()));
-        out.push({ ...b, bild: `/${file}` });
+        saved.set(b.id, { ...b, bild: `/${file}` });
       } catch { /* einzelnes Bild überspringen */ }
-      if (out.length >= 6) break;
     }
-    return { konto: feed.konto || '', beitraege: out };
+    const pick = (fn, n) => wanted.filter(fn).map((b) => saved.get(b.id)).filter(Boolean).filter((b, i, arr) => arr.findIndex((x) => x.id === b.id) === i).slice(0, n);
+    const out = pick((b) => b.start !== false, 4);
+    const partner = pick((b) => b.partner, 3);
+    console.log(`  Instagram: ${out.length} Beiträge Startseite, ${partner.length} Partner-Seite`);
+    return { konto: feed.konto || '', beitraege: out, partner };
   } catch (err) {
     console.warn('⚠ Instagram-Beiträge nicht geladen:', err.message);
     return empty;

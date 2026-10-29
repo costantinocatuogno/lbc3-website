@@ -81,8 +81,6 @@ ${highlights.length ? `
   </div>
 </section>` : ''}
 
-${instaGrid(lang, ctx)}
-
 <section class="wrap tiles">
   <a class="tile" href="${url(lang, '/kalender/')}">
     ${picture(site.on_track_bild, '', { width: 1000, sizes: '(max-width: 760px) 100vw, 50vw' })}
@@ -115,6 +113,8 @@ ${album ? `
     ${preview.map((p) => `<a class="square-photo" href="${url(lang, album?.path || '/galerie/')}">${picture(p.bild, p.text, { width: 600, sizes: '(max-width: 760px) 50vw, 25vw' })}</a>`).join('')}
   </div>
 </section>` : ''}
+
+${instaGrid(lang, ctx)}
 
 <section class="wrap section cta-row">
   <h2 class="h2">${_('next_chapter')}</h2>

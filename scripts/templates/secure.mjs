@@ -336,7 +336,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
 
     <section data-panel="instagram" hidden>
       <h1 class="h1">Instagram auf der Website</h1>
-      <p class="lead">Die neuesten Beiträge von Luigis Instagram erscheinen automatisch auf der Startseite und unter News – einmal täglich aktualisiert. Die Bilder liegen auf unserem Server; Besucher laden nichts von Instagram.</p>
+      <p class="lead">Die 4 neuesten Beiträge erscheinen automatisch auf der Startseite. Auf der Partner-Seite erscheinen die 3 neuesten Beiträge mit <strong>#LBC3Partner</strong> in der Bildunterschrift – oder die, die du unten anhakst. Einmal täglich aktualisiert; die Bilder liegen auf unserem Server, Besucher laden nichts von Instagram.</p>
       <div class="grid-2 align-start">
         <div class="card">
           <h2 class="h3">Status</h2>
@@ -352,6 +352,11 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
           <label class="field"><span>Zugangsschlüssel</span><input name="token" type="password" autocomplete="off" required minlength="40"></label>
           <button class="btn btn-dark" type="submit">Verbinden</button>
         </form>
+      </div>
+      <div class="card mt" data-ig-pick hidden>
+        <div class="section-head"><h2 class="h3">Beiträge auswählen</h2><button type="button" class="btn btn-red btn-sm" data-ig-save>Speichern &amp; Website aktualisieren</button></div>
+        <p class="muted small">„Startseite“ abhaken blendet einen Beitrag auf der Website aus. „Partner-Seite“ anhaken zeigt ihn bei den Partnern – auch wenn #LBC3Partner fehlt. Beiträge mit geschützten Begriffen aus dem Glossar erscheinen nie.</p>
+        <div class="ig-pick-list" data-ig-list></div>
       </div>
     </section>
 

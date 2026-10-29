@@ -33,3 +33,24 @@ export async function media(token, limit = 12) {
     bild: m.media_type === 'VIDEO' ? m.thumbnail_url : m.media_url
   })).filter((m) => m.bild && m.link);
 }
+
+// Auswahl im Team-Bereich: welche Beiträge auf Startseite und Partner-Seite erscheinen.
+// Partner-Seite: automatisch alle Beiträge mit #LBC3Partner in der Bildunterschrift – plus von Hand angehakte.
+export const PARTNER_TAG = '#lbc3partner';
+export async function getAuswahl() {
+  const a = (await store().get('auswahl', { type: 'json' })) || {};
+  return { ausblenden: a.ausblenden || [], partner: a.partner || [], partner_aus: a.partner_aus || [] };
+}
+export async function saveAuswahl(a) {
+  const ids = (x) => [...new Set((Array.isArray(x) ? x : []).map((v) => String(v).replace(/[^0-9a-z_]/gi, '')).filter(Boolean))].slice(0, 200);
+  const clean = { ausblenden: ids(a.ausblenden), partner: ids(a.partner), partner_aus: ids(a.partner_aus), stand: new Date().toISOString() };
+  await store().setJSON('auswahl', clean);
+  return clean;
+}
+export function applyAuswahl(posts, a) {
+  return posts.map((p) => {
+    const tag = String(p.text || '').toLowerCase().includes(PARTNER_TAG);
+    const id = String(p.id);
+    return { ...p, start: !a.ausblenden.includes(id), partner_tag: tag, partner: !a.partner_aus.includes(id) && (tag || a.partner.includes(id)) };
+  });
+}

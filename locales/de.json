@@ -384,6 +384,11 @@
   "press_ai_note": "Dieser Text wurde mit KI automatisch aus dem Original ({lang}) übersetzt. Maßgeblich ist der Originalartikel.",
   "press_excerpt_note": "Auszug – den vollständigen Artikel lesen Sie bei der Zeitung.",
   "insta_kicker": "Instagram",
-  "insta_title": "Neu auf Instagram",
-  "insta_note": ""
+  "insta_title": "Folge Luigi auf Instagram",
+  "insta_note": "",
+  "insta_lead": "Rennwochenenden, Training und Blicke hinter die Kulissen – die neuesten Momente direkt aus dem Fahrerlager.",
+  "insta_follow_btn": "Folgen",
+  "insta_partner_kicker": "Instagram",
+  "insta_partner_title": "Unsere Partner auf Instagram",
+  "insta_partner_lead": "Unsere Partner fahren mit – auch auf Luigis Kanal. Hier ein paar Beiträge, in denen sie zu sehen sind."
 }

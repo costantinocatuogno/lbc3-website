@@ -41,8 +41,7 @@ ${lead ? `
 </section>` : ''}
 <section class="wrap section">
   <div class="grid-3" data-filter-items="news">${rest.map(card).join('')}</div>
-</section>
-${instaGrid(lang, ctx)}`;
+</section>`;
   return layout({ lang, path: '/news/', title: _('nav_news'), description: _('desc_news'), body, ctx, active: '/news/' });
 }
 
@@ -458,6 +457,8 @@ export function partner(lang, ctx, wall) {
     <a class="logo-box is-cta" href="${url(lang, '/kontakt/?anliegen=sponsoring')}">${_('your_logo')}</a>
   </div>
 </section>
+
+${instaGrid(lang, ctx, { art: 'partner' })}
 
 ${sponsorWall(lang, wall)}
 
