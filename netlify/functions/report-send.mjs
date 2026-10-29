@@ -13,7 +13,7 @@ export default handle(async (req) => {
 
   const [s] = await sb(`/rest/v1/bericht_saison?saison=eq.${year}&select=*`);
   if (!s || s.status !== 'freigegeben') throw new HttpError(400, 'Der Bericht muss zuerst freigegeben werden.');
-  const ausgaben = await sb(`/rest/v1/ausgaben?saison=eq.${year}&select=kategorie,betrag&order=id`);
+  const ausgaben = (await sb(`/rest/v1/ausgaben?saison=eq.${year}&select=kategorie,betrag&order=id`)).filter((r) => Number(r.betrag) > 0).sort((a, b) => Number(b.betrag) - Number(a.betrag));
   const total = ausgaben.reduce((a, r) => a + Number(r.betrag || 0), 0);
   const empfaenger = await sb('/rest/v1/squadra_tre?select=name,email,sprache&optin_bestaetigt=eq.true&jahresbericht_optin=eq.true');
   if (!empfaenger.length) return json({ ok: true, gesendet: 0 });

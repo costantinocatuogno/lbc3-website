@@ -267,7 +267,8 @@
       select.innerHTML = seasons.map((s) => `<option value="${s.saison}">${s.saison}${s.status !== 'freigegeben' ? T('pj_draft_suffix', ' (Entwurf – nur Admins)') : ''}</option>`).join('');
       const render = async (saison) => {
         const s = seasons.find((x) => String(x.saison) === String(saison));
-        const { data: rows } = await sb.from('ausgaben').select('kategorie, betrag').eq('saison', s.saison).order('id');
+        const { data: alle } = await sb.from('ausgaben').select('kategorie, betrag').eq('saison', s.saison).order('id');
+        const rows = (alle || []).filter((r) => Number(r.betrag) > 0).sort((a, b) => Number(b.betrag) - Number(a.betrag));
         const total = (rows || []).reduce((a, r) => a + Number(r.betrag || 0), 0);
         $('[data-year]').textContent = s.saison;
         $('[data-status]').textContent = s.status === 'freigegeben'
@@ -410,8 +411,108 @@
       let current = null;
       const fields = $$('[data-f]');
       const ausgabeInputs = $$('[data-ausgabe]');
-      const updateSum = () => { $('[data-summe]').textContent = eur(ausgabeInputs.reduce((a, i) => a + (Number(i.value) || 0), 0)); };
-      ausgabeInputs.forEach((i) => i.addEventListener('input', updateSum));
+
+      /* Kostenrechner: Einsätze (Rennen & Training) + weitere Ausgaben → Summen je Kategorie */
+      const K = { diesel: 'Reisekosten Deutschland & Italien', benzin: 'Benzin & Öl', reifen: 'Reifen', tage: 'Verpflegung', nenngeld: 'Nenngelder', training: 'Training & Streckengebühren', entsorgung: 'Wohnmobil (Anschaffung / Unterhalt)' };
+      const STANDARD_PREISE = { diesel: 1.75, verbrauch: 12.73, reifen: 185, benzin: 2.30, verpflegung: 35 };
+      let kosten = { preise: { ...STANDARD_PREISE }, einsaetze: [] };
+      const r2 = (x) => Math.round((Number(x) || 0) * 100) / 100;
+      const posten = (e, p) => ({
+        diesel: r2(e.km * 2 * (p.verbrauch / 100) * p.diesel), benzin: r2(e.benzin * p.benzin), reifen: r2(e.reifen * p.reifen),
+        tage: r2(e.tage * p.verpflegung), nenngeld: r2(e.nenngeld), training: r2(e.training), entsorgung: r2(e.entsorgung)
+      });
+      const einsatzSumme = (e) => r2(Object.values(posten(e, kosten.preise)).reduce((a, b) => a + b, 0));
+      const neuerEinsatz = (art) => ({ art, ort: '', termin: '', km: 0, reifen: art === 'rennen' ? 2 : 2, tage: 3, benzin: 10, nenngeld: 0, training: 0, entsorgung: 0, geschaetzt: true, notiz: '' });
+      const kostenApi = async (method, body, q = '') => {
+        const { data: { session } } = await sb.auth.getSession();
+        const res = await fetch(`/api/kosten${q}`, { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session ? session.access_token : token()}` }, body: body ? JSON.stringify(body) : undefined });
+        const j = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(j.error || `Fehler ${res.status}`);
+        return j;
+      };
+      const totals = () => {
+        const t = Object.fromEntries(ausgabeInputs.map((i) => [i.dataset.ausgabe, Number(i.value) || 0]));
+        for (const e of kosten.einsaetze) for (const [k, v] of Object.entries(posten(e, kosten.preise))) t[K[k]] = r2((t[K[k]] || 0) + v);
+        return t;
+      };
+      const F = (k, label, e, i, step = '1', unit = '') => `<label class="field"><span>${label}</span><input type="number" min="0" step="${step}" inputmode="decimal" value="${e[k] || ''}" placeholder="0" data-e="${k}" data-i="${i}">${unit ? `<small class="muted">${unit}</small>` : ''}</label>`;
+      const renderEinsaetze = () => {
+        const p = kosten.preise;
+        $$('[data-preis]').forEach((inp) => { inp.value = p[inp.dataset.preis] ?? ''; });
+        $('[data-einsaetze]').innerHTML = kosten.einsaetze.length ? kosten.einsaetze.map((e, i) => {
+          const po = posten(e, p);
+          return `<details class="einsatz${e.art === 'training' ? ' is-training' : ''}" data-row="${i}" ${e._offen ? 'open' : ''}>
+            <summary><span class="badge${e.art === 'rennen' ? ' ok' : ''}">${e.art === 'rennen' ? 'Rennen' : 'Training'}</span>
+              <strong>${escapeHtml(e.ort || 'Ort eintragen')}</strong><span class="muted small">${escapeHtml(e.termin || 'Termin offen')}${e.geschaetzt ? ' · geschätzt' : ''}</span>
+              <span class="einsatz-sum">${eur(einsatzSumme(e))}</span></summary>
+            <div class="grid-auto">
+              <label class="field"><span>Art</span><select data-e="art" data-i="${i}"><option value="rennen"${e.art === 'rennen' ? ' selected' : ''}>Rennen</option><option value="training"${e.art === 'training' ? ' selected' : ''}>Training</option></select></label>
+              <label class="field"><span>Strecke / Ort</span><input data-e="ort" data-i="${i}" value="${escapeHtml(e.ort)}" placeholder="z. B. Wackersdorf"></label>
+              <label class="field"><span>Termin</span><input data-e="termin" data-i="${i}" value="${escapeHtml(e.termin)}" placeholder="z. B. 16.–17.05.2026"></label>
+              ${F('km', 'Kilometer einfache Fahrt', e, i, '1', `Diesel: ${eur(po.diesel)}`)}
+              ${F('reifen', 'Reifensätze', e, i, '1', eur(po.reifen))}
+              ${F('tage', 'Verpflegungstage', e, i, '1', eur(po.tage))}
+              ${F('benzin', 'Kartbenzin (Liter)', e, i, '1', eur(po.benzin))}
+              ${F('nenngeld', 'Nenngeld (€)', e, i, '0.01')}
+              ${F('training', 'Training / Strecke (€)', e, i, '0.01')}
+              ${F('entsorgung', 'Ver-/Entsorgung, Camping (€)', e, i, '0.01')}
+            </div>
+            <label class="check"><input type="checkbox" data-e="geschaetzt" data-i="${i}" ${e.geschaetzt ? 'checked' : ''}> Noch geschätzt (nicht belegt)</label>
+            <div class="btn-row"><button type="button" class="btn btn-outline btn-sm" data-copy-row="${i}">Kopieren</button><button type="button" class="btn btn-outline btn-sm" data-del-row="${i}">Löschen</button></div>
+          </details>`;
+        }).join('') : '<p class="muted">Noch keine Einsätze. Mit „+ Rennen“ anfangen oder eine Kostendatei laden.</p>';
+        renderSummary();
+      };
+      const renderSummary = () => {
+        const t = totals();
+        const rows = Object.entries(t).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+        const sum = r2(rows.reduce((a, [, v]) => a + v, 0));
+        $('[data-kosten-summary]').innerHTML = rows.map(([k, v]) => `<tr><td>${escapeHtml(k)}</td><td class="num">${eur(v)}</td></tr>`).join('') + `<tr><td><strong>Gesamt</strong></td><td class="num"><strong>${eur(sum)}</strong></td></tr>`;
+        const ren = kosten.einsaetze.filter((e) => e.art === 'rennen').length;
+        const tr = kosten.einsaetze.length - ren;
+        const est = kosten.einsaetze.filter((e) => e.geschaetzt).length;
+        $('[data-kosten-hinweis]').textContent = kosten.einsaetze.length ? `${ren} Rennen, ${tr} Trainings · ${kosten.einsaetze.reduce((a, e) => a + e.km * 2, 0).toLocaleString('de-DE')} km${est ? ` · ${est} Einsätze noch geschätzt – vor der Freigabe an Partner prüfen` : ''}` : '';
+        if (kosten.einsaetze.length) {
+          $('[data-f="rennwochenenden"]').value = ren;
+          $('[data-f="kilometer"]').value = kosten.einsaetze.reduce((a, e) => a + e.km * 2, 0);
+        }
+      };
+      $('[data-einsaetze]').addEventListener('input', (ev) => {
+        const el = ev.target.closest('[data-e]'); if (!el) return;
+        const e = kosten.einsaetze[Number(el.dataset.i)]; const k = el.dataset.e;
+        e[k] = el.type === 'checkbox' ? el.checked : (el.type === 'number' ? Number(el.value) || 0 : el.value);
+        const row = el.closest('.einsatz');
+        row.querySelector('.einsatz-sum').textContent = eur(einsatzSumme(e));
+        renderSummary();
+      });
+      $('[data-einsaetze]').addEventListener('change', (ev) => {
+        if (!ev.target.closest('[data-e]')) return;
+        kosten.einsaetze.forEach((e, i) => { e._offen = !!$(`[data-row="${i}"]`)?.open; });
+        renderEinsaetze();
+      });
+      $('[data-einsaetze]').addEventListener('click', (ev) => {
+        const c = ev.target.closest('[data-copy-row]'); const d = ev.target.closest('[data-del-row]');
+        if (!c && !d) return;
+        kosten.einsaetze.forEach((e, i) => { e._offen = false; });
+        if (c) { const i = Number(c.dataset.copyRow); const copy = { ...kosten.einsaetze[i], art: 'training', termin: '', nenngeld: 0, _offen: true }; kosten.einsaetze.splice(i + 1, 0, copy); }
+        if (d && confirm('Diesen Einsatz löschen?')) kosten.einsaetze.splice(Number(d.dataset.delRow), 1);
+        renderEinsaetze();
+      });
+      $$('[data-add]').forEach((b) => b.addEventListener('click', () => { kosten.einsaetze.forEach((e) => { e._offen = false; }); kosten.einsaetze.push({ ...neuerEinsatz(b.dataset.add), _offen: true }); renderEinsaetze(); }));
+      $$('[data-preis]').forEach((inp) => inp.addEventListener('input', () => { kosten.preise[inp.dataset.preis] = Number(inp.value) || 0; kosten.einsaetze.forEach((e, i) => { e._offen = !!$(`[data-row="${i}"]`)?.open; }); renderEinsaetze(); }));
+      ausgabeInputs.forEach((i) => i.addEventListener('input', renderSummary));
+      $('[data-kosten-file]').addEventListener('change', async (ev) => {
+        const file = ev.target.files[0]; if (!file) return;
+        try {
+          const d = JSON.parse(await file.text());
+          if (d.saison) saisonInput.value = d.saison;
+          kosten = { preise: { ...STANDARD_PREISE, ...(d.preise || {}) }, einsaetze: (d.einsaetze || []).map((e) => ({ ...neuerEinsatz(e.art), ...e })) };
+          ausgabeInputs.forEach((i) => { const v = (d.weitere || {})[i.dataset.ausgabe]; i.value = v ? v : ''; });
+          renderEinsaetze();
+          showMsg(`Kostendatei geladen: ${kosten.einsaetze.length} Einsätze für ${saisonInput.value}. Bitte prüfen und dann „Speichern“ tippen.`);
+        } catch (e) { showMsg('Diese Datei konnte nicht gelesen werden: ' + e.message, true); }
+        ev.target.value = '';
+      });
 
       const renderStatus = () => {
         const released = current && current.status === 'freigegeben';
@@ -429,8 +530,17 @@
         const { data: rows } = await sb.from('ausgaben').select('kategorie, betrag').eq('saison', saison);
         current = s || { saison, status: 'entwurf' };
         fields.forEach((f) => { f.value = current[f.dataset.f] ?? ''; });
-        ausgabeInputs.forEach((i) => { const r = (rows || []).find((x) => x.kategorie === i.dataset.ausgabe); i.value = r ? r.betrag : ''; });
-        updateSum();
+        let gespeichert = null;
+        try { gespeichert = (await kostenApi('GET', null, `?saison=${saison}`)).daten; } catch (e) { console.warn('Kostenrechner:', e.message); }
+        if (gespeichert) {
+          kosten = { preise: { ...STANDARD_PREISE, ...gespeichert.preise }, einsaetze: gespeichert.einsaetze || [] };
+          ausgabeInputs.forEach((i) => { const v = (gespeichert.weitere || {})[i.dataset.ausgabe]; i.value = v ? v : ''; });
+        } else {
+          // Ältere Saisons ohne Einsätze: Beträge je Kategorie stehen als „weitere Ausgaben“
+          kosten = { preise: { ...STANDARD_PREISE }, einsaetze: [] };
+          ausgabeInputs.forEach((i) => { const r = (rows || []).find((x) => x.kategorie === i.dataset.ausgabe); i.value = r && Number(r.betrag) ? r.betrag : ''; });
+        }
+        renderEinsaetze();
         renderStatus();
       };
       saisonInput.addEventListener('change', loadSeason);
@@ -451,7 +561,10 @@
           if (!error) showMsg('Gespeichert – die Übersetzungen des Rückblicks konnten noch nicht gespeichert werden (Supabase-Migration 003 fehlt).', true);
         }
         if (error) throw error;
-        const ausg = ausgabeInputs.map((i) => ({ saison, kategorie: i.dataset.ausgabe, betrag: Number(i.value) || 0 }));
+        const weitere = Object.fromEntries(ausgabeInputs.filter((i) => Number(i.value)).map((i) => [i.dataset.ausgabe, Number(i.value)]));
+        await kostenApi('POST', { saison, daten: { preise: kosten.preise, einsaetze: kosten.einsaetze.map(({ _offen, ...e }) => e), weitere } });
+        const t = totals();
+        const ausg = ausgabeInputs.map((i) => ({ saison, kategorie: i.dataset.ausgabe, betrag: t[i.dataset.ausgabe] || 0 }));
         const { error: e2 } = await sb.from('ausgaben').upsert(ausg, { onConflict: 'saison,kategorie' });
         if (e2) throw e2;
         current = data;

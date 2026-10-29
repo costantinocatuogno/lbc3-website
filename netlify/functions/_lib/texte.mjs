@@ -52,7 +52,9 @@ export const KATEGORIEN = {
   Reifen: { it: 'Gomme', en: 'Tyres', fr: 'Pneus' },
   'Benzin & Öl': { it: 'Benzina e olio', en: 'Fuel & oil', fr: 'Essence et huile' },
   Nenngelder: { it: 'Iscrizioni', en: 'Entry fees', fr: 'Frais d’inscription' },
-  'Team & Betreuung': { it: 'Team e assistenza', en: 'Team & support', fr: 'Équipe et encadrement' }
+  'Team & Betreuung': { it: 'Team e assistenza', en: 'Team & support', fr: 'Équipe et encadrement' },
+  Verpflegung: { it: 'Vitto', en: 'Food', fr: 'Repas' },
+  'Training & Streckengebühren': { it: 'Allenamenti e pista', en: 'Training & track fees', fr: 'Entraînements et frais de piste' }
 };
 export const kategorie = (name, lang) => (lang !== 'de' && KATEGORIEN[name]?.[lang]) || name;
 

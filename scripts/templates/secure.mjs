@@ -14,7 +14,9 @@ export const KATEGORIEN = [
   'Reifen',
   'Benzin & Öl',
   'Nenngelder',
-  'Team & Betreuung'
+  'Team & Betreuung',
+  'Verpflegung',
+  'Training & Streckengebühren'
 ];
 
 // Texte für auth.js (Meldungen im Browser) in der Sprache der Seite
@@ -182,7 +184,8 @@ ${topbar(_('p_topbar'), '', lang, '/bericht/')}
 }
 
 export function teamPage(ctx) {
-  const kat = KATEGORIEN.map((k, i) => `<label class="field"><span>${esc(k)} (€)</span><input type="number" min="0" step="0.01" inputmode="decimal" data-ausgabe="${esc(k)}" id="aus-${i}"></label>`).join('');
+  const kat = KATEGORIEN.map((k, i) => `<label class="field"><span>${esc(k)} (€)</span><input type="number" min="0" step="0.01" inputmode="decimal" data-ausgabe="${esc(k)}" id="aus-${i}" placeholder="0"></label>`).join('');
+  const preis = (key, label, step) => `<label class="field"><span>${label}</span><input type="number" min="0" step="${step}" inputmode="decimal" data-preis="${key}"></label>`;
   const body = `
 ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bearbeiten (CMS)</a>')}
 <div class="app" data-team>
@@ -208,15 +211,42 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         </div>
       </div>
       <div class="card">
-        <h2 class="h3">Ausgaben nach Kategorie</h2>
+        <div class="section-head">
+          <div><h2 class="h3">1 · Einsätze: Rennen &amp; Training</h2>
+          <p class="muted small">Pro Wochenende eine Zeile. Diesel wird aus den Kilometern berechnet, Reifen und Verpflegung aus der Anzahl. Training-Wochenenden am schnellsten mit „Kopieren“ anlegen.</p></div>
+          <label class="btn btn-outline btn-sm file-btn">Kostendatei laden<input type="file" accept="application/json,.json" data-kosten-file hidden></label>
+        </div>
+        <details class="fold"><summary>Preise für die Berechnung</summary>
+          <div class="grid-auto">
+            ${preis('diesel', 'Diesel (€/Liter)', '0.01')}
+            ${preis('verbrauch', 'Verbrauch Gespann (Liter/100 km)', '0.01')}
+            ${preis('reifen', 'Reifensatz (€)', '1')}
+            ${preis('benzin', 'Kartbenzin (€/Liter)', '0.01')}
+            ${preis('verpflegung', 'Verpflegung (€/Tag, Familie)', '1')}
+          </div>
+        </details>
+        <div class="einsatz-list" data-einsaetze></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn-dark btn-sm" data-add="rennen">+ Rennen</button>
+          <button type="button" class="btn btn-outline btn-sm" data-add="training">+ Training</button>
+        </div>
+      </div>
+      <div class="card mt">
+        <h2 class="h3">2 · Weitere Ausgaben (nicht pro Wochenende)</h2>
+        <p class="muted small">Zum Beispiel Kart, Motorrevision, Ersatzteile, Lizenzen, Einschreibungen, Wohnmobil, Team. Wird zu den Einsätzen dazugezählt.</p>
         <div class="grid-auto">${kat}</div>
-        <p class="muted small">Summe: <strong data-summe>0 €</strong></p>
+      </div>
+      <div class="card mt">
+        <h2 class="h3">3 · Übersicht – so sehen es die Partner</h2>
+        <table class="kosten-sum"><tbody data-kosten-summary></tbody></table>
+        <p class="muted small" data-kosten-hinweis></p>
       </div>
       <div class="grid-2 mt align-start">
         <div class="card">
           <h2 class="h3">Kennzahlen</h2>
           <label class="field"><span>Rennwochenenden</span><input type="number" min="0" data-f="rennwochenenden"></label>
-          <label class="field"><span>Kilometer zu Rennen</span><input type="number" min="0" data-f="kilometer"></label>
+          <label class="field"><span>Gefahrene Kilometer (Rennen &amp; Training)</span><input type="number" min="0" data-f="kilometer"></label>
+          <p class="muted small">Wird aus den Einsätzen automatisch ausgefüllt.</p>
         </div>
         <div class="card">
           <h2 class="h3">Finanzierung (€)</h2>
