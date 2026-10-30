@@ -50,7 +50,7 @@ export function sponsorMarquee(lang, ctx) {
     const href = s.cta ? url(lang, '/partner/#sponsoren') : s.website;
     const attrs = hidden ? ' aria-hidden="true" tabindex="-1"' : '';
     return href
-      ? `<a class="logo-cell${s.cta && !s.free ? ' is-cta' : ''}${s.free ? ' is-free' : ''}" href="${esc(href)}"${s.cta ? '' : ' rel="noopener" target="_blank"'}${attrs}>${inner}</a>`
+      ? `<a class="logo-cell${s.cta && !s.free ? ' is-cta' : ''}${s.free ? ' is-free' : ''}" href="${esc(href)}"${s.cta ? '' : ` rel="noopener" target="_blank"${klick(s.firma, 'laufband')}`}${attrs}>${inner}</a>`
       : `<div class="logo-cell"${attrs}>${inner}</div>`;
   };
   return `
@@ -66,6 +66,9 @@ export function sponsorMarquee(lang, ctx) {
 export function pageHead(kicker, title, extra = '') {
   return `<section class="wrap page-head"><div class="eyebrow">${kicker}</div><h1 class="h1">${title}</h1>${extra}</section>`;
 }
+
+// Klickzähler für Partner-Links: Name und Stelle auf der Seite (site.js meldet den Klick anonym an /api/klick)
+export const klick = (firma, quelle) => (firma ? ` data-klick="${esc(String(firma).trim())}" data-quelle="${quelle}"` : '');
 
 // Instagram-Block: Startseite („Folge Luigi“, 4 Beiträge) oder Partner-Seite („Partner auf Instagram“, 3 Beiträge).
 // Bilder liegen auf unserem Server, Klick öffnet den Beitrag auf Instagram.

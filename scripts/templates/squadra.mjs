@@ -2,6 +2,7 @@
 import { esc, icon, img, flagsIT } from '../lib/html.mjs';
 import { url, t } from '../lib/i18n.mjs';
 import { layout } from './layout.mjs';
+import { klick } from './parts.mjs';
 
 const SOCIAL = ['instagram', 'facebook', 'linkedin', 'tiktok', 'youtube'];
 const safeUrl = (u) => (/^https?:\/\//i.test(String(u || '')) ? String(u) : '');
@@ -31,7 +32,7 @@ export function sponsorCard(lang, s) {
   const _ = t(lang);
   const web = safeUrl(s.website);
   const socials = SOCIAL.filter((k) => safeUrl(s.social?.[k]))
-    .map((k) => `<a class="social-btn" href="${esc(s.social[k])}" rel="noopener" target="_blank" aria-label="${esc(s.firma)} auf ${k}">${icon[k]}</a>`).join('');
+    .map((k) => `<a class="social-btn" href="${esc(s.social[k])}" rel="noopener" target="_blank"${klick(s.firma, `wall-${k}`)} aria-label="${esc(s.firma)} auf ${k}">${icon[k]}</a>`).join('');
   return `
     <article class="sp-card">
       <div class="sp-logo">${s.logo ? `<img src="${esc(img(s.logo, 600))}" alt="${esc(s.firma)}" loading="lazy">` : `<span>${esc(s.firma)}</span>`}</div>
@@ -40,7 +41,7 @@ export function sponsorCard(lang, s) {
         <h3 class="h3">${esc(s.firma)}</h3>
         ${s.text ? `<p>${esc(s.text)}</p>` : ''}
         <div class="sp-links">
-          ${web ? `<a class="btn btn-outline btn-sm" href="${esc(web)}" rel="noopener" target="_blank">${icon.globe}<span>${_('sp_wall_visit')}</span></a>` : ''}
+          ${web ? `<a class="btn btn-outline btn-sm" href="${esc(web)}" rel="noopener" target="_blank"${klick(s.firma, 'wall')}>${icon.globe}<span>${_('sp_wall_visit')}</span></a>` : ''}
           ${socials}
         </div>
       </div>

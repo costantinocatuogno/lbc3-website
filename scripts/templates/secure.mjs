@@ -196,6 +196,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     <button type="button" data-tab="sponsorwall">Partner-Wall</button>
     <button type="button" data-tab="einladen">Squadra einladen</button>
     <button type="button" data-tab="instagram">Instagram</button>
+    <button type="button" data-tab="klicks">Partner-Klicks</button>
     <a href="/admin/">Fotos, News, Rennen, Texte ↗</a>
   </nav>
   <main class="app-main">
@@ -388,6 +389,21 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <p class="muted small">„Startseite“ abhaken blendet einen Beitrag auf der Website aus. „Partner-Seite“ anhaken zeigt ihn bei den Partnern – auch wenn #LBC3Partner fehlt. Beiträge mit geschützten Begriffen aus dem Glossar erscheinen nie.</p>
         <div class="ig-pick-list" data-ig-list></div>
       </div>
+    </section>
+
+    <section data-panel="klicks" hidden>
+      <div class="section-head">
+        <h1 class="h1">Partner-Klicks</h1>
+        <label class="field inline"><span>Jahr</span><input type="number" min="2026" max="2100" data-klick-jahr></label>
+      </div>
+      <p class="lead">So oft haben Besucher auf die Links eurer Partner geklickt – Logo im Laufband, Logo auf der Partner-Seite, „Website besuchen“ und Social-Media-Knöpfe auf der Partner-Wall. Gezählt wird anonym, ohne Cookies und ohne IP-Adresse; Suchmaschinen-Roboter werden nicht mitgezählt.</p>
+      <div class="kpis" data-klick-kpis></div>
+      <div class="card mt"><div class="table-box plain"><table class="kosten-sum klick-table"><thead><tr><th>Partner</th><th class="num">Klicks</th><th class="num">Letzte 30 Tage</th><th>Verlauf (Jan–Dez)</th><th>Woher</th></tr></thead><tbody data-klick-rows><tr><td colspan="5" class="muted">Wird geladen …</td></tr></tbody></table></div></div>
+      <div class="btn-row mt">
+        <button type="button" class="btn btn-outline btn-sm" data-klick-csv>Als Tabelle herunterladen (CSV)</button>
+        <button type="button" class="btn btn-outline btn-sm" data-klick-print>Drucken / als PDF sichern</button>
+      </div>
+      <p class="muted small">Tipp fürs Jahresgespräch: Zahl der Klicks zusammen mit Rennwochenenden und Instagram-Reichweite zeigen. Die Zählung startet mit dem Website-Start am 31.10.2026.</p>
     </section>
 
     <section data-panel="einladen" hidden>

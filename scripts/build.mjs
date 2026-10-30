@@ -121,6 +121,11 @@ async function loadInstagram() {
   }
 }
 const instagram = await loadInstagram();
+// Liste der Partner für den Klickzähler (/api/klick nimmt nur Klicks auf diese Namen an)
+writeFileSync(join(DIST, 'partner-liste.json'), JSON.stringify({ partner: [...new Set([
+  ...content.sponsoren.filter((s) => s.website && !/^\s*\[/.test(s.firma || '')).map((s) => String(s.firma).trim()),
+  ...(wall.beispiel ? [] : wall.sponsoren.map((s) => String(s.firma || '').trim()))
+].filter(Boolean))] }));
 const ctx = { content, siteUrl, version };
 const ctxFor = Object.fromEntries(LANGS.map((l) => [l, { content: l === 'de' ? content : loadContent(ROOT, l), siteUrl, version, wall, instagram }]));
 

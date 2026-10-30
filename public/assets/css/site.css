@@ -775,3 +775,10 @@ tr.is-dns td { color: var(--muted); }
 .kosten-sum { width: 100%; border-collapse: collapse; font-size: 14px; }
 .kosten-sum td { padding: 7px 0; border-bottom: 1px solid var(--line-2); }
 .kosten-sum td.num { text-align: right; white-space: nowrap; }
+/* Team-Bereich: Partner-Klicks */
+.klick-table th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 6px 8px 6px 0; border-bottom: 1px solid var(--line); }
+.klick-table th.num { text-align: right; }
+.klick-table td { padding-right: 8px; vertical-align: middle; }
+.spark { display: flex; align-items: flex-end; gap: 2px; height: 30px; }
+.spark i { display: block; width: 7px; background: var(--red); border-radius: 2px 2px 0 0; opacity: .85; }
+@media print { body.print-klicks .app-nav, body.print-klicks .topbar, body.print-klicks .btn-row, body.print-klicks [data-msg] { display: none !important; } }

@@ -5,6 +5,20 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Klickzähler für Partner-Links: anonym (kein Cookie, keine IP, nichts im Browser gespeichert) ---------- */
+  const zaehle = (ev) => {
+    if (ev.type === 'auxclick' && ev.button !== 1) return; // mittlere Maustaste = neuer Tab
+    const a = ev.target.closest && ev.target.closest('a[data-klick]');
+    if (!a) return;
+    const data = JSON.stringify({ p: a.dataset.klick, q: a.dataset.quelle || '', l: document.documentElement.lang || 'de' });
+    try {
+      if (navigator.sendBeacon) navigator.sendBeacon('/api/klick', new Blob([data], { type: 'application/json' }));
+      else fetch('/api/klick', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: data, keepalive: true });
+    } catch (e) { /* Zählen darf den Link nie blockieren */ }
+  };
+  document.addEventListener('click', zaehle, true);
+  document.addEventListener('auxclick', zaehle, true);
+
   /* ---------- Mobiles Menü ---------- */
   const toggle = $('.menu-toggle');
   const nav = $('#site-nav');

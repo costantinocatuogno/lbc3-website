@@ -2,7 +2,7 @@ import { esc, picture, icon, img, flagsIT } from '../lib/html.mjs';
 import { url, t, formatDate } from '../lib/i18n.mjs';
 import { markdown } from '../lib/markdown.mjs';
 import { layout } from './layout.mjs';
-import { countdownCard, pageHead, instaGrid } from './parts.mjs';
+import { countdownCard, pageHead, instaGrid, klick } from './parts.mjs';
 import { wallGrid, sponsorWall } from './squadra.mjs';
 
 const CATS = ['Rennen', 'Team', 'Partner', 'Presse'];
@@ -450,7 +450,7 @@ export function partner(lang, ctx, wall) {
   <h3 class="h2 mt">${_('our_sponsors')}</h3>
   <div class="logo-grid">
     ${c.sponsoren.filter((s) => s.logo || !/^\s*\[/.test(s.firma || '')).map((s) => `
-    <${s.website ? `a href="${esc(s.website)}" rel="noopener" target="_blank"` : 'div'} class="logo-box">
+    <${s.website ? `a href="${esc(s.website)}" rel="noopener" target="_blank"${klick(s.firma, 'partnerseite')}` : 'div'} class="logo-box">
       ${s.logo ? `<img src="${esc(img(s.logo, 600))}" alt="${esc(s.firma)}" loading="lazy">` : `<span>${esc(s.firma)}</span>`}
       <small>${esc(s.paket || '')}</small>
     </${s.website ? 'a' : 'div'}>`).join('')}

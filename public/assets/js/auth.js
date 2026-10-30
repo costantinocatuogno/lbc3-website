@@ -331,8 +331,46 @@
         if (name === 'sponsorwall') loadSponsorWall();
         if (name === 'einladen') renderInvite();
         if (name === 'instagram') loadInstagram();
+        if (name === 'klicks') loadKlicks();
       };
       tabs.forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
+
+      /* ----- Partner-Klicks ----- */
+      const QUELLE = { laufband: 'Laufband', partnerseite: 'Partner-Seite', wall: 'Partner-Wall', 'wall-instagram': 'Wall · Instagram', 'wall-facebook': 'Wall · Facebook', 'wall-linkedin': 'Wall · LinkedIn', 'wall-tiktok': 'Wall · TikTok', 'wall-youtube': 'Wall · YouTube', sonstige: 'Sonstige' };
+      let klickDaten = null;
+      const klickJahr = $('[data-klick-jahr]');
+      klickJahr.value = new Date().getFullYear();
+      klickJahr.addEventListener('change', () => loadKlicks());
+      async function loadKlicks() {
+        const tbody = $('[data-klick-rows]');
+        tbody.innerHTML = '<tr><td colspan="5" class="muted">Wird geladen …</td></tr>';
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          const res = await fetch(`/api/klick?jahr=${Number(klickJahr.value)}`, { headers: { Authorization: `Bearer ${session ? session.access_token : token()}` } });
+          const j = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(j.error || `Fehler ${res.status}`);
+          klickDaten = j;
+          const rows = Object.entries(j.partner).sort((a, b) => b[1].klicks - a[1].klicks);
+          const max = Math.max(1, ...rows.flatMap(([, x]) => Object.values(x.monate)));
+          const n30 = rows.reduce((a, [, x]) => a + x.letzte30, 0);
+          $('[data-klick-kpis]').innerHTML = `<div class="kpi"><span>Klicks ${j.jahr}</span><strong>${j.gesamt.toLocaleString('de-DE')}</strong></div><div class="kpi"><span>Letzte 30 Tage</span><strong>${n30.toLocaleString('de-DE')}</strong></div><div class="kpi"><span>Partner mit Klicks</span><strong>${rows.length}</strong></div>`;
+          tbody.innerHTML = rows.length ? rows.map(([name, x]) => `<tr>
+            <td><strong>${escapeHtml(name)}</strong></td><td class="num"><strong>${x.klicks.toLocaleString('de-DE')}</strong></td><td class="num">${x.letzte30}</td>
+            <td><div class="spark" title="Klicks pro Monat">${Array.from({ length: 12 }, (_, m) => { const v = x.monate[String(m + 1).padStart(2, '0')] || 0; return `<i style="height:${Math.max(2, Math.round((v / max) * 28))}px" title="${v}"></i>`; }).join('')}</div></td>
+            <td class="small">${Object.entries(x.quellen).sort((a, b) => b[1] - a[1]).map(([q, v]) => `${escapeHtml(QUELLE[q] || q)} ${v}`).join(' · ')}</td></tr>`).join('')
+            : '<tr><td colspan="5" class="muted">Noch keine Klicks in diesem Jahr.</td></tr>';
+        } catch (e) { tbody.innerHTML = `<tr><td colspan="5" class="muted">Nicht abrufbar: ${escapeHtml(e.message)}</td></tr>`; }
+      }
+      $('[data-klick-csv]').addEventListener('click', () => {
+        if (!klickDaten) return;
+        const mon = Array.from({ length: 12 }, (_, m) => String(m + 1).padStart(2, '0'));
+        const q = (v) => `"${String(v).replace(/"/g, '""')}"`;
+        const lines = [['Partner', 'Klicks', 'Letzte 30 Tage', ...mon.map((m) => `${m}/${klickDaten.jahr}`), ...Object.values(QUELLE)].map(q).join(';')]
+          .concat(Object.entries(klickDaten.partner).sort((a, b) => b[1].klicks - a[1].klicks).map(([n, x]) => [n, x.klicks, x.letzte30, ...mon.map((m) => x.monate[m] || 0), ...Object.keys(QUELLE).map((k) => x.quellen[k] || 0)].map(q).join(';')));
+        const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `LBC3-Partner-Klicks-${klickDaten.jahr}.csv`; a.click();
+      });
+      $('[data-klick-print]').addEventListener('click', () => { document.body.classList.add('print-klicks'); window.print(); setTimeout(() => document.body.classList.remove('print-klicks'), 500); });
 
       /* ----- Instagram ----- */
       const igCall = async (method, body) => {
