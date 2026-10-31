@@ -73,6 +73,7 @@ export const klick = (firma, quelle) => (firma ? ` data-klick="${esc(String(firm
 // Instagram-Block: Startseite („Folge Luigi“, 4 Beiträge) oder Partner-Seite („Partner auf Instagram“, 3 Beiträge).
 // Bilder liegen auf unserem Server, Klick öffnet den Beitrag auf Instagram.
 export function instaGrid(lang, ctx, { art = 'start' } = {}) {
+  if (ctx.content.site.instagram_feed === false) return ''; // im CMS vorübergehend ausgeschaltet
   const partner = art === 'partner';
   const posts = partner ? (ctx.instagram?.partner || []).slice(0, 3) : (ctx.instagram?.beitraege || []).slice(0, 4);
   if (!posts.length) return '';

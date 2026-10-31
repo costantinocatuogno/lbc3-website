@@ -90,6 +90,7 @@ const version = Date.now().toString(36);
 async function loadInstagram() {
   const empty = { beitraege: [], partner: [] };
   if (!process.env.NETLIFY || !process.env.URL) return empty; // nur beim Bauen auf Netlify
+  if (content.site.instagram_feed === false) return empty; // im CMS ausgeschaltet
   try {
     const res = await fetch(`${process.env.URL.replace(/\/$/, '')}/api/instagram-feed`, { headers: { Accept: 'application/json' } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
