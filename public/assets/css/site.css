@@ -697,7 +697,7 @@ tr.is-dns td { color: var(--muted); }
 .story-video figcaption { margin-top: 10px; text-align: right; }
 .link-btn { background: none; border: 0; padding: 4px 0; cursor: pointer; font: inherit; font-weight: 700; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .link-btn:hover { color: var(--red, #c8102e); }
-@media (max-width: 760px) { .story-video { max-width: none; } }
+@media (max-width: 760px) { .story { grid-template-columns: 1fr; } .story-video { max-width: none; } }
 /* Helm: Fotos nie zu flach */
 .helm-photos { min-height: 560px; }
 @media (max-width: 860px) { .helm-photos { min-height: 0; } }
@@ -782,3 +782,64 @@ tr.is-dns td { color: var(--muted); }
 .spark { display: flex; align-items: flex-end; gap: 2px; height: 30px; }
 .spark i { display: block; width: 7px; background: var(--red); border-radius: 2px 2px 0 0; opacity: .85; }
 @media print { body.print-klicks .app-nav, body.print-klicks .topbar, body.print-klicks .btn-row, body.print-klicks [data-msg] { display: none !important; } }
+
+/* ---------- Feinschliff Handy / Tablet / Laptop (31.10.2026) ---------- */
+/* Lange Wörter (z. B. „Verbraucherstreitbeilegung“) dürfen umbrechen statt die Seite zu verbreitern */
+h1, h2, h3, h4, p, li, dd, dt, figcaption, blockquote, .prose, .lead { overflow-wrap: break-word; }
+.prose h2, .prose h3, .h1, .h2 { hyphens: auto; -webkit-hyphens: auto; }
+img, video, iframe { max-width: 100%; }
+/* Fingerfreundliche Links: mindestens ~40 px Tippfläche */
+@media (pointer: coarse) {
+  .footer-legal a { display: inline-block; padding: 10px 4px; }
+  .footer-legal { gap: 4px 16px; }
+  .app-langs { gap: 4px; }
+  .app-langs a { display: inline-block; padding: 10px 8px; }
+  .check { min-height: 32px; align-items: center; }
+}
+.cd-grid small { font-size: 12px; }
+@media (max-width: 400px) { .brand-text small { font-size: 12px; } }
+@media (pointer: coarse) { .login-langs a { display: inline-block; padding: 10px 6px; } }
+/* Highlights: Titel passen in die Karte, auch bei langen Überschriften */
+.hl-title { font-size: clamp(18px, 2.2vw, 24px); hyphens: auto; -webkit-hyphens: auto; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.hl-num { font-size: clamp(32px, 4vw, 44px); }
+.hl-body { min-width: 0; }
+.hl-body > span:last-child { min-width: 0; }
+/* Kennzahlen: auf dem Handy 2 × 2 statt untereinander */
+@media (max-width: 600px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; padding-top: 36px; padding-bottom: 36px; }
+  .stat-num { font-size: 52px; }
+  .stat-label { font-size: 14px; }
+}
+/* Tablet hochkant: Helm und Countdown nebeneinander statt halbe Breite leer */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .hero-side { flex: 1 1 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+  .hero-side > * { margin: 0 !important; }
+  .helmet-card { aspect-ratio: auto; min-height: 340px; }
+}
+/* Footer auf dem Handy: Logo oben, Navigation in zwei Spalten */
+@media (max-width: 600px) {
+  .footer-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; padding-top: 40px; }
+  .footer-logo { grid-column: 1 / -1; }
+  .footer-logo img { height: 80px; }
+  .footer-col { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (min-width: 600px) and (max-width: 900px) { .carousel { grid-auto-columns: calc((100% - 20px) / 2); } }
+@media (min-width: 601px) and (max-width: 1023px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } .stat-num { font-size: clamp(48px, 7vw, 72px); } }
+/* Rennkalender auf dem Handy: jede Veranstaltung als Karte statt breiter Tabelle */
+@media (max-width: 700px) {
+  .kal-box { background: transparent; border: 0; overflow: visible; }
+  .kal-box .table thead { display: none; }
+  .kal-box .table, .kal-box .table tbody { display: block; width: 100%; min-width: 0; }
+  .kal-box .table tr { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px 10px; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .kal-box .table td { display: block; padding: 0; border: 0; min-width: 0; }
+  .kal-box .k-date { grid-column: 1 / 3; font-weight: 700; }
+  .kal-box .k-status { grid-column: 3 / 5; justify-self: end; text-align: right; }
+  .kal-box .k-track { grid-column: 1 / -1; font-size: 18px; }
+  .kal-box .k-serie { grid-column: 1 / -1; color: var(--muted); font-size: 14px; order: 3; }
+  .kal-box .k-res { order: 4; font-size: 14px; }
+  .kal-box .k-res::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .kal-box .k-date, .kal-box .k-status { order: 1; }
+  .kal-box .k-track { order: 2; }
+}
+@media (max-width: 700px) { .kal-box .table tr.no-res .k-res { display: none; } }
+@media (pointer: coarse) { header a[data-set-lang] { display: inline-flex; align-items: center; min-height: 44px; min-width: 32px; justify-content: center; } }

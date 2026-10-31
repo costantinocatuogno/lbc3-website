@@ -224,10 +224,10 @@ export function kalender(lang, ctx) {
   const lastDate = (s) => c.rennen.filter((r) => Number(r.saison) === s).map((r) => String(r.start || '').slice(0, 10)).sort().pop() || '';
   const current = seasons.find((s) => lastDate(s) >= today) || seasons[seasons.length - 1];
   const rows = (s) => c.rennen.filter((r) => Number(r.saison) === s).sort((a, b) => String(a.start).localeCompare(String(b.start))).map((r) => `
-    <tr${r.status === 'nicht_gefahren' ? ' class="is-dns"' : ''}>
-      <td>${formatDate(r.start, lang)}</td><td>${esc(r.serie)}</td><td><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(_(`land_${r.land}`) === `land_${r.land}` ? r.land : _(`land_${r.land}`))}</span>` : ''}</td>
-      <td>${esc(r.qualifying || '–')}</td><td>${esc(r.heat1 || '–')}</td><td>${esc(r.heat2 || '–')}</td><td class="red strong">${r.finale ? `P${esc(r.finale)}` : '–'}</td>
-      <td><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'angemeldet' ? 'is-reg' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? (lang !== 'de' && r[`grund_${lang}`]) || r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
+    <tr class="${r.status === 'nicht_gefahren' ? 'is-dns' : ''}${!r.qualifying && !r.heat1 && !r.heat2 && !r.finale ? ' no-res' : ''}">
+      <td class="k-date">${formatDate(r.start, lang)}</td><td class="k-serie">${esc(r.serie)}</td><td class="k-track"><strong>${esc(r.strecke)}</strong>${r.land ? `<span class="muted small"> · ${esc(_(`land_${r.land}`) === `land_${r.land}` ? r.land : _(`land_${r.land}`))}</span>` : ''}</td>
+      <td class="k-res" data-label="${_('col_quali')}">${esc(r.qualifying || '–')}</td><td class="k-res" data-label="${_('col_heat1')}">${esc(r.heat1 || '–')}</td><td class="k-res" data-label="${_('col_heat2')}">${esc(r.heat2 || '–')}</td><td class="k-res red strong" data-label="${_('col_final')}">${r.finale ? `P${esc(r.finale)}` : '–'}</td>
+      <td class="k-status"><span class="status ${r.status === 'bevorstehend' ? 'is-next' : r.status === 'angemeldet' ? 'is-reg' : r.status === 'nicht_gefahren' ? 'is-dns' : ''}">${_(`st_${r.status}`)}</span>${r.status === 'nicht_gefahren' && r.grund ? `<span class="muted small status-why">${esc(_(`grund_${r.grund}`) === `grund_${r.grund}` ? (lang !== 'de' && r[`grund_${lang}`]) || r.grund : _(`grund_${r.grund}`))}</span>` : ''}</td>
     </tr>`).join('');
   const body = `
 ${pageHead('/on-track', _('kal_title'))}
@@ -238,7 +238,7 @@ ${pageHead('/on-track', _('kal_title'))}
     <div class="pill-row">${[...seasons].reverse().map((s) => `<button type="button" class="pill${s === current ? ' is-active' : ''}" data-season="${s}" data-season-end="${lastDate(s)}" aria-pressed="${s === current}">${s}</button>`).join('')}</div>
   </div>
   ${seasons.map((s) => `
-  <div class="table-box" data-season-panel="${s}"${s === current ? '' : ' hidden'}>
+  <div class="table-box kal-box" data-season-panel="${s}"${s === current ? '' : ' hidden'}>
     <table class="table">
       <thead><tr><th>${_('col_date')}</th><th>${_('col_series')}</th><th>${_('col_track')}</th><th>${_('col_quali')}</th><th>${_('col_heat1')}</th><th>${_('col_heat2')}</th><th>${_('col_final')}</th><th>${_('col_status')}</th></tr></thead>
       <tbody>${rows(s)}</tbody>
