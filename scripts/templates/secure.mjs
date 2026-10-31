@@ -306,6 +306,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
           <button type="button" class="btn btn-red" data-publish>Wall of Fame veröffentlichen</button>
           <a class="btn btn-outline" href="/wall-of-fame/druck/" target="_blank">Wall of Fame drucken</a>
           <button type="button" class="btn btn-outline" data-export>CSV</button>
+          <button type="button" class="btn btn-outline" data-wochenbericht>Wochenbericht jetzt senden</button>
         </div>
       </div>
       <div class="kpis small-kpis">
@@ -314,7 +315,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <div class="kpi"><span>Unterstützer</span><strong data-sk="unterstuetzer">–</strong></div>
         <div class="kpi"><span>Fotos warten auf Prüfung</span><strong data-sk="pruefen">–</strong></div>
       </div>
-      <div class="note-box">So läuft’s: Anmeldung → E-Mail-Bestätigung (unter 16: durch die Eltern) → ihr prüft das Foto → „Wall of Fame veröffentlichen“. Namen erscheinen als Vorname + Initiale. Fotos nur, wenn ihr sie freigebt. „Ausblenden“ nimmt jemanden von der Wall, ohne die Anmeldung zu löschen.</div>
+      <div class="note-box">So läuft’s: Anmeldung → E-Mail-Bestätigung (unter 16: durch die Eltern) → ihr prüft das Foto → „Wall of Fame veröffentlichen“. Namen erscheinen als Vorname + Initiale. Fotos nur, wenn ihr sie freigebt. „Ausblenden“ nimmt jemanden von der Wall, ohne die Anmeldung zu löschen. Jeden Sonntagmorgen kommt automatisch ein Wochenbericht mit den neuen Mitgliedern und dem Text für den Instagram-Post per E-Mail.</div>
       <div class="row mt">
         <div class="pill-row compact" data-sfilter>
           <button type="button" class="pill is-active" data-f="alle">Alle</button>

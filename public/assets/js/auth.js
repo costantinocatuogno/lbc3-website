@@ -335,6 +335,19 @@
       };
       tabs.forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
 
+      /* ----- Squadra-Wochenbericht sofort senden ----- */
+      $('[data-wochenbericht]').addEventListener('click', async (ev) => {
+        const btn = ev.currentTarget; btn.disabled = true;
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          const res = await fetch('/api/squadra-wochenbericht', { method: 'POST', headers: { Authorization: `Bearer ${session ? session.access_token : token()}` } });
+          const j = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(j.error || `Fehler ${res.status}`);
+          showMsg(`Wochenbericht verschickt (${j.info}).`);
+        } catch (e) { showMsg('Senden fehlgeschlagen: ' + e.message, true); }
+        btn.disabled = false;
+      });
+
       /* ----- Partner-Klicks ----- */
       const QUELLE = { laufband: 'Laufband', partnerseite: 'Partner-Seite', wall: 'Partner-Wall', 'wall-instagram': 'Wall · Instagram', 'wall-facebook': 'Wall · Facebook', 'wall-linkedin': 'Wall · LinkedIn', 'wall-tiktok': 'Wall · TikTok', 'wall-youtube': 'Wall · YouTube', sonstige: 'Sonstige' };
       let klickDaten = null;
