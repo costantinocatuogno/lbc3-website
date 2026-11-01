@@ -6,7 +6,7 @@
   "titelbild": "/uploads/ampfing-2026/zweikampf-reifenmauer.jpg",
   "teaser": "Harte Zweikämpfe, heiße Temperaturen und ein volles Feld: So lief das Rennwochenende in Ampfing für die Nummer 3.",
   "highlight": true,
-  "entwurf": false,
+  "entwurf": true,
   "galerie": [
     "/uploads/ampfing-2026/startaufstellung.jpg",
     "/uploads/ampfing-2026/mitten-im-feld.jpg",
@@ -31,6 +31,7 @@
     "_quelle": "6073490c8d45"
   }
 }
+
 
 Harte Zweikämpfe, heiße Temperaturen und ein volles Feld: Das Wochenende der ADAC Kart Masters in Ampfing war für Luigi eine echte Bewährungsprobe.
 
