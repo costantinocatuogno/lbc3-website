@@ -46,7 +46,7 @@ Training ist das eine, ein Rennwochenende etwas ganz anderes. Beim Auftakt in Ur
 
 ## Trocken, nass und alles dazwischen
 
-In Bopfingen zeigte sich im Juni 2025 das Wetter von allen Seiten. Auf trockener Strecke ging es ans Limit, im Regen brauchte es Gefühl und volle Konzentration. Gegen 22 Konkurrenten fuhr Luigi im ersten Lauf auf Platz 13 und holte Punkte, in der Tageswertung wurde er Fünfzehnter.
+In Bopfingen zeigte sich im Juni 2025 das Wetter von allen Seiten. Auf trockener Strecke ging es ans Limit, im Regen brauchte es Gefühl und volle Konzentration. Gegen 22 Konkurrenten fuhr Luigi im ersten Lauf auf Platz 13. In der Tageswertung wurde er Fünfzehnter und nahm 3 Meisterschaftspunkte mit nach Hause.
 
 ## Hinschauen und lernen
 
