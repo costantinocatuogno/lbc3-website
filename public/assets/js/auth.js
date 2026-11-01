@@ -677,6 +677,21 @@
       const initialsOf = (n) => String(n || '?').trim().split(/\s+/).slice(0, 2).map((x) => x[0] || '').join('').toUpperCase();
       const zoom = (src) => { const d = document.createElement('div'); d.className = 'photo-zoom'; d.innerHTML = `<img src="${escapeHtml(src)}" alt="">`; d.addEventListener('click', () => d.remove()); document.body.appendChild(d); };
 
+      // Steht der Eintrag öffentlich auf der Wall? (bestätigt, Wall gewünscht, nicht ausgeblendet; ein Foto erst nach Freigabe)
+      const onWall = (r) => !!(r && r.optin_bestaetigt && r.wand_optin && !r.ausgeblendet);
+      // Automatisch veröffentlichen (Wunsch 01.11.2026): sobald Mitgliedschaft und Foto bestätigt sind – und ebenso,
+      // wenn ein Eintrag der Wall sich ändert (Foto gesperrt, ausgeblendet, umbenannt, gelöscht). Mehrere Klicks kurz
+      // hintereinander lösen nur einen Neubau aus.
+      let pubTimer = null;
+      const autoPublish = (msg) => {
+        clearTimeout(pubTimer);
+        showMsg(msg + ' Wird automatisch veröffentlicht – in ca. 1–2 Minuten ist die Wall of Fame aktuell.');
+        pubTimer = setTimeout(async () => {
+          try { await api('/api/wall-publish', {}); }
+          catch (err) { showMsg('Automatisches Veröffentlichen fehlgeschlagen: ' + err.message + ' – bitte „Wall of Fame veröffentlichen“ klicken.', true); }
+        }, 4000);
+      };
+
       const renderSquadra = async () => {
         const q = ($('[data-ssearch]').value || '').toLowerCase();
         const list = squadra.filter((r) => {
@@ -753,12 +768,15 @@
           if (!confirm(`${r.name} endgültig löschen (z. B. auf Wunsch der Person oder der Eltern)? Das Foto wird ebenfalls gelöscht.`)) return;
           if (r.foto_pfad) await sb.storage.from('squadra').remove([r.foto_pfad]);
           const { error } = await sb.from('squadra_tre').delete().eq('id', id);
-          if (error) showMsg('Löschen fehlgeschlagen.', true); else { showMsg('Gelöscht. Mit „Wall of Fame veröffentlichen“ verschwindet der Eintrag auch von der Website.'); loadSquadra(); }
+          if (error) showMsg('Löschen fehlgeschlagen.', true);
+          else { if (onWall(r)) autoPublish('Gelöscht.'); else showMsg('Gelöscht.'); loadSquadra(); }
           return;
         }
         const { error } = await sb.from('squadra_tre').update(patch).eq('id', id);
         if (error) { showMsg('Fehler: ' + error.message, true); return; }
-        showMsg('Gespeichert. Mit „Wall of Fame veröffentlichen“ geht es online.');
+        const neu = { ...r, ...patch };
+        if (onWall(r) || onWall(neu)) autoPublish(btn.dataset.act === 'foto' && neu.foto_freigegeben ? 'Foto freigegeben.' : 'Gespeichert.');
+        else showMsg(r.optin_bestaetigt ? 'Gespeichert. (Keine Wall gewünscht – nichts zu veröffentlichen.)' : 'Gespeichert. Online geht der Eintrag automatisch, sobald die Person ihre E-Mail bestätigt hat.');
         loadSquadra();
       });
 
@@ -791,7 +809,7 @@
             await sb.from('squadra_tre').update({ foto_pfad: path, foto_freigegeben: true }).eq('id', data.id);
           }
           f.reset(); afBlob = null; $('[data-af-preview]').textContent = 'Foto';
-          showMsg('Hinzugefügt. Mit „Wall of Fame veröffentlichen“ erscheint der Eintrag online.');
+          autoPublish('Hinzugefügt.');
           loadSquadra();
         } catch (err) { showMsg('Hinzufügen fehlgeschlagen: ' + err.message, true); }
       });
