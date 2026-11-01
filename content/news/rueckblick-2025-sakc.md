@@ -7,6 +7,7 @@
   "teaser": "2025 fuhr Luigi seine erste Meisterschaft – im Süddeutschen ADAC Kart Cup. Was er aus seinem Rookie-Jahr mitgenommen hat.",
   "highlight": false,
   "entwurf": false,
+  "neu_uebersetzen": true,
   "galerie": [
     "/uploads/galerie/sakc-bopfingen-2025-03.jpg",
     "/uploads/galerie/sakc-bopfingen-2025-08.jpg",
