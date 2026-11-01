@@ -38,15 +38,15 @@
   }
 }
 
-Im Juni 2024 saß Luigi zum ersten Mal in seinem eigenen Kart. Nicht einmal ein Jahr später stand er am Start seiner ersten Meisterschaft: 2025 fuhr er in der Mini-Klasse im Süddeutschen ADAC Kart Cup (SAKC) und in der Südbadischen ADAC-Meisterschaft. Ein echtes Rookie-Jahr – mit allem, was dazugehört.
+Im Juni 2024 saß Luigi zum ersten Mal in seinem eigenen Kart. Nicht einmal ein Jahr später stand er am Start seiner ersten Meisterschaft: 2025 fuhr er in der Mini-Klasse im Süddeutschen ADAC Kart Cup (SAKC) und in der Südbadischen ADAC-Meisterschaft. Fünf SAKC-Rennwochenenden – Urloffen, Liedolsheim, Bopfingen, Ampfing und Wackersdorf. Ein echtes Rookie-Jahr, mit allem, was dazugehört.
 
 ## Rennen fahren lernen
 
-Training ist das eine, ein Rennwochenende etwas ganz anderes. Im SAKC lernte Luigi, wie ein Renntag abläuft – vom ersten Training bis zum Finale. Dazu die Startphase, wenn sich das ganze Feld in die erste Kurve drängt, und die Zweikämpfe Rad an Rad. Vieles davon kann man nicht üben. Man muss es erleben.
+Training ist das eine, ein Rennwochenende etwas ganz anderes. Beim Auftakt in Urloffen im April standen 20 Fahrer in der Mini am Start, später in Ampfing und Wackersdorf waren es mehr als 30. Im SAKC lernte Luigi, wie ein Renntag abläuft – freies Training, Zeittraining, zwei Rennläufe. Dazu die Startphase, wenn sich das ganze Feld in die erste Kurve drängt, und die Zweikämpfe Rad an Rad. Vieles davon kann man nicht üben. Man muss es erleben.
 
 ## Trocken, nass und alles dazwischen
 
-In Bopfingen zeigte sich im Juni 2025 das Wetter von allen Seiten. Auf trockener Strecke ging es ans Limit, im Regen brauchte es Gefühl und volle Konzentration. Luigi belegte dort Platz 15 – in einem Feld, in dem viele Fahrer schon mehrere Jahre Erfahrung hatten. Genau an ihnen wollte er sich messen.
+In Bopfingen zeigte sich im Juni 2025 das Wetter von allen Seiten. Auf trockener Strecke ging es ans Limit, im Regen brauchte es Gefühl und volle Konzentration. Gegen 22 Konkurrenten fuhr Luigi im ersten Lauf auf Platz 13 und holte Punkte, in der Tageswertung wurde er Fünfzehnter.
 
 ## Hinschauen und lernen
 
@@ -54,10 +54,12 @@ Zwischen den Läufen stand Luigi oft am Zaun und schaute zu: Wo bremsen die ande
 
 ## Die Bilanz
 
-Am Ende stand Platz 12 in der Südbadischen ADAC-Meisterschaft. Wichtiger als jede Zahl war aber, was Luigi mitgenommen hat: Erfahrung bei Starts und in Zweikämpfen, auf trockener und auf nasser Strecke, und den Blick dafür, was die Schnellen besser machen. Und die Gewissheit, dass er genau hierhin gehört.
+In der Gesamtwertung des SAKC stand am Ende Platz 20 von 24 gewerteten Fahrern, mit 8 Punkten. In der Südbadischen ADAC-Meisterschaft wurde Luigi Zwölfter. Wichtiger als jede Zahl war aber, was er mitgenommen hat: Erfahrung bei Starts und in Zweikämpfen, auf trockener und auf nasser Strecke, in großen Feldern – und den Blick dafür, was die Schnellen besser machen. Und die Gewissheit, dass er genau hierhin gehört.
 
 ## Und dann kam 2026
 
 Wie viel diese erste Saison wert war, zeigte sich ein Jahr später: 2026 wurde Luigi Vizemeister der ADAC Kart Masters in der Mini B. Auch im SAKC ging es nach vorn – in Bopfingen verbesserte er sich von Platz 15 auf Platz 11. Die erste Saison war das Fundament. Jetzt geht es Runde für Runde weiter.
 
 Forza #LBC3!
+
+*Alle Ergebnisse der Saison 2025: [sakc.de – Saison 2025](https://www.sakc.de/saison-2025/) · [Gesamtwertung Mini (PDF)](https://www.sakc.de/wp-content/uploads/2025/09/Punkte-SAKC-2025-Mini.pdf)*
