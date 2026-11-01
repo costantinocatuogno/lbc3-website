@@ -36,7 +36,10 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-theorie.jpg",
       "text": "Theorie-Unterricht: Regeln und richtiges Verhalten auf der Strecke",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Lezioni di teoria: regole e comportamento corretto in pista",
+      "text_en": "Theory Lessons: Rules and Proper Behavior on the Track",
+      "text_fr": "Cours théorique : règles et comportement correct sur le parcours"
     },
     {
       "kategorie": "strecke",
@@ -51,7 +54,10 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-auf-zur-strecke.jpg",
       "text": "Gemeinsam auf dem Weg zur Strecke",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Insieme sulla strada per il percorso",
+      "text_en": "Together on the way to the track",
+      "text_fr": "Ensemble sur le chemin de la piste"
     },
     {
       "kategorie": "strecke",
@@ -65,7 +71,10 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-technik.jpg",
       "text": "Die Techniker bereiten die Karts vor",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "I tecnici preparano i kart",
+      "text_en": "The technicians prepare the karts",
+      "text_fr": "Les techniciens préparent les karts"
     },
     {
       "kategorie": "fahrerlager",
@@ -89,19 +98,28 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-im-zelt.jpg",
       "text": "Im Fahrerzelt vor dem Training",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Nella tenda del conducente prima dell'allenamento",
+      "text_en": "In the driver's tent before training",
+      "text_fr": "Dans la tente du conducteur avant l'entraînement"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-instruktor.jpg",
       "text": "Die Instruktoren helfen bei der Vorbereitung",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Gli istruttori aiutano nella preparazione",
+      "text_en": "The instructors help to prepare",
+      "text_fr": "Les instructeurs aident à la préparation"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-fahrerzelt.jpg",
       "text": "Letzte Handgriffe im Fahrerzelt",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Ultime manovre nella tenda del conducente",
+      "text_en": "Final touches in the driver's tent",
+      "text_fr": "Dernières manipulations dans la tente du conducteur"
     },
     {
       "kategorie": "fahrerlager",
@@ -125,13 +143,19 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-startaufstellung.jpg",
       "text": "Aufstellung vor dem Turn",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Installazione prima del turn",
+      "text_en": "Installation before the turn",
+      "text_fr": "Installation avant la gymnastique"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-warten-auf-start.jpg",
       "text": "Warten auf das Signal",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Attendere il segnale",
+      "text_en": "Waiting for the signal",
+      "text_fr": "En attente du signal"
     },
     {
       "kategorie": "fahrerlager",
@@ -218,7 +242,10 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-jubel.jpg",
       "text": "Jubel am Zaun",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Esultanza sulla recinzione",
+      "text_en": "Cheering on the fence",
+      "text_fr": "Acclamation sur la clôture"
     },
     {
       "kategorie": "strecke",
@@ -232,7 +259,10 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-staff.jpg",
       "text": "Das Team der Scuola Federale ACI Sport",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Lo staff della Scuola Federale ACI Sport",
+      "text_en": "The team of the Scuola Federale ACI Sport",
+      "text_fr": "L'équipe de la Scuola Federale ACI Sport"
     },
     {
       "kategorie": "fahrerlager",
@@ -254,18 +284,27 @@
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-urkunden.jpg",
-      "text": "Stolz auf die Urkunden"
+      "text": "Stolz auf die Urkunden",
+      "text_it": "Orgogliosi degli atti",
+      "text_en": "Proud of the certificates",
+      "text_fr": "Fier des actes"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-gruppenfoto.jpg",
       "text": "Gruppenfoto mit allen Teilnehmern und Instruktoren",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Foto di gruppo con tutti i partecipanti e gli istruttori",
+      "text_en": "Group photo with all participants and instructors",
+      "text_fr": "Photo de groupe avec tous les participants et instructeurs"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-gruppenfoto-2.jpg",
-      "text": "Alle Teilnehmer mit ihren Urkunden"
+      "text": "Alle Teilnehmer mit ihren Urkunden",
+      "text_it": "Tutti i partecipanti con i loro certificati",
+      "text_en": "All participants with their certificates",
+      "text_fr": "Tous les participants avec leurs certificats"
     }
   ],
   "it": {
