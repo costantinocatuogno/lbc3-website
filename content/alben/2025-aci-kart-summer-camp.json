@@ -33,6 +33,12 @@
       "text_fr": "Remise du matériel"
     },
     {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-theorie.jpg",
+      "text": "Theorie-Unterricht: Regeln und richtiges Verhalten auf der Strecke",
+      "fotograf": "Scuola Federale ACI Sport"
+    },
+    {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-pista-salentina.jpg",
       "text": "Die Pista Salentina in Ugento",
@@ -40,6 +46,12 @@
       "text_it": "La Pista Salentina a Ugento",
       "text_en": "The Pista Salentina in Ugento",
       "text_fr": "La Pista Salentina à Ugento"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-auf-zur-strecke.jpg",
+      "text": "Gemeinsam auf dem Weg zur Strecke",
+      "fotograf": "Scuola Federale ACI Sport"
     },
     {
       "kategorie": "strecke",
@@ -51,12 +63,45 @@
     },
     {
       "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-technik.jpg",
+      "text": "Die Techniker bereiten die Karts vor",
+      "fotograf": "Scuola Federale ACI Sport"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-tony-kart-team.jpg",
+      "text": "Das Tony-Kart-Technikteam des Camps",
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Il team tecnico Tony Kart del campo",
+      "text_en": "The camp's Tony Kart technical team",
+      "text_fr": "L'équipe technique Tony-Kart du camp"
+    },
+    {
+      "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-tony-karts-bereit.jpg",
       "text": "Die Tony Karts stehen bereit",
       "fotograf": "Scuola Federale ACI Sport",
       "text_it": "I Tony Kart sono pronti",
       "text_en": "The Tony Karts are ready",
       "text_fr": "Les karts Tony sont prêts"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-im-zelt.jpg",
+      "text": "Im Fahrerzelt vor dem Training",
+      "fotograf": "Scuola Federale ACI Sport"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-instruktor.jpg",
+      "text": "Die Instruktoren helfen bei der Vorbereitung",
+      "fotograf": "Scuola Federale ACI Sport"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-fahrerzelt.jpg",
+      "text": "Letzte Handgriffe im Fahrerzelt",
+      "fotograf": "Scuola Federale ACI Sport"
     },
     {
       "kategorie": "fahrerlager",
@@ -75,6 +120,18 @@
       "text_it": "Concentrazione prima del prossimo turno",
       "text_en": "Concentration before the next turn",
       "text_fr": "Concentration avant le prochain tour"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-startaufstellung.jpg",
+      "text": "Aufstellung vor dem Turn",
+      "fotograf": "Scuola Federale ACI Sport"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-warten-auf-start.jpg",
+      "text": "Warten auf das Signal",
+      "fotograf": "Scuola Federale ACI Sport"
     },
     {
       "kategorie": "fahrerlager",
@@ -159,12 +216,9 @@
     },
     {
       "kategorie": "fahrerlager",
-      "bild": "/uploads/galerie/ksc-2025-tony-kart-team.jpg",
-      "text": "Das Tony-Kart-Technikteam des Camps",
-      "fotograf": "Scuola Federale ACI Sport",
-      "text_it": "Il team tecnico Tony Kart del campo",
-      "text_en": "The camp's Tony Kart technical team",
-      "text_fr": "L'équipe technique Tony-Kart du camp"
+      "bild": "/uploads/galerie/ksc-2025-jubel.jpg",
+      "text": "Jubel am Zaun",
+      "fotograf": "Scuola Federale ACI Sport"
     },
     {
       "kategorie": "strecke",
@@ -173,6 +227,12 @@
       "text_it": "Qui si disputano anche i Campionati Italiani ACI",
       "text_en": "The Italian ACI Championships are also held here",
       "text_fr": "C'est aussi ici que se déroulent les championnats italiens ACI"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-staff.jpg",
+      "text": "Das Team der Scuola Federale ACI Sport",
+      "fotograf": "Scuola Federale ACI Sport"
     },
     {
       "kategorie": "fahrerlager",
@@ -190,6 +250,22 @@
       "text_it": "Cerimonia di chiusura con gli istruttori",
       "text_en": "Graduation ceremony with the instructors",
       "text_fr": "Cérémonie de clôture avec les instructeurs"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-urkunden.jpg",
+      "text": "Stolz auf die Urkunden"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-gruppenfoto.jpg",
+      "text": "Gruppenfoto mit allen Teilnehmern und Instruktoren",
+      "fotograf": "Scuola Federale ACI Sport"
+    },
+    {
+      "kategorie": "fahrerlager",
+      "bild": "/uploads/galerie/ksc-2025-gruppenfoto-2.jpg",
+      "text": "Alle Teilnehmer mit ihren Urkunden"
     }
   ],
   "it": {
