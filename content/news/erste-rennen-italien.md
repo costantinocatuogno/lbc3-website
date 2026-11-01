@@ -28,8 +28,7 @@
     "text": "L'Italie est le cœur du karting. C'est ici que se trouvent les principaux fabricants de châssis et de moteurs, et c'est ici que se réunissent chaque année les meilleurs jeunes pilotes du monde. Pour Luigi, avec ses racines italiennes, c'est plus qu'un nouveau chapitre – c'est un morceau de patrie sur le circuit.\n\n## Le plan pour 2027\n\nEn 2027, Luigi veut courir ses premières courses internationales en Italie – en plus du championnat allemand de karting (DKM) et de l'ADAC Kart Masters. De grands champs, une concurrence internationale et des itinéraires qui sont pour lui un nouveau terrain : c'est là qu'il veut apprendre et se mesurer aux meilleurs. Les courses et les itinéraires exacts ne sont pas encore déterminés.\n\n## Déjà reniflé l'air italien\n\nL'Italie n'est pas nouvelle pour Luigi. Lors du camp d'été de karting ACI pour les plus jeunes pilotes, il a vu des professionnels se préparer – sur la piste, dans la tête et en équipe. Il emporte cette expérience avec lui dans sa première saison internationale.\n\n## L'objectif\n\nLors des premières courses en Italie, une chose compte avant tout : acquérir de l'expérience et utiliser chaque virage pour aller plus vite. Dès que les dates sont fixées, vous les trouverez ici dans le calendrier des courses.\n\nForza #LBC3! 🇩🇪🇮🇹",
     "_auto": "44971602a82b",
     "_quelle": "63a6072989eb"
-  },
-  "uebersetzung_hinweis": "Fachbegriff prüfen (it): „Chassis“ sollte „telaio“ heißen – in „Italien ist das Herz des Kartsports. Hier sitzen d…“"
+  }
 }
 
 Italien ist das Herz des Kartsports. Hier sitzen die großen Chassis- und Motorenhersteller, und hier treffen sich jedes Jahr die besten Nachwuchsfahrer der Welt. Für Luigi mit seinen italienischen Wurzeln ist das mehr als nur ein neues Kapitel – es ist ein Stück Heimat auf der Rennstrecke.

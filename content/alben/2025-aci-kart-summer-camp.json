@@ -11,122 +11,200 @@
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-fahrerkarte-8.jpg",
       "text": "Startnummer 8 in der Mini – die Fahrerkarte der Scuola Federale",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Numero di partenza 8 nella mini – la carta del conducente della Scuola Federale",
+      "text_en": "Start number 8 in the mini – the driver's card of the Scuola Federale",
+      "text_fr": "Numéro de départ 8 dans la mini – la carte de conducteur de la Scuola Federale"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-ausruestung.jpg",
-      "text": "Ankunft: die persönliche Sparco-Ausrüstung mit Luigis Namen"
+      "text": "Ankunft: die persönliche Sparco-Ausrüstung mit Luigis Namen",
+      "text_it": "Arrivo: l'attrezzatura personale Sparco con il nome di Luigi",
+      "text_en": "Arrival: the personal Sparco equipment with Luigi's name",
+      "text_fr": "Arrivée : l'équipement personnel Sparco portant le nom de Luigi"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-ausruestung-uebergabe.jpg",
-      "text": "Übergabe der Ausrüstung"
+      "text": "Übergabe der Ausrüstung",
+      "text_it": "Consegna dell'attrezzatura",
+      "text_en": "Handover of the equipment",
+      "text_fr": "Remise du matériel"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-pista-salentina.jpg",
       "text": "Die Pista Salentina in Ugento",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "La Pista Salentina a Ugento",
+      "text_en": "The Pista Salentina in Ugento",
+      "text_fr": "La Pista Salentina à Ugento"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-auf-dem-weg-zur-strecke.jpg",
-      "text": "Mit Instruktor auf dem Weg zur Strecke"
+      "text": "Mit Instruktor auf dem Weg zur Strecke",
+      "text_it": "Con l'istruttore sulla strada per il percorso",
+      "text_en": "With instructor on the way to the track",
+      "text_fr": "Avec un instructeur sur le chemin de la piste"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-tony-karts-bereit.jpg",
       "text": "Die Tony Karts stehen bereit",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "I Tony Kart sono pronti",
+      "text_en": "The Tony Karts are ready",
+      "text_fr": "Les karts Tony sont prêts"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-vorbereitung.jpg",
       "text": "Handschuhe an – gleich geht es raus",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Indossare i guanti – si esce subito",
+      "text_en": "Gloves on – you're about to go out",
+      "text_fr": "Portez des gants – c'est parti"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-portraet.jpg",
       "text": "Konzentration vor dem nächsten Turn",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Concentrazione prima del prossimo turno",
+      "text_en": "Concentration before the next turn",
+      "text_fr": "Concentration avant le prochain tour"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-helm-auf.jpg",
       "text": "Helm auf in der Startaufstellung",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Casco in posizione di partenza",
+      "text_en": "Helmet on in the starting grid",
+      "text_fr": "Casque sur la grille de départ"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-briefing.jpg",
       "text": "Briefing an der Strecke mit den Instruktoren",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Briefing in pista con gli istruttori",
+      "text_en": "Briefing at the track with the instructors",
+      "text_fr": "Briefing sur le parcours avec les instructeurs"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-kurve-nummer-8.jpg",
       "text": "Nummer 8 am Kurvenausgang",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Numero 8 all'uscita della curva",
+      "text_en": "Number 8 at the corner exit",
+      "text_fr": "Numéro 8 à la sortie courbe"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-verfolgung.jpg",
       "text": "Auf der Jagd durch die Kurve",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "A caccia attraverso la curva",
+      "text_en": "Hunting through the bend",
+      "text_fr": "À la chasse dans les virages"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-im-feld.jpg",
       "text": "Mitten im Feld",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "In mezzo al campo",
+      "text_en": "At the very heart of ",
+      "text_fr": "au milieu du"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-auf-der-strecke.jpg",
       "text": "Runde um Runde auf der Pista Salentina",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Giro a giro sulla Pista Salentina",
+      "text_en": "Round by round on the Pista Salentina",
+      "text_fr": "Tour après tour sur la Pista Salentina"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-im-zweikampf.jpg",
       "text": "Dicht dran",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Tenuta su di esso",
+      "text_en": "Close by",
+      "text_fr": "À portée de main"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-start.jpg",
       "text": "Start zur Rennsimulation",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Inizio della simulazione di gara",
+      "text_en": "Start to race simulation",
+      "text_fr": "Démarrage de la simulation de course"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-am-zaun.jpg",
       "text": "Am Zaun: zuschauen und von den anderen lernen",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Alla recinzione: guarda e impara dagli altri",
+      "text_en": "At the fence: watching and learning from the others",
+      "text_fr": "Sur la clôture : regarder et apprendre des autres"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-tony-kart-team.jpg",
       "text": "Das Tony-Kart-Technikteam des Camps",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Il team tecnico Tony Kart del campo",
+      "text_en": "The camp's Tony Kart technical team",
+      "text_fr": "L'équipe technique Tony-Kart du camp"
     },
     {
       "kategorie": "strecke",
       "bild": "/uploads/galerie/ksc-2025-aci-sport.jpg",
-      "text": "Hier fahren auch die Italienischen ACI-Meisterschaften"
+      "text": "Hier fahren auch die Italienischen ACI-Meisterschaften",
+      "text_it": "Qui si disputano anche i Campionati Italiani ACI",
+      "text_en": "The Italian ACI Championships are also held here",
+      "text_fr": "C'est aussi ici que se déroulent les championnats italiens ACI"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-urkunde.jpg",
       "text": "Geschafft: die Urkunde zum 12. Kart Summer Camp",
-      "fotograf": "Scuola Federale ACI Sport"
+      "fotograf": "Scuola Federale ACI Sport",
+      "text_it": "Fatto: l'atto per il 12° Kart Summer Camp",
+      "text_en": "Done: the certificate for the 12th Kart Summer Camp",
+      "text_fr": "Fait : l'acte pour le 12ème camp d'été de karting"
     },
     {
       "kategorie": "fahrerlager",
       "bild": "/uploads/galerie/ksc-2025-abschluss.jpg",
-      "text": "Abschlussfeier mit den Instruktoren"
+      "text": "Abschlussfeier mit den Instruktoren",
+      "text_it": "Cerimonia di chiusura con gli istruttori",
+      "text_en": "Graduation ceremony with the instructors",
+      "text_fr": "Cérémonie de clôture avec les instructeurs"
     }
-  ]
+  ],
+  "it": {
+    "titel": "12. ACI Kart Summer Camp 2025",
+    "serie": "ACI Kart Summer Camp",
+    "strecke": "Pista Salentina"
+  },
+  "en": {
+    "titel": "12. ACI Kart Summer Camp 2025",
+    "serie": "ACI Kart Summer Camp",
+    "strecke": "Pista Salentina"
+  },
+  "fr": {
+    "titel": "12. ACI Kart Summer Camp 2025",
+    "serie": "ACI Kart Summer Camp",
+    "strecke": "Pista Salentina"
+  }
 }
