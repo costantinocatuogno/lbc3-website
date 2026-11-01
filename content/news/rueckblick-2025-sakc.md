@@ -5,8 +5,8 @@
   "kategorie": "Rennen",
   "titelbild": "/uploads/galerie/sakc-bopfingen-2025-10.jpg",
   "teaser": "2025 fuhr Luigi seine erste Meisterschaft – im Süddeutschen ADAC Kart Cup. Was er aus seinem Rookie-Jahr mitgenommen hat.",
-  "highlight": true,
-  "entwurf": true,
+  "highlight": false,
+  "entwurf": false,
   "galerie": [
     "/uploads/galerie/sakc-bopfingen-2025-03.jpg",
     "/uploads/galerie/sakc-bopfingen-2025-08.jpg",
@@ -38,6 +38,7 @@
   },
   "uebersetzung_hinweis": "Fachbegriff prüfen (fr): „Rennwochenende“ sollte „week-end de course“ heißen – in „Im Juni 2024 saß Luigi zum ersten Mal in seinem ei…“"
 }
+
 
 Im Juni 2024 saß Luigi zum ersten Mal in seinem eigenen Kart. Nicht einmal ein Jahr später stand er am Start seiner ersten Meisterschaft: 2025 fuhr er in der Mini-Klasse im Süddeutschen ADAC Kart Cup (SAKC) und in der Südbadischen ADAC-Meisterschaft. Fünf SAKC-Rennwochenenden – Urloffen, Liedolsheim, Bopfingen, Ampfing und Wackersdorf. Ein echtes Rookie-Jahr, mit allem, was dazugehört.
 
