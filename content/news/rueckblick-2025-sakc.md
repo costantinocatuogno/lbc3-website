@@ -36,9 +36,8 @@
     "_auto": "c4610a609d65",
     "_quelle": "87a2b6336fd3"
   },
-  "uebersetzung_hinweis": "Fachbegriff prüfen (fr): „Rennwochenende“ sollte „week-end de course“ heißen – in „Im Juni 2024 saß Luigi zum ersten Mal in seinem ei…“"
+  "uebersetzung_hinweis": "(it): Das Original wurde geändert, die Übersetzung ist von Hand angepasst – bitte prüfen oder „Neu übersetzen“ anhaken. · (en): Das Original wurde geändert, die Übersetzung ist von Hand angepasst – bitte prüfen oder „Neu übersetzen“ anhaken. · (fr): Das Original wurde geändert, die Übersetzung ist von Hand angepasst – bitte prüfen oder „Neu übersetzen“ anhaken."
 }
-
 
 Im Juni 2024 saß Luigi zum ersten Mal in seinem eigenen Kart. Nicht einmal ein Jahr später stand er am Start seiner ersten Meisterschaft: 2025 fuhr er in der Mini-Klasse im Süddeutschen ADAC Kart Cup (SAKC) und in der Südbadischen ADAC-Meisterschaft. Fünf SAKC-Rennwochenenden – Urloffen, Liedolsheim, Bopfingen, Ampfing und Wackersdorf. Ein echtes Rookie-Jahr, mit allem, was dazugehört.
 
