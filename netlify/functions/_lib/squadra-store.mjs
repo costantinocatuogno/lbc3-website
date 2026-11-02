@@ -1,8 +1,10 @@
 // Squadra Tre – Ablage in Netlify Blobs: Pins (Reihenfolge auf der Wall) und Zähler für das Rate-Limit.
-import { getStore } from '@netlify/blobs';
+// @netlify/blobs wird erst bei Bedarf geladen (esbuild bündelt es trotzdem): so lassen sich die Functions auch
+// ohne installierte Pakete testen – fehlt Blobs, greifen die vorhandenen try/catch-Zweige.
+export const getStore = async (name) => (await import('@netlify/blobs')).getStore(name);
 
 export async function pinsLesen() {
-  try { return (await getStore('squadra').get('pins', { type: 'json' })) || []; } catch (err) { console.warn('Pins nicht geladen:', err.message); return []; }
+  try { return (await (await getStore('squadra')).get('pins', { type: 'json' })) || []; } catch (err) { console.warn('Pins nicht geladen:', err.message); return []; }
 }
 
 // Entfernt gelöschte Mitglieder aus der Pin-Liste
@@ -10,7 +12,7 @@ export async function pinsEntfernen(ids) {
   const weg = new Set((Array.isArray(ids) ? ids : [ids]).filter(Boolean));
   if (!weg.size) return;
   try {
-    const store = getStore('squadra');
+    const store = await getStore('squadra');
     const pins = (await store.get('pins', { type: 'json' })) || [];
     if (pins.some((x) => weg.has(x))) await store.setJSON('pins', pins.filter((x) => !weg.has(x)));
   } catch (err) { console.warn('Pin nicht entfernt:', err.message); }
@@ -20,7 +22,7 @@ export async function pinsEntfernen(ids) {
 export async function limitsAufraeumen(now = Date.now()) {
   let n = 0;
   try {
-    const store = getStore('squadra-limit');
+    const store = await getStore('squadra-limit');
     const grenze = new Date(now - 2 * 24 * 3600 * 1000).toISOString().slice(0, 10);
     const { blobs } = await store.list();
     for (const { key } of blobs || []) {

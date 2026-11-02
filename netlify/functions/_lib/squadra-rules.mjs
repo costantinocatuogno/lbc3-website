@@ -46,6 +46,9 @@ export function brauchtElternFuerMitgliedschaft(r) {
   return !!(r && r.minderjaehrig);
 }
 
+// Eintrag von vor Migration 004 (ohne Altersstufe), der schon bestätigt war: wird nie automatisch gelöscht (R1)
+export const altBestaetigt = (r) => !!(r && !stufeVon(r) && r.optin_bestaetigt);
+
 export const zweckeVon = (r) => (r && r.eltern_zwecke && typeof r.eltern_zwecke === 'object' ? r.eltern_zwecke : {});
 export const elternErlaubt = (r, zweck) => !!(r && r.eltern_bestaetigt_am && zweckeVon(r)[zweck] === true);
 
@@ -112,9 +115,11 @@ export function nameErlaubt(r) {
   if (r.name_freigegeben) return true;
   return nameWoerter(r.name) >= 2;
 }
+// Minderjährige: nur Vorname + Initiale oder ein freigegebener Spitzname – kein frei eingetippter Anzeigename (R6)
 export function anzeigeName(r) {
   if (!r) return '';
   if (r.spitzname && r.name_freigegeben) return r.spitzname;
+  if (istMinderjaehrig(r)) return kurzName(r.name);
   return r.angezeigter_name || kurzName(r.name);
 }
 
@@ -206,6 +211,9 @@ export function aufraeumPlan(rows, now = Date.now()) {
     const abgelaufen = !tokenGueltig(r, now);
     if (!abgelaufen) continue;
     const s = stufeVon(r);
+    // Alte Einträge (vor Migration 004, ohne Altersstufe), die schon bestätigt waren, werden NIE gelöscht –
+    // alte minderjährige Einträge bleiben nur verborgen, bis die Eltern bestätigen (R1).
+    if (altBestaetigt(r)) continue;
     if (s === 'unter16') {
       // unter 16: ohne Zustimmung der Eltern zur Mitgliedschaft → ganz löschen
       if (!elternErlaubt(r, 'mitglied')) { zeilen.push({ id: r.id, foto_pfad: r.foto_pfad || null }); continue; }
@@ -218,6 +226,35 @@ export function aufraeumPlan(rows, now = Date.now()) {
     if (s === '16bis17' && r.foto_pfad && !elternErlaubt(r, 'foto')) fotos.push({ id: r.id, foto_pfad: r.foto_pfad });
   }
   return { zeilen, fotos };
+}
+
+/* ---------- Erneute Anmeldung mit derselben Adresse (L13, R5) ---------- */
+// 'schon_dabei'   → bestätigt: nur Mail mit Verwalten-Link
+// 'erneut_senden' → offen und jünger als 7 Tage: dieselben Mails noch einmal, Gültigkeit NICHT verlängern
+// 'neu_anlegen'   → offen und älter als 7 Tage bzw. abgelaufen: alte Zeile samt Foto löschen, neue anlegen
+export function istOffen(r) {
+  if (!r) return false;
+  return stufeVon(r) === 'unter16' ? !r.eltern_bestaetigt_am : !r.optin_bestaetigt;
+}
+export function doppelteAnmeldung(r, now = Date.now()) {
+  if (!istOffen(r)) return 'schon_dabei';
+  const alter = now - (r.created_at ? new Date(r.created_at).getTime() : 0);
+  if (alter > TOKEN_TAGE * TAG_MS || !tokenGueltig(r, now)) return 'neu_anlegen';
+  return 'erneut_senden';
+}
+
+/* ---------- Übersicht für die Eltern-Seite (R4) ---------- */
+// Abgelaufener Link → keinerlei Angaben zum Kind
+export function elternUebersicht(r, now = Date.now()) {
+  if (!r || !tokenGueltig(r, now)) return { ok: true, gueltig: false };
+  const angebot = elternAngebot(r);
+  return {
+    ok: true, gueltig: true, sprache: r.sprache || 'de',
+    bestaetigt: !!r.eltern_bestaetigt_am, zwecke: r.eltern_zwecke || null,
+    stufe: stufeVon(r) || (r.minderjaehrig ? 'unter16' : null),
+    name: kurzName(r.name), spitzname: r.spitzname || '', foto: !!r.foto_pfad,
+    angebot, vorbelegt: Object.fromEntries(angebot.map((z) => [z, true]))
+  };
 }
 
 /* ---------- Bildtyp am Inhalt erkennen ---------- */

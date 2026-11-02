@@ -1,8 +1,22 @@
 # Squadra Tre – Datenschutz-Umbau (Stand 02.11.2026)
 
 Umsetzung der Anforderungen L1–L17 der Rechtsabteilung für Anmeldung, Eltern-Zustimmung und Wall of Fame.
-Branch: `squadra-dsgvo`. **Erst Migration 004 ausführen, dann mergen** – sonst schlägt die Anmeldung fehl
-(die neuen Spalten fehlen noch).
+Branch: `squadra-dsgvo`.
+
+## Reihenfolge beim Veröffentlichen (verbindlich)
+
+1. **Backup** der Datenbank (siehe unten).
+2. **Migration 004** in Supabase ausführen.
+3. **Erst dann** den Branch in `main` mergen (Netlify veröffentlicht automatisch).
+
+Wird vorher gemergt, schlägt jede neue Anmeldung fehl, weil die neuen Spalten noch fehlen.
+
+*Optional (Entscheidung des Inhabers, nur nach dem Backup, NICHT Teil von Migration 004):* Datensparsamkeit für
+alte Einträge – Instagram-Namen von Minderjährigen löschen:
+
+```sql
+update public.squadra_tre set instagram = null where minderjaehrig;
+```
 
 ## Was sich ändert
 
@@ -30,8 +44,12 @@ Branch: `squadra-dsgvo`. **Erst Migration 004 ausführen, dann mergen** – sons
 - Name: nur mit Häkchen „Name auf der Wall“ und nur bei zwei Wörtern – oder nach Freigabe durch das Team.
   Freigegebener Spitzname ersetzt „Vorname + Initiale“.
 - Unter 16 (und **alte minderjährige Einträge ohne Altersstufe**): nur wenn die Eltern zugestimmt haben
-  (Mitglied + Name bzw. Foto). Alte Kinder-Einträge verschwinden deshalb von der Wall, bis die Eltern bestätigen –
-  dafür im Team-Bereich „Eltern-Bestätigung anfordern“ nutzen. Es werden keine Daten geändert.
+  (Mitglied + Name bzw. Foto). Alte, bereits bestätigte Kinder-Einträge werden nur **verborgen, nie automatisch
+  gelöscht** – auch nicht, wenn das Team „Eltern-Bestätigung anfordern“ nutzt und die Eltern nicht reagieren.
+  Die Eltern-Mail kündigt in diesem Fall keine Löschung an. Es werden keine Daten geändert; die Altersstufe bleibt leer.
+  (Lehnen die Eltern auf der Eltern-Seite die Mitgliedschaft ausdrücklich ab, wird der Eintrag gelöscht.)
+- Name von Minderjährigen: immer Vorname + Initiale oder ein freigegebener Spitzname – ein im Team-Bereich frei
+  eingetippter „Name auf der Wall“ wird bei Minderjährigen nicht verwendet (das Feld ist dort ausgeblendet).
 - Fotos von allen Minderjährigen (unter 16 und 16/17) nur mit Eltern-Zustimmung „Foto“ und Team-Freigabe.
 - **Achtung:** Bestehende Einträge mit nur einem Wort als Name (z. B. „Luca“) sind ab dem Merge nicht mehr sichtbar,
   bis das Team sie mit „✓ Name freigeben“ freigibt.
@@ -67,9 +85,9 @@ Die Seiten sind statisch, enthalten keine Daten, sind `noindex` und werden nicht
 
 | Function | Was |
 |---|---|
-| `squadra-join` | Altersstufen, Eltern-Regeln, Spitzname, EXIF entfernen, Rate-Limit (3/E-Mail/Tag, 10/IP/Stunde), doppelte Adresse → keine neue Zeile, Mail erneut |
+| `squadra-join` | Altersstufen, Eltern-Regeln, Spitzname, EXIF entfernen, Rate-Limit (3/E-Mail/Tag, 10/IP/Stunde). Doppelte Adresse: bestätigt → nur Mail mit Verwalten-Link; offen und jünger als 7 Tage → Mails erneut, ohne Verlängerung; offen und älter → alte Anmeldung samt Foto gelöscht, neue angelegt. Die Antwort ist in allen Fällen gleich |
 | `squadra-confirm` | GET leitet nur zur Bestätigungsseite; POST bestätigt (7 Tage gültig; unter 16 nicht möglich) |
-| `squadra-eltern` (neu) | GET Übersicht / Foto (nur gültiger Eltern-Link), POST Zustimmung je Zweck |
+| `squadra-eltern` (neu) | GET Übersicht / Foto (nur gültiger Eltern-Link; abgelaufen → keine Angaben zum Kind), POST Zustimmung je Zweck |
 | `squadra-verwalten` (neu) | Foto entfernen, von der Wall, keine E-Mails, austreten; Ein-Klick-Abmeldung (List-Unsubscribe) |
 | `squadra-eltern-anfordern` (neu, Admin) | neuer Eltern-Link + Eltern-Mail |
 | `squadra-druck` (neu, Admin) | Daten für die Druckansicht (signierte Bild-Links, 1 Stunde) |
@@ -77,10 +95,19 @@ Die Seiten sind statisch, enthalten keine Daten, sind `noindex` und werden nicht
 | `squadra-message`, `report-send` | unter 16 nur mit Eltern-Zustimmung „Updates“ bzw. „Jahresbericht“; Verwalten-Link und `List-Unsubscribe`-Header |
 | `squadra-wochenbericht` | keine Minderjährigen im Instagram-Post-Text |
 
+Fotos: Metadaten werden entfernt – bei JPEG über alle Scans hinweg (auch progressive JPEGs); erhalten bleiben nur
+APP0/JFIF, das Farbprofil (APP2 ICC_PROFILE) und APP14 Adobe; alles nach dem Bildende (EOI) wird abgeschnitten.
+
 Gemeinsame Regeln: `netlify/functions/_lib/squadra-rules.mjs` (auch vom Website-Build genutzt).
 Metadaten entfernen: `stripMetadata()` in `netlify/functions/_lib/common.mjs`.
 Texte: E-Mails in `netlify/functions/_lib/texte.mjs`, Seiten in `locales/*.json`, Datenschutzerklärung Abschnitt 5
 in `content/einstellungen/site.json` (Deutsch maßgeblich).
+
+## Bekannte Grenze
+
+Supabase liefert pro Abfrage höchstens 1000 Zeilen (Standard-Einstellung „Max rows“). Wall-Build, Druckansicht,
+Rundmails und das tägliche Aufräumen lesen die Tabelle ohne Seitenweise-Abfrage – ab mehr als 1000 Einträgen
+würden Einträge fehlen. Bei Bedarf in Supabase „Max rows“ erhöhen oder die Abfragen auf Seiten umstellen.
 
 ## Testen
 

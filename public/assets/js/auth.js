@@ -726,13 +726,15 @@
                 <div class="member-meta">${escapeHtml(r.email || '–')}${r.instagram ? ` · <a href="https://instagram.com/${encodeURIComponent(r.instagram)}" target="_blank" rel="noopener">@${escapeHtml(r.instagram)}</a>` : ''}<br>${new Date(r.created_at).toLocaleDateString('de-DE')}</div></div>
             </div>
             <div class="tags">${tags}</div>
-            <label class="field"><span>Name auf der Wall</span><input value="${escapeHtml(r.angezeigter_name || kurzName(r.name))}" data-dname maxlength="60"></label>
+            ${istMinor(r)
+              ? `<p class="small muted">Name auf der Wall: <strong>${escapeHtml(r.spitzname && r.name_freigegeben ? r.spitzname : kurzName(r.name))}</strong> (Minderjährige: nur Vorname + Initiale oder freigegebener Spitzname)</p>`
+              : `<label class="field"><span>Name auf der Wall</span><input value="${escapeHtml(r.angezeigter_name || kurzName(r.name))}" data-dname maxlength="60"></label>`}
             <div class="member-actions">
               ${r.foto_pfad ? `<button class="small-btn" data-act="foto">${r.foto_freigegeben ? 'Foto sperren' : '✓ Foto freigeben'}</button>` : ''}
               ${brauchtNamensFreigabe(r) ? `<button class="small-btn" data-act="namefrei">${r.name_freigegeben ? 'Namensfreigabe zurückziehen' : `✓ ${r.spitzname ? 'Spitzname' : 'Name'} freigeben`}</button>` : ''}
               ${istMinor(r) ? '<button class="small-btn" data-act="eltern">Eltern-Bestätigung anfordern</button>' : ''}
               <button class="small-btn" data-act="pin">${pins.includes(r.id) ? 'Pin lösen' : '📌 Pin'}</button>
-              <button class="small-btn" data-act="name">Name speichern</button>
+              ${istMinor(r) ? '' : '<button class="small-btn" data-act="name">Name speichern</button>'}
               <button class="small-btn" data-act="hide">${r.ausgeblendet ? 'Wieder zeigen' : 'Ausblenden'}</button>
               <button class="small-btn" data-act="del">Löschen</button>
             </div>

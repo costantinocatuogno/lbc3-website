@@ -189,10 +189,22 @@ export async function sbRemove(bucket, path) {
 // WebP: EXIF/XMP-Chunks raus, RIFF-Größe und VP8X-Flags angepasst. Unbekanntes/kaputtes Format → Fehler.
 export class BildFehler extends Error {}
 
+// JPEG (R3): Segmente werden auch nach jedem Scan weiter gelesen (progressive JPEGs haben mehrere Scans, dazwischen
+// können APP-/COM-Segmente stehen). Behalten: APP0 (JFIF), APP2 nur „ICC_PROFILE“, APP14 nur „Adobe“ (Farben, keine
+// persönlichen Daten). Alles andere an APPn/COM fällt weg, ebenso alles nach dem ersten EOI (angehängte Daten).
+const startsWith = (buf, from, text) => buf.toString('latin1', from, from + text.length) === text;
+function jpegBehalten(m, buf, data) {
+  if (m === 0xfe) return false; // COM
+  if (m === 0xe0) return true; // APP0
+  if (m === 0xe2) return startsWith(buf, data, 'ICC_PROFILE\0');
+  if (m === 0xee) return startsWith(buf, data, 'Adobe');
+  if (m >= 0xe1 && m <= 0xef) return false;
+  return true;
+}
 export function stripJpeg(buf) {
   if (buf.length < 4 || buf[0] !== 0xff || buf[1] !== 0xd8) throw new BildFehler('kein JPEG');
   const out = [buf.subarray(0, 2)];
-  let i = 2;
+  let i = 2, eoi = false;
   while (i < buf.length) {
     if (buf[i] !== 0xff) throw new BildFehler('JPEG-Struktur fehlerhaft');
     let j = i;
@@ -200,16 +212,28 @@ export function stripJpeg(buf) {
     if (j >= buf.length) throw new BildFehler('JPEG abgeschnitten');
     const m = buf[j];
     const seg = j + 1;
-    if (m === 0xd9) { out.push(Buffer.from([0xff, 0xd9])); i = seg; break; } // EOI
+    if (m === 0xd9) { out.push(Buffer.from([0xff, 0xd9])); eoi = true; break; } // EOI – danach nichts mehr übernehmen
     if (m === 0x01 || (m >= 0xd0 && m <= 0xd7)) { out.push(Buffer.from([0xff, m])); i = seg; continue; } // ohne Länge
     if (seg + 2 > buf.length) throw new BildFehler('JPEG abgeschnitten');
     const len = buf.readUInt16BE(seg);
     if (len < 2 || seg + len > buf.length) throw new BildFehler('JPEG-Segment fehlerhaft');
-    const drop = (m >= 0xe1 && m <= 0xef) || m === 0xfe;
-    if (!drop) out.push(Buffer.from([0xff, m]), buf.subarray(seg, seg + len));
+    if (jpegBehalten(m, buf, seg + 2)) out.push(Buffer.from([0xff, m]), buf.subarray(seg, seg + len));
     i = seg + len;
-    if (m === 0xda) { out.push(buf.subarray(i)); i = buf.length; break; } // Start of Scan: Rest sind Bilddaten
+    if (m === 0xda) {
+      // Bilddaten des Scans bis zum nächsten echten Marker (FF gefolgt von etwas anderem als 00, FF oder RST D0–D7)
+      let k = i;
+      while (k < buf.length) {
+        if (buf[k] === 0xff && k + 1 < buf.length) {
+          const n = buf[k + 1];
+          if (n !== 0x00 && n !== 0xff && !(n >= 0xd0 && n <= 0xd7)) break;
+        }
+        k++;
+      }
+      out.push(buf.subarray(i, k));
+      i = k;
+    }
   }
+  if (!eoi) throw new BildFehler('JPEG ohne Ende (EOI)');
   return Buffer.concat(out);
 }
 

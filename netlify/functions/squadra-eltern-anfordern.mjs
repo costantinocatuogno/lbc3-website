@@ -21,9 +21,9 @@ export default handle(async (req) => {
   const eltern = neueMail || row.einwilligung_eltern || '';
   if (!MAIL.test(eltern)) throw new HttpError(400, 'Bitte die E-Mail-Adresse eines Elternteils angeben.');
   if (row.email && eltern === String(row.email).toLowerCase()) throw new HttpError(400, 'Die Eltern-Adresse muss sich von der Adresse des Kindes unterscheiden.');
-  // Alte Einträge ohne Altersstufe waren „unter 16“
+  // Altersstufe wird hier NIE gesetzt: alte Einträge (ohne Altersstufe) gelten für die Anzeige als „unter 16“,
+  // bleiben bis zur Zustimmung nur verborgen und werden vom Aufräumen nicht gelöscht (R1).
   const patch = { eltern_token: randomUUID(), token_ablauf: neuerAblauf(), einwilligung_eltern: eltern };
-  if (!row.altersstufe) patch.altersstufe = 'unter16';
   await sb(`/rest/v1/squadra_tre?id=eq.${row.id}`, { method: 'PATCH', body: patch });
   await sendeElternMail({ ...row, ...patch });
   return json({ ok: true, an: eltern });

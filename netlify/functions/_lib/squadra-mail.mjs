@@ -2,7 +2,7 @@
 // Jede E-Mail enthält den Link „Daten ändern oder löschen“ (L9) mit dem langlebigen verwalten_token.
 import { sendMail, mailLayout, escapeHtml, siteUrl } from './common.mjs';
 import { JOIN, VERWALTEN, pickLang, langPrefix } from './texte.mjs';
-import { kurzName, istMinderjaehrig } from './squadra-rules.mjs';
+import { kurzName, istMinderjaehrig, altBestaetigt } from './squadra-rules.mjs';
 
 const seite = (lang, pfad, token) => `${siteUrl()}${langPrefix(lang)}${pfad}?t=${encodeURIComponent(token)}`;
 export const bestaetigenUrl = (r) => seite(pickLang(r.sprache), '/squadra-bestaetigen/', r.token);
@@ -33,11 +33,13 @@ export async function sendeElternMail(r) {
   const lang = pickLang(r.sprache);
   const tx = JOIN[lang];
   const nurFoto = r.altersstufe === '16bis17';
+  // Bestätigter Eintrag von vor dem Umbau: wird nie gelöscht, nur verborgen (R1) – Mail kündigt keine Löschung an
+  const alt = altBestaetigt(r);
   const anzeige = escapeHtml(kurzName(r.name));
   await sendMail({
     to: { email: r.einwilligung_eltern },
     subject: tx.psubject,
-    html: mailLayout(tx.ptitle, `<p>${nurFoto ? tx.pbody_foto(anzeige) : tx.pbody(anzeige)}</p>${button(elternUrl(r), tx.pbtn)}${klein(tx.pvalid)}${klein(tx.pignore)}${verwaltenFuss(r)}`)
+    html: mailLayout(tx.ptitle, `<p>${nurFoto ? tx.pbody_foto(anzeige) : tx.pbody(anzeige)}</p>${button(elternUrl(r), tx.pbtn)}${klein(alt ? tx.pvalid_alt : tx.pvalid)}${klein(tx.pignore)}${verwaltenFuss(r)}`)
   });
 }
 

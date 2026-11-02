@@ -4,10 +4,10 @@
 // Nichts wird öffentlich, bevor bestätigt wurde UND das Team das Foto (bzw. Einwortnamen/Spitznamen) freigegeben hat.
 // Regeln: _lib/squadra-rules.mjs · Schutz vor Missbrauch: max. 3 Anmeldungen je E-Mail/Tag und 10 je IP/Stunde (L13).
 import { createHash } from 'node:crypto';
-import { getStore } from '@netlify/blobs';
-import { handle, json, sb, sbUpload, siteUrl, readBody, HttpError, looksLikeBot, stripMetadata, BildFehler } from './_lib/common.mjs';
+import { handle, json, sb, sbUpload, siteUrl, readBody, HttpError, looksLikeBot, stripMetadata, BildFehler, sbRemove } from './_lib/common.mjs';
 import { ERR, pickLang, langPrefix } from './_lib/texte.mjs';
-import { pruefeAnmeldung, bildTyp, neuerAblauf } from './_lib/squadra-rules.mjs';
+import { pruefeAnmeldung, bildTyp, doppelteAnmeldung } from './_lib/squadra-rules.mjs';
+import { pinsEntfernen, getStore } from './_lib/squadra-store.mjs';
 import { sendeElternMail, sendeFanMail, sendeSchonDabeiMail } from './_lib/squadra-mail.mjs';
 
 const MAX_FOTO = 5 * 1024 * 1024;
@@ -18,7 +18,7 @@ const hash = (s) => createHash('sha256').update(String(s)).digest('hex').slice(0
 // Zähler in Netlify Blobs (wie bei den Pins). Schlüssel enthalten Tag bzw. Stunde – das Aufräumen übernimmt squadra-cleanup.
 async function zaehle(key, limit) {
   try {
-    const store = getStore('squadra-limit');
+    const store = await getStore('squadra-limit');
     const n = Number((await store.get(key)) || 0);
     if (n >= limit) return false;
     await store.set(key, String(n + 1));
@@ -64,19 +64,20 @@ export default handle(async (req, context) => {
 
   // Gibt es die Adresse schon? (gespeichert immer in Kleinbuchstaben)
   const vorhanden = (await sb(`/rest/v1/squadra_tre?email=eq.${encodeURIComponent(row.email)}&select=*&order=created_at.desc&limit=1`))?.[0];
+  // Antwort ist immer dieselbe (mit der eingegebenen Altersstufe) – ob die Adresse existiert, verrät sie nicht (R2).
   if (vorhanden) {
-    const offen = vorhanden.altersstufe === 'unter16' ? !vorhanden.eltern_bestaetigt_am : !vorhanden.optin_bestaetigt;
-    if (offen) {
-      // Unbestätigt: keine zweite Zeile – Link-Gültigkeit verlängern und die E-Mails erneut senden
-      const ablauf = neuerAblauf();
-      await sb(`/rest/v1/squadra_tre?id=eq.${vorhanden.id}`, { method: 'PATCH', body: { token_ablauf: ablauf } });
-      const r = { ...vorhanden, token_ablauf: ablauf };
-      if (r.einwilligung_eltern && (r.altersstufe === 'unter16' || (r.altersstufe === '16bis17' && r.foto_pfad))) await sendeElternMail(r);
-      await sendeFanMail(r);
-    } else {
-      await sendeSchonDabeiMail(vorhanden);
+    const fall = doppelteAnmeldung(vorhanden);
+    if (fall === 'schon_dabei') { await sendeSchonDabeiMail(vorhanden); return fertig({ stufe }); }
+    if (fall === 'erneut_senden') {
+      // Offen und jünger als 7 Tage: dieselben Mails noch einmal – Gültigkeit wird NICHT verlängert (R5)
+      if (vorhanden.einwilligung_eltern && (vorhanden.altersstufe === 'unter16' || (vorhanden.altersstufe === '16bis17' && vorhanden.foto_pfad))) await sendeElternMail(vorhanden);
+      await sendeFanMail(vorhanden);
+      return fertig({ stufe });
     }
-    return fertig({ stufe: vorhanden.altersstufe || stufe });
+    // Offen und älter als 7 Tage: alte Anmeldung samt Foto löschen und neu anlegen – nie länger als 7 Tage je Versuch
+    if (vorhanden.foto_pfad) await sbRemove('squadra', vorhanden.foto_pfad);
+    await sb(`/rest/v1/squadra_tre?id=eq.${vorhanden.id}`, { method: 'DELETE' });
+    await pinsEntfernen(vorhanden.id);
   }
 
   const [created] = await sb('/rest/v1/squadra_tre?select=*', { method: 'POST', body: row, headers: { Prefer: 'return=representation' } });

@@ -23,6 +23,7 @@ export const JOIN = {
     pbody_foto: (n) => `<strong>${n}</strong> (16 oder 17 Jahre) ist jetzt in der Squadra Tre – dem kostenlosen Fanclub des Kartfahrers Luigi Battista Catuogno (#3), betrieben von LBC3 / Familie Catuogno – und hat ein Foto für die Wall of Fame hochgeladen. Fotos von Jugendlichen unter 18 zeigen wir nur mit Zustimmung der Eltern. Auf der folgenden Seite sehen Sie das Foto und entscheiden, ob es gezeigt werden darf.`,
     pbtn: 'Anmeldung ansehen und entscheiden',
     pvalid: 'Der Link gilt 7 Tage. Wenn Sie nichts tun, löschen wir die Anmeldung (bei 16- und 17-Jährigen nur das Foto) danach automatisch.',
+    pvalid_alt: 'Der Link gilt 7 Tage. Bis zu Ihrer Zustimmung bleibt der Eintrag Ihres Kindes auf der Wall of Fame verborgen; gelöscht wird dadurch nichts. Einen neuen Link können Sie jederzeit bei uns anfordern.',
     pignore: 'Falls Sie mit dieser Anmeldung nichts zu tun haben, ignorieren Sie diese E-Mail einfach.',
     asubject: 'Deine Anmeldung zur Squadra Tre', atitle: 'Du bist schon angemeldet',
     abody: 'mit dieser E-Mail-Adresse gibt es schon eine Anmeldung zur Squadra Tre. Über den Link unten kannst du deine Daten ansehen, ändern oder löschen.'
@@ -40,6 +41,7 @@ export const JOIN = {
     pbody_foto: (n) => `<strong>${n}</strong> (aged 16 or 17) is now a member of Squadra Tre – the free fan club of kart driver Luigi Battista Catuogno (#3), run by LBC3 / Familie Catuogno – and uploaded a photo for the Wall of Fame. We only show photos of young people under 18 with their parents’ consent. On the next page you can see the photo and decide whether it may be shown.`,
     pbtn: 'View sign-up and decide',
     pvalid: 'The link is valid for 7 days. If you do nothing, we will delete the sign-up (for 16- and 17-year-olds only the photo) automatically after that.',
+    pvalid_alt: 'The link is valid for 7 days. Until you agree, your child’s entry stays hidden on the Wall of Fame; nothing is deleted as a result. You can ask us for a new link at any time.',
     pignore: 'If this sign-up has nothing to do with you, simply ignore this email.',
     asubject: 'Your Squadra Tre sign-up', atitle: 'You have already signed up',
     abody: 'there is already a Squadra Tre sign-up with this email address. Use the link below to view, change or delete your data.'
@@ -57,6 +59,7 @@ export const JOIN = {
     pbody_foto: (n) => `<strong>${n}</strong> (16 o 17 anni) fa ora parte della Squadra Tre – il fan club gratuito del pilota di kart Luigi Battista Catuogno (#3), gestito da LBC3 / Familie Catuogno – e ha caricato una foto per la Wall of Fame. Le foto di ragazzi sotto i 18 anni le mostriamo solo con il consenso dei genitori. Nella pagina seguente vedete la foto e decidete se può essere mostrata.`,
     pbtn: 'Vedi l’iscrizione e decidi',
     pvalid: 'Il link è valido 7 giorni. Se non fate nulla, dopo cancelliamo automaticamente l’iscrizione (per chi ha 16 o 17 anni solo la foto).',
+    pvalid_alt: 'Il link è valido 7 giorni. Fino al vostro consenso l’iscrizione di vostro figlio/a resta nascosta sulla Wall of Fame; per questo non viene cancellato nulla. Potete chiederci un nuovo link in qualsiasi momento.',
     pignore: 'Se questa iscrizione non vi riguarda, ignorate semplicemente questa e-mail.',
     asubject: 'La tua iscrizione alla Squadra Tre', atitle: 'Sei già iscritto',
     abody: 'con questo indirizzo e-mail esiste già un’iscrizione alla Squadra Tre. Con il link qui sotto puoi vedere, modificare o cancellare i tuoi dati.'
@@ -74,6 +77,7 @@ export const JOIN = {
     pbody_foto: (n) => `<strong>${n}</strong> (16 ou 17 ans) fait maintenant partie de la Squadra Tre – le fan-club gratuit du pilote de karting Luigi Battista Catuogno (#3), géré par LBC3 / Familie Catuogno – et a envoyé une photo pour le Wall of Fame. Nous ne montrons les photos des jeunes de moins de 18 ans qu’avec l’accord des parents. Sur la page suivante, vous voyez la photo et décidez si elle peut être montrée.`,
     pbtn: 'Voir l’inscription et décider',
     pvalid: 'Le lien est valable 7 jours. Si vous ne faites rien, nous supprimons ensuite automatiquement l’inscription (pour les 16 et 17 ans, seulement la photo).',
+    pvalid_alt: 'Le lien est valable 7 jours. Jusqu’à votre accord, l’inscription de votre enfant reste masquée sur le Wall of Fame ; rien n’est supprimé pour autant. Vous pouvez nous demander un nouveau lien à tout moment.',
     pignore: 'Si cette inscription ne vous concerne pas, ignorez simplement cet e-mail.',
     asubject: 'Ton inscription à la Squadra Tre', atitle: 'Tu es déjà inscrit',
     abody: 'il existe déjà une inscription à la Squadra Tre avec cette adresse e-mail. Avec le lien ci-dessous, tu peux voir, modifier ou supprimer tes données.'

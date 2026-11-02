@@ -1,11 +1,12 @@
 // Eltern-Bestätigung (L1, L2, L4, L16) – nur mit dem eigenen eltern_token aus der Eltern-E-Mail (7 Tage gültig).
-// GET  ?t=…         → Übersicht für /squadra-eltern/: Anzeigename, Spitzname, angebotene Zwecke (vorbelegt mit der Wahl des Kindes)
+// GET  ?t=…         → Übersicht für /squadra-eltern/: Anzeigename, Spitzname, angebotene Zwecke (vorbelegt mit der Wahl des Kindes);
+//                     bei abgelaufenem Link nur { ok: true, gueltig: false }
 // GET  ?t=…&foto=1  → das private Foto (nur für einen gültigen, nicht abgelaufenen eltern_token)
 // POST { t, zwecke: { mitglied, wall_name, foto, updates, jahresbericht }, sorgeberechtigt } → speichert die Zustimmung
 import { handle, json, sb, env, keyHeaders, readBody, HttpError, triggerBuild, sbRemove } from './_lib/common.mjs';
 import { ERR, pickLang } from './_lib/texte.mjs';
 import { pinsEntfernen } from './_lib/squadra-store.mjs';
-import { tokenGueltig, elternAngebot, pruefeElternAntwort, brauchtElternFuerMitgliedschaft, kurzName, EINWILLIGUNG_VERSION } from './_lib/squadra-rules.mjs';
+import { tokenGueltig, elternUebersicht, pruefeElternAntwort, brauchtElternFuerMitgliedschaft, EINWILLIGUNG_VERSION } from './_lib/squadra-rules.mjs';
 
 const UUID = /^[0-9a-f-]{36}$/i;
 
@@ -29,15 +30,9 @@ export default handle(async (req) => {
       if (!res.ok) throw new HttpError(404, ERR[lang].link);
       return new Response(res.body, { headers: { 'Content-Type': res.headers.get('content-type') || 'image/jpeg', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' } });
     }
-    const angebot = elternAngebot(row);
-    const vorbelegt = Object.fromEntries(angebot.map((z) => [z, true])); // was das Kind gewählt hat
-    return json({
-      ok: true, gueltig, sprache: pickLang(row.sprache),
-      bestaetigt: !!row.eltern_bestaetigt_am, zwecke: row.eltern_zwecke || null,
-      stufe: row.altersstufe || (row.minderjaehrig ? 'unter16' : null),
-      name: kurzName(row.name), spitzname: row.spitzname || '', foto: !!row.foto_pfad,
-      angebot, vorbelegt
-    });
+    const u = elternUebersicht(row);
+    if (u.gueltig) u.sprache = pickLang(u.sprache); // abgelaufen: nur { ok, gueltig: false }
+    return json(u);
   }
   if (req.method !== 'POST') throw new HttpError(405, ERR.de.post);
   const b = await readBody(req);
