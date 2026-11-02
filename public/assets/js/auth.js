@@ -329,7 +329,7 @@
         if (name === 'zugaenge') loadProfiles();
         if (name === 'squadra') loadSquadra();
         if (name === 'sponsorwall') loadSponsorWall();
-        if (name === 'einladen') renderInvite();
+        if (name === 'einladen') { renderInvite(); loadEinladungen(); }
         if (name === 'instagram') loadInstagram();
         if (name === 'klicks') loadKlicks();
         if (name === 'besucher') loadBesucher();
@@ -347,6 +347,59 @@
           showMsg(`Wochenbericht verschickt (${j.info}).`);
         } catch (e) { showMsg('Senden fehlgeschlagen: ' + e.message, true); }
         btn.disabled = false;
+      });
+
+      /* ----- Persönliche Instagram-Einladungen ----- */
+      const IGI_PREFIX = { de: '', it: '/it', en: '/en', fr: '/fr' };
+      const IGI_TEXT = {
+        de: (l) => `Ciao! 👋 Hier ist Luigi (#3) – danke, dass du mir auf Instagram folgst! Ich lade dich in meinen Fanclub ein, die Squadra Tre 🏁 Kostenlos dabei sein, Renn-Updates bekommen und auf der Wall of Fame stehen: ${l} Forza! 🇩🇪🇮🇹 #SquadraTre #LBC3`,
+        it: (l) => `Ciao! 👋 Sono Luigi (#3) – grazie per seguirmi su Instagram! Ti invito nel mio fan club, la Squadra Tre 🏁 Partecipa gratis, ricevi gli aggiornamenti delle gare ed entra nella Wall of Fame: ${l} Forza! 🇮🇹🇩🇪 #SquadraTre #LBC3`,
+        en: (l) => `Ciao! 👋 Luigi (#3) here – thanks for following me on Instagram! I'd love to invite you to my fan club, the Squadra Tre 🏁 Join for free, get race updates and be on the Wall of Fame: ${l} Forza! #SquadraTre #LBC3`,
+        fr: (l) => `Ciao ! 👋 C'est Luigi (#3) – merci de me suivre sur Instagram ! Je t'invite dans mon fan-club, la Squadra Tre 🏁 Rejoins-nous gratuitement, reçois les nouvelles des courses et figure sur le Wall of Fame : ${l} Forza ! #SquadraTre #LBC3`
+      };
+      const igiForm = $('[data-igi-form]');
+      const igiHandle = () => igiForm.handle.value.trim().replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/[/?#].*$/, '').replace(/[^A-Za-z0-9._]/g, '').toLowerCase();
+      const igiLink = (h, sp) => `${location.origin}${IGI_PREFIX[sp] || ''}/squadra-tre/?ref=${encodeURIComponent(h)}#beitreten`;
+      let igiEdited = false;
+      const igiFill = () => { if (igiEdited) return; const h = igiHandle(); igiForm.text.value = IGI_TEXT[igiForm.sprache.value](igiLink(h || 'name', igiForm.sprache.value)); };
+      igiForm.handle.addEventListener('input', igiFill);
+      igiForm.sprache.addEventListener('change', () => { igiEdited = false; igiFill(); });
+      igiForm.text.addEventListener('input', () => { igiEdited = true; });
+      const igiCall = async (method, body) => {
+        const { data: { session } } = await sb.auth.getSession();
+        const res = await fetch('/api/squadra-einladung', { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session ? session.access_token : token()}` }, body: body ? JSON.stringify(body) : undefined });
+        const j = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(j.error || `Fehler ${res.status}`);
+        return j;
+      };
+      async function loadEinladungen() {
+        igiFill();
+        try {
+          const { einladungen } = await igiCall('GET');
+          const l = [...einladungen].sort((a, b) => String(b.zuletzt || b.am).localeCompare(String(a.zuletzt || a.am)));
+          const an = l.filter((x) => x.angemeldet).length;
+          $('[data-igi-count]').textContent = l.length ? `(${l.length}, davon ${an} angemeldet)` : '';
+          $('[data-igi-list]').innerHTML = l.length ? l.map((x) => `<tr><td><a href="https://instagram.com/${encodeURIComponent(x.h)}" target="_blank" rel="noopener">@${escapeHtml(x.h)}</a> <span class="muted small">${(x.s || 'de').toUpperCase()}${x.n > 1 ? ` · ${x.n}×` : ''}</span></td><td class="small">${new Date(x.zuletzt || x.am).toLocaleDateString('de-DE')}</td><td class="small">${x.angemeldet ? `<strong class="ok-text">✔ angemeldet ${new Date(x.angemeldet).toLocaleDateString('de-DE')}</strong>` : '<span class="muted">noch nicht</span>'}</td><td class="num"><button type="button" class="link-btn small" data-igi-del="${escapeHtml(x.h)}">entfernen</button></td></tr>`).join('') : '<tr><td class="muted">Noch niemand eingeladen.</td></tr>';
+        } catch (e) { $('[data-igi-list]').innerHTML = `<tr><td class="muted">Nicht abrufbar: ${escapeHtml(e.message)}</td></tr>`; }
+      }
+      igiForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const h = igiHandle();
+        if (!h) { showMsg('Bitte einen Instagram-Namen eingeben.', true); return; }
+        if (!igiEdited) igiFill();
+        const text = igiForm.text.value.replace(/\/squadra-tre\/\?ref=name/, `/squadra-tre/?ref=${h}`);
+        let kopiert = true;
+        try { await navigator.clipboard.writeText(text); } catch (err) { kopiert = false; }
+        // Chat zuerst öffnen (Browser blockieren Fenster nach längeren Wartezeiten), dann speichern
+        window.open(`https://ig.me/m/${encodeURIComponent(h)}`, '_blank', 'noopener');
+        try { await igiCall('POST', { handle: h, sprache: igiForm.sprache.value }); } catch (err) { showMsg('Gespeichert werden konnte die Einladung nicht: ' + err.message, true); }
+        showMsg(kopiert ? `Text kopiert – im Instagram-Chat mit @${h} einfügen und senden.` : 'Kopieren war nicht möglich – bitte den Text oben markieren und kopieren.', !kopiert);
+        igiForm.handle.value = ''; igiEdited = false; igiFill();
+        loadEinladungen();
+      });
+      $('[data-igi-list]').addEventListener('click', async (e) => {
+        const b = e.target.closest('[data-igi-del]'); if (!b) return;
+        try { await igiCall('DELETE', { handle: b.dataset.igiDel }); loadEinladungen(); } catch (err) { showMsg(err.message, true); }
       });
 
       /* ----- Besucher ----- */

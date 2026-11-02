@@ -456,6 +456,18 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         </div>
         <div class="card" data-invite-texts></div>
       </div>
+      <div class="card mt">
+        <h2 class="h3">Persönliche Einladung per Instagram</h2>
+        <p class="muted small">Instagram-Namen eingeben, Sprache wählen, dann „Kopieren &amp; Instagram öffnen“: Der Text liegt in der Zwischenablage, der Chat mit der Person öffnet sich – Text einfügen, senden. Bitte nur Erwachsene einladen (Kinder über ihre Eltern) und höchstens 20–30 Nachrichten am Tag, damit Instagram es nicht als Spam wertet.</p>
+        <form class="form ig-invite" data-igi-form>
+          <label class="field"><span>Instagram-Name</span><input name="handle" placeholder="@name" autocomplete="off" autocapitalize="off" required maxlength="40"></label>
+          <label class="field"><span>Sprache</span><select name="sprache"><option value="de">Deutsch</option><option value="it">Italiano</option><option value="en">English</option><option value="fr">Français</option></select></label>
+          <label class="field ig-invite-text"><span>Nachricht (kann angepasst werden)</span><textarea name="text" rows="6"></textarea></label>
+          <div class="btn-row"><button class="btn btn-red" type="submit">Kopieren &amp; Instagram öffnen</button></div>
+        </form>
+        <h3 class="h3 mt">Bisher eingeladen <span class="muted small" data-igi-count></span></h3>
+        <div class="table-box plain"><table class="kosten-sum"><tbody data-igi-list><tr><td class="muted">Wird geladen …</td></tr></tbody></table></div>
+      </div>
     </section>
   </main>
 </div>`;

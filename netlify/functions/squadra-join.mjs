@@ -9,6 +9,7 @@ import { ERR, pickLang, langPrefix } from './_lib/texte.mjs';
 import { pruefeAnmeldung, bildTyp, doppelteAnmeldung } from './_lib/squadra-rules.mjs';
 import { pinsEntfernen, getStore } from './_lib/squadra-store.mjs';
 import { sendeElternMail, sendeFanMail, sendeSchonDabeiMail } from './_lib/squadra-mail.mjs';
+import { angemeldet as einladungAngemeldet } from './_lib/einladungen.mjs';
 
 const MAX_FOTO = 5 * 1024 * 1024;
 const LIMIT_MAIL_TAG = 3;
@@ -89,6 +90,9 @@ export default handle(async (req, context) => {
     await sb(`/rest/v1/squadra_tre?id=eq.${created.id}`, { method: 'PATCH', body: { foto_pfad: pfad } });
     created.foto_pfad = pfad;
   }
+
+  // Kam die Anmeldung über eine persönliche Instagram-Einladung? Nur vermerken, nie die Anmeldung gefährden
+  if (b.ref) await einladungAngemeldet(String(b.ref)).catch((err) => console.warn('Einladung:', err.message));
 
   if (geprueft.elternNoetig) await sendeElternMail(created);
   await sendeFanMail(created, { zahlungsinfo: created.mitgliedschaft === 'unterstuetzer' ? (process.env.SQUADRA_ZAHLUNGSINFO || '') : '' });

@@ -315,6 +315,14 @@
     reader.readAsDataURL(file);
   });
 
+  // Einladungslink (?ref=<instagram-name>) merken, damit das Team sieht, welche Einladung angekommen ist
+  (function () {
+    let ref = '';
+    try { ref = (new URLSearchParams(location.search).get('ref') || '').replace(/[^A-Za-z0-9._]/g, '').slice(0, 30); } catch (e) { /* alt */ }
+    try { if (ref) sessionStorage.setItem('lbc3-ref', ref); else ref = sessionStorage.getItem('lbc3-ref') || ''; } catch (e) { /* privat */ }
+    $$('[data-ref]').forEach((i) => { i.value = ref; });
+  })();
+
   $$('[data-squadra-form]').forEach((form) => {
     const msg = $('[data-form-msg]', form);
     const card = form.closest('.form-card');
