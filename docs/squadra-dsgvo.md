@@ -3,6 +3,9 @@
 Umsetzung der Anforderungen L1–L17 der Rechtsabteilung für Anmeldung, Eltern-Zustimmung und Wall of Fame.
 Branch: `squadra-dsgvo`.
 
+> **Übergabe an die Website-Entwickler (02.11.2026):** Costa hat den Server-Zugriff (Supabase der Website, Netlify `luigi-catuogno`) für diese Arbeit genehmigt. Ablauf und Prüfschritte: Projekt-Dokument `claude/squadra-tre/02-uebergabe-website-entwickler.md`. Merge nach `main` erst nach Costas „freigeben“.
+
+
 ## Reihenfolge beim Veröffentlichen (verbindlich)
 
 1. **Backup** der Datenbank (siehe unten).
