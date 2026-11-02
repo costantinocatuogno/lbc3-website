@@ -1,91 +1,98 @@
-// Beitritt zur Squadra Tre (kostenlos als Freund/Fan oder als Unterstützer mit Beitrag).
-// Nimmt Formular-Daten inkl. optionalem Foto entgegen, speichert alles privat und schickt eine Bestätigungs-E-Mail (Double-Opt-in).
-// Nichts wird öffentlich, bevor die E-Mail bestätigt UND das Foto von der Familie freigegeben wurde.
-import { handle, json, sb, sbUpload, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, kurzName, cleanHandle, looksLikeBot } from './_lib/common.mjs';
-import { JOIN as TEXT, ERR, pickLang, langPrefix } from './_lib/texte.mjs';
+// Beitritt zur Squadra Tre (kostenlos als Freund/Fan oder – ab 18 – als Unterstützer mit Beitrag).
+// Nimmt Formular-Daten inkl. optionalem Foto entgegen, entfernt Foto-Metadaten, speichert alles privat und
+// schickt die Bestätigungs-E-Mails: unter 16 an die Eltern (Link zur Eltern-Seite), sonst an den Fan selbst.
+// Nichts wird öffentlich, bevor bestätigt wurde UND das Team das Foto (bzw. Einwortnamen/Spitznamen) freigegeben hat.
+// Regeln: _lib/squadra-rules.mjs · Schutz vor Missbrauch: max. 3 Anmeldungen je E-Mail/Tag und 10 je IP/Stunde (L13).
+import { createHash } from 'node:crypto';
+import { getStore } from '@netlify/blobs';
+import { handle, json, sb, sbUpload, siteUrl, readBody, HttpError, looksLikeBot, stripMetadata, BildFehler } from './_lib/common.mjs';
+import { ERR, pickLang, langPrefix } from './_lib/texte.mjs';
+import { pruefeAnmeldung, bildTyp, neuerAblauf } from './_lib/squadra-rules.mjs';
+import { sendeElternMail, sendeFanMail, sendeSchonDabeiMail } from './_lib/squadra-mail.mjs';
 
-const yes = (v) => !!v && v !== 'false' && v !== '0';
 const MAX_FOTO = 5 * 1024 * 1024;
+const LIMIT_MAIL_TAG = 3;
+const LIMIT_IP_STUNDE = 10;
+const hash = (s) => createHash('sha256').update(String(s)).digest('hex').slice(0, 32); // keine E-Mail/IP im Klartext ablegen
 
-export default handle(async (req) => {
+// Zähler in Netlify Blobs (wie bei den Pins). Schlüssel enthalten Tag bzw. Stunde – das Aufräumen übernimmt squadra-cleanup.
+async function zaehle(key, limit) {
+  try {
+    const store = getStore('squadra-limit');
+    const n = Number((await store.get(key)) || 0);
+    if (n >= limit) return false;
+    await store.set(key, String(n + 1));
+    return true;
+  } catch (err) {
+    console.warn('Rate-Limit nicht verfügbar:', err.message); // Anmeldung nie wegen des Zählers scheitern lassen
+    return true;
+  }
+}
+
+export default handle(async (req, context) => {
   if (req.method !== 'POST') throw new HttpError(405, ERR.de.post);
   const b = await readBody(req);
   const lang = pickLang(b.lang);
   const E = ERR[lang];
   const wantsJson = (req.headers.get('accept') || '').includes('application/json');
-  if (b.website || looksLikeBot(b)) return json({ ok: true }); // Bots still ignorieren (Honeypot + Zeitstempel)
+  const fertig = (extra = {}) => (wantsJson ? json({ ok: true, ...extra }) : Response.redirect(`${siteUrl()}${langPrefix(lang)}/squadra-tre/?beitritt=ok#beitreten`, 303));
+  if (b.website || looksLikeBot(b)) return fertig(); // Bots still ignorieren (Honeypot + Zeitstempel)
 
-  const name = String(b.name || '').trim().slice(0, 120);
-  const email = String(b.email || '').trim().toLowerCase().slice(0, 200);
-  const mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!name || !mail.test(email)) throw new HttpError(400, E.name_mail);
-  if (!yes(b.datenschutz)) throw new HttpError(400, E.privacy);
+  const fotoDatei = b.foto && typeof b.foto === 'object' && b.foto.size > 0 ? b.foto : null;
+  const geprueft = pruefeAnmeldung({ ...b, sprache: lang }, { foto: !!fotoDatei });
+  if (geprueft.error) throw new HttpError(400, E[geprueft.error] || E.name_mail);
+  const { row, stufe } = geprueft;
 
-  const minderjaehrig = b.alter === 'unter16';
-  const elternEmail = String(b.eltern_email || '').trim().toLowerCase().slice(0, 200);
-  if (minderjaehrig && (!mail.test(elternEmail) || elternEmail === email)) throw new HttpError(400, E.parent);
-
-  const mitgliedschaft = b.mitgliedschaft === 'unterstuetzer' ? 'unterstuetzer' : 'freund';
-  const art = mitgliedschaft === 'unterstuetzer' && ['einmalig', 'jaehrlich', 'sachleistung'].includes(b.art) ? b.art : null;
-  const betrag = mitgliedschaft === 'unterstuetzer' && Number(b.betrag) > 0 ? Math.min(Number(b.betrag), 1000000) : null;
-
-  // Foto (optional) prüfen – wird im Browser bereits auf ~1200 px verkleinert
-  const foto = b.foto && typeof b.foto === 'object' && b.foto.size > 0 ? b.foto : null;
-  if (foto) {
-    if (!/^image\/(jpeg|png|webp)$/.test(foto.type)) throw new HttpError(400, E.photo_type);
-    if (foto.size > MAX_FOTO) throw new HttpError(400, E.photo_size);
-    if (!yes(b.foto_einwilligung)) throw new HttpError(400, E.photo_ok);
+  // Foto (optional) prüfen und Metadaten entfernen (L5) – Typ wird am Inhalt erkannt, nicht nur am Dateinamen
+  let foto = null;
+  if (fotoDatei) {
+    if (fotoDatei.size > MAX_FOTO) throw new HttpError(400, E.photo_size);
+    const roh = Buffer.from(await fotoDatei.arrayBuffer());
+    const typ = bildTyp(roh);
+    if (!typ || !/^image\/(jpeg|png|webp)$/.test(fotoDatei.type || typ)) throw new HttpError(400, E.photo_type);
+    try { foto = { typ, daten: stripMetadata(roh, typ) }; } catch (err) {
+      if (err instanceof BildFehler) throw new HttpError(400, E.photo_type);
+      throw err;
+    }
   }
 
-  const row = {
-    name, email, sprache: lang, mitgliedschaft, art, betrag,
-    instagram: cleanHandle(b.instagram) || null,
-    angezeigter_name: kurzName(name),
-    minderjaehrig,
-    einwilligung_eltern: minderjaehrig ? elternEmail : null,
-    jahresbericht_optin: yes(b.jahresbericht),
-    updates_optin: yes(b.updates),
-    wand_optin: yes(b.wand) || (foto ? yes(b.foto_einwilligung) : false),
-    quelle: 'website'
-  };
+  // Rate-Limit (L13): je IP und Stunde, je E-Mail und Tag
+  const jetzt = new Date().toISOString();
+  const ip = (context && context.ip) || req.headers.get('x-nf-client-connection-ip') || '';
+  if (ip && !(await zaehle(`ip:${jetzt.slice(0, 13)}:${hash(ip)}`, LIMIT_IP_STUNDE))) throw new HttpError(429, E.rate);
+  if (!(await zaehle(`mail:${jetzt.slice(0, 10)}:${hash(row.email)}`, LIMIT_MAIL_TAG))) return fertig({ stufe }); // still: gleiche Antwort
 
-  const [created] = await sb('/rest/v1/squadra_tre?select=id,token', {
-    method: 'POST', body: row, headers: { Prefer: 'return=representation' }
-  });
+  // Gibt es die Adresse schon? (gespeichert immer in Kleinbuchstaben)
+  const vorhanden = (await sb(`/rest/v1/squadra_tre?email=eq.${encodeURIComponent(row.email)}&select=*&order=created_at.desc&limit=1`))?.[0];
+  if (vorhanden) {
+    const offen = vorhanden.altersstufe === 'unter16' ? !vorhanden.eltern_bestaetigt_am : !vorhanden.optin_bestaetigt;
+    if (offen) {
+      // Unbestätigt: keine zweite Zeile – Link-Gültigkeit verlängern und die E-Mails erneut senden
+      const ablauf = neuerAblauf();
+      await sb(`/rest/v1/squadra_tre?id=eq.${vorhanden.id}`, { method: 'PATCH', body: { token_ablauf: ablauf } });
+      const r = { ...vorhanden, token_ablauf: ablauf };
+      if (r.einwilligung_eltern && (r.altersstufe === 'unter16' || (r.altersstufe === '16bis17' && r.foto_pfad))) await sendeElternMail(r);
+      await sendeFanMail(r);
+    } else {
+      await sendeSchonDabeiMail(vorhanden);
+    }
+    return fertig({ stufe: vorhanden.altersstufe || stufe });
+  }
+
+  const [created] = await sb('/rest/v1/squadra_tre?select=*', { method: 'POST', body: row, headers: { Prefer: 'return=representation' } });
 
   if (foto) {
-    const ext = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[foto.type];
+    const ext = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[foto.typ];
     const pfad = `${created.id}.${ext}`;
-    await sbUpload('squadra', pfad, Buffer.from(await foto.arrayBuffer()), foto.type);
+    await sbUpload('squadra', pfad, foto.daten, foto.typ);
     await sb(`/rest/v1/squadra_tre?id=eq.${created.id}`, { method: 'PATCH', body: { foto_pfad: pfad } });
+    created.foto_pfad = pfad;
   }
 
-  const tx = TEXT[lang];
-  const confirmUrl = `${siteUrl()}/api/squadra-confirm?token=${encodeURIComponent(created.token)}`;
-  const pay = mitgliedschaft === 'unterstuetzer' ? (process.env.SQUADRA_ZAHLUNGSINFO || '') : '';
-  const button = (href, label) => `<p style="margin:24px 0"><a href="${href}" style="background:#B00E28;color:#ffffff;padding:14px 22px;border-radius:4px;text-decoration:none;font-weight:bold">${label}</a></p>`;
+  if (geprueft.elternNoetig) await sendeElternMail(created);
+  await sendeFanMail(created, { zahlungsinfo: created.mitgliedschaft === 'unterstuetzer' ? (process.env.SQUADRA_ZAHLUNGSINFO || '') : '' });
 
-  // Unter 16: Bestätigung läuft über die Eltern-E-Mail
-  if (minderjaehrig) {
-    await sendMail({
-      to: { email: elternEmail },
-      subject: tx.psubject,
-      html: mailLayout(tx.ptitle, `<p>${tx.pbody(escapeHtml(name))}</p>${button(confirmUrl + '&eltern=1', tx.pbtn)}<p style="color:#555A63;font-size:13px">${tx.ignore}</p>`)
-    });
-  }
-  await sendMail({
-    to: { email, name },
-    subject: tx.subject,
-    html: mailLayout(tx.title, `
-      <p>${tx.hello} ${escapeHtml(name)},</p>
-      ${minderjaehrig ? `<p>${tx.parent}</p>` : `<p>${tx.body}</p>${button(confirmUrl, tx.btn)}`}
-      ${pay ? `<p><strong>${tx.pay}</strong><br>${escapeHtml(pay).replace(/\n/g, '<br>')}</p>` : ''}
-      <p><strong>${tx.tag}</strong></p>
-      <p style="color:#555A63;font-size:13px">${tx.ignore}</p>`)
-  });
-
-  if (wantsJson) return json({ ok: true });
-  return Response.redirect(`${siteUrl()}${langPrefix(lang)}/squadra-tre/?beitritt=ok#beitreten`, 303);
+  return fertig({ stufe });
 });
 
 export const config = { path: '/api/squadra-join' };

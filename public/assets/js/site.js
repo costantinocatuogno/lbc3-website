@@ -315,11 +315,29 @@
     const sup = $('[data-sup]', form);
     let photoBlob = null;
 
+    const insta = $('[data-insta]', form);
+    const supChoice = $('[data-sup-choice]', form);
+    const supMinor = $('[data-sup-minor]', form);
     const sync = () => {
+      const alter = form.alter ? form.alter.value : '';
+      const minor = alter === 'unter16' || alter === '16bis17';
+      // Unterstützer (mit Beitrag) und Instagram erst ab 18 – Minderjährige sind immer „Freund“
+      if (supChoice) {
+        const r = supChoice.querySelector('input');
+        r.disabled = minor;
+        if (minor && r.checked) { r.checked = false; const f = form.querySelector('input[name="mitgliedschaft"][value="freund"]'); if (f) f.checked = true; }
+      }
+      if (supMinor) supMinor.hidden = !minor;
+      if (insta) { insta.hidden = alter !== '18plus'; if (alter !== '18plus') insta.querySelector('input').value = ''; }
       const isSup = form.mitgliedschaft && form.mitgliedschaft.value === 'unterstuetzer';
       if (sup) sup.hidden = !isSup;
-      const u16 = form.alter && form.alter.value === 'unter16';
-      if (parent) { parent.hidden = !u16; parent.querySelector('input').required = u16; }
+      // Eltern: unter 16 immer, mit 16/17 nur für ein Foto
+      const needParent = alter === 'unter16' || (alter === '16bis17' && !!photoBlob);
+      if (parent) {
+        parent.hidden = !needParent;
+        parent.querySelector('input').required = needParent;
+        $$('[data-parent-hint]', parent).forEach((h) => { h.hidden = h.dataset.parentHint !== (alter === 'unter16' ? 'u16' : 'foto'); });
+      }
       if (consent) { consent.hidden = !photoBlob; consent.querySelector('input').required = !!photoBlob; }
     };
     form.addEventListener('change', sync);
@@ -360,7 +378,8 @@
           const j = await res.json().catch(() => ({}));
           throw new Error(j.error || String(res.status));
         }
-        msg.innerHTML = $('[data-msg-ok]', card).innerHTML;
+        const j = await res.json().catch(() => ({}));
+        msg.innerHTML = $(j.stufe === 'unter16' ? '[data-msg-ok-parent]' : '[data-msg-ok]', card).innerHTML;
         msg.classList.remove('is-error');
         msg.hidden = false;
         form.reset();
@@ -387,43 +406,97 @@
     } catch (e) { /* Zwischenablage nicht verfügbar */ }
   }));
 
-  /* ---------- Wall of Fame: Druckansicht ---------- */
-  const pw = $('[data-print-wall]');
-  if (pw) {
-    const stage = $('[data-pw-stage]');
-    const sheets = $$('[data-pw-sheet]');
-    const fmt = $('[data-pw-format]');
-    const what = $('[data-pw-content]');
-    const pageStyle = document.createElement('style');
-    document.head.appendChild(pageStyle);
-    const MM = 96 / 25.4; // px pro mm (CSS-Pixel)
-    const layout = () => {
-      const [w, h] = fmt.value.split('x').map(Number);
-      pageStyle.textContent = `@page { size: ${w}mm ${h}mm; margin: 0; }`;
-      const show = what.value;
-      sheets.forEach((sh) => {
-        sh.hidden = show !== 'beide' && sh.dataset.pwSheet !== show;
-        sh.style.width = `${w}mm`;
-        sh.style.height = `${h}mm`;
-        sh.style.setProperty('--u', `${Math.min(w, h) / 100}mm`);
-        // Spaltenzahl so wählen, dass alle Kacheln die Fläche möglichst gut füllen
-        const grid = $('[data-pw-grid]', sh);
-        if (grid) {
-          const n = Math.max(grid.children.length, 1);
-          const usableH = h * 0.66, usableW = w * 0.93;
-          let cols = 4;
-          while (cols < 60 && Math.ceil(n / cols) * (usableW / cols) * 1.3 > usableH) cols++;
-          grid.style.setProperty('--cols', cols);
-        }
-      });
-      const scale = Math.min(1, (stage.clientWidth - 2) / (w * MM));
-      sheets.forEach((sh) => { sh.style.setProperty('--scale', scale); sh.style.marginBottom = `${-(h * MM) * (1 - scale) + 24}px`; });
-    };
-    fmt.addEventListener('change', layout);
-    what.addEventListener('change', layout);
-    window.addEventListener('resize', layout);
-    $('[data-pw-print]').addEventListener('click', () => window.print());
-    layout();
+  /* ---------- Squadra: Seiten mit Link aus E-Mails (bestätigen, Eltern, Daten verwalten) ---------- */
+  // Der Token steht in der Adresse (?t=…). Beim Öffnen passiert nichts – erst der Knopf schickt die Entscheidung (POST).
+  const sqToken = () => new URLSearchParams(location.search).get('t') || '';
+  const sqTx = (root, k) => { const el = $(`template[data-tx="${k}"]`, root); return el ? el.innerHTML : ''; };
+  const sqStep = (root, name) => { $$('[data-sq-step]', root).forEach((el) => { el.hidden = el.dataset.sqStep !== name; }); const l = $('[data-sq-loading]', root); if (l) l.hidden = true; };
+  const sqErr = (root, text) => { const e = $('[data-sq-err]', root); e.innerHTML = text; e.hidden = false; const l = $('[data-sq-loading]', root); if (l) l.hidden = true; };
+  const sqCall = async (path, opts) => {
+    const res = await fetch(path, { headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, ...opts });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) { const e = new Error(j.error || String(res.status)); e.status = res.status; throw e; }
+    return j;
+  };
+  const sqFail = (root, err) => sqErr(root, [404, 410].includes(err.status) || err.status === 400 && /link|Link|lien/.test(err.message) ? sqTx(root, 'link_invalid') : `${sqTx(root, 'join_err')}${err.message && !/^\d+$/.test(err.message) ? ` (${err.message.replace(/[<>&]/g, '')})` : ''}`);
+
+  const sqConfirm = $('[data-sq-confirm]');
+  if (sqConfirm) {
+    const t = sqToken();
+    if (!/^[0-9a-f-]{36}$/i.test(t)) sqErr(sqConfirm, sqTx(sqConfirm, 'link_invalid'));
+    $('[data-sq-go]', sqConfirm).addEventListener('click', async (e) => {
+      e.target.disabled = true;
+      try {
+        const j = await sqCall('/api/squadra-confirm', { method: 'POST', body: JSON.stringify({ t, lang: sqConfirm.dataset.lang }) });
+        sqStep(sqConfirm, 'ok');
+        $('[data-sq-foto-wartet]', sqConfirm).hidden = !j.foto_wartet;
+      } catch (err) { sqFail(sqConfirm, err); e.target.disabled = false; }
+    });
+  }
+
+  const sqParent = $('[data-sq-parent]');
+  if (sqParent) {
+    const t = sqToken();
+    const lang = sqParent.dataset.lang;
+    const form = $('form', sqParent);
+    (async () => {
+      if (!/^[0-9a-f-]{36}$/i.test(t)) { sqErr(sqParent, sqTx(sqParent, 'link_invalid')); return; }
+      try {
+        const j = await sqCall(`/api/squadra-eltern?t=${encodeURIComponent(t)}&lang=${lang}`);
+        if (!j.gueltig || !j.angebot.length) { sqErr(sqParent, sqTx(sqParent, 'link_invalid')); return; }
+        $('[data-el-name]', sqParent).textContent = j.name;
+        if (j.spitzname) { $('[data-el-nick]', sqParent).textContent = j.spitzname; $('[data-el-nick-wrap]', sqParent).hidden = false; }
+        if (j.foto) { $('[data-el-foto]', sqParent).src = `/api/squadra-eltern?t=${encodeURIComponent(t)}&foto=1`; $('[data-el-foto-wrap]', sqParent).hidden = false; }
+        const werte = j.bestaetigt && j.zwecke ? j.zwecke : j.vorbelegt;
+        j.angebot.forEach((z) => { const l = $(`[data-el-zweck="${z}"]`, sqParent); l.hidden = false; l.querySelector('input').checked = !!werte[z]; });
+        sqStep(sqParent, 'form');
+        if (j.bestaetigt) sqErr(sqParent, sqTx(sqParent, 'el_already'));
+      } catch (err) { sqFail(sqParent, err); }
+    })();
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const btn = $('button[type="submit"]', form);
+      btn.disabled = true;
+      const zwecke = Object.fromEntries($$('[data-el-zweck]', form).filter((l) => !l.hidden).map((l) => [l.dataset.elZweck, l.querySelector('input').checked]));
+      try {
+        const j = await sqCall('/api/squadra-eltern', { method: 'POST', body: JSON.stringify({ t, lang, zwecke, sorgeberechtigt: form.sorgeberechtigt.checked }) });
+        $('[data-sq-err]', sqParent).hidden = true;
+        sqStep(sqParent, j.geloescht ? 'deleted' : 'ok');
+      } catch (err) { sqFail(sqParent, err); btn.disabled = false; }
+    });
+  }
+
+  const sqManage = $('[data-sq-manage]');
+  if (sqManage) {
+    const t = sqToken();
+    const lang = sqManage.dataset.lang;
+    const form = $('form', sqManage);
+    (async () => {
+      if (!/^[0-9a-f-]{36}$/i.test(t)) { sqErr(sqManage, sqTx(sqManage, 'link_invalid')); return; }
+      try {
+        const j = await sqCall(`/api/squadra-verwalten?t=${encodeURIComponent(t)}&lang=${lang}`);
+        $('[data-mg-name]', sqManage).textContent = j.name || '';
+        $('[data-mg-opt="foto"]', sqManage).hidden = !j.foto;
+        $('[data-mg-opt="wall"]', sqManage).hidden = !j.wall && !j.foto;
+        $('[data-mg-opt="abmelden"]', sqManage).hidden = !j.mails;
+        sqStep(sqManage, 'form');
+      } catch (err) { sqFail(sqManage, err); }
+    })();
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const aktion = form.aktion.value;
+      if (aktion === 'austritt' && !confirm($(`template[data-tx="mg_confirm_leave"]`, sqManage).content.textContent)) return;
+      const btn = $('button[type="submit"]', form);
+      btn.disabled = true;
+      try {
+        await sqCall('/api/squadra-verwalten', { method: 'POST', body: JSON.stringify({ t, lang, aktion }) });
+        $('[data-mg-done]', sqManage).innerHTML = sqTx(sqManage, `mg_done_${aktion}`);
+        $('[data-sq-err]', sqManage).hidden = true;
+        sqStep(sqManage, 'ok');
+      } catch (err) { sqFail(sqManage, err); btn.disabled = false; }
+    });
   }
 
   /* ---------- Kontaktformular: Anliegen aus Link vorauswählen ---------- */

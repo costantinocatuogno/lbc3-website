@@ -2,6 +2,7 @@
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, basename, extname, dirname } from 'node:path';
 import { loc, DEFAULT_LANG } from './i18n.mjs';
+import { wallOrder, oeffentlicheWall } from '../../netlify/functions/_lib/squadra-rules.mjs';
 
 function readJSON(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
@@ -162,15 +163,8 @@ export function loadContent(root, lang = DEFAULT_LANG) {
 // Wall of Fame: lädt beim Build die freigegebenen Squadra-3-Mitglieder und Sponsoren-Einträge
 // und kopiert NUR freigegebene Fotos/Logos aus dem privaten Supabase-Speicher nach dist/wall/.
 // Ohne Supabase-Zugang (lokal) werden Beispieldaten gezeigt.
-// Reihenfolge der Wall (Wunsch 01.11./02.11.2026): angepinnte Mitglieder (Knopf „Pin“ im Admin-Bereich) immer zuerst,
-// in Pin-Reihenfolge; danach alle anderen nach Registrierungsdatum (älteste zuerst) – neue Mitglieder kommen hinten dazu.
-export function wallOrder(list, pins) {
-  const P = Array.isArray(pins) ? pins : [];
-  const rank = (m) => { const i = P.indexOf(m.id); return i < 0 ? P.length : i; };
-  return list.map((m, i) => ({ m, i, r: rank(m) }))
-    .sort((a, b) => a.r - b.r || String(a.m.seit).localeCompare(String(b.m.seit)) || a.i - b.i)
-    .map(({ m }) => { const { id, seit, ...rest } = m; return rest; });
-}
+// Reihenfolge der Wall und Regeln, wer öffentlich erscheint: netlify/functions/_lib/squadra-rules.mjs (auch von den Functions genutzt)
+export { wallOrder };
 async function loadPins() {
   if (!process.env.NETLIFY || !process.env.URL) return [];
   try {
@@ -209,12 +203,12 @@ export async function loadWall(content, distDir) {
     }
   };
   try {
-    const rows = await get('/rest/v1/squadra_tre?select=id,name,angezeigter_name,foto_pfad,foto_freigegeben,mitgliedschaft,bestaetigt_am,created_at&optin_bestaetigt=eq.true&wand_optin=eq.true&ausgeblendet=eq.false&order=created_at.asc');
+    // select=* funktioniert vor und nach Migration 004; gefiltert wird in oeffentlicheWall() (Eltern, Namensfreigabe, Fotos)
+    const rows = await get('/rest/v1/squadra_tre?select=*&order=created_at.asc');
     const mitglieder = [];
-    for (const r of rows) {
-      let foto = null;
-      if (r.foto_pfad && r.foto_freigegeben) foto = await download('squadra', r.foto_pfad, `wall/squadra/${r.id}${extname(r.foto_pfad)}`);
-      mitglieder.push({ id: r.id, name: r.angezeigter_name || r.name, seit: r.created_at || '', foto, unterstuetzer: r.mitgliedschaft === 'unterstuetzer' });
+    for (const m of oeffentlicheWall(rows)) {
+      const foto = m.foto_pfad ? await download('squadra', m.foto_pfad, `wall/squadra/${m.id}${extname(m.foto_pfad)}`) : null;
+      mitglieder.push({ id: m.id, name: m.name, seit: m.seit, foto, unterstuetzer: m.unterstuetzer });
     }
     const sp = await get('/rest/v1/sponsor_wall?select=*&freigegeben=eq.true&order=created_at.asc');
     const sponsoren = [];

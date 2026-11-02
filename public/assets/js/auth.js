@@ -674,6 +674,16 @@
       let squadra = [];
       let sFilter = 'alle';
       const kurzName = (n) => { const p2 = String(n || '').trim().split(/\s+/); return p2.length > 1 ? `${p2[0]} ${p2[p2.length - 1][0].toUpperCase()}.` : (p2[0] || ''); };
+      // Regeln wie in netlify/functions/_lib/squadra-rules.mjs (Datenschutz-Umbau 02.11.2026)
+      const STUFE = { unter16: 'unter 16', '16bis17': '16/17', '18plus': '18+' };
+      const stufeVon = (r) => r.altersstufe || (r.minderjaehrig ? 'unter16' : '18plus');
+      const istMinor = (r) => stufeVon(r) !== '18plus';
+      const elternPflicht = (r) => stufeVon(r) === 'unter16';
+      const elternOk = (r, z) => !!(r.eltern_bestaetigt_am && r.eltern_zwecke && r.eltern_zwecke[z] === true);
+      const nameWoerter = (n) => String(n || '').trim().split(/\s+/).filter(Boolean).length;
+      const brauchtNamensFreigabe = (r) => nameWoerter(r.name) < 2 || !!r.spitzname;
+      const elternOffen = (r) => istMinor(r) && ((elternPflicht(r) && !r.eltern_bestaetigt_am) || (r.foto_pfad && !elternOk(r, 'foto')));
+      const ZWECK = { mitglied: 'Mitglied', wall_name: 'Name', foto: 'Foto', updates: 'Updates', jahresbericht: 'Jahresbericht' };
       const initialsOf = (n) => String(n || '?').trim().split(/\s+/).slice(0, 2).map((x) => x[0] || '').join('').toUpperCase();
       const zoom = (src) => { const d = document.createElement('div'); d.className = 'photo-zoom'; d.innerHTML = `<img src="${escapeHtml(src)}" alt="">`; d.addEventListener('click', () => d.remove()); document.body.appendChild(d); };
 
@@ -684,6 +694,8 @@
         const q = ($('[data-ssearch]').value || '').toLowerCase();
         const list = squadra.filter((r) => {
           if (sFilter === 'pruefen' && !(r.foto_pfad && !r.foto_freigegeben)) return false;
+          if (sFilter === 'name' && !(brauchtNamensFreigabe(r) && !r.name_freigegeben)) return false;
+          if (sFilter === 'eltern' && !elternOffen(r)) return false;
           if (sFilter === 'freund' && r.mitgliedschaft !== 'freund') return false;
           if (sFilter === 'unterstuetzer' && r.mitgliedschaft !== 'unterstuetzer') return false;
           if (sFilter === 'offen' && r.optin_bestaetigt) return false;
@@ -692,11 +704,16 @@
         const box = $('[data-squadra]');
         if (!list.length) { box.innerHTML = '<p class="muted">Keine Einträge.</p>'; return; }
         box.innerHTML = list.map((r) => {
-          const pending = r.foto_pfad && !r.foto_freigegeben;
+          const pending = (r.foto_pfad && !r.foto_freigegeben) || (brauchtNamensFreigabe(r) && !r.name_freigegeben);
+          const zw = r.eltern_zwecke || {};
           const tags = [
             r.mitgliedschaft === 'unterstuetzer' ? `<span class="t-warn">Unterstützer${r.betrag ? ' · ' + eur(r.betrag) : ''}</span>` : '<span>Freund/Fan</span>',
             r.optin_bestaetigt ? '<span class="t-ok">bestätigt</span>' : '<span class="t-red">unbestätigt</span>',
-            r.minderjaehrig ? `<span class="t-warn">unter 16${r.einwilligung_eltern ? ' · Eltern: ' + escapeHtml(r.einwilligung_eltern) : ''}</span>` : '',
+            istMinor(r) ? `<span class="t-warn">${STUFE[stufeVon(r)]}${r.altersstufe ? '' : ' (alt)'}${r.einwilligung_eltern ? ' · Eltern: ' + escapeHtml(r.einwilligung_eltern) : ''}</span>` : '',
+            istMinor(r) ? (r.eltern_bestaetigt_am ? `<span class="t-ok">Eltern ✓ ${escapeHtml(Object.keys(ZWECK).filter((z) => zw[z]).map((z) => ZWECK[z]).join(', ') || '–')}</span>` : ((elternPflicht(r) || r.foto_pfad) ? '<span class="t-red">Eltern offen</span>' : '')) : '',
+            r.spitzname ? `<span>Spitzname: ${escapeHtml(r.spitzname)}</span>` : '',
+            brauchtNamensFreigabe(r) ? (r.name_freigegeben ? '<span class="t-ok">Name freigegeben</span>' : '<span class="t-red">Name wartet auf Freigabe</span>') : '',
+            r.einwilligung_nachweis ? `<span>Nachweis: ${escapeHtml(r.einwilligung_nachweis)}</span>` : '',
             r.wand_optin ? '<span>Wall ✓</span>' : '<span>keine Wall</span>',
             r.updates_optin ? '<span>Updates</span>' : '', r.jahresbericht_optin ? '<span>Jahresbericht</span>' : '',
             r.quelle === 'admin' ? '<span>vom Team</span>' : '', r.ausgeblendet ? '<span class="t-red">ausgeblendet</span>' : '',
@@ -712,6 +729,8 @@
             <label class="field"><span>Name auf der Wall</span><input value="${escapeHtml(r.angezeigter_name || kurzName(r.name))}" data-dname maxlength="60"></label>
             <div class="member-actions">
               ${r.foto_pfad ? `<button class="small-btn" data-act="foto">${r.foto_freigegeben ? 'Foto sperren' : '✓ Foto freigeben'}</button>` : ''}
+              ${brauchtNamensFreigabe(r) ? `<button class="small-btn" data-act="namefrei">${r.name_freigegeben ? 'Namensfreigabe zurückziehen' : `✓ ${r.spitzname ? 'Spitzname' : 'Name'} freigeben`}</button>` : ''}
+              ${istMinor(r) ? '<button class="small-btn" data-act="eltern">Eltern-Bestätigung anfordern</button>' : ''}
               <button class="small-btn" data-act="pin">${pins.includes(r.id) ? 'Pin lösen' : '📌 Pin'}</button>
               <button class="small-btn" data-act="name">Name speichern</button>
               <button class="small-btn" data-act="hide">${r.ausgeblendet ? 'Wieder zeigen' : 'Ausblenden'}</button>
@@ -735,8 +754,8 @@
         $('[data-sk="gesamt"]').textContent = ok.length;
         $('[data-sk="freund"]').textContent = ok.filter((r) => r.mitgliedschaft !== 'unterstuetzer').length;
         $('[data-sk="unterstuetzer"]').textContent = ok.filter((r) => r.mitgliedschaft === 'unterstuetzer').length;
-        $('[data-sk="pruefen"]').textContent = data.filter((r) => r.foto_pfad && !r.foto_freigegeben).length;
-        $('[data-updates-count]').textContent = ok.filter((r) => r.updates_optin && r.email).length;
+        $('[data-sk="pruefen"]').textContent = data.filter((r) => (r.foto_pfad && !r.foto_freigegeben) || (brauchtNamensFreigabe(r) && !r.name_freigegeben)).length;
+        $('[data-updates-count]').textContent = ok.filter((r) => r.updates_optin && r.email && (!elternPflicht(r) || (elternOk(r, 'mitglied') && elternOk(r, 'updates')))).length;
         await renderSquadra();
       }
       $$('[data-sfilter] [data-f]').forEach((b) => b.addEventListener('click', () => {
@@ -761,13 +780,26 @@
           return;
         }
         if (btn.dataset.act === 'foto') patch = { foto_freigegeben: !r.foto_freigegeben };
+        if (btn.dataset.act === 'namefrei') patch = { name_freigegeben: !r.name_freigegeben };
+        if (btn.dataset.act === 'eltern') {
+          const mail = prompt('E-Mail-Adresse eines Elternteils (bekommt einen neuen Link, 7 Tage gültig):', r.einwilligung_eltern || '');
+          if (mail === null) return;
+          try { const res = await api('/api/squadra-eltern-anfordern', { id, eltern_email: mail.trim() }); showMsg(`Eltern-E-Mail gesendet an ${res.an}.`); loadSquadra(); }
+          catch (err) { showMsg('Nicht gesendet: ' + err.message, true); }
+          return;
+        }
         if (btn.dataset.act === 'name') patch = { angezeigter_name: $('[data-dname]', card).value.trim() || kurzName(r.name) };
         if (btn.dataset.act === 'hide') patch = { ausgeblendet: !r.ausgeblendet };
         if (btn.dataset.act === 'del') {
           if (!confirm(`${r.name} endgültig löschen (z. B. auf Wunsch der Person oder der Eltern)? Das Foto wird ebenfalls gelöscht.`)) return;
           if (r.foto_pfad) await sb.storage.from('squadra').remove([r.foto_pfad]);
           const { error } = await sb.from('squadra_tre').delete().eq('id', id);
-          if (error) showMsg('Löschen fehlgeschlagen.', true); else { showMsg('Gelöscht. Mit „Wall of Fame veröffentlichen“ verschwindet der Eintrag auch von der Website.'); loadSquadra(); }
+          if (error) { showMsg('Löschen fehlgeschlagen.', true); return; }
+          // Pin entfernen und die Website sofort neu bauen lassen, damit der Eintrag auch online verschwindet
+          if (pins.includes(id)) { try { const res = await api('/api/squadra-pins', { ids: pins.filter((x) => x !== id) }); pins = res.ids || []; } catch (err) { /* Pin bleibt – stört nicht, ID existiert nicht mehr */ } }
+          try { await api('/api/wall-publish', {}); showMsg('Gelöscht. Die Wall of Fame wird neu veröffentlicht (ca. 1–2 Minuten).'); }
+          catch (err) { showMsg('Gelöscht – aber Veröffentlichen fehlgeschlagen: ' + err.message + '. Bitte „Wall of Fame veröffentlichen“ drücken.', true); }
+          loadSquadra();
           return;
         }
         const { error } = await sb.from('squadra_tre').update(patch).eq('id', id);
@@ -783,16 +815,39 @@
         if (!f) return;
         afBlob = await resizeImage(f);
         previewInto($('[data-af-preview]'), afBlob);
+        afSync();
       });
-      $('[data-add-friend]').addEventListener('submit', async (e) => {
+      // Eltern-Adresse: unter 16 immer, mit 16/17 nur bei Foto (L14)
+      const afForm = $('[data-add-friend]');
+      const afSync = () => {
+        const st = afForm.altersstufe.value;
+        const need = st === 'unter16' || (st === '16bis17' && !!afBlob);
+        $('[data-af-parent]').hidden = !need;
+        afForm.eltern_email.required = need;
+        afForm.instagram.disabled = st !== '18plus';
+        if (st !== '18plus') afForm.instagram.value = '';
+      };
+      afForm.addEventListener('change', afSync);
+      afSync();
+      afForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const f = e.target;
+        afSync();
         if (!f.reportValidity()) return;
+        const stufe = f.altersstufe.value;
+        const minor = stufe !== '18plus';
+        const eltern = f.eltern_email.value.trim().toLowerCase();
+        const elternMail = stufe === 'unter16' || (stufe === '16bis17' && !!afBlob);
+        const jetzt = new Date().toISOString();
         const row = {
           name: f.name.value.trim(), angezeigter_name: f.angezeigter_name.value.trim() || kurzName(f.name.value),
-          instagram: f.instagram.value.trim().replace(/^@/, '') || null, email: f.email.value.trim().toLowerCase() || null,
-          minderjaehrig: f.minderjaehrig.checked, mitgliedschaft: 'freund', quelle: 'admin',
-          wand_optin: true, optin_bestaetigt: true, bestaetigt_am: new Date().toISOString(),
+          spitzname: f.spitzname.value.trim().slice(0, 20) || null, name_freigegeben: true, // vom Team selbst eingetragen = geprüft
+          instagram: minor ? null : (f.instagram.value.trim().replace(/^@/, '') || null), email: f.email.value.trim().toLowerCase() || null,
+          altersstufe: stufe, minderjaehrig: minor, einwilligung_eltern: elternMail ? eltern : null,
+          mitgliedschaft: 'freund', quelle: 'admin',
+          wand_optin: true, optin_bestaetigt: true, bestaetigt_am: jetzt,
+          einwilligung_nachweis: f.einwilligung_nachweis.value.trim(), einwilligung_am: jetzt, einwilligung_version: '2026-11-02',
+          token_ablauf: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString(),
           jahresbericht_optin: false, updates_optin: false
         };
         try {
@@ -802,10 +857,16 @@
             const path = `${data.id}.jpg`;
             const { error: upErr } = await sb.storage.from('squadra').upload(path, afBlob, { upsert: true, contentType: 'image/jpeg' });
             if (upErr) throw upErr;
-            await sb.from('squadra_tre').update({ foto_pfad: path, foto_freigegeben: true }).eq('id', data.id);
+            // Fotos von Minderjährigen nicht automatisch freigeben (erst Eltern, dann Team)
+            await sb.from('squadra_tre').update({ foto_pfad: path, foto_freigegeben: !minor }).eq('id', data.id);
           }
-          f.reset(); afBlob = null; $('[data-af-preview]').textContent = 'Foto';
-          showMsg('Hinzugefügt. Mit „Wall of Fame veröffentlichen“ erscheint der Eintrag online.');
+          let info = 'Hinzugefügt. Mit „Wall of Fame veröffentlichen“ erscheint der Eintrag online.';
+          if (elternMail) {
+            try { await api('/api/squadra-eltern-anfordern', { id: data.id, eltern_email: eltern }); info = `Hinzugefügt. Eltern-Bestätigung an ${eltern} gesendet – der Eintrag${afBlob ? ' bzw. das Foto' : ''} erscheint erst nach Zustimmung der Eltern.`; }
+            catch (err2) { info = `Hinzugefügt, aber Eltern-E-Mail nicht gesendet (${err2.message}). Bitte „Eltern-Bestätigung anfordern“ nutzen.`; }
+          }
+          f.reset(); afBlob = null; $('[data-af-preview]').textContent = 'Foto'; afSync();
+          showMsg(info);
           loadSquadra();
         } catch (err) { showMsg('Hinzufügen fehlgeschlagen: ' + err.message, true); }
       });
@@ -832,9 +893,10 @@
       }));
 
       $('[data-export]').addEventListener('click', () => {
-        const head = ['Name', 'Name auf Wall', 'E-Mail', 'Instagram', 'Mitgliedschaft', 'Art', 'Betrag', 'Bestätigt', 'Unter 16', 'Eltern-E-Mail', 'Updates', 'Jahresbericht', 'Wall', 'Foto freigegeben', 'Quelle', 'Angemeldet am'];
+        const head = ['Name', 'Name auf Wall', 'Spitzname', 'Name freigegeben', 'E-Mail', 'Instagram', 'Mitgliedschaft', 'Art', 'Betrag', 'Bestätigt', 'Altersstufe', 'Eltern-E-Mail', 'Eltern bestätigt am', 'Eltern-Zwecke', 'Updates', 'Jahresbericht', 'Wall', 'Foto freigegeben', 'Einwilligung (Version)', 'Einwilligung am', 'Nachweis', 'Quelle', 'Angemeldet am'];
         const yn = (b) => (b ? 'ja' : 'nein');
-        const lines = squadra.map((r) => [r.name, r.angezeigter_name, r.email, r.instagram, r.mitgliedschaft, r.art, r.betrag, yn(r.optin_bestaetigt), yn(r.minderjaehrig), r.einwilligung_eltern, yn(r.updates_optin), yn(r.jahresbericht_optin), yn(r.wand_optin), yn(r.foto_freigegeben), r.quelle, new Date(r.created_at).toLocaleDateString('de-DE')]
+        const dt = (v) => (v ? new Date(v).toLocaleString('de-DE') : '');
+        const lines = squadra.map((r) => [r.name, r.angezeigter_name, r.spitzname, yn(r.name_freigegeben), r.email, r.instagram, r.mitgliedschaft, r.art, r.betrag, yn(r.optin_bestaetigt), r.altersstufe || (r.minderjaehrig ? 'unter16 (alt)' : ''), r.einwilligung_eltern, dt(r.eltern_bestaetigt_am), r.eltern_zwecke ? Object.keys(r.eltern_zwecke).filter((z) => r.eltern_zwecke[z]).join(',') : '', yn(r.updates_optin), yn(r.jahresbericht_optin), yn(r.wand_optin), yn(r.foto_freigegeben), r.einwilligung_version, dt(r.einwilligung_am), r.einwilligung_nachweis, r.quelle, new Date(r.created_at).toLocaleDateString('de-DE')]
           .map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';'));
         const blob = new Blob(['﻿' + [head.join(';'), ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
         const a = document.createElement('a');

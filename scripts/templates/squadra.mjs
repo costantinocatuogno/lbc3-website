@@ -78,9 +78,10 @@ export function joinForm(lang, ctx) {
     <fieldset class="field">
       <legend>${_('f_membership')}</legend>
       <div class="choice">
-        <label><input type="radio" name="mitgliedschaft" value="unterstuetzer" checked><span><strong>${_('sq_sup_t')}</strong><small>${_('sq_sup_p')}</small></span></label>
-        <label><input type="radio" name="mitgliedschaft" value="freund"><span><strong>${_('sq_free_t')}</strong><small>${_('sq_free_p')}</small></span></label>
+        <label><input type="radio" name="mitgliedschaft" value="freund" checked><span><strong>${_('sq_free_t')}</strong><small>${_('sq_free_p')}</small></span></label>
+        <label data-sup-choice><input type="radio" name="mitgliedschaft" value="unterstuetzer"><span><strong>${_('sq_sup_t')}</strong><small>${_('sq_sup_p')}</small></span></label>
       </div>
+      <small class="muted" data-sup-minor hidden>${_('sq_sup_minor')}</small>
     </fieldset>
 
     <div class="photo-pick" data-photo-pick>
@@ -96,16 +97,18 @@ export function joinForm(lang, ctx) {
       <label class="field"><span>${_('f_name')}</span><input name="name" required maxlength="120" autocomplete="name"></label>
       <label class="field"><span>${_('f_email')}</span><input name="email" type="email" required maxlength="200" autocomplete="email"></label>
     </div>
-    <label class="field"><span>${_('f_insta')}</span><input name="instagram" maxlength="40" placeholder="@" autocomplete="off"></label>
+    <label class="field"><span>${_('f_nick')}</span><input name="spitzname" maxlength="20" autocomplete="off"><small class="muted">${_('f_nick_hint')}</small></label>
 
     <fieldset class="field">
       <legend>${_('f_age')}</legend>
       <div class="choice">
-        <label><input type="radio" name="alter" value="16plus" required><span>${_('age_16')}</span></label>
+        <label><input type="radio" name="alter" value="18plus" required><span>${_('age_18')}</span></label>
+        <label><input type="radio" name="alter" value="16bis17"><span>${_('age_1617')}</span></label>
         <label><input type="radio" name="alter" value="unter16"><span>${_('age_u16')}</span></label>
       </div>
     </fieldset>
-    <label class="field" data-parent hidden><span>${_('f_parent')}</span><input name="eltern_email" type="email" maxlength="200"><small class="muted">${_('f_parent_hint')}</small></label>
+    <label class="field" data-insta hidden><span>${_('f_insta')}</span><input name="instagram" maxlength="40" placeholder="@" autocomplete="off"></label>
+    <label class="field" data-parent hidden><span>${_('f_parent')}</span><input name="eltern_email" type="email" maxlength="200"><small class="muted" data-parent-hint="u16">${_('f_parent_hint')}</small><small class="muted" data-parent-hint="foto" hidden>${_('f_parent_hint_photo')}</small></label>
 
     <div data-sup>
       <div class="grid-2 tight">
@@ -126,6 +129,7 @@ export function joinForm(lang, ctx) {
     <div class="form-msg" data-form-msg role="status" hidden></div>
   </form>
   <template data-msg-ok><strong>${_('join_ok_title')}</strong> ${_('join_ok_text')}</template>
+  <template data-msg-ok-parent><strong>${_('join_ok_title')}</strong> ${_('join_ok_parent')}</template>
   <template data-msg-err>${_('join_err')}</template>
 </div>`;
 }
@@ -206,18 +210,76 @@ export function squadra(lang, ctx, wall) {
   return layout({ lang, path: '/squadra-tre/', title: `Squadra Tre · ${tag}`, description: _('sq_intro'), body, ctx, active: '/squadra-tre/' });
 }
 
-/* ---------- Druckansicht /wall-of-fame/druck/ ---------- */
-export function wallPrint(ctx, wall) {
+/* ---------- Seiten mit Link aus E-Mails: bestätigen, Eltern, Daten verwalten ---------- */
+// Die Seiten sind statisch und enthalten keine Daten. Das Skript (site.js) liest den Token aus der Adresse (?t=…),
+// lädt bei Bedarf eine kurze Übersicht und schickt die Entscheidung per POST (nie beim bloßen Öffnen des Links, L2).
+const tx = (_, keys) => keys.map((k) => `<template data-tx="${k}">${_(k)}</template>`).join('');
+
+export function confirmPage(lang, ctx) {
+  const _ = t(lang);
+  const body = `<section class="wrap section message"><div class="card form-card" data-sq-confirm data-lang="${lang}">
+    <h1 class="h1">${_('cf_title')}</h1>
+    <div data-sq-step="start"><p class="lead">${_('cf_text')}</p><button type="button" class="btn btn-red" data-sq-go>${_('cf_btn')}</button></div>
+    <div data-sq-step="ok" hidden><p class="lead"><strong>${_('confirmed_title')}</strong> ${_('confirmed_text')}</p><p data-sq-foto-wartet hidden>${_('cf_photo_wait')}</p><a class="btn btn-dark" href="${url(lang, '/squadra-tre/')}">Squadra Tre</a></div>
+    <div class="form-msg is-error" data-sq-err role="status" hidden></div>
+    ${tx(_, ['link_invalid', 'join_err'])}
+  </div></section>`;
+  return layout({ lang, path: '/squadra-bestaetigen/', title: _('cf_title'), body, ctx, noindex: true });
+}
+
+export function parentPage(lang, ctx) {
+  const _ = t(lang);
+  const zweck = (z) => `<label class="check" data-el-zweck="${z}" hidden><input type="checkbox" name="${z}" value="1"><span>${_(`el_p_${z}`)}</span></label>`;
+  const body = `<section class="wrap section"><div class="card form-card" data-sq-parent data-lang="${lang}">
+    <h1 class="h1">${_('el_title')}</h1>
+    <p data-sq-loading>${_('sq_loading')}</p>
+    <form class="form" data-sq-step="form" hidden novalidate>
+      <p>${_('el_intro')}</p>
+      <p><span class="field-label">${_('el_child')}</span> <strong data-el-name></strong><span data-el-nick-wrap hidden> · ${_('el_nick')} <strong data-el-nick></strong></span></p>
+      <div data-el-foto-wrap hidden><span class="field-label">${_('el_photo')}</span><div class="photo-preview has-photo"><img alt="" data-el-foto></div><small class="muted">${_('el_photo_note')}</small></div>
+      <fieldset class="field"><legend>${_('el_purposes')}</legend>
+        ${['mitglied', 'wall_name', 'foto', 'updates', 'jahresbericht'].map(zweck).join('')}
+        <small class="muted">${_('el_untick')}</small>
+      </fieldset>
+      <label class="check"><input type="checkbox" name="sorgeberechtigt" value="1" required><span>${_('el_custody')}</span></label>
+      <button class="btn btn-red btn-block" type="submit">${_('el_btn')}</button>
+      <p class="muted small">${_('el_note')}</p>
+    </form>
+    <div data-sq-step="ok" hidden><p class="lead"><strong>${_('el_done_title')}</strong> ${_('el_done_text')}</p></div>
+    <div data-sq-step="deleted" hidden><p class="lead">${_('el_declined')}</p></div>
+    <div class="form-msg is-error" data-sq-err role="status" hidden></div>
+    ${tx(_, ['link_invalid', 'join_err', 'el_already'])}
+  </div></section>`;
+  return layout({ lang, path: '/squadra-eltern/', title: _('el_title'), body, ctx, noindex: true });
+}
+
+export function managePage(lang, ctx) {
+  const _ = t(lang);
+  const opt = (v, key) => `<label data-mg-opt="${v}"><input type="radio" name="aktion" value="${v}" required><span>${_(key)}</span></label>`;
+  const body = `<section class="wrap section"><div class="card form-card" data-sq-manage data-lang="${lang}">
+    <h1 class="h1">${_('mg_title')}</h1>
+    <p data-sq-loading>${_('sq_loading')}</p>
+    <form class="form" data-sq-step="form" hidden novalidate>
+      <p>${_('mg_intro')} <strong data-mg-name></strong></p>
+      <fieldset class="field"><legend>${_('mg_what')}</legend>
+        <div class="choice">${opt('foto', 'mg_foto')}${opt('wall', 'mg_wall')}${opt('abmelden', 'mg_mails')}${opt('austritt', 'mg_leave')}</div>
+      </fieldset>
+      <button class="btn btn-red btn-block" type="submit">${_('mg_btn')}</button>
+      <p class="muted small">${_('mg_print_note')}</p>
+    </form>
+    <div data-sq-step="ok" hidden><p class="lead" data-mg-done></p><a class="btn btn-dark" href="${url(lang, '/squadra-tre/')}">Squadra Tre</a></div>
+    <div class="form-msg is-error" data-sq-err role="status" hidden></div>
+    ${tx(_, ['link_invalid', 'join_err', 'mg_confirm_leave', 'mg_done_foto', 'mg_done_wall', 'mg_done_abmelden', 'mg_done_austritt'])}
+  </div></section>`;
+  return layout({ lang, path: '/squadra-verwalten/', title: _('mg_title'), body, ctx, noindex: true });
+}
+
+/* ---------- Druckansicht /wall-of-fame/druck/ (L15) ---------- */
+// Statische Hülle ohne Namen und Fotos: Daten kommen erst nach dem Admin-Login über /api/squadra-druck (druck.js).
+export function wallPrint(ctx) {
   const site = ctx.content.site;
   const tag = site.squadra_hashtag || '#SquadraTre';
   const saison = site.saison_wall || String(new Date().getFullYear());
-  const tiles = wall.mitglieder.map(fameTile).join('');
-  const sponsors = wall.sponsoren.map((s) => `
-    <div class="pw-sponsor">
-      <div class="pw-logo">${s.logo ? `<img src="${esc(s.logo)}" alt="${esc(s.firma)}">` : `<span>${esc(s.firma)}</span>`}</div>
-      <strong>${esc(s.firma)}</strong>
-      <small>${esc(String(s.website || '').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</small>
-    </div>`).join('');
   const header = (title) => `
     <header class="pw-head">
       <img src="/assets/img/lbc3-logo.png" alt="LBC3">
@@ -252,22 +314,24 @@ export function wallPrint(ctx, wall) {
     <select data-pw-content><option value="beide">Squadra Tre + Partner</option><option value="squadra">Nur Squadra Tre</option><option value="sponsoren">Nur Partner</option></select>
   </label>
   <button type="button" class="btn btn-red btn-sm" data-pw-print>Drucken / als PDF speichern</button>
-  <span class="muted small">${wall.mitglieder.length} Mitglieder · ${wall.sponsoren.length} Partner${wall.beispiel ? ' · <strong>Beispieldaten</strong>' : ''}</span>
+  <span class="muted small" data-pw-info>Daten werden geladen …</span>
 </div>
-<p class="pw-help no-print">Tipp: Im Druckdialog „Als PDF speichern“ wählen, Ränder auf „Keine“ und „Hintergrundgrafiken“ einschalten. Die PDF-Datei geht dann an die Druckerei. Es erscheinen nur freigegebene Fotos und Einträge.</p>
+<p class="pw-help no-print">Nur für das Team: Die Daten werden erst nach dem Login geladen. Tipp: Im Druckdialog „Als PDF speichern“ wählen, Ränder auf „Keine“ und „Hintergrundgrafiken“ einschalten. Es erscheinen nur freigegebene Fotos und Einträge (unter 18: Fotos nur mit Zustimmung der Eltern). Gedruckte Exemplare lassen sich nicht zurückrufen – bitte nur aktuelle Daten drucken.</p>
 <div class="pw-stage" data-pw-stage>
   <section class="pw-sheet" data-pw-sheet="squadra">
     ${header('SQUADRA <span>TRE</span> · WALL OF FAME')}
-    <div class="pw-grid" data-pw-grid>${tiles}</div>
+    <div class="pw-grid" data-pw-grid></div>
     <footer class="pw-foot">Grazie a tutti! · Danke an alle! · Forza Luigi #3</footer>
   </section>
   <section class="pw-sheet" data-pw-sheet="sponsoren">
     ${header('WALL OF FAME · <span>PARTNER</span>')}
-    <div class="pw-sponsors">${sponsors}</div>
+    <div class="pw-sponsors" data-pw-sponsors></div>
     <footer class="pw-foot">Danke für eure Unterstützung · Grazie per il vostro supporto</footer>
   </section>
 </div>
-<script src="/assets/js/site.js?v=${ctx.version}" defer></script>
+<script src="/assets/js/config.js?v=${ctx.version}"></script>
+<script src="/assets/vendor/supabase.js?v=${ctx.version}"></script>
+<script src="/assets/js/druck.js?v=${ctx.version}" defer></script>
 </body>
 </html>`;
 }

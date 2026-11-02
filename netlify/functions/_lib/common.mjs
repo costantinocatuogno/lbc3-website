@@ -93,7 +93,8 @@ export async function requireAdmin(req) {
 }
 
 // ---------- E-Mail über Brevo (EU) ----------
-export async function sendMail({ to, subject, html, attachmentUrl, attachmentName, replyTo }) {
+// headers: zusätzliche E-Mail-Header (z. B. List-Unsubscribe) – Brevo übernimmt sie unverändert.
+export async function sendMail({ to, subject, html, attachmentUrl, attachmentName, replyTo, headers }) {
   const body = {
     sender: { email: env('MAIL_FROM'), name: process.env.MAIL_FROM_NAME || 'LBC3 · Luigi Battista Catuogno' },
     replyTo: replyTo || { email: process.env.MAIL_REPLY_TO || env('MAIL_FROM') },
@@ -101,6 +102,7 @@ export async function sendMail({ to, subject, html, attachmentUrl, attachmentNam
     subject,
     htmlContent: html
   };
+  if (headers && Object.keys(headers).length) body.headers = headers;
   if (attachmentUrl) body.attachment = [{ url: attachmentUrl, name: attachmentName || 'jahresbericht.pdf' }];
   let res;
   try { res = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -166,11 +168,100 @@ export async function triggerBuild() {
   return res.ok;
 }
 
-// Öffentlicher Anzeigename: Vorname + Initiale ("Marco Rossi" → "Marco R.")
-export function kurzName(name) {
-  const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
-  if (parts.length <= 1) return parts[0] || '';
-  return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
+// Anzeigename und Instagram-Bereinigung liegen jetzt in squadra-rules.mjs (gemeinsam mit Build und Tests)
+export { kurzName, cleanHandle } from './squadra-rules.mjs';
+
+// Löscht ein Foto im privaten Speicher (Fehler werden nur protokolliert – die Zeile wird trotzdem bereinigt)
+export async function sbRemove(bucket, path) {
+  if (!path) return;
+  const key = env('SUPABASE_SERVICE_ROLE_KEY');
+  try {
+    const res = await fetch(`${env('SUPABASE_URL')}/storage/v1/object/${bucket}`, {
+      method: 'DELETE', headers: { ...keyHeaders(key), 'Content-Type': 'application/json' }, body: JSON.stringify({ prefixes: [path] })
+    });
+    if (!res.ok) console.warn(`Foto ${bucket}/${path} nicht gelöscht (${res.status})`);
+  } catch (e) { console.warn(`Foto ${bucket}/${path} nicht gelöscht:`, e.message); }
 }
 
-export const cleanHandle = (s) => String(s || '').trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/^@/, '').replace(/[/?#].*$/, '').replace(/[^A-Za-z0-9._]/g, '').slice(0, 30);
+// ---------- Fotos: Metadaten entfernen (L5) ----------
+// Entfernt EXIF/XMP/Kommentare usw. (Standort, Kamera, Datum) – in reinem JavaScript, ohne Neukodierung.
+// JPEG: APP1…APP15 und COM raus, APP0/JFIF bleibt · PNG: tEXt/zTXt/iTXt/eXIf/tIME raus ·
+// WebP: EXIF/XMP-Chunks raus, RIFF-Größe und VP8X-Flags angepasst. Unbekanntes/kaputtes Format → Fehler.
+export class BildFehler extends Error {}
+
+export function stripJpeg(buf) {
+  if (buf.length < 4 || buf[0] !== 0xff || buf[1] !== 0xd8) throw new BildFehler('kein JPEG');
+  const out = [buf.subarray(0, 2)];
+  let i = 2;
+  while (i < buf.length) {
+    if (buf[i] !== 0xff) throw new BildFehler('JPEG-Struktur fehlerhaft');
+    let j = i;
+    while (j < buf.length && buf[j] === 0xff) j++; // Füllbytes
+    if (j >= buf.length) throw new BildFehler('JPEG abgeschnitten');
+    const m = buf[j];
+    const seg = j + 1;
+    if (m === 0xd9) { out.push(Buffer.from([0xff, 0xd9])); i = seg; break; } // EOI
+    if (m === 0x01 || (m >= 0xd0 && m <= 0xd7)) { out.push(Buffer.from([0xff, m])); i = seg; continue; } // ohne Länge
+    if (seg + 2 > buf.length) throw new BildFehler('JPEG abgeschnitten');
+    const len = buf.readUInt16BE(seg);
+    if (len < 2 || seg + len > buf.length) throw new BildFehler('JPEG-Segment fehlerhaft');
+    const drop = (m >= 0xe1 && m <= 0xef) || m === 0xfe;
+    if (!drop) out.push(Buffer.from([0xff, m]), buf.subarray(seg, seg + len));
+    i = seg + len;
+    if (m === 0xda) { out.push(buf.subarray(i)); i = buf.length; break; } // Start of Scan: Rest sind Bilddaten
+  }
+  return Buffer.concat(out);
+}
+
+const PNG_SIG = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const PNG_DROP = new Set(['tEXt', 'zTXt', 'iTXt', 'eXIf', 'tIME']);
+export function stripPng(buf) {
+  if (buf.length < 8 || !buf.subarray(0, 8).equals(PNG_SIG)) throw new BildFehler('kein PNG');
+  const out = [PNG_SIG];
+  let i = 8, ende = false;
+  while (i + 12 <= buf.length) {
+    const len = buf.readUInt32BE(i);
+    const type = buf.toString('latin1', i + 4, i + 8);
+    const end = i + 12 + len;
+    if (end > buf.length) throw new BildFehler('PNG-Chunk fehlerhaft');
+    if (!PNG_DROP.has(type)) out.push(buf.subarray(i, end));
+    i = end;
+    if (type === 'IEND') { ende = true; break; }
+  }
+  if (!ende) throw new BildFehler('PNG ohne IEND');
+  return Buffer.concat(out);
+}
+
+export function stripWebp(buf) {
+  if (buf.length < 12 || buf.toString('ascii', 0, 4) !== 'RIFF' || buf.toString('ascii', 8, 12) !== 'WEBP') throw new BildFehler('kein WebP');
+  const riffEnd = Math.min(buf.length, 8 + buf.readUInt32LE(4));
+  const chunks = [];
+  let i = 12;
+  while (i + 8 <= riffEnd) {
+    const fourcc = buf.toString('latin1', i, i + 4);
+    const size = buf.readUInt32LE(i + 4);
+    const end = i + 8 + size + (size & 1);
+    if (i + 8 + size > riffEnd) throw new BildFehler('WebP-Chunk fehlerhaft');
+    if (fourcc !== 'EXIF' && fourcc !== 'XMP ') {
+      let c = Buffer.from(buf.subarray(i, Math.min(end, riffEnd)));
+      if (c.length < 8 + size + (size & 1)) c = Buffer.concat([c, Buffer.alloc(8 + size + (size & 1) - c.length)]);
+      if (fourcc === 'VP8X' && size >= 1) c[8] &= ~(0x08 | 0x04); // Flags: EXIF (E) und XMP (X) aus
+      chunks.push(c);
+    }
+    i = end;
+  }
+  if (!chunks.length) throw new BildFehler('WebP ohne Bilddaten');
+  const body = Buffer.concat(chunks);
+  const head = Buffer.alloc(12);
+  head.write('RIFF', 0, 'ascii');
+  head.writeUInt32LE(4 + body.length, 4);
+  head.write('WEBP', 8, 'ascii');
+  return Buffer.concat([head, body]);
+}
+
+export function stripMetadata(buf, type) {
+  if (type === 'image/jpeg') return stripJpeg(buf);
+  if (type === 'image/png') return stripPng(buf);
+  if (type === 'image/webp') return stripWebp(buf);
+  throw new BildFehler('Format nicht erlaubt');
+}

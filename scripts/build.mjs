@@ -10,7 +10,7 @@ import { home } from './templates/home.mjs';
 import { baldPage, vorschauPage, baldRedirects, baldJs, vorschauJs } from './templates/bald.mjs';
 import { newsList, newsDetail, ueber, kalender, galerie, galerieSerie, galerieJahr, galerieAlbum, partner, kontakt, rechtliches, message } from './templates/pages.mjs';
 import { loginPage, berichtPage, teamPage } from './templates/secure.mjs';
-import { squadra, wallPrint } from './templates/squadra.mjs';
+import { squadra, wallPrint, confirmPage, parentPage, managePage } from './templates/squadra.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -160,6 +160,10 @@ for (const lang of LANGS) {
   out(url(lang, '/datenschutz/'), rechtliches(lang, ctx, 'datenschutz'));
   out(url(lang, '/danke/'), message(lang, ctx, { path: '/danke/', titleKey: 'thanks_title', textKey: 'thanks_text' }));
   out(url(lang, '/squadra-bestaetigt/'), message(lang, ctx, { path: '/squadra-bestaetigt/', titleKey: 'confirmed_title', textKey: 'confirmed_text' }));
+  // Seiten für Links aus den Squadra-E-Mails (ohne Daten; Token in der Adresse, Aktion nur per Knopf)
+  out(url(lang, '/squadra-bestaetigen/'), confirmPage(lang, ctx));
+  out(url(lang, '/squadra-eltern/'), parentPage(lang, ctx));
+  out(url(lang, '/squadra-verwalten/'), managePage(lang, ctx));
   langPages[lang] = pages.slice(start);
 }
 out('/404.html', message('de', ctx, { path: '/404/', titleKey: 'not_found', textKey: 'back_home' }));
@@ -168,7 +172,7 @@ for (const l of LANGS) {
   out(url(l, '/bericht/'), berichtPage(ctxFor[l], l));
 }
 out('/team/', teamPage(ctx));
-out('/wall-of-fame/druck/', wallPrint(ctx, wall));
+out('/wall-of-fame/druck/', wallPrint(ctx)); // ohne Daten – lädt erst nach Admin-Login (L15)
 out('/bald/', baldPage(ctx));
 out('/vorschau/', vorschauPage());
 writeFileSync(join(DIST, 'bald/bald.js'), baldJs);
@@ -182,7 +186,7 @@ if (baldModus) {
 }
 
 // ---------- SEO: eine Sitemap je Sprache, jede Adresse mit ihren Sprachfassungen (hreflang) ----------
-const isPublic = (p) => !/\/(login|bericht|team|danke|squadra-bestaetigt|wall-of-fame|bald|vorschau)\/|404/.test(p);
+const isPublic = (p) => !/\/(login|bericht|team|danke|squadra-bestaetigt|squadra-bestaetigen|squadra-eltern|squadra-verwalten|wall-of-fame|bald|vorschau)\/|404/.test(p);
 const stripLang = (p) => p.replace(/^\/(en|it|fr)(?=\/)/, '');
 const alternatesXml = (p) => {
   const base = stripLang(p);
@@ -236,6 +240,7 @@ Disallow: /bericht/
 ${['it', 'en', 'fr'].map((l) => `Disallow: /${l}/login/\nDisallow: /${l}/bericht/`).join('\n')}
 Disallow: /team/
 Disallow: /wall-of-fame/
+${['', '/it', '/en', '/fr'].map((l) => `Disallow: ${l}/squadra-bestaetigen/\nDisallow: ${l}/squadra-eltern/\nDisallow: ${l}/squadra-verwalten/`).join('\n')}
 Sitemap: ${siteUrl}/sitemap.xml
 `);
 

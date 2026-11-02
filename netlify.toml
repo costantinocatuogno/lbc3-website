@@ -88,6 +88,7 @@
 [[headers]]
   for = "/wall-of-fame/*"
   [headers.values]
+    Cache-Control = "no-store"
     X-Robots-Tag = "noindex, nofollow"
 [[headers]]
   for = "/wall/*"
@@ -124,6 +125,68 @@
 [[headers]]
   for = "/fr/login/*"
   [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Seiten mit Links aus den Squadra-E-Mails (Token in der Adresse): nicht zwischenspeichern, nicht indexieren
+[[headers]]
+  for = "/squadra-bestaetigen/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/squadra-eltern/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/squadra-verwalten/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/it/squadra-bestaetigen/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/it/squadra-eltern/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/it/squadra-verwalten/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/en/squadra-bestaetigen/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/en/squadra-eltern/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/en/squadra-verwalten/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/fr/squadra-bestaetigen/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/fr/squadra-eltern/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+[[headers]]
+  for = "/fr/squadra-verwalten/*"
+  [headers.values]
+    Cache-Control = "no-store"
     X-Robots-Tag = "noindex, nofollow"
 
 # Lange Cache-Zeiten für Schriften und Medien

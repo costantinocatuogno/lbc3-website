@@ -315,11 +315,13 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <div class="kpi"><span>Unterstützer</span><strong data-sk="unterstuetzer">–</strong></div>
         <div class="kpi"><span>Fotos warten auf Prüfung</span><strong data-sk="pruefen">–</strong></div>
       </div>
-      <div class="note-box">So läuft’s: Anmeldung → E-Mail-Bestätigung (unter 16: durch die Eltern) → ihr prüft das Foto → „Wall of Fame veröffentlichen“. Namen erscheinen als Vorname + Initiale. Fotos nur, wenn ihr sie freigebt. „Ausblenden“ nimmt jemanden von der Wall, ohne die Anmeldung zu löschen. Jeden Sonntagmorgen kommt automatisch ein Wochenbericht mit den neuen Mitgliedern und dem Text für den Instagram-Post per E-Mail.</div>
+      <div class="note-box">So läuft’s: Anmeldung → E-Mail-Bestätigung (unter 16: durch die Eltern; Fotos unter 18 nur mit Zustimmung der Eltern) → ihr prüft Foto, Einwortnamen und Spitznamen → „Wall of Fame veröffentlichen“. Namen erscheinen als Vorname + Initiale. Fotos nur, wenn ihr sie freigebt. Nicht bestätigte Anmeldungen löscht das System nach 7 Tagen automatisch. „Ausblenden“ nimmt jemanden von der Wall, ohne die Anmeldung zu löschen. Jeden Sonntagmorgen kommt automatisch ein Wochenbericht mit den neuen Mitgliedern und dem Text für den Instagram-Post per E-Mail.</div>
       <div class="row mt">
         <div class="pill-row compact" data-sfilter>
           <button type="button" class="pill is-active" data-f="alle">Alle</button>
           <button type="button" class="pill" data-f="pruefen">Foto prüfen</button>
+          <button type="button" class="pill" data-f="name">Name prüfen</button>
+          <button type="button" class="pill" data-f="eltern">Eltern offen</button>
           <button type="button" class="pill" data-f="freund">Freunde</button>
           <button type="button" class="pill" data-f="unterstuetzer">Unterstützer</button>
           <button type="button" class="pill" data-f="offen">Unbestätigt</button>
@@ -331,7 +333,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
       <div class="grid-2 mt align-start">
         <form class="card form" data-add-friend>
           <h2 class="h3">Freund hinzufügen</h2>
-          <p class="muted small">Für Freunde, die ihr selbst eintragt – z. B. am Rennzelt oder in der Schule. Ohne E-Mail bekommen sie keine Post, stehen aber auf der Wall of Fame.</p>
+          <p class="muted small">Für Freunde, die ihr selbst eintragt – z. B. am Rennzelt oder in der Schule. Nur mit Einwilligung, und bitte festhalten, wie sie gegeben wurde. Ohne E-Mail bekommen sie keine Post.</p>
           <div class="photo-pick">
             <div class="photo-preview" data-af-preview>Foto</div>
             <div><label class="btn btn-outline btn-sm"><input type="file" accept="image/*" data-af-photo hidden><span>Foto auswählen</span></label></div>
@@ -342,8 +344,11 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
             <label class="field"><span>Instagram</span><input name="instagram" placeholder="@" maxlength="40"></label>
             <label class="field"><span>E-Mail (optional)</span><input name="email" type="email" maxlength="200"></label>
           </div>
-          <label class="check"><input type="checkbox" name="minderjaehrig"><span>Unter 16</span></label>
-          <label class="check"><input type="checkbox" name="einwilligung" required><span>Die Einwilligung für Name und Foto auf der Wall of Fame liegt vor (bei unter 16: von den Eltern).</span></label>
+          <label class="field"><span>Spitzname (optional, max. 20 Zeichen – ersetzt den Namen auf der Wall)</span><input name="spitzname" maxlength="20"></label>
+          <label class="field"><span>Alter *</span><select name="altersstufe" required data-af-age><option value="18plus">18 oder älter</option><option value="16bis17">16 oder 17</option><option value="unter16">unter 16</option></select></label>
+          <label class="field" data-af-parent hidden><span>E-Mail eines Elternteils * (bekommt die Eltern-Bestätigung)</span><input name="eltern_email" type="email" maxlength="200"></label>
+          <label class="field"><span>Nachweis der Einwilligung * (wie und wann? z. B. „mündlich am Rennzelt Ampfing, 12.05.2026, Mutter anwesend“)</span><input name="einwilligung_nachweis" required maxlength="300"></label>
+          <label class="check"><input type="checkbox" name="einwilligung" required><span>Die Einwilligung für Name und Foto auf der Wall of Fame liegt vor. Bei Minderjährigen geht zusätzlich die Eltern-Bestätigung per E-Mail raus; der Eintrag und das Foto erscheinen erst nach Zustimmung der Eltern (unter 16: sonst automatische Löschung nach 7 Tagen).</span></label>
           <button class="btn btn-dark" type="submit">Hinzufügen</button>
         </form>
         <form class="card form" data-message-form>

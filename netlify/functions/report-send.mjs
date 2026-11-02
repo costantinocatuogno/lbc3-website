@@ -1,6 +1,9 @@
 // Saisonende: Jahresbericht an alle bestätigten Squadra-3-Mitglieder mit Häkchen "Jahresbericht" senden.
+// L12: unter 16 nur mit Zustimmung der Eltern zu „Jahresbericht“; Link „Daten ändern oder löschen“ und List-Unsubscribe.
 import { handle, json, sb, requireAdmin, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, env } from './_lib/common.mjs';
 import { REPORT, LOCALE, pickLang, kategorie } from './_lib/texte.mjs';
+import { mailEmpfaenger } from './_lib/squadra-rules.mjs';
+import { verwaltenFuss, abmeldeHeader } from './_lib/squadra-mail.mjs';
 
 const eur = (n, lang = 'de') => new Intl.NumberFormat(LOCALE[lang], { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
 
@@ -15,7 +18,7 @@ export default handle(async (req) => {
   if (!s || s.status !== 'freigegeben') throw new HttpError(400, 'Der Bericht muss zuerst freigegeben werden.');
   const ausgaben = (await sb(`/rest/v1/ausgaben?saison=eq.${year}&select=kategorie,betrag&order=id`)).filter((r) => Number(r.betrag) > 0).sort((a, b) => Number(b.betrag) - Number(a.betrag));
   const total = ausgaben.reduce((a, r) => a + Number(r.betrag || 0), 0);
-  const empfaenger = await sb('/rest/v1/squadra_tre?select=name,email,sprache&optin_bestaetigt=eq.true&jahresbericht_optin=eq.true');
+  const empfaenger = mailEmpfaenger(await sb('/rest/v1/squadra_tre?select=*&optin_bestaetigt=eq.true&jahresbericht_optin=eq.true'), 'jahresbericht');
   if (!empfaenger.length) return json({ ok: true, gesendet: 0 });
 
   // PDF als Anhang (signierter Link, 7 Tage gültig – Brevo lädt die Datei beim Versand)
@@ -27,7 +30,7 @@ export default handle(async (req) => {
 
   // Jede Person bekommt den Bericht in ihrer Sprache. Der Saisonrückblick erscheint übersetzt,
   // wenn das Team ihn im Team-Bereich übersetzt hat (rueckblick_it/_en/_fr) – sonst auf Deutsch.
-  const inhalt = (name, lang) => {
+  const inhalt = (name, lang, r) => {
     const T = REPORT[lang];
     const tabelle = ausgaben.map((r) => `<tr><td style="padding:6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(kategorie(r.kategorie, lang))}</td><td style="padding:6px 0;border-bottom:1px solid #ECEDEF;text-align:right"><strong>${eur(r.betrag, lang)}</strong></td></tr>`).join('');
     const rueck = (lang !== 'de' && s[`rueckblick_${lang}`]) || s.rueckblick;
@@ -40,7 +43,8 @@ export default handle(async (req) => {
     ${rueck ? `<h2 style="font-size:18px;margin:24px 0 8px">${T.review}</h2><p>${escapeHtml(rueck).replace(/\n/g, '<br>')}</p>` : ''}
     ${pdfUrl ? `<p>${T.pdf}</p>` : ''}
     <p>${T.bye}</p>
-    <p style="color:#555A63;font-size:12px">${T.why}</p>`;
+    <p style="color:#555A63;font-size:12px">${T.why}</p>
+    ${verwaltenFuss(r)}`;
   };
 
   let gesendet = 0;
@@ -49,7 +53,8 @@ export default handle(async (req) => {
     await sendMail({
       to: { email: r.email, name: r.name },
       subject: REPORT[lang].subject(year),
-      html: mailLayout(REPORT[lang].title(year), inhalt(r.name, lang)),
+      headers: abmeldeHeader(r),
+      html: mailLayout(REPORT[lang].title(year), inhalt(r.name, lang, r)),
       attachmentUrl: pdfUrl || undefined,
       attachmentName: REPORT[lang].file(year)
     });
