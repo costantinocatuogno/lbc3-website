@@ -677,6 +677,9 @@
       const initialsOf = (n) => String(n || '?').trim().split(/\s+/).slice(0, 2).map((x) => x[0] || '').join('').toUpperCase();
       const zoom = (src) => { const d = document.createElement('div'); d.className = 'photo-zoom'; d.innerHTML = `<img src="${escapeHtml(src)}" alt="">`; d.addEventListener('click', () => d.remove()); document.body.appendChild(d); };
 
+      // Pins (Wunsch 02.11.2026): angepinnte Mitglieder stehen immer ganz vorne auf der Wall und oben in der Druckansicht.
+      let pins = [];
+      const loadPins = async () => { try { const r = await fetch('/api/squadra-pins', { headers: { Accept: 'application/json' } }); pins = r.ok ? ((await r.json()).ids || []) : []; } catch { pins = []; } };
       const renderSquadra = async () => {
         const q = ($('[data-ssearch]').value || '').toLowerCase();
         const list = squadra.filter((r) => {
@@ -685,7 +688,7 @@
           if (sFilter === 'unterstuetzer' && r.mitgliedschaft !== 'unterstuetzer') return false;
           if (sFilter === 'offen' && r.optin_bestaetigt) return false;
           return !q || [r.name, r.email, r.instagram, r.angezeigter_name].some((v) => String(v || '').toLowerCase().includes(q));
-        });
+        }).sort((a, b) => { const pa = pins.indexOf(a.id), pb = pins.indexOf(b.id); return (pa < 0 ? 1e9 : pa) - (pb < 0 ? 1e9 : pb); });
         const box = $('[data-squadra]');
         if (!list.length) { box.innerHTML = '<p class="muted">Keine Einträge.</p>'; return; }
         box.innerHTML = list.map((r) => {
@@ -696,7 +699,8 @@
             r.minderjaehrig ? `<span class="t-warn">unter 16${r.einwilligung_eltern ? ' · Eltern: ' + escapeHtml(r.einwilligung_eltern) : ''}</span>` : '',
             r.wand_optin ? '<span>Wall ✓</span>' : '<span>keine Wall</span>',
             r.updates_optin ? '<span>Updates</span>' : '', r.jahresbericht_optin ? '<span>Jahresbericht</span>' : '',
-            r.quelle === 'admin' ? '<span>vom Team</span>' : '', r.ausgeblendet ? '<span class="t-red">ausgeblendet</span>' : ''
+            r.quelle === 'admin' ? '<span>vom Team</span>' : '', r.ausgeblendet ? '<span class="t-red">ausgeblendet</span>' : '',
+            pins.includes(r.id) ? '<span class="t-ok">📌 immer vorne</span>' : ''
           ].join('');
           return `<article class="member${pending ? ' is-pending' : ''}${r.ausgeblendet ? ' is-hidden' : ''}" data-id="${r.id}">
             <div class="member-top">
@@ -708,6 +712,7 @@
             <label class="field"><span>Name auf der Wall</span><input value="${escapeHtml(r.angezeigter_name || kurzName(r.name))}" data-dname maxlength="60"></label>
             <div class="member-actions">
               ${r.foto_pfad ? `<button class="small-btn" data-act="foto">${r.foto_freigegeben ? 'Foto sperren' : '✓ Foto freigeben'}</button>` : ''}
+              <button class="small-btn" data-act="pin">${pins.includes(r.id) ? 'Pin lösen' : '📌 Pin'}</button>
               <button class="small-btn" data-act="name">Name speichern</button>
               <button class="small-btn" data-act="hide">${r.ausgeblendet ? 'Wieder zeigen' : 'Ausblenden'}</button>
               <button class="small-btn" data-act="del">Löschen</button>
@@ -722,6 +727,7 @@
       };
 
       async function loadSquadra() {
+        await loadPins();
         const { data, error } = await sb.from('squadra_tre').select('*').order('created_at', { ascending: false });
         if (error) { showMsg('Liste konnte nicht geladen werden.', true); return; }
         squadra = data;
@@ -746,6 +752,14 @@
         const id = card.dataset.id;
         const r = squadra.find((x) => x.id === id);
         let patch = null;
+        if (btn.dataset.act === 'pin') {
+          const neu = pins.includes(id) ? pins.filter((x) => x !== id) : [...pins, id];
+          try { const res = await api('/api/squadra-pins', { ids: neu }); pins = res.ids || neu; }
+          catch (err) { showMsg('Pin nicht gespeichert: ' + err.message, true); return; }
+          showMsg(pins.includes(id) ? 'Angepinnt: steht immer ganz vorne. Mit „Wall of Fame veröffentlichen“ geht es online.' : 'Pin gelöst. Mit „Wall of Fame veröffentlichen“ geht es online.');
+          renderSquadra();
+          return;
+        }
         if (btn.dataset.act === 'foto') patch = { foto_freigegeben: !r.foto_freigegeben };
         if (btn.dataset.act === 'name') patch = { angezeigter_name: $('[data-dname]', card).value.trim() || kurzName(r.name) };
         if (btn.dataset.act === 'hide') patch = { ausgeblendet: !r.ausgeblendet };

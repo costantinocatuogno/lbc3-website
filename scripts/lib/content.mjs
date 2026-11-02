@@ -162,19 +162,22 @@ export function loadContent(root, lang = DEFAULT_LANG) {
 // Wall of Fame: lädt beim Build die freigegebenen Squadra-3-Mitglieder und Sponsoren-Einträge
 // und kopiert NUR freigegebene Fotos/Logos aus dem privaten Supabase-Speicher nach dist/wall/.
 // Ohne Supabase-Zugang (lokal) werden Beispieldaten gezeigt.
-// Reihenfolge der Wall (Wunsch 01.11.2026): die Namen aus „squadra_vorne“ (Einstellungen) immer zuerst, in dieser Reihenfolge;
-// danach alle anderen nach Beitritt (älteste zuerst). Neue Mitglieder kommen damit immer hinten dazu.
-// Vergleich ohne Groß-/Kleinschreibung mit dem Namen auf der Wall, dessen erstem Wort oder dem vollen Namen.
-export function wallOrder(list, vorne) {
-  const keys = (Array.isArray(vorne) ? vorne : []).map((v) => String(v || '').trim().toLowerCase()).filter(Boolean);
-  const rank = (m) => {
-    const cands = [m.name, String(m.name || '').split(/\s+/)[0], m.voll, String(m.voll || '').split(/\s+/)[0]].map((x) => String(x || '').trim().toLowerCase());
-    const i = keys.findIndex((k) => cands.includes(k));
-    return i < 0 ? keys.length : i;
-  };
+// Reihenfolge der Wall (Wunsch 01.11./02.11.2026): angepinnte Mitglieder (Knopf „Pin“ im Admin-Bereich) immer zuerst,
+// in Pin-Reihenfolge; danach alle anderen nach Registrierungsdatum (älteste zuerst) – neue Mitglieder kommen hinten dazu.
+export function wallOrder(list, pins) {
+  const P = Array.isArray(pins) ? pins : [];
+  const rank = (m) => { const i = P.indexOf(m.id); return i < 0 ? P.length : i; };
   return list.map((m, i) => ({ m, i, r: rank(m) }))
     .sort((a, b) => a.r - b.r || String(a.m.seit).localeCompare(String(b.m.seit)) || a.i - b.i)
-    .map(({ m }) => { const { voll, seit, ...rest } = m; return rest; });
+    .map(({ m }) => { const { id, seit, ...rest } = m; return rest; });
+}
+async function loadPins() {
+  if (!process.env.NETLIFY || !process.env.URL) return [];
+  try {
+    const res = await fetch(`${process.env.URL.replace(/\/$/, '')}/api/squadra-pins`, { headers: { Accept: 'application/json' } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()).ids || [];
+  } catch (err) { console.warn('⚠ Pins der Squadra Tre nicht geladen:', err.message); return []; }
 }
 
 export async function loadWall(content, distDir) {
@@ -206,12 +209,12 @@ export async function loadWall(content, distDir) {
     }
   };
   try {
-    const rows = await get('/rest/v1/squadra_tre?select=id,name,angezeigter_name,foto_pfad,foto_freigegeben,mitgliedschaft,bestaetigt_am,created_at&optin_bestaetigt=eq.true&wand_optin=eq.true&ausgeblendet=eq.false&order=bestaetigt_am.asc.nullslast');
+    const rows = await get('/rest/v1/squadra_tre?select=id,name,angezeigter_name,foto_pfad,foto_freigegeben,mitgliedschaft,bestaetigt_am,created_at&optin_bestaetigt=eq.true&wand_optin=eq.true&ausgeblendet=eq.false&order=created_at.asc');
     const mitglieder = [];
     for (const r of rows) {
       let foto = null;
       if (r.foto_pfad && r.foto_freigegeben) foto = await download('squadra', r.foto_pfad, `wall/squadra/${r.id}${extname(r.foto_pfad)}`);
-      mitglieder.push({ name: r.angezeigter_name || r.name, voll: r.name || '', seit: r.bestaetigt_am || r.created_at || '', foto, unterstuetzer: r.mitgliedschaft === 'unterstuetzer' });
+      mitglieder.push({ id: r.id, name: r.angezeigter_name || r.name, seit: r.created_at || '', foto, unterstuetzer: r.mitgliedschaft === 'unterstuetzer' });
     }
     const sp = await get('/rest/v1/sponsor_wall?select=*&freigegeben=eq.true&order=created_at.asc');
     const sponsoren = [];
@@ -222,7 +225,7 @@ export async function loadWall(content, distDir) {
         social: Object.fromEntries(['instagram', 'facebook', 'linkedin', 'tiktok', 'youtube'].filter((k) => s[k]).map((k) => [k, s[k]]))
       });
     }
-    return { beispiel: false, mitglieder: wallOrder(mitglieder, content.site?.squadra_vorne), sponsoren };
+    return { beispiel: false, mitglieder: wallOrder(mitglieder, await loadPins()), sponsoren };
   } catch (err) {
     console.warn('⚠ Wall of Fame konnte nicht geladen werden:', err.message);
     return beispiel();
