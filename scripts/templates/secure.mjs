@@ -468,6 +468,36 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <h3 class="h3 mt">Bisher eingeladen <span class="muted small" data-igi-count></span></h3>
         <div class="table-box plain"><table class="kosten-sum"><tbody data-igi-list><tr><td class="muted">Wird geladen …</td></tr></tbody></table></div>
       </div>
+      <div class="grid-2 mt align-start">
+        <div class="card">
+          <h2 class="h3">Persönliche Einladung per E-Mail</h2>
+          <p class="muted small">Am besten aus eurem eigenen Postfach – dann ist es eine private Nachricht von euch. „Direkt senden“ verschickt sie von contact@luigi-catuogno.com, aber nur an Menschen, die ihr kennt und die einverstanden sind (Werbe-E-Mails ohne Einverständnis sind in Deutschland nicht erlaubt). Bitte nur Erwachsene einladen.</p>
+          <form class="form" data-mi-form>
+            <label class="field"><span>Name (optional)</span><input name="name" maxlength="80" autocomplete="off"></label>
+            <label class="field"><span>E-Mail-Adresse</span><input name="email" type="email" required maxlength="200" autocomplete="off"></label>
+            <label class="field"><span>Sprache</span><select name="sprache"><option value="de">Deutsch</option><option value="it">Italiano</option><option value="en">English</option><option value="fr">Français</option></select></label>
+            <label class="field"><span>Nachricht (kann angepasst werden)</span><textarea name="text" rows="8"></textarea></label>
+            <label class="check"><input type="checkbox" name="einverstanden"> Wir kennen die Person und sie ist mit einer Einladung per E-Mail einverstanden (nur für „Direkt senden“ nötig)</label>
+            <div class="btn-row">
+              <button class="btn btn-dark" type="button" data-mi-mailto>Im eigenen E-Mail-Programm öffnen</button>
+              <button class="btn btn-outline" type="button" data-mi-send>Direkt senden</button>
+            </div>
+          </form>
+          <h3 class="h3 mt">Per E-Mail eingeladen <span class="muted small" data-mi-count></span></h3>
+          <div class="table-box plain"><table class="kosten-sum"><tbody data-mi-list><tr><td class="muted">Wird geladen …</td></tr></tbody></table></div>
+        </div>
+        <div class="card">
+          <h2 class="h3">Eure Kontakte einladen: WhatsApp, SMS &amp; Co.</h2>
+          <p class="muted small">Ideal für das eigene Telefonbuch: „In WhatsApp öffnen“ ohne Nummer – dann wählt ihr in WhatsApp einen oder mehrere Kontakte aus. „Teilen …“ öffnet auf dem Handy das normale Teilen-Menü (WhatsApp, SMS, Telegram, Mail …). Nummern werden nicht gespeichert.</p>
+          <form class="form" data-wa-form>
+            <label class="field"><span>Worum geht es?</span><select name="ziel"><option value="folgen">Luigi auf Instagram folgen</option><option value="beides">Folgen + Squadra Tre beitreten</option><option value="squadra">Squadra Tre beitreten</option></select></label>
+            <label class="field"><span>Handynummer (optional, mit Ländervorwahl)</span><input name="nummer" inputmode="tel" placeholder="+49 170 1234567" maxlength="30" autocomplete="off"></label>
+            <label class="field"><span>Sprache</span><select name="sprache"><option value="de">Deutsch</option><option value="it">Italiano</option><option value="en">English</option><option value="fr">Français</option></select></label>
+            <label class="field"><span>Nachricht (kann angepasst werden)</span><textarea name="text" rows="6"></textarea></label>
+            <div class="btn-row"><button class="btn btn-red" type="submit">In WhatsApp öffnen</button><button class="btn btn-outline" type="button" data-wa-share>Teilen …</button><button class="btn btn-outline" type="button" data-wa-copy>Text kopieren</button></div>
+          </form>
+        </div>
+      </div>
     </section>
   </main>
 </div>`;

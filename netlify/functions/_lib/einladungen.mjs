@@ -30,3 +30,20 @@ export async function angemeldet(ref) {
   e.angemeldet = new Date().toISOString();
   await speichern(l);
 }
+
+// ---------- E-Mail-Einladungen (E-Mail, Name, Sprache, Datum, Weg) ----------
+export async function mailListe() { return (await store().get('mail', { type: 'json' })) || []; }
+export async function mailMerken(email, name, sprache, weg) {
+  const l = await mailListe();
+  const e = l.find((x) => x.e === email);
+  const jetzt = new Date().toISOString();
+  if (e) { e.zuletzt = jetzt; e.n = (e.n || 1) + 1; e.w = weg; e.s = sprache; if (name) e.name = name; }
+  else l.push({ e: email, name: name || '', s: sprache, w: weg, am: jetzt, n: 1 });
+  await store().setJSON('mail', l.slice(-2000));
+}
+export async function mailEntfernen(email) { await store().setJSON('mail', (await mailListe()).filter((x) => x.e !== email)); }
+// Wie viele Einladungen wurden heute direkt gesendet? (Schutz vor Versehen und Spam)
+export async function heuteGesendet() {
+  const tag = new Date().toISOString().slice(0, 10);
+  return (await mailListe()).filter((x) => x.w === 'direkt' && String(x.zuletzt || x.am).startsWith(tag)).length;
+}
