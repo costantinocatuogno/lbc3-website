@@ -1,5 +1,10 @@
 [build]
   command = "node scripts/build.mjs"
+  # Keine Veröffentlichung (spart Netlify-Credits), wenn ein NEUER Commit seit dem letzten Deploy nur Doku, Tests,
+  # README/ANLEITUNG oder GitHub-Workflows ändert. Exit 0 = überspringen, sonst bauen.
+  # Immer gebaut wird: erster Deploy, gleicher Commit (Build-Hook „Wall of Fame veröffentlichen“, Neu-Deploy von Hand),
+  # alles unter content/ (News sind .md-Dateien!), scripts/, public/, netlify/, locales/, supabase/.
+  ignore = "test -n \"$CACHED_COMMIT_REF\" && test \"$CACHED_COMMIT_REF\" != \"$COMMIT_REF\" && git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude,top)docs' ':(exclude,top)tests' ':(exclude,top).github' ':(exclude,top)README.md' ':(exclude,top)ANLEITUNG.md'"
   publish = "dist"
   functions = "netlify/functions"
 

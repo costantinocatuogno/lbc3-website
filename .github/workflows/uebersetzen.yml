@@ -1,12 +1,13 @@
-# Automatische Übersetzung: läuft nach jedem Speichern im CMS (Änderung unter content/).
-# Fehlende Sprachfassungen (IT/EN/FR bzw. DE) werden ergänzt und als eigener Commit gespeichert.
-# Danach baut Netlify die Website wie gewohnt neu. Schlägt der Lauf fehl, schickt GitHub eine E-Mail.
+# Automatische Übersetzung – gebündelt (Wunsch Costa 02.11.2026: Netlify-Guthaben sparen):
+# Läuft EINMAL PRO NACHT (ca. 02:40 Berliner Zeit) statt nach jedem Speichern im CMS. Alle fehlenden Sprachfassungen
+# (IT/EN/FR bzw. DE) des Tages kommen in EINEN Commit → nur EINE zusätzliche Veröffentlichung pro Tag, und nur wenn
+# es etwas zu übersetzen gab. Bis dahin zeigt die Website neue Texte in der Originalsprache (eingebauter Rückfall).
+# Sofort übersetzen: GitHub → Actions → „Inhalte übersetzen“ → „Run workflow“. Schlägt der Lauf fehl, schickt GitHub eine E-Mail.
 name: Inhalte übersetzen
 
 on:
-  push:
-    branches: [main, mehrsprachig]
-    paths: ['content/**']
+  schedule:
+    - cron: '40 1 * * *'   # 01:40 UTC = 02:40 MEZ / 03:40 MESZ
   workflow_dispatch:
 
 permissions:
