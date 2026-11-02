@@ -496,6 +496,24 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
             <label class="field"><span>Nachricht (kann angepasst werden)</span><textarea name="text" rows="6"></textarea></label>
             <div class="btn-row"><button class="btn btn-red" type="submit">In WhatsApp öffnen</button><button class="btn btn-outline" type="button" data-wa-share>Teilen …</button><button class="btn btn-outline" type="button" data-wa-copy>Text kopieren</button></div>
           </form>
+          <div class="kontakte mt">
+            <h3 class="h3">Aus dem Telefonbuch einladen</h3>
+            <p class="muted small">Eure Kontakte bleiben auf diesem Gerät – nichts wird auf den Server geladen oder gespeichert. Jede Person bekommt den Text oben persönlich mit Vornamen („Ciao Marco!“).</p>
+            <div class="btn-row">
+              <button class="btn btn-dark" type="button" data-kt-pick hidden>Kontakte auswählen</button>
+              <label class="btn btn-outline file-btn">Kontakte-Datei (.vcf) laden<input type="file" accept=".vcf,text/vcard,text/x-vcard" data-kt-file hidden multiple></label>
+              <label class="field inline"><span>Vorwahl für Nummern ohne +</span><select data-kt-cc><option value="49">+49 Deutschland</option><option value="39">+39 Italien</option><option value="41">+41 Schweiz</option><option value="43">+43 Österreich</option><option value="33">+33 Frankreich</option></select></label>
+            </div>
+            <details class="fold small" data-kt-help><summary>So bekommt ihr die Kontakte-Datei</summary>
+              <ul class="lines small">
+                <li><strong>iPhone/iPad:</strong> App „Kontakte“ → oben links „Listen“ → Liste (z. B. „Alle Kontakte“) lange drücken → „Exportieren“ → „In Dateien sichern“. Dann hier „Kontakte-Datei laden“.</li>
+                <li><strong>Android:</strong> In Chrome geht „Kontakte auswählen“ direkt. Sonst App „Kontakte“ → Einstellungen → „Exportieren“ (.vcf).</li>
+                <li><strong>Google-Kontakte am Computer:</strong> contacts.google.com → Exportieren → „vCard“.</li>
+              </ul>
+            </details>
+            <div class="kt-filter" data-kt-tools hidden><input type="search" placeholder="Suchen …" data-kt-search><span class="muted small" data-kt-count></span></div>
+            <div class="kt-list" data-kt-list></div>
+          </div>
         </div>
       </div>
     </section>

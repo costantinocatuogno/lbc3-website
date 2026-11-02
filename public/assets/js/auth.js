@@ -490,6 +490,83 @@
         waForm.nummer.value = '';
       });
 
+      /* ----- Kontakte aus dem Telefonbuch (bleiben im Browser) ----- */
+      let kontakte = [];
+      const ktKey = 'lbc3-kontakte-erledigt';
+      const ktDone = () => { try { return JSON.parse(localStorage.getItem(ktKey) || '{}'); } catch (e) { return {}; } };
+      const ktMark = (id, weg) => { try { const d = ktDone(); d[id] = { weg, am: new Date().toISOString() }; localStorage.setItem(ktKey, JSON.stringify(d)); } catch (e) { /* privat */ } };
+      const normNr = (raw) => {
+        let n = String(raw || '').replace(/[^0-9+]/g, '');
+        if (!n) return '';
+        if (n.startsWith('+')) return n.slice(1);
+        if (n.startsWith('00')) return n.slice(2);
+        if (n.startsWith('0')) return $('[data-kt-cc]').value + n.slice(1);
+        return n;
+      };
+      const vorname = (name) => String(name || '').trim().split(/\s+/)[0] || '';
+      const persText = (name) => { const v = vorname(name); const t = waForm.text.value; return v ? t.replace(/^(Ciao|Hallo|Hi|Bonjour)\s*!/, (m, g) => `${g} ${v}!`) : t; };
+      function parseVcf(txt) {
+        const out = [];
+        const unfold = txt.replace(/\r\n[ \t]/g, '').replace(/\n[ \t]/g, '');
+        for (const card of unfold.split(/BEGIN:VCARD/i).slice(1)) {
+          const lines = card.split(/\r?\n/);
+          const get = (re) => lines.filter((l) => re.test(l)).map((l) => l.slice(l.indexOf(':') + 1).trim());
+          let name = (get(/^FN[;:]/i)[0] || '').replace(/\\,/g, ',');
+          if (!name) { const n = (get(/^N[;:]/i)[0] || '').split(';'); name = [n[1], n[0]].filter(Boolean).join(' '); }
+          const tel = get(/^(item\d+\.)?TEL[;:]/i);
+          const mail = get(/^(item\d+\.)?EMAIL[;:]/i);
+          if (name && (tel.length || mail.length)) out.push({ name, tel, email: mail });
+        }
+        return out;
+      }
+      function ktAdd(list) {
+        const seen = new Set(kontakte.map((k) => k.id));
+        for (const k of list) {
+          const tel = (k.tel || []).map(normNr).filter(Boolean);
+          const email = (k.email || [])[0] || '';
+          const id = (tel[0] || email || k.name).toLowerCase();
+          if (!seen.has(id)) { seen.add(id); kontakte.push({ id, name: k.name || email || tel[0], tel: tel[0] || '', email }); }
+        }
+        kontakte.sort((a, b) => a.name.localeCompare(b.name, 'de'));
+        ktRender();
+      }
+      function ktRender() {
+        const q = ($('[data-kt-search]').value || '').toLowerCase();
+        const done = ktDone();
+        const l = kontakte.filter((k) => !q || k.name.toLowerCase().includes(q));
+        $('[data-kt-tools]').hidden = !kontakte.length;
+        $('[data-kt-count]').textContent = kontakte.length ? `${kontakte.length} Kontakte · ${kontakte.filter((k) => done[k.id]).length} schon eingeladen` : '';
+        $('[data-kt-list]').innerHTML = l.slice(0, 300).map((k) => `<div class="kt-row${done[k.id] ? ' is-done' : ''}" data-kt="${escapeHtml(k.id)}">
+          <div class="kt-name"><strong>${escapeHtml(k.name)}</strong>${done[k.id] ? ` <span class="ok-text small">✔ ${escapeHtml(done[k.id].weg)}</span>` : ''}<br><span class="muted small">${k.tel ? '+' + escapeHtml(k.tel) : ''}${k.tel && k.email ? ' · ' : ''}${escapeHtml(k.email)}</span></div>
+          <div class="kt-actions">${k.tel ? '<button type="button" class="btn btn-sm btn-red" data-kt-wa>WhatsApp</button><button type="button" class="btn btn-sm btn-outline" data-kt-sms>SMS</button>' : ''}${k.email ? '<button type="button" class="btn btn-sm btn-outline" data-kt-mail>E-Mail</button>' : ''}</div>
+        </div>`).join('') + (l.length > 300 ? '<p class="muted small">Weitere Kontakte über die Suche finden.</p>' : '');
+      }
+      if ('contacts' in navigator && 'ContactsManager' in window) {
+        const pick = $('[data-kt-pick]'); pick.hidden = false;
+        pick.addEventListener('click', async () => {
+          try { const res = await navigator.contacts.select(['name', 'tel', 'email'], { multiple: true }); ktAdd(res.map((c) => ({ name: (c.name || [])[0] || '', tel: c.tel || [], email: c.email || [] }))); }
+          catch (err) { showMsg('Kontakte konnten nicht gelesen werden: ' + err.message, true); }
+        });
+      }
+      $('[data-kt-file]').addEventListener('change', async (ev) => {
+        const all = [];
+        for (const f of ev.target.files) all.push(...parseVcf(await f.text()));
+        ktAdd(all);
+        showMsg(all.length ? `${all.length} Kontakte geladen – sie bleiben nur auf diesem Gerät.` : 'In der Datei wurden keine Kontakte mit Nummer oder E-Mail gefunden.', !all.length);
+        ev.target.value = '';
+      });
+      $('[data-kt-search]').addEventListener('input', ktRender);
+      $('[data-kt-list]').addEventListener('click', (e) => {
+        const row = e.target.closest('[data-kt]'); if (!row) return;
+        const k = kontakte.find((x) => x.id === row.dataset.kt); if (!k) return;
+        const text = persText(k.name);
+        if (e.target.closest('[data-kt-wa]')) { window.open(`https://wa.me/${k.tel}?text=${encodeURIComponent(text)}`, '_blank', 'noopener'); ktMark(k.id, 'WhatsApp'); }
+        else if (e.target.closest('[data-kt-sms]')) { location.href = `sms:+${k.tel}?&body=${encodeURIComponent(text)}`; ktMark(k.id, 'SMS'); }
+        else if (e.target.closest('[data-kt-mail]')) { location.href = `mailto:${encodeURIComponent(k.email)}?subject=${encodeURIComponent(MI_SUBJECT[waForm.sprache.value])}&body=${encodeURIComponent(text)}`; ktMark(k.id, 'E-Mail'); }
+        else return;
+        setTimeout(ktRender, 300);
+      });
+
       /* ----- Besucher ----- */
       let bzTage = 30;
       const LAND = { DE: 'Deutschland', IT: 'Italien', CH: 'Schweiz', AT: 'Österreich', FR: 'Frankreich', NL: 'Niederlande', DK: 'Dänemark', GB: 'Großbritannien', US: 'USA', BE: 'Belgien', ES: 'Spanien', PL: 'Polen', CZ: 'Tschechien' };

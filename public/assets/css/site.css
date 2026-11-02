@@ -860,3 +860,12 @@ img, video, iframe { max-width: 100%; }
 .ig-invite .ig-invite-text, .ig-invite .btn-row { grid-column: 1 / -1; }
 @media (max-width: 600px) { .ig-invite { grid-template-columns: 1fr; } }
 .ok-text { color: #1E8E3E; }
+
+/* Team-Bereich: Kontakte einladen */
+.kt-filter { display: flex; gap: 12px; align-items: center; margin: 14px 0 8px; flex-wrap: wrap; }
+.kt-filter input { flex: 1 1 200px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+.kt-list { display: grid; gap: 8px; max-height: 520px; overflow-y: auto; }
+.kt-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; flex-wrap: wrap; }
+.kt-row.is-done { background: #F4FAF5; }
+.kt-name { min-width: 0; overflow-wrap: anywhere; }
+.kt-actions { display: flex; gap: 6px; flex-wrap: wrap; }
