@@ -5,6 +5,16 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Besucherzählung: anonym, ohne Cookies (Admins können sich im Team-Bereich ausnehmen) ---------- */
+  try {
+    let ich = null; try { ich = localStorage.getItem('lbc3-nicht-zaehlen'); } catch (e) { /* privat */ }
+    if (!ich && !/^\/(team|admin|bericht|login|vorschau)(\/|$)/.test(location.pathname)) {
+      const data = JSON.stringify({ p: location.pathname, r: document.referrer || '', l: document.documentElement.lang || 'de' });
+      if (navigator.sendBeacon) navigator.sendBeacon('/api/besuch', new Blob([data], { type: 'application/json' }));
+      else fetch('/api/besuch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: data, keepalive: true });
+    }
+  } catch (e) { /* Zählen darf nie stören */ }
+
   /* ---------- Klickzähler für Partner-Links: anonym (kein Cookie, keine IP, nichts im Browser gespeichert) ---------- */
   const zaehle = (ev) => {
     if (ev.type === 'auxclick' && ev.button !== 1) return; // mittlere Maustaste = neuer Tab

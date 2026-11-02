@@ -332,6 +332,7 @@
         if (name === 'einladen') renderInvite();
         if (name === 'instagram') loadInstagram();
         if (name === 'klicks') loadKlicks();
+        if (name === 'besucher') loadBesucher();
       };
       tabs.forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
 
@@ -347,6 +348,50 @@
         } catch (e) { showMsg('Senden fehlgeschlagen: ' + e.message, true); }
         btn.disabled = false;
       });
+
+      /* ----- Besucher ----- */
+      let bzTage = 30;
+      const LAND = { DE: 'Deutschland', IT: 'Italien', CH: 'Schweiz', AT: 'Österreich', FR: 'Frankreich', NL: 'Niederlande', DK: 'Dänemark', GB: 'Großbritannien', US: 'USA', BE: 'Belgien', ES: 'Spanien', PL: 'Polen', CZ: 'Tschechien' };
+      const SPR = { de: 'Deutsch', it: 'Italienisch', en: 'Englisch', fr: 'Französisch' };
+      const n = (x) => Number(x || 0).toLocaleString('de-DE');
+      $$('[data-bz-range] [data-tage]').forEach((b) => b.addEventListener('click', () => {
+        $$('[data-bz-range] [data-tage]').forEach((x) => x.classList.toggle('is-active', x === b));
+        bzTage = Number(b.dataset.tage); loadBesucher();
+      }));
+      const ichBox = $('[data-bz-ich]');
+      try { ichBox.checked = !!localStorage.getItem('lbc3-nicht-zaehlen'); } catch (e) { /* privat */ }
+      ichBox.addEventListener('change', () => { try { if (ichBox.checked) localStorage.setItem('lbc3-nicht-zaehlen', '1'); else localStorage.removeItem('lbc3-nicht-zaehlen'); } catch (e) { /* privat */ } });
+      async function loadBesucher() {
+        $('[data-bz-kpis]').innerHTML = '<p class="muted">Wird geladen …</p>';
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          const res = await fetch(`/api/besuch?tage=${bzTage}`, { headers: { Authorization: `Bearer ${session ? session.access_token : token()}` } });
+          const j = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(j.error || `Fehler ${res.status}`);
+          const t = j.tage || [];
+          const sum = (arr, k) => arr.reduce((a, x) => a + (x[k] || 0), 0);
+          const heute = t[t.length - 1] || {};
+          const gestern = t[t.length - 2] || {};
+          const kpi = (label, val, sub) => `<div class="kpi"><span>${label}</span><strong>${val}</strong>${sub ? `<small class="muted">${sub}</small>` : ''}</div>`;
+          $('[data-bz-kpis]').innerHTML = kpi('Heute', n(heute.besucher), `${n(heute.aufrufe)} Seitenaufrufe`) + kpi('Gestern', n(gestern.besucher), `${n(gestern.aufrufe)} Seitenaufrufe`)
+            + kpi(`Besucher (${bzTage === 365 ? '12 Monate' : bzTage + ' Tage'})`, n(sum(t, 'besucher')), 'eindeutig pro Tag, summiert') + kpi('Seitenaufrufe', n(sum(t, 'aufrufe')), `Ø ${(sum(t, 'aufrufe') / Math.max(1, sum(t, 'besucher'))).toFixed(1).replace('.', ',')} pro Besucher`);
+          // Verlauf: bei 12 Monaten nach Monat gruppieren
+          let reihe = t.map((x) => ({ label: x.tag.slice(8, 10) + '.' + x.tag.slice(5, 7), a: x.aufrufe || 0, b: x.besucher || 0 }));
+          if (bzTage === 365) {
+            const m = {}; t.forEach((x) => { const k = x.tag.slice(0, 7); m[k] = m[k] || { a: 0, b: 0 }; m[k].a += x.aufrufe || 0; m[k].b += x.besucher || 0; });
+            reihe = Object.entries(m).map(([k, v]) => ({ label: new Date(k + '-01').toLocaleDateString('de-DE', { month: 'short' }), ...v }));
+          }
+          const max = Math.max(1, ...reihe.map((x) => x.a));
+          $('[data-bz-chart]').innerHTML = reihe.map((x) => `<div class="bz-col" title="${x.label}: ${x.b} Besucher, ${x.a} Aufrufe"><i class="bz-a" style="height:${Math.round((x.a / max) * 100)}%"></i><i class="bz-b" style="height:${Math.round((x.b / max) * 100)}%"></i><span>${x.label}</span></div>`).join('');
+          const merge = (k) => { const o = {}; t.forEach((x) => Object.entries(x[k] || {}).forEach(([a, v]) => { o[a] = (o[a] || 0) + v; })); return Object.entries(o).sort((a, b) => b[1] - a[1]); };
+          const rows = (k, fmt = (x) => x, limit = 10) => { const r = merge(k).slice(0, limit); const tot = r.reduce((a, x) => a + x[1], 0) || 1; return r.length ? r.map(([a, v]) => `<tr><td>${escapeHtml(fmt(a))}</td><td class="num">${n(v)} <span class="muted small">${Math.round((v / tot) * 100)} %</span></td></tr>`).join('') : '<tr><td class="muted">Noch keine Daten</td></tr>'; };
+          $('[data-bz="seiten"]').innerHTML = rows('seiten');
+          $('[data-bz="herkunft"]').innerHTML = rows('herkunft', (x) => (x === 'direkt' ? 'Direkt / Lesezeichen / App' : x));
+          $('[data-bz="laender"]').innerHTML = rows('laender', (x) => LAND[x] || x || 'unbekannt');
+          $('[data-bz="sprachen"]').innerHTML = rows('sprachen', (x) => SPR[x] || x);
+          $('[data-bz="geraete"]').innerHTML = rows('geraete');
+        } catch (e) { $('[data-bz-kpis]').innerHTML = `<p class="muted">Nicht abrufbar: ${escapeHtml(e.message)}</p>`; }
+      }
 
       /* ----- Partner-Klicks ----- */
       const QUELLE = { laufband: 'Laufband', partnerseite: 'Partner-Seite', wall: 'Partner-Wall', 'wall-instagram': 'Wall · Instagram', 'wall-facebook': 'Wall · Facebook', 'wall-linkedin': 'Wall · LinkedIn', 'wall-tiktok': 'Wall · TikTok', 'wall-youtube': 'Wall · YouTube', sonstige: 'Sonstige' };

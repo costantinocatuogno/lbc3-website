@@ -196,6 +196,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     <button type="button" data-tab="sponsorwall">Partner-Wall</button>
     <button type="button" data-tab="einladen">Squadra einladen</button>
     <button type="button" data-tab="instagram">Instagram</button>
+    <button type="button" data-tab="besucher">Besucher</button>
     <button type="button" data-tab="klicks">Partner-Klicks</button>
     <a href="/admin/">Fotos, News, Rennen, Texte ↗</a>
   </nav>
@@ -395,6 +396,27 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <p class="muted small">„Startseite“ abhaken blendet einen Beitrag auf der Website aus. „Partner-Seite“ anhaken zeigt ihn bei den Partnern – auch wenn #LBC3Partner fehlt. Beiträge mit geschützten Begriffen aus dem Glossar erscheinen nie.</p>
         <div class="ig-pick-list" data-ig-list></div>
       </div>
+    </section>
+
+    <section data-panel="besucher" hidden>
+      <div class="section-head">
+        <h1 class="h1">Besucher</h1>
+        <div class="pill-row" data-bz-range>
+          <button type="button" class="pill" data-tage="7">7 Tage</button>
+          <button type="button" class="pill is-active" data-tage="30">30 Tage</button>
+          <button type="button" class="pill" data-tage="365">12 Monate</button>
+        </div>
+      </div>
+      <p class="lead">Gezählt wird anonym auf unserem eigenen Server – ohne Cookies, ohne Google Analytics. Ein Besucher ist ein Gerät pro Tag; wer an drei Tagen kommt, zählt dreimal. Suchmaschinen-Roboter und der Team-Bereich werden nicht mitgezählt.</p>
+      <div class="kpis" data-bz-kpis></div>
+      <div class="card"><h2 class="h3">Verlauf</h2><div class="bz-chart" data-bz-chart></div><p class="muted small"><span class="bz-key bz-key-a"></span> Seitenaufrufe · <span class="bz-key bz-key-b"></span> eindeutige Besucher</p></div>
+      <div class="grid-2 mt align-start">
+        <div class="card"><h2 class="h3">Beliebteste Seiten</h2><table class="kosten-sum"><tbody data-bz="seiten"></tbody></table></div>
+        <div class="card"><h2 class="h3">Woher die Besucher kommen</h2><table class="kosten-sum"><tbody data-bz="herkunft"></tbody></table></div>
+        <div class="card"><h2 class="h3">Länder</h2><table class="kosten-sum"><tbody data-bz="laender"></tbody></table></div>
+        <div class="card"><h2 class="h3">Sprache &amp; Gerät</h2><table class="kosten-sum"><tbody data-bz="sprachen"></tbody></table><table class="kosten-sum mt"><tbody data-bz="geraete"></tbody></table></div>
+      </div>
+      <label class="check mt"><input type="checkbox" data-bz-ich> Meine eigenen Besuche auf diesem Gerät nicht mitzählen</label>
     </section>
 
     <section data-panel="klicks" hidden>
