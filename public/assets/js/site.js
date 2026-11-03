@@ -243,6 +243,15 @@
       video.pause();
       video.poster = btn.dataset.reelPoster || '';
       video.src = btn.dataset.reelSrc;
+      // Untertitel in der Seitensprache mitwechseln (nur Reels mit Sprache haben eine Spur)
+      $$('track', video).forEach((tr) => tr.remove());
+      if (btn.dataset.reelTrack) {
+        const tr = document.createElement('track');
+        tr.kind = 'subtitles'; tr.srclang = document.documentElement.lang || ''; tr.label = tr.srclang.toUpperCase();
+        tr.src = btn.dataset.reelTrack; tr.default = true;
+        video.appendChild(tr);
+        if (tr.track) tr.track.mode = 'showing';
+      }
       title.textContent = btn.dataset.reelTitel || '';
       text.textContent = btn.dataset.reelInfo || '';
       pos.textContent = btn.dataset.reelIndex || '';

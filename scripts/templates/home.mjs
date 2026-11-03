@@ -2,6 +2,7 @@ import { esc, picture, icon, flagsDE, flagsIT, img } from '../lib/html.mjs';
 import { url, t, LANGS } from '../lib/i18n.mjs';
 import { layout } from './layout.mjs';
 import { countdownCard, instaGrid } from './parts.mjs';
+import { untertitelTrack } from '../lib/untertitel.mjs';
 
 export function home(lang, ctx) {
   const _ = t(lang);
@@ -57,7 +58,7 @@ ${site.story_video ? `
     <a class="btn btn-dark" href="${url(lang, '/ueber-luigi/')}">${_('story_more')}</a>
   </div>
   <figure class="story-video">
-    <video data-story-video src="${esc(site.story_video)}"${site.story_vorschau ? ` poster="${esc(site.story_vorschau)}"` : ''} controls playsinline preload="none"></video>
+    <video data-story-video src="${esc(site.story_video)}"${site.story_vorschau ? ` poster="${esc(site.story_vorschau)}"` : ''} controls playsinline preload="none">${untertitelTrack(site.story_video, lang)}</video>
     <figcaption><button type="button" class="link-btn" data-fullscreen>⛶ ${_('fullscreen')}</button></figcaption>
   </figure>
 </section>` : ''}
