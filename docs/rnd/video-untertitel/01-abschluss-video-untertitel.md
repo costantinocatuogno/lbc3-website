@@ -1,7 +1,7 @@
 <!-- © 2026 LBC3 -->
 # Video-Untertitel in der Sprache des Besuchers – Abschluss
 
-Stand: 03.11.2026 · Branch `untertitel-videos` · Verantwortlich: Head of R&D LBC3
+Stand: 03.11.2026 · **Live seit 03.11.2026, 22:31 Uhr** (PR #2, Commit 0b70207, Netlify-Deploy 6aea5272) · Verantwortlich: Head of R&D LBC3
 
 ## Ziel
 Besucher der italienischen, englischen und französischen Seiten sehen bei den Videos mit Sprache Untertitel in ihrer Sprache – ganz unten am Bildrand. Deutsch bekommt keine zusätzliche Spur, weil die deutschen Untertitel bereits in die Videos eingebrannt sind (Vorgabe des Eigentümers).
@@ -41,4 +41,5 @@ Die deutschen Untertitel sind eingebrannt. Sie wurden Bild für Bild aus den Vid
 
 ## Offene Punkte
 - Übersetzungen bitte einmal von Muttersprachlern (IT/FR) gegenlesen lassen – NICHT VERIFIZIERT durch Muttersprachler.
+- Vor dem „freigeben“ lief keine separate Agenten-Prüfung (Ampel-Bericht); die Prüfkette (GitHub Actions) ist noch nicht eingerichtet.
 - iPhone im Vollbild zeigt Untertitel im eigenen Apple-Stil; Position bleibt unten.
