@@ -203,3 +203,9 @@
   for = "/uploads/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+# Video-Untertitel (IT/EN/FR) – richtiger Typ, damit alle Browser die Spur laden
+[[headers]]
+  for = "/uploads/videos/untertitel/*"
+  [headers.values]
+    Content-Type = "text/vtt; charset=utf-8"

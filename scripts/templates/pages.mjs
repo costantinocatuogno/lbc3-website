@@ -4,6 +4,7 @@ import { markdown } from '../lib/markdown.mjs';
 import { layout } from './layout.mjs';
 import { countdownCard, pageHead, instaGrid, klick } from './parts.mjs';
 import { wallGrid, sponsorWall } from './squadra.mjs';
+import { untertitelSrc, untertitelTrack } from '../lib/untertitel.mjs';
 
 const CATS = ['Rennen', 'Team', 'Partner', 'Presse'];
 
@@ -125,7 +126,7 @@ ${(() => {
 
   ${vids.length ? `<div class="reel-player" data-reels data-vpanel="reels">
     <div class="reel-stage">
-      <video data-reel-video src="${esc(first.datei)}"${first.vorschau ? ` poster="${esc(first.vorschau)}"` : ''} controls playsinline preload="metadata"></video>
+      <video data-reel-video src="${esc(first.datei)}"${first.vorschau ? ` poster="${esc(first.vorschau)}"` : ''} controls playsinline preload="metadata">${untertitelTrack(first.datei, lang)}</video>
     </div>
     <div class="reel-side">
       <div class="reel-now" aria-live="polite">
@@ -134,7 +135,7 @@ ${(() => {
         <p class="lead" data-reel-text>${esc(first.text || '')}</p>
       </div>
       <ol class="reel-list">${vids.map((v, i) => `
-        <li><button type="button" class="reel-item${i === 0 ? ' is-active' : ''}" aria-pressed="${i === 0}" data-reel-src="${esc(v.datei)}" data-reel-poster="${esc(v.vorschau || '')}" data-reel-titel="${esc(v.titel || '')}" data-reel-info="${esc(v.text || '')}" data-reel-index="${pad(i + 1)}">
+        <li><button type="button" class="reel-item${i === 0 ? ' is-active' : ''}" aria-pressed="${i === 0}" data-reel-src="${esc(v.datei)}" data-reel-poster="${esc(v.vorschau || '')}" data-reel-titel="${esc(v.titel || '')}" data-reel-info="${esc(v.text || '')}" data-reel-index="${pad(i + 1)}" data-reel-track="${esc(untertitelSrc(v.datei, lang))}">
           <span class="reel-thumb">${v.vorschau ? `<img src="${esc(img(v.vorschau, 300))}" alt="" loading="lazy">` : ''}<span class="reel-play" aria-hidden="true">▶</span></span>
           <span class="reel-meta"><span class="reel-num">${pad(i + 1)}</span><span class="reel-name">${esc(v.titel || '')}</span></span>
         </button></li>`).join('')}
@@ -142,7 +143,7 @@ ${(() => {
     </div>
   </div>` : ''}
   ${wide ? `<figure class="film" data-vpanel="film"${vids.length ? ' hidden' : ''}>
-    <video src="${esc(wide.datei)}"${wide.vorschau ? ` poster="${esc(wide.vorschau)}"` : ''} controls playsinline preload="none"></video>
+    <video src="${esc(wide.datei)}"${wide.vorschau ? ` poster="${esc(wide.vorschau)}"` : ''} controls playsinline preload="none">${untertitelTrack(wide.datei, lang)}</video>
     <figcaption><strong>${esc(wide.titel || '')}</strong>${wide.text ? `<span>${esc(wide.text)}</span>` : ''}</figcaption>
   </figure>` : ''}
 </section>`;
