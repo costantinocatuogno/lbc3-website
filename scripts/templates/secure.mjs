@@ -436,6 +436,11 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
 
     <section data-panel="einladen" hidden>
       <h1 class="h1">Squadra Tre einladen</h1>
+      <div class="card own-text">
+        <label class="field"><span>Dein eigener Text – steht in jeder Einladung ganz oben (Instagram, E-Mail, WhatsApp, Kontakte)</span>
+          <textarea rows="4" data-own-text placeholder="z. B. Ciao {Vorname}, wie geht’s? Wir haben eine Bitte an dich …"></textarea></label>
+        <p class="muted small">Optional. <strong>{Vorname}</strong> wird bei Kontakten und E-Mails durch den Vornamen ersetzt. Der Text bleibt auf diesem Gerät gespeichert. Darunter folgt automatisch unser Einladungstext mit dem Link zur Squadra Tre.</p>
+      </div>
       <p class="lead">Instagram erlaubt es nicht, Follower automatisch irgendwo einzutragen oder allen eine Nachricht zu schicken. So erreicht ihr trotzdem alle:</p>
       <div class="grid-2 align-start">
         <div class="card">

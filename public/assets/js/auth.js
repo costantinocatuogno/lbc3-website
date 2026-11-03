@@ -388,7 +388,7 @@
         const h = igiHandle();
         if (!h) { showMsg('Bitte einen Instagram-Namen eingeben.', true); return; }
         if (!igiEdited) igiFill();
-        const text = igiForm.text.value.replace(/\/squadra-tre\/\?ref=name/, `/squadra-tre/?ref=${h}`);
+        const text = mitEigenem(igiForm.text.value.replace(/\/squadra-tre\/\?ref=name/, `/squadra-tre/?ref=${h}`));
         let kopiert = true;
         try { await navigator.clipboard.writeText(text); } catch (err) { kopiert = false; }
         // Chat zuerst öffnen (Browser blockieren Fenster nach längeren Wartezeiten), dann speichern
@@ -402,6 +402,16 @@
         const b = e.target.closest('[data-igi-del]'); if (!b) return;
         try { await igiCall('DELETE', { handle: b.dataset.igiDel }); loadEinladungen(); } catch (err) { showMsg(err.message, true); }
       });
+
+      /* ----- Eigener Text: steht in jeder Einladung ganz oben ({Vorname} wird ersetzt) ----- */
+      const ownBox = $('[data-own-text]');
+      try { ownBox.value = localStorage.getItem('lbc3-eigener-text') || ''; } catch (e) { /* privat */ }
+      ownBox.addEventListener('input', () => { try { localStorage.setItem('lbc3-eigener-text', ownBox.value); } catch (e) { /* privat */ } });
+      const mitEigenem = (text, name = '') => {
+        const v = String(name || '').trim().split(/\s+/)[0] || '';
+        const eigen = ownBox.value.trim().replace(/\s*\{Vorname\}/gi, v ? ` ${v}` : '').replace(/^\s+/, '');
+        return eigen ? `${eigen}\n\n${text}` : text;
+      };
 
       /* ----- E-Mail- und WhatsApp-Einladungen ----- */
       const joinLink = (sp, ref) => `${location.origin}${IGI_PREFIX[sp] || ''}/squadra-tre/${ref ? `?ref=${encodeURIComponent(ref)}` : ''}#beitreten`;
@@ -422,7 +432,7 @@
       $('[data-mi-mailto]').addEventListener('click', async () => {
         const email = miForm.email.value.trim();
         if (!miForm.email.checkValidity() || !email) { showMsg('Bitte eine gültige E-Mail-Adresse eingeben.', true); return; }
-        location.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(MI_SUBJECT[miForm.sprache.value])}&body=${encodeURIComponent(miForm.text.value)}`;
+        location.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(MI_SUBJECT[miForm.sprache.value])}&body=${encodeURIComponent(mitEigenem(miForm.text.value, miForm.name.value))}`;
         try { await igiCall('POST', { typ: 'mail', email, name: miForm.name.value, sprache: miForm.sprache.value }); } catch (err) { /* nur Merkliste */ }
         showMsg('E-Mail-Programm geöffnet – bitte dort senden.');
         miReset(); loadEinladungen();
@@ -433,7 +443,7 @@
         if (!miForm.einverstanden.checked) { showMsg('Für „Direkt senden“ bitte bestätigen, dass ihr die Person kennt und sie einverstanden ist.', true); return; }
         if (!confirm(`Einladung jetzt an ${email} senden?`)) return;
         const btn = ev.currentTarget; btn.disabled = true;
-        try { await igiCall('POST', { typ: 'mail', senden: true, einverstanden: true, email, name: miForm.name.value, sprache: miForm.sprache.value, text: miForm.text.value }); showMsg(`Einladung an ${email} gesendet.`); miReset(); loadEinladungen(); }
+        try { await igiCall('POST', { typ: 'mail', senden: true, einverstanden: true, email, name: miForm.name.value, sprache: miForm.sprache.value, text: mitEigenem(miForm.text.value, miForm.name.value) }); showMsg(`Einladung an ${email} gesendet.`); miReset(); loadEinladungen(); }
         catch (err) { showMsg('Senden fehlgeschlagen: ' + err.message, true); }
         btn.disabled = false;
       });
@@ -449,10 +459,10 @@
       const IG_URL = 'https://instagram.com/l.b.c._3';
       const WA_TEXT = {
         folgen: {
-          de: () => `Ciao! 👋 Mein Sohn Luigi (#3) fährt Kart – 2026 Vizemeister der ADAC Kart Masters in der Mini B, sein großes Ziel ist die Formel 1 🏁 Auf Instagram nimmt er euch mit zu Rennen, Training und hinter die Kulissen. Wir würden uns riesig freuen, wenn du ihm folgst: ${IG_URL} Danke & Forza #LBC3! 🇩🇪🇮🇹`,
-          it: () => `Ciao! 👋 Mio figlio Luigi (#3) corre in kart – nel 2026 vicecampione dell’ADAC Kart Masters nella Mini B, il suo sogno è la Formula 1 🏁 Su Instagram vi porta con sé tra gare, allenamenti e dietro le quinte. Ci farebbe tantissimo piacere se lo seguissi: ${IG_URL} Grazie e Forza #LBC3! 🇮🇹🇩🇪`,
-          en: () => `Ciao! 👋 My son Luigi (#3) races karts – runner-up of the 2026 ADAC Kart Masters in Mini B, and his big goal is Formula 1 🏁 On Instagram he takes you along to races, training and behind the scenes. We’d be thrilled if you followed him: ${IG_URL} Thanks & Forza #LBC3!`,
-          fr: () => `Ciao ! 👋 Mon fils Luigi (#3) fait du karting – vice-champion de l’ADAC Kart Masters 2026 en Mini B, son grand objectif est la Formule 1 🏁 Sur Instagram, il vous emmène aux courses, aux entraînements et dans les coulisses. Nous serions ravis que tu le suives : ${IG_URL} Merci et Forza #LBC3 !`
+          de: (l) => `Ciao! 👋 Mein Sohn Luigi (#3) fährt Kart – 2026 Vizemeister der ADAC Kart Masters in der Mini B, sein großes Ziel ist die Formel 1 🏁 Auf Instagram nimmt er euch mit zu Rennen, Training und hinter die Kulissen. Wir würden uns riesig freuen, wenn du ihm folgst: ${IG_URL}\nSeinen Fanclub, die Squadra Tre, findest du hier: ${l}\nDanke & Forza #LBC3! 🇩🇪🇮🇹`,
+          it: (l) => `Ciao! 👋 Mio figlio Luigi (#3) corre in kart – nel 2026 vicecampione dell’ADAC Kart Masters nella Mini B, il suo sogno è la Formula 1 🏁 Su Instagram vi porta con sé tra gare, allenamenti e dietro le quinte. Ci farebbe tantissimo piacere se lo seguissi: ${IG_URL}\nIl suo fan club, la Squadra Tre, lo trovi qui: ${l}\nGrazie e Forza #LBC3! 🇮🇹🇩🇪`,
+          en: (l) => `Ciao! 👋 My son Luigi (#3) races karts – runner-up of the 2026 ADAC Kart Masters in Mini B, and his big goal is Formula 1 🏁 On Instagram he takes you along to races, training and behind the scenes. We’d be thrilled if you followed him: ${IG_URL}\nYou’ll find his fan club, the Squadra Tre, here: ${l}\nThanks & Forza #LBC3!`,
+          fr: (l) => `Ciao ! 👋 Mon fils Luigi (#3) fait du karting – vice-champion de l’ADAC Kart Masters 2026 en Mini B, son grand objectif est la Formule 1 🏁 Sur Instagram, il vous emmène aux courses, aux entraînements et dans les coulisses. Nous serions ravis que tu le suives : ${IG_URL}\nSon fan-club, la Squadra Tre, c’est ici : ${l}\nMerci et Forza #LBC3 !`
         },
         squadra: {
           de: (l) => `Ciao! 👋 Luigi (#3) hat jetzt einen Fanclub – die Squadra Tre 🏁 Kostenlos dabei sein, Renn-Updates bekommen und auf die Wall of Fame: ${l} Forza #LBC3! 🇩🇪🇮🇹`,
@@ -474,10 +484,10 @@
       waForm.ziel.addEventListener('change', () => { waEdited = false; waFill(); });
       $('[data-wa-share]').addEventListener('click', async () => {
         if (!navigator.share) { showMsg('Teilen ist hier nicht verfügbar – bitte „Text kopieren“ nutzen.', true); return; }
-        try { await navigator.share({ text: waForm.text.value }); } catch (err) { /* abgebrochen */ }
+        try { await navigator.share({ text: mitEigenem(waForm.text.value) }); } catch (err) { /* abgebrochen */ }
       });
       $('[data-wa-copy]').addEventListener('click', async () => {
-        try { await navigator.clipboard.writeText(waForm.text.value); showMsg('Text kopiert.'); } catch (err) { showMsg('Kopieren nicht möglich – bitte Text markieren.', true); }
+        try { await navigator.clipboard.writeText(mitEigenem(waForm.text.value)); showMsg('Text kopiert.'); } catch (err) { showMsg('Kopieren nicht möglich – bitte Text markieren.', true); }
       });
       waForm.text.addEventListener('input', () => { waEdited = true; });
       waForm.addEventListener('submit', (e) => {
@@ -486,7 +496,7 @@
         if (nr.startsWith('00')) nr = nr.slice(2);
         nr = nr.replace(/^\+/, '');
         if (nr.startsWith('0')) { showMsg('Bitte die Nummer mit Ländervorwahl eingeben, z. B. +49 170 … oder +39 …', true); return; }
-        window.open(`https://wa.me/${nr}?text=${encodeURIComponent(waForm.text.value)}`, '_blank', 'noopener');
+        window.open(`https://wa.me/${nr}?text=${encodeURIComponent(mitEigenem(waForm.text.value))}`, '_blank', 'noopener');
         waForm.nummer.value = '';
       });
 
@@ -504,7 +514,7 @@
         return n;
       };
       const vorname = (name) => String(name || '').trim().split(/\s+/)[0] || '';
-      const persText = (name) => { const v = vorname(name); const t = waForm.text.value; return v ? t.replace(/^(Ciao|Hallo|Hi|Bonjour)\s*!/, (m, g) => `${g} ${v}!`) : t; };
+      const persText = (name) => { const v = vorname(name); const t = waForm.text.value; return mitEigenem(v && !ownBox.value.trim() ? t.replace(/^(Ciao|Hallo|Hi|Bonjour)\s*!/, (m, g) => `${g} ${v}!`) : t, name); };
       function parseVcf(txt) {
         const out = [];
         const unfold = txt.replace(/\r\n[ \t]/g, '').replace(/\n[ \t]/g, '');
