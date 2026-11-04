@@ -424,20 +424,20 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
       <div class="section-head">
         <h1 class="h1">Aufrufe</h1>
         <div class="pill-row" data-af-range>
-          <button type="button" class="pill" data-tage="7">7 Tage</button>
-          <button type="button" class="pill is-active" data-tage="30">30 Tage</button>
-          <button type="button" class="pill" data-tage="365">12 Monate</button>
+          <button type="button" class="pill" aria-pressed="false" data-tage="7">7 Tage</button>
+          <button type="button" class="pill is-active" aria-pressed="true" data-tage="30">30 Tage</button>
+          <button type="button" class="pill" aria-pressed="false" data-tage="365">12 Monate</button>
         </div>
       </div>
       <p class="lead">Jedes Bauteil der Website mit seinen Aufrufen – alle Sprachfassungen zusammengezählt. Seiten und Artikel: wie oft sie geöffnet wurden. Bilder: wie oft sie in der Großansicht geöffnet wurden. Videos: wie oft sie gestartet und bis zum Ende angesehen wurden. Gezählt wird anonym, ohne Cookies; Roboter und der Team-Bereich zählen nicht mit.</p>
       <div class="kpis small-kpis" data-af-kpis></div>
       <div class="pill-row compact" data-af-typ>
-        <button type="button" class="pill is-active" data-typ="alle">Alle</button>
-        <button type="button" class="pill" data-typ="seite">Seiten</button>
-        <button type="button" class="pill" data-typ="artikel">Artikel</button>
-        <button type="button" class="pill" data-typ="galerie">Galerie</button>
-        <button type="button" class="pill" data-typ="bild">Bilder</button>
-        <button type="button" class="pill" data-typ="video">Videos</button>
+        <button type="button" class="pill is-active" aria-pressed="true" data-typ="alle">Alle</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="seite">Seiten</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="artikel">Artikel</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="galerie">Galerie</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="bild">Bilder</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="video">Videos</button>
       </div>
       <div class="row mt">
         <label class="field inline"><span>Suchen</span><input type="search" data-af-suche placeholder="Titel oder Datei"></label>

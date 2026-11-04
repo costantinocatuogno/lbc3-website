@@ -629,11 +629,11 @@
       const afPfad = (p) => { let s = String(p || '/').split(/[?#]/)[0].replace(/^\/(en|it|fr)(?=\/|$)/, '') || '/'; if (s.slice(-11) === '/index.html') s = s.slice(0, -10); if (s.slice(-1) !== '/' && !/\.[a-z0-9]+$/i.test(s)) s += '/'; return s; };
       const afSprache = (p) => ((String(p || '').match(/^\/(en|it|fr)(?=\/|$)/) || [])[1] || 'de');
       $$('[data-af-range] [data-tage]').forEach((b) => b.addEventListener('click', () => {
-        $$('[data-af-range] [data-tage]').forEach((x) => x.classList.toggle('is-active', x === b));
+        $$('[data-af-range] [data-tage]').forEach((x) => { x.classList.toggle('is-active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
         afTage = Number(b.dataset.tage); loadAufrufe();
       }));
       $$('[data-af-typ] [data-typ]').forEach((b) => b.addEventListener('click', () => {
-        $$('[data-af-typ] [data-typ]').forEach((x) => x.classList.toggle('is-active', x === b));
+        $$('[data-af-typ] [data-typ]').forEach((x) => { x.classList.toggle('is-active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
         afTyp = b.dataset.typ; renderAufrufe();
       }));
       $('[data-af-suche]').addEventListener('input', () => renderAufrufe());
@@ -686,7 +686,7 @@
       }
       $('[data-af-csv]').addEventListener('click', () => {
         if (!afZeilen.length) return;
-        const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+        const q = (v) => { let t = String(v ?? ''); if (/^[=+\-@\t\r]/.test(t)) t = `'${t}`; return `"${t.replace(/"/g, '""')}"`; }; // Formeln in Excel entschärfen
         const lines = [['Bauteil', 'Art', 'Adresse/Datei', 'Zu sehen auf', 'Aufrufe', 'DE', 'IT', 'EN', 'FR', 'Video zu Ende'].map(q).join(';')]
           .concat(afSichtbar().map((r) => [r.titel, AF_TYP[r.typ] || r.typ, r.id, r.seite, r.n, r.l.de || 0, r.l.it || 0, r.l.en || 0, r.l.fr || 0, r.typ === 'video' ? r.e : ''].map(q).join(';')));
         const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });

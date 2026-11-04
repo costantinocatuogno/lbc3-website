@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { seitenPfad, spracheVon, medienPfad, seitenTyp, bauteileAusSeiten } from '../scripts/lib/bauteile.mjs';
-import { pruefeEreignis, zusammenfassen, addieren } from '../netlify/functions/_lib/medien-zahlen.mjs';
+import { pruefeEreignis, zusammenfassen, addieren, tageListe } from '../netlify/functions/_lib/medien-zahlen.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -87,6 +87,29 @@ describe('Zählung Bilder/Videos', () => {
   });
 });
 
+describe('Zeitraum', () => {
+  test('lückenlos und ohne Doppelte, auch über Zeitumstellung und Monatswechsel', () => {
+    assert.deepEqual(tageListe('2026-10-26', 3), ['2026-10-24', '2026-10-25', '2026-10-26']);
+    assert.deepEqual(tageListe('2026-03-01', 2), ['2026-02-28', '2026-03-01']);
+    const jahr = tageListe('2026-11-05', 365);
+    assert.equal(new Set(jahr).size, 365);
+    assert.equal(jahr[364], '2026-11-05');
+  });
+});
+
+describe('Server', () => {
+  const api = readFileSync(join(ROOT, 'netlify/functions/medien.mjs'), 'utf8');
+  const nacht = readFileSync(join(ROOT, 'netlify/functions/medien-verdichten.mjs'), 'utf8');
+  test('Schlüssel ohne Uhrzeit, Tagesgrenze, Liste der eigenen Fassung', () => {
+    assert.doesNotMatch(api, /Date\.now\(\)}-/);
+    assert.match(api, /unterGrenze\(day\)/);
+    assert.match(api, /new URL\(req\.url\)\.origin \|\|/);
+  });
+  test('Verdichtung zählt einen Tag nie doppelt', () => {
+    assert.match(nacht, /if \(!fertig\) await store\(\)\.setJSON/);
+  });
+});
+
 describe('Einbau', () => {
   const site = readFileSync(join(ROOT, 'public/assets/js/site.js'), 'utf8');
   const auth = readFileSync(join(ROOT, 'public/assets/js/auth.js'), 'utf8');
@@ -102,6 +125,7 @@ describe('Einbau', () => {
     assert.match(secure, /data-tab="aufrufe"/);
     assert.match(secure, /data-panel="aufrufe"/);
     assert.match(auth, /name === 'aufrufe'\) loadAufrufe\(\)/);
+    assert.match(auth, /Formeln in Excel entschärfen/);
   });
   test('Datenschutzerklärung nennt die Zählung in allen Sprachen', () => {
     const s = JSON.parse(readFileSync(join(ROOT, 'content/einstellungen/site.json'), 'utf8'));

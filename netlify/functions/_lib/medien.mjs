@@ -6,9 +6,9 @@ import { getStore } from '@netlify/blobs';
 
 export const store = () => getStore('medien');
 import { zusammenfassen } from './medien-zahlen.mjs';
-export { SPRACHEN, ARTEN, pruefeEreignis, zusammenfassen, addieren } from './medien-zahlen.mjs';
+export { SPRACHEN, ARTEN, pruefeEreignis, zusammenfassen, addieren, tageListe, TAGES_GRENZE } from './medien-zahlen.mjs';
 
-/** Rohereignisse eines Tages lesen (Schlüssel e/<tag>/<zeit>-<zufall>). */
+/** Rohereignisse eines Tages lesen (Schlüssel e/<tag>/<zufall>). */
 export async function tagLesen(day) {
   const { blobs } = await store().list({ prefix: `e/${day}/` });
   const ereignisse = [];

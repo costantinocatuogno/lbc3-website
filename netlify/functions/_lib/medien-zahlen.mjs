@@ -36,3 +36,14 @@ export function addieren(tage) {
   }
   return z;
 }
+
+/** Die letzten n Kalendertage bis einschließlich heute (JJJJ-MM-TT), ohne Lücken oder Doppelte – auch bei Zeitumstellung. */
+export function tageListe(heute, n) {
+  const [y, m, d] = String(heute).split('-').map(Number);
+  const out = [];
+  for (let i = n - 1; i >= 0; i--) out.push(new Date(Date.UTC(y, m - 1, d - i)).toISOString().slice(0, 10));
+  return out;
+}
+
+/** Höchstzahl gespeicherter Ereignisse pro Tag (Schutz gegen massenhaft gefälschte Aufrufe, die Speicher und Auswertung füllen). */
+export const TAGES_GRENZE = 20000;
