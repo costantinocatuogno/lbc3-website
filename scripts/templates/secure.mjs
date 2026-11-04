@@ -197,6 +197,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     <button type="button" data-tab="einladen">Squadra einladen</button>
     <button type="button" data-tab="instagram">Instagram</button>
     <button type="button" data-tab="besucher">Besucher</button>
+    <button type="button" data-tab="aufrufe">Aufrufe</button>
     <button type="button" data-tab="klicks">Partner-Klicks</button>
     <a href="/admin/">Fotos, News, Rennen, Texte ↗</a>
   </nav>
@@ -417,6 +418,36 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         <div class="card"><h2 class="h3">Sprache &amp; Gerät</h2><table class="kosten-sum"><tbody data-bz="sprachen"></tbody></table><table class="kosten-sum mt"><tbody data-bz="geraete"></tbody></table></div>
       </div>
       <label class="check mt"><input type="checkbox" data-bz-ich> Meine eigenen Besuche auf diesem Gerät nicht mitzählen</label>
+    </section>
+
+    <section data-panel="aufrufe" hidden>
+      <div class="section-head">
+        <h1 class="h1">Aufrufe</h1>
+        <div class="pill-row" data-af-range>
+          <button type="button" class="pill" aria-pressed="false" data-tage="7">7 Tage</button>
+          <button type="button" class="pill is-active" aria-pressed="true" data-tage="30">30 Tage</button>
+          <button type="button" class="pill" aria-pressed="false" data-tage="365">12 Monate</button>
+        </div>
+      </div>
+      <p class="lead">Jedes Bauteil der Website mit seinen Aufrufen – alle Sprachfassungen zusammengezählt. Seiten und Artikel: wie oft sie geöffnet wurden. Bilder: wie oft sie in der Großansicht geöffnet wurden. Videos: wie oft sie gestartet und bis zum Ende angesehen wurden. Gezählt wird anonym, ohne Cookies; Roboter und der Team-Bereich zählen nicht mit.</p>
+      <div class="kpis small-kpis" data-af-kpis></div>
+      <div class="pill-row compact" data-af-typ>
+        <button type="button" class="pill is-active" aria-pressed="true" data-typ="alle">Alle</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="seite">Seiten</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="artikel">Artikel</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="galerie">Galerie</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="bild">Bilder</button>
+        <button type="button" class="pill" aria-pressed="false" data-typ="video">Videos</button>
+      </div>
+      <div class="row mt">
+        <label class="field inline"><span>Suchen</span><input type="search" data-af-suche placeholder="Titel oder Datei"></label>
+        <label class="check"><input type="checkbox" data-af-null> Nur Bauteile ohne Aufrufe</label>
+      </div>
+      <div class="card mt"><div class="table-box plain"><table class="kosten-sum af-table"><thead><tr><th>Bauteil</th><th>Art</th><th class="num">Aufrufe</th><th class="num">DE</th><th class="num">IT</th><th class="num">EN</th><th class="num">FR</th><th class="num">Zu Ende</th></tr></thead><tbody data-af-rows><tr><td colspan="8" class="muted">Wird geladen …</td></tr></tbody></table></div></div>
+      <div class="btn-row mt">
+        <button type="button" class="btn btn-outline btn-sm" data-af-csv>Als Tabelle herunterladen (CSV)</button>
+      </div>
+      <p class="muted small">Bilder und Videos werden seit dem Start dieses Zählers gezählt (November 2026); frühere Aufrufe lassen sich nicht nachträglich ermitteln. Ein Reel, das nach dem vorigen automatisch weiterläuft, zählt als gestartet. „Meine eigenen Besuche nicht mitzählen“ im Reiter Besucher gilt auch hier.</p>
     </section>
 
     <section data-panel="klicks" hidden>

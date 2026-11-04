@@ -333,6 +333,7 @@
         if (name === 'instagram') loadInstagram();
         if (name === 'klicks') loadKlicks();
         if (name === 'besucher') loadBesucher();
+        if (name === 'aufrufe') loadAufrufe();
       };
       tabs.forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
 
@@ -620,6 +621,77 @@
           $('[data-bz="geraete"]').innerHTML = rows('geraete');
         } catch (e) { $('[data-bz-kpis]').innerHTML = `<p class="muted">Nicht abrufbar: ${escapeHtml(e.message)}</p>`; }
       }
+
+      /* ----- Aufrufe je Bauteil (Seiten, Artikel, Galerie, Bilder, Videos) ----- */
+      const AF_TYP = { seite: 'Seite', artikel: 'Artikel', galerie: 'Galerie', bild: 'Bild', video: 'Video' };
+      let afTage = 30, afTyp = 'alle', afZeilen = [];
+      // Adresse ohne Sprachkürzel, mit Schrägstrich am Ende – wie scripts/lib/bauteile.mjs → seitenPfad
+      const afPfad = (p) => { let s = String(p || '/').split(/[?#]/)[0].replace(/^\/(en|it|fr)(?=\/|$)/, '') || '/'; if (s.slice(-11) === '/index.html') s = s.slice(0, -10); if (s.slice(-1) !== '/' && !/\.[a-z0-9]+$/i.test(s)) s += '/'; return s; };
+      const afSprache = (p) => ((String(p || '').match(/^\/(en|it|fr)(?=\/|$)/) || [])[1] || 'de');
+      $$('[data-af-range] [data-tage]').forEach((b) => b.addEventListener('click', () => {
+        $$('[data-af-range] [data-tage]').forEach((x) => { x.classList.toggle('is-active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+        afTage = Number(b.dataset.tage); loadAufrufe();
+      }));
+      $$('[data-af-typ] [data-typ]').forEach((b) => b.addEventListener('click', () => {
+        $$('[data-af-typ] [data-typ]').forEach((x) => { x.classList.toggle('is-active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+        afTyp = b.dataset.typ; renderAufrufe();
+      }));
+      $('[data-af-suche]').addEventListener('input', () => renderAufrufe());
+      $('[data-af-null]').addEventListener('change', () => renderAufrufe());
+      const afSichtbar = () => {
+        const q = $('[data-af-suche]').value.trim().toLowerCase();
+        const nur0 = $('[data-af-null]').checked;
+        return afZeilen.filter((r) => (afTyp === 'alle' || r.typ === afTyp) && (!nur0 || r.n === 0) && (!q || (r.titel + ' ' + r.id).toLowerCase().includes(q)));
+      };
+      function renderAufrufe() {
+        const rows = afSichtbar();
+        const tbody = $('[data-af-rows]');
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="8" class="muted">Keine Bauteile gefunden</td></tr>'; return; }
+        tbody.innerHTML = rows.slice(0, 500).map((r) => `<tr>
+          <td><strong>${escapeHtml(r.titel)}</strong><br><span class="muted small">${escapeHtml(r.typ === 'bild' || r.typ === 'video' ? `${r.id.split('/').pop()} · auf ${r.seite}` : r.id)}</span></td>
+          <td>${AF_TYP[r.typ] || r.typ}</td><td class="num"><strong>${n(r.n)}</strong></td>
+          ${['de', 'it', 'en', 'fr'].map((l) => `<td class="num">${r.l[l] ? n(r.l[l]) : '<span class="muted">–</span>'}</td>`).join('')}
+          <td class="num">${r.typ === 'video' ? `${n(r.e)}${r.n ? ` <span class="muted small">${Math.round((r.e / r.n) * 100)} %</span>` : ''}` : '<span class="muted">–</span>'}</td></tr>`).join('')
+          + (rows.length > 500 ? `<tr><td colspan="8" class="muted">… und ${rows.length - 500} weitere – bitte filtern oder als CSV herunterladen</td></tr>` : '');
+      }
+      async function loadAufrufe() {
+        $('[data-af-kpis]').innerHTML = '<p class="muted">Wird geladen …</p>';
+        $('[data-af-rows]').innerHTML = '<tr><td colspan="8" class="muted">Wird geladen …</td></tr>';
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          const headers = { Authorization: `Bearer ${session ? session.access_token : token()}` };
+          const [bt, bz, md] = await Promise.all([
+            fetch('/bauteile.json', { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(`Bauteil-Liste fehlt (${r.status})`); return r.json(); }),
+            fetch(`/api/besuch?tage=${afTage}`, { headers }).then(async (r) => { const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || `Fehler ${r.status}`); return j; }),
+            fetch(`/api/medien?tage=${afTage}`, { headers }).then(async (r) => { const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || `Fehler ${r.status}`); return j; })
+          ]);
+          // Seitenaufrufe aller Sprachfassungen zusammenzählen
+          const seiten = {};
+          (bz.tage || []).forEach((t) => Object.entries(t.seiten || {}).forEach(([p, v]) => {
+            const x = seiten[afPfad(p)] ||= { n: 0, l: {} };
+            x.n += v; x.l[afSprache(p)] = (x.l[afSprache(p)] || 0) + v;
+          }));
+          const medien = md.medien || {};
+          afZeilen = (bt.bauteile || []).map((b) => {
+            const z = (b.typ === 'bild' || b.typ === 'video') ? medien[b.id] : seiten[b.id];
+            return { ...b, n: (z && z.n) || 0, e: (z && z.e) || 0, l: (z && z.l) || {} };
+          }).sort((a, b) => b.n - a.n || a.titel.localeCompare(b.titel, 'de'));
+          const kpi = (label, typen) => { const r = afZeilen.filter((x) => typen.includes(x.typ)); const ohne = r.filter((x) => !x.n).length; return `<div class="kpi"><span>${label}</span><strong>${n(r.reduce((a, x) => a + x.n, 0))}</strong><small class="muted">${r.length} Bauteile${ohne ? ` · ${ohne} ohne Aufruf` : ''}</small></div>`; };
+          $('[data-af-kpis]').innerHTML = kpi('Seiten', ['seite']) + kpi('Artikel', ['artikel']) + kpi('Galerie', ['galerie']) + kpi('Bilder (Großansicht)', ['bild']) + kpi('Videos (gestartet)', ['video']);
+          renderAufrufe();
+        } catch (e) {
+          $('[data-af-kpis]').innerHTML = `<p class="muted">Nicht abrufbar: ${escapeHtml(e.message)}</p>`;
+          $('[data-af-rows]').innerHTML = '';
+        }
+      }
+      $('[data-af-csv]').addEventListener('click', () => {
+        if (!afZeilen.length) return;
+        const q = (v) => { let t = String(v ?? ''); if (/^[=+\-@\t\r]/.test(t)) t = `'${t}`; return `"${t.replace(/"/g, '""')}"`; }; // Formeln in Excel entschärfen
+        const lines = [['Bauteil', 'Art', 'Adresse/Datei', 'Zu sehen auf', 'Aufrufe', 'DE', 'IT', 'EN', 'FR', 'Video zu Ende'].map(q).join(';')]
+          .concat(afSichtbar().map((r) => [r.titel, AF_TYP[r.typ] || r.typ, r.id, r.seite, r.n, r.l.de || 0, r.l.it || 0, r.l.en || 0, r.l.fr || 0, r.typ === 'video' ? r.e : ''].map(q).join(';')));
+        const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `LBC3-Aufrufe-${afTage}-Tage.csv`; a.click();
+      });
 
       /* ----- Partner-Klicks ----- */
       const QUELLE = { laufband: 'Laufband', partnerseite: 'Partner-Seite', wall: 'Partner-Wall', 'wall-instagram': 'Wall · Instagram', 'wall-facebook': 'Wall · Facebook', 'wall-linkedin': 'Wall · LinkedIn', 'wall-tiktok': 'Wall · TikTok', 'wall-youtube': 'Wall · YouTube', sonstige: 'Sonstige' };

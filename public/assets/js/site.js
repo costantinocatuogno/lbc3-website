@@ -29,6 +29,34 @@
   document.addEventListener('click', zaehle, true);
   document.addEventListener('auxclick', zaehle, true);
 
+  /* ---------- Aufrufzähler für Bilder und Videos: anonym (kein Cookie, keine IP, nichts im Browser gespeichert) ---------- */
+  // Bild = in der Großansicht geöffnet · Video = selbst gestartet (nur Videos mit Bedienelementen, nicht das Intro) und zu Ende geschaut.
+  // Pro Seitenaufruf zählt jede Datei je Art höchstens einmal.
+  const lbc3Medium = (src) => {
+    try {
+      const u = new URL(src, location.href);
+      let p = u.pathname.indexOf('/.netlify/images') === 0 ? (u.searchParams.get('url') || '') : u.pathname;
+      p = decodeURI(p.split(/[?#]/)[0]);
+      return p.indexOf('/uploads/') === 0 ? p : '';
+    } catch (e) { return ''; }
+  };
+  const lbc3Gezaehlt = new Set();
+  let lbc3Zaehlen = true;
+  try { lbc3Zaehlen = !localStorage.getItem('lbc3-nicht-zaehlen') && !/^\/(team|admin|bericht|login|vorschau)(\/|$)/.test(location.pathname); } catch (e) { /* privat */ }
+  const lbc3MediumZaehlen = (src, art) => {
+    const m = lbc3Medium(src);
+    if (!lbc3Zaehlen || !m || lbc3Gezaehlt.has(art + m)) return;
+    lbc3Gezaehlt.add(art + m);
+    const data = JSON.stringify({ m, a: art, l: document.documentElement.lang || 'de' });
+    try {
+      if (navigator.sendBeacon) navigator.sendBeacon('/api/medien', new Blob([data], { type: 'application/json' }));
+      else fetch('/api/medien', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: data, keepalive: true });
+    } catch (e) { /* Zählen darf nie stören */ }
+  };
+  const lbc3VideoOk = (v) => v && v.tagName === 'VIDEO' && v.controls && !v.hasAttribute('data-intro-video');
+  document.addEventListener('play', (e) => { if (lbc3VideoOk(e.target)) lbc3MediumZaehlen(e.target.currentSrc || e.target.src, 'start'); }, true);
+  document.addEventListener('ended', (e) => { if (lbc3VideoOk(e.target)) lbc3MediumZaehlen(e.target.currentSrc || e.target.src, 'ende'); }, true);
+
   /* ---------- Mobiles Menü ---------- */
   const toggle = $('.menu-toggle');
   const nav = $('#site-nav');
@@ -277,7 +305,7 @@
       const b = list[index];
       const isVideo = b.dataset.video === 'true';
       imgEl.hidden = isVideo; vidEl.hidden = !isVideo;
-      if (isVideo) { vidEl.src = b.dataset.full; } else { vidEl.pause(); imgEl.src = b.dataset.full; imgEl.alt = b.dataset.caption || ''; }
+      if (isVideo) { vidEl.src = b.dataset.full; } else { vidEl.pause(); imgEl.src = b.dataset.full; imgEl.alt = b.dataset.caption || ''; lbc3MediumZaehlen(b.dataset.full, 'auf'); }
       cap.textContent = b.dataset.caption || '';
       posEl.textContent = `${index + 1} / ${list.length}`;
     };
