@@ -1,7 +1,7 @@
 <!-- © 2026 LBC3 -->
 # Aufrufzähler für alle Bauteile der Website – Abschluss
 
-Stand: 05.11.2026 · **Status: Vorschau** (PR #3, Branch `feature/aufrufe-zaehler`, Netlify-Vorschau https://deploy-preview-3--luigi-catuogno.netlify.app) · live erst nach „freigeben“ · Verantwortlich: Head of R&D LBC3
+Stand: 05.11.2026 · **Live seit 05.11.2026, 00:09 Uhr** (PR #3, Commit 88465cf, Netlify-Deploy 6aebbafe) · Verantwortlich: Head of R&D LBC3
 
 ## Ziel
 Im Team-Bereich sehen, wie oft jedes Bauteil der Website aufgerufen wurde – Seiten, Artikel, Galerie-Seiten, Bilder und Videos. Nur für Admins sichtbar, nicht öffentlich (Vorgabe des Eigentümers, 04.11.2026).
@@ -28,6 +28,7 @@ Gespeichert wird je Ereignis nur: Datei, Art (geöffnet/gestartet/zu Ende), Spra
 ## Geprüft
 - `npm test`: alle neuen Tests grün. Die 5 abgebrochenen Squadra-Tests (R1, R2, R4, R5) waren vorher schon so.
 - Build: 189 Seiten, 290 Bauteile.
+- Live-Deploy: fertig, Functions `medien` und `medien-verdichten` (01:40) aktiv, Secret-Scan ohne Fund.
 - Netlify-Vorschau: Deploy fertig, Functions `medien` und `medien-verdichten` (01:40) aktiv, Secret-Scan ohne Fund.
 - Unabhängige Agenten-Prüfung (Ampel GELB, 05.11.2026), alle Befunde behoben:
   - A: Nach abgebrochener Verdichtung wurde doppelt gezählt → jeder Tag wird nur einmal verdichtet.
