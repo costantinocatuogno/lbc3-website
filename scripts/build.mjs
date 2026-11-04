@@ -10,6 +10,7 @@ import { home } from './templates/home.mjs';
 import { baldPage, vorschauPage, baldRedirects, baldJs, vorschauJs } from './templates/bald.mjs';
 import { newsList, newsDetail, ueber, kalender, galerie, galerieSerie, galerieJahr, galerieAlbum, partner, kontakt, rechtliches, message } from './templates/pages.mjs';
 import { loginPage, berichtPage, teamPage } from './templates/secure.mjs';
+import { bauteileAusSeiten } from './lib/bauteile.mjs';
 import { squadra, wallPrint, confirmPage, parentPage, managePage } from './templates/squadra.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -207,6 +208,11 @@ ${LANGS.map((l) => `  <sitemap><loc>${siteUrl}/sitemap-${l}.xml</loc></sitemap>`
 </sitemapindex>
 `);
 
+// ---------- Aufrufzähler: Liste aller Bauteile (Seiten, Artikel, Galerie, Bilder, Videos) ----------
+// /api/medien nimmt nur Bilder/Videos aus dieser Liste an; der Team-Bereich zeigt damit auch Bauteile ohne Aufrufe.
+const bauteile = bauteileAusSeiten(langPages.de.filter(isPublic).map((p) => ({ pfad: p, html: readFileSync(join(DIST, p.endsWith('/') ? join(p, 'index.html') : p), 'utf8') })));
+writeFileSync(join(DIST, 'bauteile.json'), JSON.stringify({ stand: new Date().toISOString(), bauteile }));
+
 // ---------- Schutz von Luigi: verbotene Angaben dürfen in keiner Sprachfassung stehen ----------
 // Liste in content/einstellungen/glossar.json → "schutz". Impressum/Datenschutz sind ausgenommen (gesetzliche Anbieter-Angaben).
 const schutz = (content.glossar.schutz || []).map((x) => String(x || '').trim()).filter((x) => x.length >= 3);
@@ -244,4 +250,4 @@ ${['', '/it', '/en', '/fr'].map((l) => `Disallow: ${l}/squadra-bestaetigen/\nDis
 Sitemap: ${siteUrl}/sitemap.xml
 `);
 
-console.log(`${baldModus ? '⏳ Bald-Modus AN · ' : ''}✔ ${pages.length} Seiten erzeugt · Instagram: ${instagram.beitraege.length} Beiträge in ${Date.now() - t0} ms · Schriften: ${fontsOk}/${FONTS.length} · Wall of Fame: ${wall.beispiel ? 'Beispieldaten' : `${wall.mitglieder.length} Mitglieder, ${wall.sponsoren.length} Sponsoren`}`);
+console.log(`${baldModus ? '⏳ Bald-Modus AN · ' : ''}✔ ${pages.length} Seiten erzeugt · Instagram: ${instagram.beitraege.length} Beiträge in ${Date.now() - t0} ms · Schriften: ${fontsOk}/${FONTS.length} · Bauteile: ${bauteile.length} · Wall of Fame: ${wall.beispiel ? 'Beispieldaten' : `${wall.mitglieder.length} Mitglieder, ${wall.sponsoren.length} Sponsoren`}`);
