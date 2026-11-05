@@ -1,7 +1,7 @@
 <!-- © 2026 LBC3 -->
 # Bildschutz: Bilder nicht kopieren oder teilen – Abschluss
 
-Stand: 05.11.2026 · Branch `lbc3/bildschutz` · Verantwortlich: Head of R&D LBC3
+Stand: 05.11.2026 · **Live seit 05.11.2026, 07:35 Uhr** (PR #5, Commit 66f6f65, Netlify-Deploy 6aec237c, Freigabe des Eigentümers 07:34) · Verantwortlich: Head of R&D LBC3
 
 ## Ziel
 Auf der ganzen Website (auch Squadra Tre / Wall of Fame) lassen sich Bilder und Videos nicht mehr per langem Drücken, Rechtsklick oder Ziehen speichern, kopieren oder teilen (Vorgabe des Eigentümers, 05.11.2026).
@@ -19,6 +19,8 @@ Text bleibt markierbar und kopierbar (nur Medien sind gesperrt).
 - `npm test`: 78 grün, 0 Fehler, 5 bekannte Abbrüche (Squadra-Functions, vorher schon so).
 - Build: 189 Seiten.
 - Chrome (Handy-Ansicht 390 px), Seiten `/`, `/squadra-tre/`, Galerie, `/it/luigi/`, News: Kontextmenü und Ziehen auf allen Bildern gesperrt, alle Videos ohne Download-Knopf, Kontextmenü auf Text weiter frei.
+- Unabhängige Agenten-Prüfung: Ampel GRÜN. Hinweise: Bild-in-Bild bei Videos entfällt (gewollt); `controlslist` wirkt nur in Chrome/Edge; Seiten ohne site.js nur mit CSS-Schutz; Test prüft Dateien, nicht das Verhalten im Browser.
+- Live-Deploy: fertig (Netlify-Status „ready“), 27 Functions aktiv, Secret-Scan ohne Fund. Die Live-Dateien konnten von hier nicht abgerufen werden (Netzwerksperre) – NICHT VERIFIZIERT direkt auf luigi-catuogno.com.
 - iPhone: `-webkit-touch-callout` wirkt nur in Safari/iOS – auf echtem iPhone noch einmal ansehen (NICHT VERIFIZIERT auf Gerät).
 
 ## Grenzen (ehrlich)
