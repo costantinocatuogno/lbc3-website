@@ -5,6 +5,21 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Bildschutz: Bilder und Videos nicht per Rechtsklick, langem Drücken oder Ziehen speichern/teilen ---------- */
+  // Android/Desktop: Kontextmenü (lange drücken = contextmenu) und Ziehen sperren. iOS: über CSS (-webkit-touch-callout).
+  const LBC3_MEDIEN = 'img, picture, video, svg image, [data-lightbox], [data-lightbox-index]';
+  const lbc3IstMedium = (ev) => !!(ev.target && ev.target.closest && ev.target.closest(LBC3_MEDIEN));
+  document.addEventListener('contextmenu', (ev) => { if (lbc3IstMedium(ev)) ev.preventDefault(); }, true);
+  document.addEventListener('dragstart', (ev) => { if (lbc3IstMedium(ev)) ev.preventDefault(); }, true);
+  const lbc3Sperren = (root) => {
+    const alle = (sel) => (root.matches && root.matches(sel) ? [root] : []).concat($$(sel, root));
+    alle('img').forEach((el) => { el.draggable = false; });
+    // Video-Menü ohne „Herunterladen“ und ohne Übertragen auf andere Geräte
+    alle('video').forEach((el) => { el.setAttribute('controlslist', 'nodownload noremoteplayback'); el.disablePictureInPicture = true; });
+  };
+  lbc3Sperren(document);
+  try { new MutationObserver((list) => list.forEach((m) => m.addedNodes.forEach((n) => { if (n.nodeType === 1) lbc3Sperren(n); }))).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) { /* alte Browser */ }
+
   /* ---------- Besucherzählung: anonym, ohne Cookies (Admins können sich im Team-Bereich ausnehmen) ---------- */
   try {
     let ich = null; try { ich = localStorage.getItem('lbc3-nicht-zaehlen'); } catch (e) { /* privat */ }
