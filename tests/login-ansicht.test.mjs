@@ -58,10 +58,10 @@ describe('Team-Bereich: Partner-Ansicht', () => {
   });
   test('Vorschau in allen vier Sprachen, nur Deutsch zuerst sichtbar', () => {
     for (const l of LANGS) assert.match(pv, new RegExp(`data-pv-box="${l}"`));
-    assert.equal((pv.match(/data-pv-box="[a-z]{2}"[^>]*inert>/g) || []).length, 1);
+    assert.equal((pv.match(/data-pv-box="[a-z]{2}"[^>]*>/g) || []).filter((m) => !m.includes('hidden')).length, 1);
   });
   test('Vorschau ist inert und enthält keine echten Login-Kennungen (auth.js fasst sie nicht an)', () => {
-    assert.match(pv, /class="lbc3-pv"[^>]*inert/);
+    assert.match(pv, /class="lbc3-pv"[^>]*role="img"[^>]*aria-label="Vorschau[^>]*>.*?<div inert>/s);
     const boxen = pv.slice(pv.indexOf('class="lbc3-pv"'), pv.indexOf('data-geraet-team'));
     for (const a of ['data-login-form', 'data-msg', 'data-magic', 'data-reset', 'data-set-lang', 'data-setpw-form', 'data-team-label', 'name="password"', '<h1']) assert.ok(!boxen.includes(a), a);
   });

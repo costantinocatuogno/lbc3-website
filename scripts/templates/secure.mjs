@@ -1,3 +1,4 @@
+// © 2026 LBC3
 // Login, Ausgabenbericht (Partner) und Team-Bereich (Admins).
 // Diese Seiten enthalten KEINE vertraulichen Daten – alles wird erst nach dem Login
 // aus Supabase geladen und dort per Row-Level-Security geschützt.
@@ -588,9 +589,9 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         </div>
       </div>
       <p class="muted small">Nur eine Vorschau: Eingaben und Knöpfe sind hier ohne Funktion.</p>
-      ${LANGS.map((l, i) => `<div class="lbc3-pv" data-pv-box="${l}" role="img" aria-label="Vorschau Partner-Login (${LANG_NAMES[l]})" inert${i === 0 ? '' : ' hidden'}><span class="lbc3-pv-band">Vorschau</span>${loginLayout(ctx, l, { vorschau: true })}</div>`).join('')}
+      ${LANGS.map((l, i) => `<div class="lbc3-pv" data-pv-box="${l}" role="img" aria-label="Vorschau Partner-Login (${LANG_NAMES[l]})"${i === 0 ? '' : ' hidden'}><span class="lbc3-pv-band" aria-hidden="true">Vorschau</span><div inert>${loginLayout(ctx, l, { vorschau: true })}</div></div>`).join('')}
       <div class="btn-row mt">
-        <a class="btn btn-outline btn-sm" href="/bericht/" target="_blank" rel="noopener">Ausgabenbericht so ansehen wie Partner ↗</a>
+        <a class="btn btn-outline btn-sm" href="/bericht/" target="_blank" rel="noopener">Ausgabenbericht öffnen (Admins sehen zusätzlich Entwürfe) ↗</a>
       </div>
       <div class="card mt">
         <h2 class="h3">Dieses Gerät</h2>
