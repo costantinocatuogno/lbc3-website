@@ -17,7 +17,6 @@
   const eur = (n) => new Intl.NumberFormat(LOCALE, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(n) || 0);
   const num = (n) => new Intl.NumberFormat(LOCALE).format(Number(n) || 0);
   const LOGIN = PFX + '/login/';
-  const BERICHT = PFX + '/bericht/';
   const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   function showMsg(text, isError = false) {
@@ -50,21 +49,28 @@
     return data ? { ...data, session } : { rolle: null, session };
   }
 
+  // Team-Gerät: nur eine Markierung in diesem Browser (kein Cookie, nichts auf dem Server)
+  const TEAM_KEY = 'lbc3-team-geraet';
+  function istTeamGeraet() { try { return localStorage.getItem(TEAM_KEY) === '1'; } catch (e) { return false; } }
+  function setzeTeamGeraet(an) { try { if (an) localStorage.setItem(TEAM_KEY, '1'); else localStorage.removeItem(TEAM_KEY); return true; } catch (e) { return false; } }
+
   $$('[data-set-lang]').forEach((a) => a.addEventListener('click', () => { try { localStorage.setItem('lbc3-lang', a.dataset.setLang); } catch (e) { /* privat */ } }));
   $$('[data-logout]').forEach((b) => b.addEventListener('click', async () => { await sb.auth.signOut(); location.href = LOGIN; }));
 
   /* ======================= LOGIN ======================= */
   const loginForm = $('[data-login-form]');
   if (loginForm) {
-    let role = 'sponsor';
-    const hint = $('[data-role-hint]');
-    $$('[data-role-tab]').forEach((tab) => tab.addEventListener('click', () => {
-      role = tab.dataset.roleTab;
-      $$('[data-role-tab]').forEach((t) => { t.classList.toggle('is-active', t === tab); t.setAttribute('aria-selected', String(t === tab)); });
-      hint.textContent = role === 'sponsor'
-        ? T('p_hint_partner', 'Als Partner siehst du hier jederzeit unseren aktuellen Ausgabenbericht.')
-        : T('p_hint_admin', 'Für das Team: Ausgabenbericht pflegen, Zugänge verwalten, Squadra Tre. Fotos und Texte im CMS.');
-    }));
+    // Besucher sehen nur den Partner-Login. Auf Team-Geräten (Markierung im Team-Bereich → Partner-Ansicht)
+    // zeigt die Seite nur den Admin-Login. Reine Anzeige – die Rechte prüft weiter Supabase (Rolle im Profil).
+    // ?ansicht=partner zeigt auch auf Team-Geräten den Partner-Login (ohne automatische Weiterleitung).
+    const nurPartner = new URLSearchParams(location.search).get('ansicht') === 'partner';
+    const team = istTeamGeraet() && !nurPartner;
+    if (team) {
+      const label = $('[data-team-label]');
+      if (label) label.hidden = false;
+      const hint = $('[data-role-hint]');
+      if (hint) hint.textContent = T('p_hint_admin', 'Für das Team: Ausgabenbericht pflegen, Zugänge verwalten, Squadra Tre. Fotos und Texte im CMS.');
+    }
 
     const goToArea = async () => {
       const p = await getProfile();
@@ -74,7 +80,7 @@
       try { saved = localStorage.getItem('lbc3-lang'); } catch (e) { /* privat */ }
       const pl = !saved && p.sprache && ['de', 'it', 'en', 'fr'].includes(p.sprache) ? p.sprache : LANG;
       const bericht = (pl === 'de' ? '' : '/' + pl) + '/bericht/';
-      if (p.rolle === 'admin') location.href = role === 'sponsor' ? BERICHT : '/team/';
+      if (p.rolle === 'admin') location.href = '/team/';
       else if (p.rolle === 'sponsor') location.href = bericht;
       else { showMsg(T('pj_no_access', 'Dein Konto hat noch keine Freigabe. Bitte melde dich bei uns.'), true); await sb.auth.signOut(); }
     };
@@ -98,7 +104,7 @@
         if (LANG === 'de' && want !== 'de' && ['it', 'en', 'fr'].includes(want)) { location.replace(`/${want}/login/?setpw=1`); return; }
         loginForm.hidden = true; setPwForm.hidden = false; return;
       }
-      if (session) goToArea();
+      if (session && !nurPartner) goToArea();
     })();
 
     loginForm.addEventListener('submit', async (e) => {
@@ -312,6 +318,30 @@
       const p = await guard(['admin']);
       if (!p) return;
       $('[data-loading]').hidden = true;
+
+      // Team-Gerät markieren (Hinweis oben + Häkchen im Reiter „Partner-Ansicht“)
+      const geraetBox = $('[data-geraet-team]');
+      const geraetHinweis = $('[data-geraet-hinweis]');
+      const geraetZeigen = () => {
+        const an = istTeamGeraet();
+        if (geraetBox) geraetBox.checked = an;
+        if (geraetHinweis) geraetHinweis.hidden = an;
+      };
+      const geraetSetzen = (an) => {
+        if (!setzeTeamGeraet(an)) { showMsg('Dieser Browser erlaubt keine Speicherung (privates Fenster?) – die Markierung geht hier nicht.', true); return; }
+        geraetZeigen();
+        showMsg(an ? 'Dieses Gerät ist jetzt ein Team-Gerät: Die Anmeldeseite zeigt hier nur den Admin-Login.' : 'Markierung entfernt: Die Anmeldeseite zeigt hier wieder den Partner-Login.');
+      };
+      geraetZeigen();
+      if (geraetBox) geraetBox.addEventListener('change', () => geraetSetzen(geraetBox.checked));
+      const geraetKnopf = $('[data-geraet-markieren]');
+      if (geraetKnopf) geraetKnopf.addEventListener('click', () => geraetSetzen(true));
+
+      // Vorschau Partner-Login: Sprache wechseln
+      $$('[data-pv-lang] [data-pv]').forEach((b) => b.addEventListener('click', () => {
+        $$('[data-pv-lang] [data-pv]').forEach((x) => { x.classList.toggle('is-active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+        $$('[data-pv-box]').forEach((box) => { box.hidden = box.dataset.pvBox !== b.dataset.pv; });
+      }));
       const token = () => p.session.access_token;
       const api = async (path, body) => {
         const { data: { session } } = await sb.auth.getSession();
