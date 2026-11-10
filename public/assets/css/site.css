@@ -398,6 +398,15 @@ button { font: inherit; color: inherit; }
 .segmented button.is-active { background: #fff; }
 .split-links { display: flex; justify-content: space-between; gap: 12px; }
 .note-red { background: #fff; border: 1px solid var(--line); border-top: 4px solid var(--red); border-radius: 8px; padding: 16px; font-size: 14px; line-height: 1.6; color: var(--text); }
+/* Vorschau Partner-Login im Team-Bereich (Reiter „Partner-Ansicht“) */
+.lbc3-pv { position: relative; margin-top: 16px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--bg); user-select: none; }
+.lbc3-pv .login { min-height: 0; }
+.lbc3-pv .login-visual { flex-basis: 360px; min-height: 320px; padding: 28px; }
+.lbc3-pv .login-panel { flex-basis: 360px; padding: 32px 20px; }
+.lbc3-pv-band { position: absolute; top: 12px; right: 12px; z-index: 2; background: var(--red); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.lbc3-pv .link-like { color: var(--red); text-decoration: underline; }
+.lbc3-geraet-hinweis { margin-bottom: 20px; }
+.lbc3-geraet-hinweis .btn-row { margin-top: 10px; }
 .app-bar { background: var(--ink); color: #fff; }
 .app-bar-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; min-height: 64px; }
 .app-bar .brand strong { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: .5px; }

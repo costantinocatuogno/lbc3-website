@@ -1,3 +1,4 @@
+// © 2026 LBC3
 // Login, Ausgabenbericht (Partner) und Team-Bereich (Admins).
 // Diese Seiten enthalten KEINE vertraulichen Daten – alles wird erst nach dem Login
 // aus Supabase geladen und dort per Row-Level-Security geschützt.
@@ -82,36 +83,32 @@ const topbar = (title, extra = '', lang = 'de', path = '') => {
 </header>`;
 };
 
-export function loginPage(ctx, lang = 'de') {
+// Anmelde-Kasten. Besucher sehen nur den Partner-Login; auf Team-Geräten (im Team-Bereich markiert)
+// zeigt auth.js stattdessen nur den Admin-Login. vorschau = true: dieselbe Ansicht als totes Bild für den
+// Team-Bereich (Reiter „Partner-Ansicht“) – ohne data-Attribute, damit auth.js dort nichts davon anfasst.
+function loginBox(lang, { vorschau = false } = {}) {
   const _ = t(lang);
-  const site = ctx.content.site;
-  const body = `
-<main class="login">
-  <div class="login-visual">
-    <img src="${esc(img(site.login_bild, 1400))}" alt="" aria-hidden="true">
-    <a class="brand light" href="${url(lang, '/')}"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="48" height="60"><span>${_('p_back')}</span></a>
-    <div class="login-claim"><div class="h1 big light">Team<br><span class="gold">#LBC3</span></div><p class="lead light">${_('p_claim')}</p></div>
-  </div>
-  <div class="login-panel">
+  const d = (attr) => (vorschau ? '' : ` ${attr}`);
+  const langs = vorschau
+    ? `<span class="app-langs">${LANGS.map((l) => (l === lang ? `<strong>${l.toUpperCase()}</strong>` : `<span>${l.toUpperCase()}</span>`)).join(' ')}</span>`
+    : langLinks(lang, '/login/');
+  return `
     <div class="login-box">
-      <div class="login-langs">${langLinks(lang, '/login/')}</div>
-      <h1 class="h1">${_('p_signin')}</h1>
-      <div class="segmented" role="tablist">
-        <button type="button" role="tab" aria-selected="true" class="is-active" data-role-tab="sponsor">${_('p_tab_partner')}</button>
-        <button type="button" role="tab" aria-selected="false" data-role-tab="admin">${_('p_tab_admin')}</button>
-      </div>
-      <p class="muted" data-role-hint>${_('p_hint_partner')}</p>
+      <div class="login-langs">${langs}</div>
+${vorschau ? '' : `      <p class="eyebrow" data-team-label hidden>${_('p_tab_admin')}</p>
+`}      ${vorschau ? `<div class="h1">${_('p_signin')}</div>` : `<h1 class="h1">${_('p_signin')}</h1>`}
+      <p class="muted"${d('data-role-hint')}>${_('p_hint_partner')}</p>
 
-      <form class="form" data-login-form>
-        <label class="field"><span>${_('f_email')}</span><input name="email" type="email" required autocomplete="email"></label>
-        <label class="field" data-pw-field><span>${_('p_password')}</span><input name="password" type="password" autocomplete="current-password"></label>
-        <button class="btn btn-dark btn-block" type="submit">${_('p_signin')}</button>
+      <form class="form"${d('data-login-form')}>
+        <label class="field"><span>${_('f_email')}</span><input${vorschau ? '' : ' name="email" required'} type="email" autocomplete="${vorschau ? 'off' : 'email'}"></label>
+        <label class="field"${d('data-pw-field')}><span>${_('p_password')}</span><input${vorschau ? '' : ' name="password"'} type="password" autocomplete="${vorschau ? 'off' : 'current-password'}"></label>
+        <button class="btn btn-dark btn-block" type="${vorschau ? 'button' : 'submit'}">${_('p_signin')}</button>
         <div class="split-links">
-          <button type="button" class="link-btn" data-magic>${_('p_magic')}</button>
-          <button type="button" class="link-btn" data-reset>${_('p_forgot')}</button>
+          <button type="button" class="link-btn"${d('data-magic')}>${_('p_magic')}</button>
+          <button type="button" class="link-btn"${d('data-reset')}>${_('p_forgot')}</button>
         </div>
       </form>
-
+${vorschau ? '' : `
       <form class="form" data-setpw-form hidden>
         <h2 class="h2">${_('p_setpw_title')}</h2>
         <p class="muted">${_('p_setpw_text')}</p>
@@ -120,12 +117,35 @@ export function loginPage(ctx, lang = 'de') {
       </form>
 
       <div class="form-msg" data-msg role="status" hidden></div>
-
-      <div class="note-red">${_('p_squadra_note')} <a href="${url(lang, '/squadra-tre/')}">${_('p_more')}</a></div>
+`}
+      <div class="note-red">${_('p_squadra_note')} ${vorschau ? `<span class="link-like">${_('p_more')}</span>` : `<a href="${url(lang, '/squadra-tre/')}">${_('p_more')}</a>`}</div>
       <p class="muted small">${_('p_access_note')}</p>
-    </div>
+    </div>`;
+}
+
+// Linke Bildseite + Anmelde-Kasten. Gleicher Aufbau für die echte Seite und die Vorschau im Team-Bereich.
+function loginLayout(ctx, lang, { vorschau = false } = {}) {
+  const _ = t(lang);
+  const site = ctx.content.site;
+  const tag = vorschau ? 'div' : 'main';
+  const brand = vorschau
+    ? `<span class="brand light"><img src="/assets/img/lbc3-logo.png" alt="" width="48" height="60"><span>${_('p_back')}</span></span>`
+    : `<a class="brand light" href="${url(lang, '/')}"><img src="/assets/img/lbc3-logo.png" alt="LBC3 Logo" width="48" height="60"><span>${_('p_back')}</span></a>`;
+  return `
+<${tag} class="login"${vorschau ? ` lang="${lang}"` : ''}>
+  <div class="login-visual">
+    <img src="${esc(img(site.login_bild, 1400))}" alt="" aria-hidden="true"${vorschau ? ' loading="lazy"' : ''}>
+    ${brand}
+    <div class="login-claim"><div class="h1 big light">Team<br><span class="gold">#LBC3</span></div><p class="lead light">${_('p_claim')}</p></div>
   </div>
-</main>`;
+  <div class="login-panel">${loginBox(lang, { vorschau })}
+  </div>
+</${tag}>`;
+}
+
+export function loginPage(ctx, lang = 'de') {
+  const _ = t(lang);
+  const body = loginLayout(ctx, lang);
   return bareLayout({ title: _('p_title_login'), body, ctx, scripts: ['/assets/js/auth.js'], bodyClass: 'page-login', lang, texts: jsTexts(lang) });
 }
 
@@ -199,11 +219,16 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
     <button type="button" data-tab="besucher">Besucher</button>
     <button type="button" data-tab="aufrufe">Aufrufe</button>
     <button type="button" data-tab="klicks">Partner-Klicks</button>
+    <button type="button" data-tab="partneransicht">Partner-Ansicht</button>
     <a href="/admin/">Fotos, News, Rennen, Texte ↗</a>
   </nav>
   <main class="app-main">
     <div class="loading" data-loading>Wird geladen …</div>
     <div class="form-msg" data-msg role="status" hidden></div>
+    <div class="note-red lbc3-geraet-hinweis" data-geraet-hinweis hidden>
+      <strong>Dieses Gerät ist noch kein Team-Gerät.</strong> Auf der Anmeldeseite siehst du hier deshalb den Partner-Login.
+      <div class="btn-row"><button type="button" class="btn btn-dark btn-sm" data-geraet-markieren>Als Team-Gerät markieren</button></div>
+    </div>
 
     <section data-panel="bericht" hidden>
       <div class="section-head">
@@ -551,6 +576,27 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
             <div class="kt-list" data-kt-list></div>
           </div>
         </div>
+      </div>
+    </section>
+    <section data-panel="partneransicht" hidden>
+      <div class="section-head">
+        <div>
+          <h1 class="h1">Partner-Ansicht</h1>
+          <p class="lead">So sieht die Anmeldeseite für Partner und alle anderen Besucher aus. Auf Team-Geräten zeigt die Anmeldeseite nur den Admin-Login.</p>
+        </div>
+        <div class="pill-row" data-pv-lang>
+          ${LANGS.map((l, i) => `<button type="button" class="pill${i === 0 ? ' is-active' : ''}" aria-pressed="${i === 0}" data-pv="${l}">${LANG_NAMES[l]}</button>`).join('')}
+        </div>
+      </div>
+      <p class="muted small">Nur eine Vorschau: Eingaben und Knöpfe sind hier ohne Funktion.</p>
+      ${LANGS.map((l, i) => `<div class="lbc3-pv" data-pv-box="${l}" role="img" aria-label="Vorschau Partner-Login (${LANG_NAMES[l]})"${i === 0 ? '' : ' hidden'}><span class="lbc3-pv-band" aria-hidden="true">Vorschau</span><div inert>${loginLayout(ctx, l, { vorschau: true })}</div></div>`).join('')}
+      <div class="btn-row mt">
+        <a class="btn btn-outline btn-sm" href="/bericht/" target="_blank" rel="noopener">Ausgabenbericht öffnen (Admins sehen zusätzlich Entwürfe) ↗</a>
+      </div>
+      <div class="card mt">
+        <h2 class="h3">Dieses Gerät</h2>
+        <label class="check"><input type="checkbox" data-geraet-team> Dieses Gerät ist ein Team-Gerät – die Anmeldeseite zeigt hier nur den Admin-Login</label>
+        <p class="muted small">Die Markierung gilt nur für diesen Browser auf diesem Gerät und wird nur dort gespeichert. Auf jedem eigenen Handy, Tablet und Computer einmal setzen. Auf fremden oder geteilten Geräten bitte nicht markieren. Admins können sich auch über den Partner-Login anmelden – sie landen trotzdem im Team-Bereich.</p>
       </div>
     </section>
   </main>
