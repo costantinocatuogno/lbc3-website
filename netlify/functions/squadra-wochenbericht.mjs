@@ -6,7 +6,7 @@ import { sb, sendMail, mailLayout, escapeHtml, siteUrl, cleanHandle } from './_l
 import { imPostNennbar, anzeigeName, istMinderjaehrig } from './_lib/squadra-rules.mjs';
 
 const TAGE = 7;
-const ART = { freund: 'Freund', unterstuetzer: 'Unterstützer' };
+const ART = { freund: 'Fan', unterstuetzer: 'Unterstützer' };
 const SPRACHE = { de: 'Deutsch', it: 'Italienisch', en: 'Englisch', fr: 'Französisch' };
 
 function aufzaehlen(namen, rest, w) {
@@ -58,7 +58,7 @@ export async function wochenbericht() {
   const datum = (d) => new Date(d).toLocaleDateString('de-DE', { timeZone: 'Europe/Berlin' });
   const zeilen = neu.map((r) => `<tr>
     <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF"><strong>${escapeHtml(r.name)}</strong>${istMinderjaehrig(r) ? ' <span style="color:#C8102E">(minderjährig)</span>' : ''}</td>
-    <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(ART[r.mitgliedschaft] || r.mitgliedschaft || '')}</td>
+    <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(ART[r.mitgliedschaft] || ART.freund)}</td>
     <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(SPRACHE[r.sprache] || r.sprache || '')}</td>
     <td style="padding:6px 0;border-bottom:1px solid #ECEDEF">${imPostNennbar(r) ? `✔ als „${escapeHtml(anzeigeName(r))}“${cleanHandle(r.instagram) ? ` · @${escapeHtml(cleanHandle(r.instagram))}` : ''}` : (istMinderjaehrig(r) ? '✖ minderjährig – nie im Post' : '✖ nicht nennen')}</td>
   </tr>`).join('');
@@ -66,7 +66,7 @@ export async function wochenbericht() {
     <div style="white-space:pre-wrap;background:#F2F3F5;border-left:4px solid #C8102E;padding:12px 14px;font-size:15px">${escapeHtml(text)}</div>`;
 
   const inner = `
-    <p><strong>${neu.length}</strong> neue${neu.length === 1 ? 's Mitglied' : ' Mitglieder'} in den letzten 7 Tagen (bestätigt) · Squadra Tre gesamt: <strong>${gesamt.length}</strong>${offen.length ? ` · ${offen.length} Anmeldung${offen.length === 1 ? '' : 'en'} noch nicht per E-Mail bestätigt` : ''}</p>
+    <p><strong>${neu.length}</strong> neue${neu.length === 1 ? 's Mitglied' : ' Mitglieder'} in den letzten 7 Tagen (bestätigt) · Squadra Tre gesamt (bestätigt): <strong>${gesamt.length}</strong>${offen.length ? ` · ${offen.length} Anmeldung${offen.length === 1 ? '' : 'en'} noch nicht per E-Mail bestätigt` : ''}</p>
     ${neu.length ? `<table style="width:100%;border-collapse:collapse;font-size:14px">
       <tr><th align="left">Name</th><th align="left">Art</th><th align="left">Sprache</th><th align="left">Im Post nennen?</th></tr>${zeilen}</table>
       <p style="font-size:13px;color:#555A63">Genannt werden nur volljährige Mitglieder, deren Name auch auf der Wall stehen darf – mit Vorname und Initiale. Minderjährige erscheinen nie im Post-Text, auch nicht ihr Instagram-Name. Keine Fotos von Kindern im Post.</p>`

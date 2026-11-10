@@ -1028,6 +1028,8 @@
       const nameWoerter = (n) => String(n || '').trim().split(/\s+/).filter(Boolean).length;
       const brauchtNamensFreigabe = (r) => nameWoerter(r.name) < 2 || !!r.spitzname;
       const elternOffen = (r) => istMinor(r) && ((elternPflicht(r) && !r.eltern_bestaetigt_am) || (r.foto_pfad && !elternOk(r, 'foto')));
+      // Wunsch 10.11.2026: Jede Anmeldung zählt als Fan, außer sie ist ausdrücklich Unterstützer – auch unbestätigte und alte Einträge ohne Wert.
+      const istUnterstuetzer = (r) => r.mitgliedschaft === 'unterstuetzer';
       const ZWECK = { mitglied: 'Mitglied', wall_name: 'Name', foto: 'Foto', updates: 'Updates', jahresbericht: 'Jahresbericht' };
       const initialsOf = (n) => String(n || '?').trim().split(/\s+/).slice(0, 2).map((x) => x[0] || '').join('').toUpperCase();
       const zoom = (src) => { const d = document.createElement('div'); d.className = 'photo-zoom'; d.innerHTML = `<img src="${escapeHtml(src)}" alt="">`; d.addEventListener('click', () => d.remove()); document.body.appendChild(d); };
@@ -1041,8 +1043,8 @@
           if (sFilter === 'pruefen' && !(r.foto_pfad && !r.foto_freigegeben)) return false;
           if (sFilter === 'name' && !(brauchtNamensFreigabe(r) && !r.name_freigegeben)) return false;
           if (sFilter === 'eltern' && !elternOffen(r)) return false;
-          if (sFilter === 'freund' && r.mitgliedschaft !== 'freund') return false;
-          if (sFilter === 'unterstuetzer' && r.mitgliedschaft !== 'unterstuetzer') return false;
+          if (sFilter === 'freund' && istUnterstuetzer(r)) return false;
+          if (sFilter === 'unterstuetzer' && !istUnterstuetzer(r)) return false;
           if (sFilter === 'offen' && r.optin_bestaetigt) return false;
           return !q || [r.name, r.email, r.instagram, r.angezeigter_name].some((v) => String(v || '').toLowerCase().includes(q));
         }).sort((a, b) => { const pa = pins.indexOf(a.id), pb = pins.indexOf(b.id); return (pa < 0 ? 1e9 : pa) - (pb < 0 ? 1e9 : pb); });
@@ -1052,7 +1054,7 @@
           const pending = (r.foto_pfad && !r.foto_freigegeben) || (brauchtNamensFreigabe(r) && !r.name_freigegeben);
           const zw = r.eltern_zwecke || {};
           const tags = [
-            r.mitgliedschaft === 'unterstuetzer' ? `<span class="t-warn">Unterstützer${r.betrag ? ' · ' + eur(r.betrag) : ''}</span>` : '<span>Freund/Fan</span>',
+            istUnterstuetzer(r) ? `<span class="t-warn">Unterstützer${r.betrag ? ' · ' + eur(r.betrag) : ''}</span>` : '<span>Fan</span>',
             r.optin_bestaetigt ? '<span class="t-ok">bestätigt</span>' : '<span class="t-red">unbestätigt</span>',
             istMinor(r) ? `<span class="t-warn">${STUFE[stufeVon(r)]}${r.altersstufe ? '' : ' (alt)'}${r.einwilligung_eltern ? ' · Eltern: ' + escapeHtml(r.einwilligung_eltern) : ''}</span>` : '',
             istMinor(r) ? (r.eltern_bestaetigt_am ? `<span class="t-ok">Eltern ✓ ${escapeHtml(Object.keys(ZWECK).filter((z) => zw[z]).map((z) => ZWECK[z]).join(', ') || '–')}</span>` : ((elternPflicht(r) || r.foto_pfad) ? '<span class="t-red">Eltern offen</span>' : '')) : '',
@@ -1098,9 +1100,11 @@
         if (error) { showMsg('Liste konnte nicht geladen werden.', true); return; }
         squadra = data;
         const ok = data.filter((r) => r.optin_bestaetigt);
-        $('[data-sk="gesamt"]').textContent = ok.length;
-        $('[data-sk="freund"]').textContent = ok.filter((r) => r.mitgliedschaft !== 'unterstuetzer').length;
-        $('[data-sk="unterstuetzer"]').textContent = ok.filter((r) => r.mitgliedschaft === 'unterstuetzer').length;
+        // Zahlen über alle Registrierten (Wunsch 10.11.2026); „davon unbestätigt“ bleibt sichtbar. E-Mail-Versand zählt weiter nur bestätigte.
+        $('[data-sk="gesamt"]').textContent = data.length;
+        $('[data-sk="offen"]').textContent = data.length - ok.length;
+        $('[data-sk="freund"]').textContent = data.filter((r) => !istUnterstuetzer(r)).length;
+        $('[data-sk="unterstuetzer"]').textContent = data.filter(istUnterstuetzer).length;
         $('[data-sk="pruefen"]').textContent = data.filter((r) => (r.foto_pfad && !r.foto_freigegeben) || (brauchtNamensFreigabe(r) && !r.name_freigegeben)).length;
         $('[data-updates-count]').textContent = ok.filter((r) => r.updates_optin && r.email && (!elternPflicht(r) || (elternOk(r, 'mitglied') && elternOk(r, 'updates')))).length;
         await renderSquadra();
