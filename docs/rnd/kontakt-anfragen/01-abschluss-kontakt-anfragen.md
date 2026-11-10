@@ -34,7 +34,7 @@ Fehler-Lernschleife: Die Prüfung hätte beide durchgelassen. Neue Regeln:
 - Name ohne Leerzeichen zusammengeschrieben (2 Punkte)
 - lange Ziffernfolge in der Adresse (1 Punkt)
 
-Je ein Regressionstest und ein Gegentest gegen Fehlalarme sind dazugekommen; die 14 Beispiele der unabhängigen Prüfung sind unverändert. Die zwei Einträge stehen als SQL in `zwei-anfragen.sql` bereit (Kennzeichen „aus dem Postfach übernommen“), weil das LBC3-Supabase von hier nicht erreichbar ist.
+Je ein Regressionstest und ein Gegentest gegen Fehlalarme sind dazugekommen; die 14 Beispiele der unabhängigen Prüfung sind unverändert. Die zwei Einträge hat der Eigentümer am 10.11.2026 per SQL eingetragen (Kennzeichen „aus dem Postfach übernommen“), weil das LBC3-Supabase von hier nicht erreichbar ist.
 
 ## Rückgängig machen
 1. Code: PR zurücknehmen (Revert) oder auf Netlify die vorige Version veröffentlichen. Ohne Tabelle schickt das Formular automatisch alles per E-Mail, so wie vorher.
@@ -74,8 +74,7 @@ Je ein Regressionstest und ein Gegentest gegen Fehlalarme sind dazugekommen; die
 - DSGVO Art. 5 Abs. 1 lit. e (Speicherbegrenzung), Art. 22, Art. 25: https://eur-lex.europa.eu/eli/reg/2016/679/oj
 
 ## Offene Punkte
-- Tabelle im LBC3-Supabase: vom Eigentümer am 10.11.2026 angelegt (laut seiner Rückmeldung).
-- **Die zwei E-Mails:** geprüft, beide Spam; `zwei-anfragen.sql` muss der Eigentümer im LBC3-Supabase ausführen.
+- Erledigt 10.11.2026: Tabelle im LBC3-Supabase angelegt und die zwei E-Mails eingetragen (beide Spam) – vom Eigentümer ausgeführt mit `kartei-anlegen-und-zwei-anfragen.sql`.
 - **Live-Gang** erst nach „freigeben“ und angelegter Tabelle.
 - **LBC3 Rechts-Recherche-Team:** Datenschutztext (Abschnitte 4, 7, 8), Fristen 30 Tage / 12 Monate / 24 Monate und die Frage nach Art. 22 DSGVO (automatische Einstufung ohne Weiterleitung) bestätigen – NICHT VERIFIZIERT.
 - IT/FR-Text der Datenschutzerklärung von Muttersprachlern gegenlesen – NICHT VERIFIZIERT.
