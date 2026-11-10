@@ -57,6 +57,26 @@ describe('Spam-Prüfung', () => {
       assert.ok(r.wert <= 4, n);
     }
   });
+  test('Echte Spam-Mail 04.11.2026: „bei Google eintragen“ mit nachgeahmter Absender-Domain → Spam', () => {
+    const r = pruefeAnfrage({ name: 'Ina Beispiel', email: 'domains@search-luigi-catuogno.com', firma: 'Web Search Index',
+      nachricht: "Hi\n\nAdd luigi-catuogno.com in Google's Search Index to show up in online search results!\n\nSubmit luigi-catuogno.com today: example-index.live" });
+    assert.equal(r.status, 'spam');
+    assert.ok(r.gruende.some((g) => g.includes('ahmt die eigene Website nach')));
+  });
+  test('Echte Spam-Mail 07.11.2026: sinnlose Buchstaben, Name zusammengeschrieben → Spam', () => {
+    const r = pruefeAnfrage({ name: 'PeterXyzab', email: 'max-muster123456789@example.com', firma: 'Google',
+      nachricht: 'Gfihudwgfyehjwowjifwhu fuehiqokewwfueiweqijwihrwu ifwiqdjwrhwijwijwirhwu luigi-catuogno.com' });
+    assert.equal(r.status, 'spam');
+    assert.ok(r.gruende.some((g) => g.includes('sinnlose Buchstabenfolgen')));
+  });
+  test('Neue Regeln treffen keine echten Anfragen (lange deutsche Wörter, eigene Domain, Doppelname)', () => {
+    for (const a of [
+      { ...ECHT, nachricht: 'Sponsoringvereinbarungsentwurf Rennsaisonplanung Marketingkooperationsanfrage' },
+      { ...ECHT, email: 'luigi@luigi-catuogno.com' },
+      { ...ECHT, name: 'Anna-Lena Müller-Lüdenscheidt' },
+      { ...ECHT, nachricht: 'Ciao! Sponsorizzazione 2027 – interessati, mandateci la cartella.' }
+    ]) assert.equal(pruefeAnfrage(a).status, 'ok', JSON.stringify(a));
+  });
   test('Prüfbefund 3: E-Mail-Adressen im Text zählen nicht als Links', () => {
     const r = pruefeAnfrage({ ...ECHT, nachricht: 'Scrivete a info@ditta.com oppure marketing@ditta.it oppure eventi@ditta.it, grazie mille per la risposta.' });
     assert.equal(r.wert, 0);

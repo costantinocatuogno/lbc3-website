@@ -15,7 +15,8 @@ const STARK = [
   'backlink*', 'guest post*', 'gastbeitrag*', 'first page of google', 'erste seite bei google', 'prima pagina di google', 'première page de google',
   'rank your website', 'increase traffic', 'website traffic', 'more traffic', 'web design services', 'website redesign', 'app development services',
   'binary option*', 'investment opportunit*', 'passive income', 'kredit ohne', 'viagra', 'cialis', 'cbd oil', 'weight loss',
-  'click here', 'hier klicken', 'limited time offer', 'congratulations you'
+  'click here', 'hier klicken', 'limited time offer', 'congratulations you',
+  'search index', 'search engine index', 'submit your site', 'submit your website', 'indexdomain', 'index your website', 'show up in online search'
 ];
 const SCHWACH = [
   'seo', 'lead generation', 'leads for your', 'outsourc*', 'virtual assistant*', 'crypto*', 'bitcoin*', 'btc', 'usdt', 'forex',
@@ -33,8 +34,17 @@ const WORT_RE = [...STARK.map((w) => wortRe(w, 2)), ...SCHWACH.map((w) => wortRe
 const WEGWERF = ['mailinator.com', 'guerrillamail.com', 'guerrillamail.info', '10minutemail.com', 'tempmail.com', 'temp-mail.org',
   'yopmail.com', 'trashmail.com', 'getnada.com', 'sharklasers.com', 'dispostable.com', 'maildrop.cc', 'fakeinbox.com', 'throwawaymail.com'];
 
-const LINK = /\b(?:https?:\/\/|www\.)\S+|\b[a-z0-9-]+\.(?:com|net|org|info|biz|xyz|top|ru|cn|io|co|shop|site|online|de|it|fr|ch|at|eu)\b(?:\/\S*)?/gi;
+const LINK = /\b(?:https?:\/\/|www\.)\S+|\b[a-z0-9-]+\.(?:com|net|org|info|biz|xyz|top|ru|cn|io|co|shop|site|online|live|click|icu|pro|store|de|it|fr|ch|at|eu)\b(?:\/\S*)?/gi;
 const MAILADRESSE = /\S+@\S+/g; // E-Mail-Adressen im Text sind keine Links
+// Eigene Marke: Absender-Adressen, die sie nachahmen (z. B. search-luigi-catuogno.com), sind Betrug.
+const EIGENE_DOMAIN = 'luigi-catuogno.com';
+const EIGENE_NAMEN = ['luigi-catuogno', 'luigicatuogno', 'lbc3'];
+// Häufige kurze Wörter in DE/IT/EN/FR – jede echte Nachricht mit ein paar Wörtern enthält mindestens eines davon.
+const KURZWOERTER = new Set(('der die das und ist ich wir sie ihr ein eine nicht mit für von zu den dem im in an auf es '
+  + 'the and is are to of in for you we our your a an it this that with on be '
+  + 'il lo la le gli di che e è per un una non con sono siamo voi noi ci si da del della al '
+  + 'le la les et est de des du un une nous vous pour avec pas en au dans sur ce qui que').split(' '));
+
 // Schriften, die auf einer DE/IT/EN/FR-Seite nicht zu erwarten sind (Kyrillisch, Griechisch, Arabisch, Hebräisch, CJK, Thai, Devanagari …)
 const FREMDE_SCHRIFT = /[Ͱ-ϿЀ-ӿ֐-׿؀-ۿऀ-ॿ฀-๿぀-ヿ㐀-鿿가-힯]/g;
 
@@ -75,6 +85,16 @@ export function pruefeAnfrage(a, kontext = {}) {
 
   const domain = email.split('@')[1] || '';
   if (WEGWERF.some((d) => domain === d || domain.endsWith(`.${d}`))) plus(3, `Wegwerf-E-Mail-Adresse (${domain})`);
+  if (domain !== EIGENE_DOMAIN && EIGENE_NAMEN.some((n) => domain.includes(n))) plus(4, `Absender-Adresse ahmt die eigene Website nach (${domain})`);
+  if (/\d{6,}/.test(email.split('@')[0] || '')) plus(1, 'E-Mail-Adresse mit langer Ziffernfolge');
+
+  // Sinnlose Buchstabenfolgen: mehrere Wörter, aber kein einziges häufiges Kurzwort einer der vier Sprachen
+  const woerter = text.replace(MAILADRESSE, ' ').replace(LINK, ' ').toLowerCase().match(/\p{L}+/gu) || [];
+  if (woerter.length >= 3 && !woerter.some((w) => KURZWOERTER.has(w)) && woerter.some((w) => w.length >= 15)) {
+    plus(3, 'Nachricht ohne erkennbare Sätze (sinnlose Buchstabenfolgen)');
+  }
+  // Spam-Programme setzen oft Vor- und Nachname ohne Leerzeichen zusammen (z. B. „MichaelSeict“)
+  if (/^\p{Lu}\p{Ll}{2,}\p{Lu}\p{Ll}{2,}$/u.test(name.trim())) plus(2, 'Name ohne Leerzeichen zusammengeschrieben (typisch für Spam-Programme)');
 
   if (text.trim().length < 15) plus(1, 'Sehr kurze Nachricht');
   if (/^[A-Z0-9\s!?.,]{30,}$/.test(text.trim())) plus(1, 'Nachricht nur in Großbuchstaben');
