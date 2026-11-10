@@ -1054,7 +1054,7 @@
           const pending = (r.foto_pfad && !r.foto_freigegeben) || (brauchtNamensFreigabe(r) && !r.name_freigegeben);
           const zw = r.eltern_zwecke || {};
           const tags = [
-            istUnterstuetzer(r) ? `<span class="t-warn">Unterstützer${r.betrag ? ' · ' + eur(r.betrag) : ''}</span>` : '<span class="t-ok">Fan</span>',
+            istUnterstuetzer(r) ? `<span class="t-warn">Unterstützer${r.betrag ? ' · ' + eur(r.betrag) : ''}</span>` : '<span>Fan</span>',
             r.optin_bestaetigt ? '<span class="t-ok">bestätigt</span>' : '<span class="t-red">unbestätigt</span>',
             istMinor(r) ? `<span class="t-warn">${STUFE[stufeVon(r)]}${r.altersstufe ? '' : ' (alt)'}${r.einwilligung_eltern ? ' · Eltern: ' + escapeHtml(r.einwilligung_eltern) : ''}</span>` : '',
             istMinor(r) ? (r.eltern_bestaetigt_am ? `<span class="t-ok">Eltern ✓ ${escapeHtml(Object.keys(ZWECK).filter((z) => zw[z]).map((z) => ZWECK[z]).join(', ') || '–')}</span>` : ((elternPflicht(r) || r.foto_pfad) ? '<span class="t-red">Eltern offen</span>' : '')) : '',

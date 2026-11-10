@@ -66,7 +66,7 @@ export async function wochenbericht() {
     <div style="white-space:pre-wrap;background:#F2F3F5;border-left:4px solid #C8102E;padding:12px 14px;font-size:15px">${escapeHtml(text)}</div>`;
 
   const inner = `
-    <p><strong>${neu.length}</strong> neue${neu.length === 1 ? 's Mitglied' : ' Mitglieder'} in den letzten 7 Tagen (bestätigt) · Squadra Tre gesamt: <strong>${gesamt.length}</strong>${offen.length ? ` · ${offen.length} Anmeldung${offen.length === 1 ? '' : 'en'} noch nicht per E-Mail bestätigt` : ''}</p>
+    <p><strong>${neu.length}</strong> neue${neu.length === 1 ? 's Mitglied' : ' Mitglieder'} in den letzten 7 Tagen (bestätigt) · Squadra Tre gesamt (bestätigt): <strong>${gesamt.length}</strong>${offen.length ? ` · ${offen.length} Anmeldung${offen.length === 1 ? '' : 'en'} noch nicht per E-Mail bestätigt` : ''}</p>
     ${neu.length ? `<table style="width:100%;border-collapse:collapse;font-size:14px">
       <tr><th align="left">Name</th><th align="left">Art</th><th align="left">Sprache</th><th align="left">Im Post nennen?</th></tr>${zeilen}</table>
       <p style="font-size:13px;color:#555A63">Genannt werden nur volljährige Mitglieder, deren Name auch auf der Wall stehen darf – mit Vorname und Initiale. Minderjährige erscheinen nie im Post-Text, auch nicht ihr Instagram-Name. Keine Fotos von Kindern im Post.</p>`

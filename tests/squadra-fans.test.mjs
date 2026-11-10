@@ -3,6 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { wallEintrag, mailEmpfaenger } from '../netlify/functions/_lib/squadra-rules.mjs';
 
 const auth = readFileSync(new URL('../public/assets/js/auth.js', import.meta.url), 'utf8');
 const secure = readFileSync(new URL('../scripts/templates/secure.mjs', import.meta.url), 'utf8');
@@ -22,7 +23,7 @@ test('Jeder Eintrag ohne „unterstuetzer“ gilt als Fan (auch leer/alt)', () =
   assert.equal(istUnterstuetzer({ mitgliedschaft: 'unterstuetzer' }), true);
   for (const r of [{ mitgliedschaft: 'freund' }, { mitgliedschaft: null }, {}, { mitgliedschaft: 'xyz' }]) assert.equal(istUnterstuetzer(r), false);
   assert.match(auth, /sFilter === 'freund' && istUnterstuetzer\(r\)/);
-  assert.match(auth, /'<span class="t-ok">Fan<\/span>'/);
+  assert.match(auth, /'<span>Fan<\/span>'/);
 });
 
 test('E-Mail-Updates zählen weiter nur bestätigte Mitglieder', () => {
@@ -39,4 +40,17 @@ test('Team-Bereich beschriftet „Fans“ und zeigt „davon unbestätigt“', (
 test('Wochenbericht nennt Fans „Fan“, auch ohne Wert', () => {
   assert.match(bericht, /freund: 'Fan'/);
   assert.match(bericht, /ART\[r\.mitgliedschaft\] \|\| ART\.freund/);
+});
+
+test('Wall of Fame und Rundmails bleiben bei unbestätigten Anmeldungen zu (Verhalten)', () => {
+  const basis = { id: 'x', name: 'Marco Rossi', email: 'm@example.com', altersstufe: '18plus', wand_optin: true, updates_optin: true, jahresbericht_optin: true };
+  assert.equal(wallEintrag({ ...basis, optin_bestaetigt: false }), null);
+  assert.notEqual(wallEintrag({ ...basis, optin_bestaetigt: true }), null);
+  assert.equal(mailEmpfaenger([{ ...basis, optin_bestaetigt: false }], 'updates').length, 0);
+  assert.equal(mailEmpfaenger([{ ...basis, optin_bestaetigt: true }], 'updates').length, 1);
+  assert.equal(mailEmpfaenger([{ ...basis, optin_bestaetigt: false }], 'jahresbericht').length, 0);
+});
+
+test('Wochenbericht nennt die Gesamtzahl „bestätigt“', () => {
+  assert.match(bericht, /Squadra Tre gesamt \(bestätigt\)/);
 });
