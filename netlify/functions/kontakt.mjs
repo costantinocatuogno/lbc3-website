@@ -6,29 +6,30 @@
 // Seit 10.11.2026: Jede Anfrage wird zusätzlich in der Kartei (Supabase, Tabelle kontakt_anfragen) gespeichert und
 // geprüft (_lib/spam.mjs). Label „OK“ → E-Mail wie bisher. Label „Spam“ → nur still in der Kartei, keine E-Mail
 // (Vorgabe des Eigentümers). Klappt das Speichern nicht, geht die Nachricht immer per E-Mail raus – es geht nichts verloren.
-import { handle, json, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, env, looksLikeBot, sb } from './_lib/common.mjs';
+import { handle, json, sendMail, mailLayout, escapeHtml, siteUrl, readBody, HttpError, env, botGrund, sb } from './_lib/common.mjs';
 import { KONTAKT, ERR, pickLang, langPrefix } from './_lib/texte.mjs';
 import { pruefeAnfrage } from './_lib/spam.mjs';
 
-const SPAM_PRO_TAG = 200; // höchstens so viele Spam-Einträge pro Tag speichern (Schutz vor Flut)
+const LOCKFELD_PRO_TAG = 200; // höchstens so viele Lockfeld-Treffer pro Tag speichern (Schutz vor Flut)
+const KARTEI_TIMEOUT = 2500; // ms – antwortet Supabase nicht rechtzeitig, geht die Nachricht per E-Mail raus
 
+// Nur frühere OK-Anfragen zählen – sonst könnte jemand mit Lockfeld-Einträgen die Adresse eines echten Partners „vorbelasten“.
 async function vorherige24h(email) {
   const seit = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
-  const rows = await sb(`/rest/v1/kontakt_anfragen?email=eq.${encodeURIComponent(email)}&created_at=gte.${encodeURIComponent(seit)}&select=id&limit=10`).catch(() => []);
+  const rows = await sb(`/rest/v1/kontakt_anfragen?email=eq.${encodeURIComponent(email)}&status=eq.ok&created_at=gte.${encodeURIComponent(seit)}&select=id&limit=10`, { timeout: KARTEI_TIMEOUT }).catch(() => []);
   return Array.isArray(rows) ? rows.length : 0;
 }
 
-async function spamHeuteVoll() {
+async function lockfeldHeuteVoll() {
   const heute = new Date(); heute.setUTCHours(0, 0, 0, 0);
-  const rows = await sb(`/rest/v1/kontakt_anfragen?status=eq.spam&created_at=gte.${encodeURIComponent(heute.toISOString())}&select=id&limit=${SPAM_PRO_TAG}`).catch(() => []);
-  return Array.isArray(rows) && rows.length >= SPAM_PRO_TAG;
+  const rows = await sb(`/rest/v1/kontakt_anfragen?status=eq.spam&spam_wert=gte.10&created_at=gte.${encodeURIComponent(heute.toISOString())}&select=id&limit=${LOCKFELD_PRO_TAG}`, { timeout: KARTEI_TIMEOUT }).catch(() => []);
+  return Array.isArray(rows) && rows.length >= LOCKFELD_PRO_TAG;
 }
 
 // Speichert die Anfrage; true = gespeichert
 async function speichern(row) {
-  if (row.status === 'spam' && await spamHeuteVoll()) return true; // still verwerfen, Kartei nicht fluten
   try {
-    await sb('/rest/v1/kontakt_anfragen', { method: 'POST', body: row, headers: { Prefer: 'return=minimal' } });
+    await sb('/rest/v1/kontakt_anfragen', { method: 'POST', body: row, headers: { Prefer: 'return=minimal' }, timeout: KARTEI_TIMEOUT });
     return true;
   } catch (err) {
     console.warn('Anfrage nicht in der Kartei gespeichert:', err.message);
@@ -49,7 +50,8 @@ export default handle(async (req) => {
   // Fehler: zurück zum Formular mit Hinweis in der Sprache der Seite (statt einer technischen Meldung)
   const fail = (msg) => (wantsJson ? json({ error: msg }, 400) : Response.redirect(`${siteUrl()}${langPrefix(lang)}/kontakt/?fehler=1#nachricht`, 303));
   const honeypot = !!b['bot-field'];
-  const bot = looksLikeBot(b); // ohne gültigen Zeitstempel: keine automatische Antwort
+  const botZeit = botGrund(b); // 'schnell' | 'alt' | 'fehlt' | null
+  const bot = !!botZeit; // ohne gültigen Zeitstempel: keine automatische Antwort
 
   const name = String(b.name || '').trim().slice(0, 80);
   const email = String(b.email || '').trim().toLowerCase().slice(0, 200);
@@ -59,8 +61,8 @@ export default handle(async (req) => {
   const nachricht = String(b.nachricht || '').trim().slice(0, 5000);
   const gueltig = name && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && nachricht;
   if (honeypot) { // Honeypot: Bots still ignorieren – mit gültigen Feldern als Spam in die Kartei
-    if (gueltig) {
-      const p = pruefeAnfrage({ name, email, firma, nachricht, honeypot: true, botZeit: bot });
+    if (gueltig && !(await lockfeldHeuteVoll())) {
+      const p = pruefeAnfrage({ name, email, firma, nachricht, honeypot: true, botZeit });
       await speichern({ name, email, firma: firma || null, anliegen: anliegenKey, sprache: lang, nachricht, status: 'spam', spam_wert: p.wert, spam_gruende: p.gruende });
     }
     return done();
@@ -70,7 +72,7 @@ export default handle(async (req) => {
   if (!b.datenschutz) return fail(E.privacy);
 
   // 0) Prüfen und in der Kartei speichern
-  const pruef = pruefeAnfrage({ name, email, firma, nachricht, honeypot: false, botZeit: bot }, { vorherige24h: await vorherige24h(email) });
+  const pruef = pruefeAnfrage({ name, email, firma, nachricht, honeypot: false, botZeit }, { vorherige24h: await vorherige24h(email) });
   const gespeichert = await speichern({ name, email, firma: firma || null, anliegen: anliegenKey, sprache: lang, nachricht, status: pruef.status, spam_wert: pruef.wert, spam_gruende: pruef.gruende });
   if (pruef.status === 'spam' && gespeichert) return done(); // Spam: nur still in der Kartei
   const spamHinweis = pruef.status === 'spam' ? '[Verdacht auf Spam] ' : '';

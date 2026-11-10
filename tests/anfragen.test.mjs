@@ -37,9 +37,29 @@ describe('Spam-Prüfung', () => {
     assert.equal(pruefeAnfrage({ ...ECHT, honeypot: true }).status, 'spam');
   });
   test('zu schnell abgeschickt allein ist noch kein Spam', () => {
-    const r = pruefeAnfrage({ ...ECHT, botZeit: true });
+    const r = pruefeAnfrage({ ...ECHT, botZeit: 'schnell' });
     assert.equal(r.status, 'ok');
     assert.equal(r.wert, 4);
+  });
+  test('Prüfbefund 1: Seite lange offen + Webadresse in der Signatur bleibt OK', () => {
+    const r = pruefeAnfrage({ ...ECHT, nachricht: ECHT.nachricht + '\nwww.autohaus-keller.de', botZeit: 'alt' });
+    assert.equal(r.status, 'ok');
+    assert.equal(pruefeAnfrage({ ...ECHT, nachricht: 'Mappe bitte', botZeit: 'fehlt' }).status, 'ok');
+  });
+  test('Prüfbefund 2: Wörter allein machen nie Spam (Agentur, Bank, Casino, Telegram)', () => {
+    for (const n of [
+      'We are a marketing agency (SEO, lead generation) and would like to sponsor Luigi. Our site: www.agentur.com',
+      'Wir sind die Volksbank: Loans, Kredite, erreichbar auch per Telegram oder wa.me/4912345. Act now!',
+      'Bonjour, le Groupe Casino souhaite soutenir Luigi en 2027. Crypto ? Non, bitcoin non plus.'
+    ]) {
+      const r = pruefeAnfrage({ ...ECHT, nachricht: n });
+      assert.equal(r.status, 'ok', n);
+      assert.ok(r.wert <= 4, n);
+    }
+  });
+  test('Prüfbefund 3: E-Mail-Adressen im Text zählen nicht als Links', () => {
+    const r = pruefeAnfrage({ ...ECHT, nachricht: 'Scrivete a info@ditta.com oppure marketing@ditta.it oppure eventi@ditta.it, grazie mille per la risposta.' });
+    assert.equal(r.wert, 0);
   });
   test('fremde Schrift + Link → Spam', () => {
     assert.equal(pruefeAnfrage({ name: 'Иван', email: 'ivan@mail.ru', nachricht: 'Здравствуйте! Предлагаем продвижение сайта https://x.ru и рекламу' , botZeit: false }).status, 'spam');
@@ -58,9 +78,13 @@ describe('Spam-Prüfung', () => {
 // ---------- Kontaktformular mit nachgestelltem Supabase und Brevo ----------
 let aufrufe = [];
 let supabaseFehler = false;
+let haengt = false;
 globalThis.fetch = async (u, o = {}) => {
   const url = String(u);
   aufrufe.push({ url, method: o.method || 'GET', body: o.body ? JSON.parse(o.body) : null });
+  if (url.includes('supabase.co') && haengt) {
+    return new Promise((_, rej) => { if (o.signal) o.signal.addEventListener('abort', () => rej(o.signal.reason)); });
+  }
   if (url.includes('supabase.co')) {
     if (supabaseFehler && o.method === 'POST') return new Response(JSON.stringify({ message: 'kaputt' }), { status: 500 });
     return new Response(o.method === 'POST' ? '' : '[]', { status: o.method === 'POST' ? 201 : 200 });
@@ -95,6 +119,20 @@ describe('Kontaktformular speichert in der Kartei', () => {
     assert.equal(gespeichert().length, 1);
     assert.equal(gespeichert()[0].body.status, 'spam');
     assert.equal(mails().length, 0);
+  });
+  test('Prüfbefund 7: Wiederholungen zählen nur frühere OK-Anfragen', async () => {
+    await senden(ECHT);
+    const abfrage = aufrufe.find((a) => a.method === 'GET' && a.url.includes('email=eq.'));
+    assert.ok(abfrage.url.includes('status=eq.ok'));
+  });
+  test('Prüfbefund 6: hängende Datenbank – E-Mail geht nach Zeitlimit trotzdem raus', async () => {
+    haengt = true;
+    const wach = setInterval(() => {}, 500); // AbortSignal.timeout hält den Testprozess nicht wach
+    const res = await senden(ECHT);
+    clearInterval(wach);
+    haengt = false;
+    assert.equal(res.status, 200);
+    assert.equal(mails().length, 2);
   });
   test('Lockfeld: still als Spam gespeichert, keine E-Mail', async () => {
     await senden({ ...ECHT, 'bot-field': 'x' });
@@ -143,6 +181,8 @@ describe('Datenbank, Team-Bereich, Datenschutz', () => {
     const f = lies('netlify/functions/anfragen-aufraeumen.mjs');
     assert.match(f, /SPAM_TAGE = 30/);
     assert.match(f, /ERLEDIGT_TAGE = 365/);
+    assert.match(f, /HOECHST_TAGE = 730/);
+    assert.match(f, /status_am=lt\./, 'Spam-Frist zählt ab dem Setzen des Labels');
     assert.match(f, /schedule:/);
   });
   test('Datenschutzerklärung in DE, EN, IT, FR ergänzt', () => {
@@ -151,7 +191,9 @@ describe('Datenbank, Team-Bereich, Datenschutz', () => {
       assert.match(d[k], /Supabase/);
       assert.match(d[k], /30/);
       assert.match(d[k], /12/);
+      assert.match(d[k], /24/);
     }
-    assert.match(d.datenschutz, /als Spam erkannte Anfragen/i);
+    assert.match(d.datenschutz, /als Spam eingestufte Anfragen/i);
+    assert.match(d.datenschutz, /Ergebnis der Spam-Prüfung/);
   });
 });

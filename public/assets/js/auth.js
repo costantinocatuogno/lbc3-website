@@ -1337,18 +1337,19 @@
       let anfragen = [];
       let anFilter = 'offen';
       const anDatum = (d) => new Date(d).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-      const anZahl = () => {
-        const n = anfragen.filter((a) => a.status === 'ok' && !a.erledigt_am).length;
-        const el = $('[data-an-zahl]'); if (!el) return;
-        el.textContent = n ? String(n) : ''; el.hidden = !n;
-      };
+      // Zahl offener OK-Anfragen im Menü – eigene Zählung auf dem Server, unabhängig vom gewählten Filter
+      async function anZahl() {
+        const { count, error } = await sb.from('kontakt_anfragen').select('id', { count: 'exact', head: true }).eq('status', 'ok').is('erledigt_am', null);
+        const el = $('[data-an-zahl]'); const sr = $('[data-an-zahl-sr]');
+        if (!el || error) return;
+        el.textContent = count ? String(count) : ''; el.hidden = !count;
+        if (sr) sr.textContent = count ? ` (${count} offen)` : '';
+      }
       function renderAnfragen() {
         const box = $('[data-an-liste]');
-        const l = anfragen.filter((a) => anFilter === 'alle' || (anFilter === 'offen' && !a.erledigt_am && a.status === 'ok')
-          || (anFilter === 'erledigt' && a.erledigt_am) || (anFilter === a.status && !a.erledigt_am));
-        box.innerHTML = l.map((a) => {
+        box.innerHTML = anfragen.map((a) => {
           const spam = a.status === 'spam';
-          return `<article class="card lbc3-anfrage${spam ? ' is-spam' : ''}${a.erledigt_am ? ' is-done' : ''}" data-id="${a.id}">
+          return `<article class="card lbc3-anfrage${spam ? ' is-spam' : ''}${a.erledigt_am ? ' is-done' : ''}" data-id="${a.id}" tabindex="-1">
             <div class="lbc3-anfrage-kopf">
               <span class="lbc3-label ${spam ? 'lbc3-label-spam' : 'lbc3-label-ok'}">${spam ? 'Spam' : 'OK'}</span>
               <span class="muted small">${escapeHtml(anDatum(a.created_at))} · ${escapeHtml(AN_ANLIEGEN[a.anliegen] || a.anliegen)} · ${escapeHtml(AN_SPRACHE[a.sprache] || a.sprache)}${a.quelle === 'email' ? ' · aus dem Postfach übernommen' : ''}${a.status_von === 'admin' ? ' · Label von Hand gesetzt' : ''}${a.erledigt_am ? ' · erledigt am ' + escapeHtml(anDatum(a.erledigt_am)) : ''}</span>
@@ -1356,33 +1357,41 @@
             <h2 class="h3">${escapeHtml(a.name)}${a.firma ? ` <span class="muted">· ${escapeHtml(a.firma)}</span>` : ''}</h2>
             <p class="small"><a href="mailto:${encodeURIComponent(a.email).replace(/%40/g, '@')}">${escapeHtml(a.email)}</a></p>
             <p class="lbc3-anfrage-text">${escapeHtml(a.nachricht)}</p>
-            ${(a.spam_gruende || []).length ? `<details class="small"><summary>Prüfung: ${a.spam_wert} Punkte (ab 5 = Spam)</summary><ul>${a.spam_gruende.map((g) => `<li>${escapeHtml(g)}</li>`).join('')}</ul></details>` : `<p class="muted small">Prüfung: ${a.spam_wert} Punkte – keine Auffälligkeiten.</p>`}
+            ${(a.spam_gruende || []).length ? `<details class="small"><summary>Prüfung: ${Number(a.spam_wert) || 0} Punkte (ab 5 = Spam)</summary><ul>${a.spam_gruende.map((g) => `<li>${escapeHtml(g)}</li>`).join('')}</ul></details>` : `<p class="muted small">Prüfung: ${Number(a.spam_wert) || 0} Punkte – keine Auffälligkeiten.</p>`}
             <div class="member-actions">
               <button type="button" class="small-btn" data-an="label">${spam ? 'Als OK markieren' : 'Als Spam markieren'}</button>
               <button type="button" class="small-btn" data-an="erledigt">${a.erledigt_am ? 'Wieder öffnen' : '✓ Erledigt'}</button>
               <button type="button" class="small-btn" data-an="loeschen">Löschen</button>
             </div></article>`;
-        }).join('') || '<p class="muted">Keine Anfragen in dieser Ansicht.</p>';
+        }).join('') || '<p class="muted" tabindex="-1">Keine Anfragen in dieser Ansicht.</p>';
       }
+      // Filter auf dem Server, damit viele Spam-Einträge echte Anfragen nicht aus der Liste drängen
       async function loadAnfragen(still = false) {
-        const { data, error } = await sb.from('kontakt_anfragen').select('*').order('created_at', { ascending: false }).limit(500);
+        let q = sb.from('kontakt_anfragen').select('*').order('created_at', { ascending: false }).limit(300);
+        if (anFilter === 'offen') q = q.eq('status', 'ok').is('erledigt_am', null);
+        else if (anFilter === 'ok' || anFilter === 'spam') q = q.eq('status', anFilter).is('erledigt_am', null);
+        else if (anFilter === 'erledigt') q = q.not('erledigt_am', 'is', null);
+        const { data, error } = await q;
         if (error && still) return;
         if (error) { $('[data-an-liste]').innerHTML = '<p class="muted">Anfragen konnten nicht geladen werden.</p>'; showMsg('Anfragen konnten nicht geladen werden: ' + error.message, true); return; }
         anfragen = data || [];
-        anZahl(); renderAnfragen();
+        renderAnfragen();
+        anZahl();
       }
       $('[data-an-filter]').addEventListener('click', (e) => {
         const b = e.target.closest('[data-filter]'); if (!b) return;
         anFilter = b.dataset.filter;
         $$('[data-filter]', $('[data-an-filter]')).forEach((x) => { const on = x === b; x.classList.toggle('is-active', on); x.setAttribute('aria-pressed', String(on)); });
-        renderAnfragen();
+        loadAnfragen();
       });
       $('[data-an-liste]').addEventListener('click', async (e) => {
         const btn = e.target.closest('[data-an]'); if (!btn) return;
         const id = btn.closest('[data-id]').dataset.id;
         const a = anfragen.find((x) => x.id === id); if (!a) return;
         let res;
-        if (btn.dataset.an === 'label') res = await sb.from('kontakt_anfragen').update({ status: a.status === 'spam' ? 'ok' : 'spam', status_von: 'admin' }).eq('id', id);
+        const karte = btn.closest('[data-id]');
+        const naechste = karte.nextElementSibling?.dataset.id || karte.previousElementSibling?.dataset.id || null;
+        if (btn.dataset.an === 'label') res = await sb.from('kontakt_anfragen').update({ status: a.status === 'spam' ? 'ok' : 'spam', status_von: 'admin', status_am: new Date().toISOString() }).eq('id', id);
         else if (btn.dataset.an === 'erledigt') res = await sb.from('kontakt_anfragen').update({ erledigt_am: a.erledigt_am ? null : new Date().toISOString() }).eq('id', id);
         else {
           if (!confirm(`Anfrage von ${a.name} endgültig löschen? Das lässt sich nicht rückgängig machen.`)) return;
@@ -1390,9 +1399,12 @@
         }
         if (res.error) { showMsg('Fehler: ' + res.error.message, true); return; }
         showMsg('Gespeichert.');
-        loadAnfragen();
+        await loadAnfragen();
+        // Tastatur-Fokus nicht verlieren: auf dieselbe Karte, sonst die nächste, sonst die Liste
+        const ziel = $(`[data-an-liste] [data-id="${id}"]`) || (naechste && $(`[data-an-liste] [data-id="${naechste}"]`)) || $('[data-an-liste] [tabindex]');
+        if (ziel) ziel.focus();
       });
-      loadAnfragen(true); // Zahl offener Anfragen im Menü gleich anzeigen (still, ohne Fehlermeldung)
+      anZahl(); // Zahl offener Anfragen im Menü gleich anzeigen (still, ohne Fehlermeldung)
 
       /* ----- Einladen: fertige Texte für Instagram ----- */
       const site = (cfg.siteUrl || location.origin).replace(/\/$/, '');

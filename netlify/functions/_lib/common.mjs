@@ -47,11 +47,12 @@ function sbHeaders(extra = {}) {
   return { ...keyHeaders(key), 'Content-Type': 'application/json', ...extra };
 }
 
-export async function sb(path, { method = 'GET', body, headers = {} } = {}) {
+// timeout (ms, optional): bricht ab, wenn Supabase nicht rechtzeitig antwortet
+export async function sb(path, { method = 'GET', body, headers = {}, timeout } = {}) {
   const base = env('SUPABASE_URL');
   let res;
   try {
-    res = await fetch(`${base}${path}`, { method, headers: sbHeaders(headers), body: body ? JSON.stringify(body) : undefined });
+    res = await fetch(`${base}${path}`, { method, headers: sbHeaders(headers), body: body ? JSON.stringify(body) : undefined, signal: timeout ? AbortSignal.timeout(timeout) : undefined });
   } catch (e) {
     throw new HttpError(502, `Supabase nicht erreichbar (${base.replace(/^https?:\/\//, '').slice(0, 40)}): ${e.cause?.code || e.message}`);
   }
@@ -120,10 +121,17 @@ export async function sendMail({ to, subject, html, attachmentUrl, attachmentNam
 // Schutz vor automatisierten Absendungen: das Formular trägt beim Laden einen Zeitstempel ein.
 // Zu schnell (unter 3 Sekunden), zu alt (über 1 Tag) oder ohne Zeitstempel = vermutlich ein Bot.
 export function looksLikeBot(b) {
+  return !!botGrund(b);
+}
+
+// Wie looksLikeBot, nennt aber den Grund: 'fehlt' | 'schnell' | 'alt' | null (= unauffällig)
+export function botGrund(b) {
   const t = Number(b && b.t);
-  if (!t) return true;
+  if (!t) return 'fehlt';
   const age = Date.now() - t;
-  return age < 3000 || age > 24 * 60 * 60 * 1000;
+  if (age < 3000) return 'schnell';
+  if (age > 24 * 60 * 60 * 1000) return 'alt';
+  return null;
 }
 
 export const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

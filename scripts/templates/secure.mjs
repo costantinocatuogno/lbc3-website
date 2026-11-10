@@ -211,7 +211,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
 <div class="app" data-team>
   <nav class="app-nav" aria-label="Team-Menü">
     <button type="button" class="is-active" data-tab="bericht">Ausgabenbericht</button>
-    <button type="button" data-tab="anfragen">Anfragen <span class="lbc3-nav-zahl" data-an-zahl hidden></span></button>
+    <button type="button" data-tab="anfragen">Anfragen <span class="lbc3-nav-zahl" data-an-zahl hidden></span><span class="lbc3-sr" data-an-zahl-sr></span></button>
     <button type="button" data-tab="zugaenge">Partner &amp; Admins</button>
     <button type="button" data-tab="squadra">Squadra Tre</button>
     <button type="button" data-tab="sponsorwall">Partner-Wall</button>
