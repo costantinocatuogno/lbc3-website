@@ -414,6 +414,9 @@ button { font: inherit; color: inherit; }
 .kpi.dark { background: var(--ink); border-color: var(--ink); }
 .kpi.dark span { color: var(--light-2); }
 .kpi.dark strong { color: var(--gold); }
+.kpi small { font-size: 13px; color: var(--muted); }
+.kpi small span { font: inherit; letter-spacing: 0; text-transform: none; color: inherit; }
+.kpi.dark small { color: var(--light-2); }
 .kv { margin: 0; }
 .kv div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-2); }
 .kv div:last-child { border-bottom: 0; }

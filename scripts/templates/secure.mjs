@@ -312,8 +312,8 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
         </div>
       </div>
       <div class="kpis small-kpis">
-        <div class="kpi dark"><span>Mitglieder bestätigt</span><strong data-sk="gesamt">–</strong></div>
-        <div class="kpi"><span>Freunde / Fans</span><strong data-sk="freund">–</strong></div>
+        <div class="kpi dark"><span>Mitglieder registriert</span><strong data-sk="gesamt">–</strong><small>davon unbestätigt: <span data-sk="offen">–</span></small></div>
+        <div class="kpi"><span>Fans</span><strong data-sk="freund">–</strong></div>
         <div class="kpi"><span>Unterstützer</span><strong data-sk="unterstuetzer">–</strong></div>
         <div class="kpi"><span>Fotos warten auf Prüfung</span><strong data-sk="pruefen">–</strong></div>
       </div>
@@ -324,7 +324,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
           <button type="button" class="pill" data-f="pruefen">Foto prüfen</button>
           <button type="button" class="pill" data-f="name">Name prüfen</button>
           <button type="button" class="pill" data-f="eltern">Eltern offen</button>
-          <button type="button" class="pill" data-f="freund">Freunde</button>
+          <button type="button" class="pill" data-f="freund">Fans</button>
           <button type="button" class="pill" data-f="unterstuetzer">Unterstützer</button>
           <button type="button" class="pill" data-f="offen">Unbestätigt</button>
         </div>

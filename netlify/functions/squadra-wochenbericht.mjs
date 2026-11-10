@@ -6,7 +6,7 @@ import { sb, sendMail, mailLayout, escapeHtml, siteUrl, cleanHandle } from './_l
 import { imPostNennbar, anzeigeName, istMinderjaehrig } from './_lib/squadra-rules.mjs';
 
 const TAGE = 7;
-const ART = { freund: 'Freund', unterstuetzer: 'Unterstützer' };
+const ART = { freund: 'Fan', unterstuetzer: 'Unterstützer' };
 const SPRACHE = { de: 'Deutsch', it: 'Italienisch', en: 'Englisch', fr: 'Französisch' };
 
 function aufzaehlen(namen, rest, w) {
@@ -58,7 +58,7 @@ export async function wochenbericht() {
   const datum = (d) => new Date(d).toLocaleDateString('de-DE', { timeZone: 'Europe/Berlin' });
   const zeilen = neu.map((r) => `<tr>
     <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF"><strong>${escapeHtml(r.name)}</strong>${istMinderjaehrig(r) ? ' <span style="color:#C8102E">(minderjährig)</span>' : ''}</td>
-    <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(ART[r.mitgliedschaft] || r.mitgliedschaft || '')}</td>
+    <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(ART[r.mitgliedschaft] || ART.freund)}</td>
     <td style="padding:6px 8px 6px 0;border-bottom:1px solid #ECEDEF">${escapeHtml(SPRACHE[r.sprache] || r.sprache || '')}</td>
     <td style="padding:6px 0;border-bottom:1px solid #ECEDEF">${imPostNennbar(r) ? `✔ als „${escapeHtml(anzeigeName(r))}“${cleanHandle(r.instagram) ? ` · @${escapeHtml(cleanHandle(r.instagram))}` : ''}` : (istMinderjaehrig(r) ? '✖ minderjährig – nie im Post' : '✖ nicht nennen')}</td>
   </tr>`).join('');
