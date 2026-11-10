@@ -571,6 +571,18 @@ fieldset.field legend { padding: 0; margin-bottom: 6px; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tags span { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--line-2); }
 .tags .t-ok { background: #DDF1E3; } .tags .t-warn { background: #FBEFD0; } .tags .t-red { background: #F8DADF; }
+/* Anfragen-Kartei: Labels OK (grün) / Spam (rot) – Kontrast ≥ 4.5:1 */
+.lbc3-label { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; }
+.lbc3-label-ok { background: #DDF1E3; color: #14532D; }
+.lbc3-label-spam { background: var(--red); color: #fff; }
+.lbc3-nav-zahl { display: inline-block; min-width: 20px; padding: 0 6px; margin-left: 4px; border-radius: 999px; background: var(--red); color: #fff; font-size: 12px; font-weight: 800; text-align: center; }
+.lbc3-anfragen { display: grid; gap: 14px; }
+.lbc3-anfrage { padding: 20px; }
+.lbc3-anfrage.is-spam { border-left: 4px solid var(--red); }
+.lbc3-anfrage.is-done { opacity: .75; }
+.lbc3-anfrage-kopf { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 8px; }
+.lbc3-anfrage-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.lbc3-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .member .field input { min-height: 40px; font-size: 14px; }
 .member-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 .copy-box { background: var(--bg); border-radius: 8px; padding: 12px 14px; font-size: 14px; white-space: pre-wrap; margin: 6px 0 8px; }

@@ -211,6 +211,7 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
 <div class="app" data-team>
   <nav class="app-nav" aria-label="Team-Menü">
     <button type="button" class="is-active" data-tab="bericht">Ausgabenbericht</button>
+    <button type="button" data-tab="anfragen">Anfragen <span class="lbc3-nav-zahl" data-an-zahl hidden></span><span class="lbc3-sr" data-an-zahl-sr></span></button>
     <button type="button" data-tab="zugaenge">Partner &amp; Admins</button>
     <button type="button" data-tab="squadra">Squadra Tre</button>
     <button type="button" data-tab="sponsorwall">Partner-Wall</button>
@@ -386,6 +387,20 @@ ${topbar('LBC3 · TEAM-BEREICH', '<a class="app-link" href="/admin/">Inhalte bea
           <div class="btn-row"><button class="btn btn-outline" type="button" data-msg-test>Testmail an uns</button><button class="btn btn-red" type="submit">An alle senden</button></div>
         </form>
       </div>
+    </section>
+
+    <section data-panel="anfragen" hidden>
+      <div class="section-head"><h1 class="h1">Anfragen</h1></div>
+      <p class="lead">Alle Nachrichten von Dritten aus dem Kontaktformular (Sponsoring, Partnermappe, Presse, Sonstiges). Jede Anfrage wird automatisch geprüft: <span class="lbc3-label lbc3-label-ok">OK</span> kommt wie bisher auch per E-Mail, <span class="lbc3-label lbc3-label-spam">Spam</span> landet nur hier, ohne E-Mail. Liegt die Prüfung daneben, das Label einfach umschalten.</p>
+      <div class="pill-row compact" data-an-filter>
+        <button type="button" class="pill is-active" aria-pressed="true" data-filter="offen">Offen</button>
+        <button type="button" class="pill" aria-pressed="false" data-filter="ok">OK</button>
+        <button type="button" class="pill" aria-pressed="false" data-filter="spam">Spam</button>
+        <button type="button" class="pill" aria-pressed="false" data-filter="erledigt">Erledigt</button>
+        <button type="button" class="pill" aria-pressed="false" data-filter="alle">Alle</button>
+      </div>
+      <div class="lbc3-anfragen mt" data-an-liste><p class="muted">Wird geladen …</p></div>
+      <p class="muted small mt">Speicherfristen: Anfragen mit Label „Spam“ werden nach 30 Tagen automatisch gelöscht, erledigte Anfragen 12 Monate nach „Erledigt“. Offene Anfragen mit Label „OK“ bleiben, bis sie erledigt oder gelöscht werden. Gespeichert wird seit November 2026; ältere Anfragen gibt es nur im Postfach.</p>
     </section>
 
     <section data-panel="sponsorwall" hidden>
