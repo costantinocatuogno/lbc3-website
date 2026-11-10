@@ -16,7 +16,7 @@ Alle Anfragen von Dritten aus dem Kontaktformular (Sponsoring, Partnermappe, Pre
 | Aussehen | `public/assets/css/site.css`: `.lbc3-label-ok` Grün #14532D auf #DDF1E3 (7,7 : 1), `.lbc3-label-spam` Weiß auf Rot #B00E28 (7,1 : 1). Spam-Karten mit rotem Rand links. |
 | Speicherfristen | `netlify/functions/anfragen-aufraeumen.mjs`, nachts 02:20 UTC: Spam 30 Tage nach dem Setzen des Labels, erledigte Anfragen 12 Monate nach „Erledigt“, alle Anfragen höchstens 24 Monate nach Eingang. |
 | Datenschutzerklärung | `content/einstellungen/site.json`, DE/EN/IT/FR: Speicherung bei Supabase, gespeicherte Felder, automatische Spam-Prüfung, keine Weiterleitung bei Spam, Fristen (Abschnitte 4, 7, 8). |
-| Tests | `tests/anfragen.test.mjs` (25 Tests): Spam-Regeln mit echten und falschen Beispielen, Kontaktformular mit nachgestellter Datenbank (OK, Spam, Lockfeld, Datenbank kaputt, Datenbank hängt), Zugriffsregel, Gegen-Skript, Reiter, Fristen, Datenschutztext in 4 Sprachen. |
+| Tests | `tests/anfragen.test.mjs` (23 Tests): Spam-Regeln mit echten und falschen Beispielen, Kontaktformular mit nachgestellter Datenbank (OK, Spam, Lockfeld, Datenbank kaputt, Datenbank hängt), Zugriffsregel, Gegen-Skript, Reiter, Fristen, Datenschutztext in 4 Sprachen. |
 
 ## Rückgängig machen
 1. Code: PR zurücknehmen (Revert) oder auf Netlify die vorige Version veröffentlichen. Ohne Tabelle schickt das Formular automatisch alles per E-Mail, so wie vorher.
