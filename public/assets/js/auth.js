@@ -356,6 +356,7 @@
       const showTab = (name) => {
         tabs.forEach((t) => t.classList.toggle('is-active', t.dataset.tab === name));
         $$('[data-panel]').forEach((pnl) => { pnl.hidden = pnl.dataset.panel !== name; });
+        if (name === 'anfragen') loadAnfragen();
         if (name === 'zugaenge') loadProfiles();
         if (name === 'squadra') loadSquadra();
         if (name === 'sponsorwall') loadSponsorWall();
@@ -1329,6 +1330,69 @@
         showMsg('Gespeichert. Mit „Wall of Fame veröffentlichen“ geht es online.');
         loadSponsorWall();
       });
+
+      /* ----- Anfragen aus dem Kontaktformular (Kartei mit Label OK / Spam) ----- */
+      const AN_ANLIEGEN = { sponsoring: 'Sponsoring / Partnerschaft', mappe: 'Partnermappe anfordern', presse: 'Presse', sonstiges: 'Sonstiges' };
+      const AN_SPRACHE = { de: 'Deutsch', it: 'Italienisch', en: 'Englisch', fr: 'Französisch' };
+      let anfragen = [];
+      let anFilter = 'offen';
+      const anDatum = (d) => new Date(d).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const anZahl = () => {
+        const n = anfragen.filter((a) => a.status === 'ok' && !a.erledigt_am).length;
+        const el = $('[data-an-zahl]'); if (!el) return;
+        el.textContent = n ? String(n) : ''; el.hidden = !n;
+      };
+      function renderAnfragen() {
+        const box = $('[data-an-liste]');
+        const l = anfragen.filter((a) => anFilter === 'alle' || (anFilter === 'offen' && !a.erledigt_am && a.status === 'ok')
+          || (anFilter === 'erledigt' && a.erledigt_am) || (anFilter === a.status && !a.erledigt_am));
+        box.innerHTML = l.map((a) => {
+          const spam = a.status === 'spam';
+          return `<article class="card lbc3-anfrage${spam ? ' is-spam' : ''}${a.erledigt_am ? ' is-done' : ''}" data-id="${a.id}">
+            <div class="lbc3-anfrage-kopf">
+              <span class="lbc3-label ${spam ? 'lbc3-label-spam' : 'lbc3-label-ok'}">${spam ? 'Spam' : 'OK'}</span>
+              <span class="muted small">${escapeHtml(anDatum(a.created_at))} · ${escapeHtml(AN_ANLIEGEN[a.anliegen] || a.anliegen)} · ${escapeHtml(AN_SPRACHE[a.sprache] || a.sprache)}${a.quelle === 'email' ? ' · aus dem Postfach übernommen' : ''}${a.status_von === 'admin' ? ' · Label von Hand gesetzt' : ''}${a.erledigt_am ? ' · erledigt am ' + escapeHtml(anDatum(a.erledigt_am)) : ''}</span>
+            </div>
+            <h2 class="h3">${escapeHtml(a.name)}${a.firma ? ` <span class="muted">· ${escapeHtml(a.firma)}</span>` : ''}</h2>
+            <p class="small"><a href="mailto:${encodeURIComponent(a.email).replace(/%40/g, '@')}">${escapeHtml(a.email)}</a></p>
+            <p class="lbc3-anfrage-text">${escapeHtml(a.nachricht)}</p>
+            ${(a.spam_gruende || []).length ? `<details class="small"><summary>Prüfung: ${a.spam_wert} Punkte (ab 5 = Spam)</summary><ul>${a.spam_gruende.map((g) => `<li>${escapeHtml(g)}</li>`).join('')}</ul></details>` : `<p class="muted small">Prüfung: ${a.spam_wert} Punkte – keine Auffälligkeiten.</p>`}
+            <div class="member-actions">
+              <button type="button" class="small-btn" data-an="label">${spam ? 'Als OK markieren' : 'Als Spam markieren'}</button>
+              <button type="button" class="small-btn" data-an="erledigt">${a.erledigt_am ? 'Wieder öffnen' : '✓ Erledigt'}</button>
+              <button type="button" class="small-btn" data-an="loeschen">Löschen</button>
+            </div></article>`;
+        }).join('') || '<p class="muted">Keine Anfragen in dieser Ansicht.</p>';
+      }
+      async function loadAnfragen(still = false) {
+        const { data, error } = await sb.from('kontakt_anfragen').select('*').order('created_at', { ascending: false }).limit(500);
+        if (error && still) return;
+        if (error) { $('[data-an-liste]').innerHTML = '<p class="muted">Anfragen konnten nicht geladen werden.</p>'; showMsg('Anfragen konnten nicht geladen werden: ' + error.message, true); return; }
+        anfragen = data || [];
+        anZahl(); renderAnfragen();
+      }
+      $('[data-an-filter]').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-filter]'); if (!b) return;
+        anFilter = b.dataset.filter;
+        $$('[data-filter]', $('[data-an-filter]')).forEach((x) => { const on = x === b; x.classList.toggle('is-active', on); x.setAttribute('aria-pressed', String(on)); });
+        renderAnfragen();
+      });
+      $('[data-an-liste]').addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-an]'); if (!btn) return;
+        const id = btn.closest('[data-id]').dataset.id;
+        const a = anfragen.find((x) => x.id === id); if (!a) return;
+        let res;
+        if (btn.dataset.an === 'label') res = await sb.from('kontakt_anfragen').update({ status: a.status === 'spam' ? 'ok' : 'spam', status_von: 'admin' }).eq('id', id);
+        else if (btn.dataset.an === 'erledigt') res = await sb.from('kontakt_anfragen').update({ erledigt_am: a.erledigt_am ? null : new Date().toISOString() }).eq('id', id);
+        else {
+          if (!confirm(`Anfrage von ${a.name} endgültig löschen? Das lässt sich nicht rückgängig machen.`)) return;
+          res = await sb.from('kontakt_anfragen').delete().eq('id', id);
+        }
+        if (res.error) { showMsg('Fehler: ' + res.error.message, true); return; }
+        showMsg('Gespeichert.');
+        loadAnfragen();
+      });
+      loadAnfragen(true); // Zahl offener Anfragen im Menü gleich anzeigen (still, ohne Fehlermeldung)
 
       /* ----- Einladen: fertige Texte für Instagram ----- */
       const site = (cfg.siteUrl || location.origin).replace(/\/$/, '');
