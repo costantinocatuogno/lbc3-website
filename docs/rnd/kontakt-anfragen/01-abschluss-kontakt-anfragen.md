@@ -16,7 +16,25 @@ Alle Anfragen von Dritten aus dem Kontaktformular (Sponsoring, Partnermappe, Pre
 | Aussehen | `public/assets/css/site.css`: `.lbc3-label-ok` Grün #14532D auf #DDF1E3 (7,7 : 1), `.lbc3-label-spam` Weiß auf Rot #B00E28 (7,1 : 1). Spam-Karten mit rotem Rand links. |
 | Speicherfristen | `netlify/functions/anfragen-aufraeumen.mjs`, nachts 02:20 UTC: Spam 30 Tage nach dem Setzen des Labels, erledigte Anfragen 12 Monate nach „Erledigt“, alle Anfragen höchstens 24 Monate nach Eingang. |
 | Datenschutzerklärung | `content/einstellungen/site.json`, DE/EN/IT/FR: Speicherung bei Supabase, gespeicherte Felder, automatische Spam-Prüfung, keine Weiterleitung bei Spam, Fristen (Abschnitte 4, 7, 8). |
-| Tests | `tests/anfragen.test.mjs` (23 Tests): Spam-Regeln mit echten und falschen Beispielen, Kontaktformular mit nachgestellter Datenbank (OK, Spam, Lockfeld, Datenbank kaputt, Datenbank hängt), Zugriffsregel, Gegen-Skript, Reiter, Fristen, Datenschutztext in 4 Sprachen. |
+| Tests | `tests/anfragen.test.mjs` (26 Tests): Spam-Regeln mit echten und falschen Beispielen, Kontaktformular mit nachgestellter Datenbank (OK, Spam, Lockfeld, Datenbank kaputt, Datenbank hängt), Zugriffsregel, Gegen-Skript, Reiter, Fristen, Datenschutztext in 4 Sprachen. |
+
+## Test mit den zwei echten E-Mails (10.11.2026)
+Im Postfach lagen genau zwei Anfragen über das Kontaktformular (gesucht per Gmail):
+
+| Eingang | Absender | Inhalt | Ergebnis vorher | Ergebnis jetzt |
+|---|---|---|---|---|
+| 04.11.2026 | „Indira Switzer“, domains@search-luigi-catuogno.com | Angebot, die Website „in Googles Suchindex einzutragen“, Link auf indexdomain.live | OK (1 Punkt) – **Fehler** | **Spam** (11 Punkte) |
+| 07.11.2026 | „MichaelSeict“, Adresse mit langer Ziffernfolge, Firma „Google“ | sinnlose Buchstabenfolgen | OK (1 Punkt) – **Fehler** | **Spam** (7 Punkte) |
+
+Fehler-Lernschleife: Die Prüfung hätte beide durchgelassen. Neue Regeln:
+- Absender-Domain ahmt die eigene Website nach (4 Punkte)
+- Index-/Eintrags-Angebote als eindeutige Werbe-Wendungen
+- weitere Endungen (.live, .click, .icu, .pro, .store)
+- Nachricht ohne ein einziges häufiges Kurzwort in DE/IT/EN/FR und mit sehr langen Wörtern (3 Punkte)
+- Name ohne Leerzeichen zusammengeschrieben (2 Punkte)
+- lange Ziffernfolge in der Adresse (1 Punkt)
+
+Je ein Regressionstest und ein Gegentest gegen Fehlalarme sind dazugekommen; die 14 Beispiele der unabhängigen Prüfung sind unverändert. Die zwei Einträge stehen als SQL in `zwei-anfragen.sql` bereit (Kennzeichen „aus dem Postfach übernommen“), weil das LBC3-Supabase von hier nicht erreichbar ist.
 
 ## Rückgängig machen
 1. Code: PR zurücknehmen (Revert) oder auf Netlify die vorige Version veröffentlichen. Ohne Tabelle schickt das Formular automatisch alles per E-Mail, so wie vorher.
@@ -24,7 +42,7 @@ Alle Anfragen von Dritten aus dem Kontaktformular (Sponsoring, Partnermappe, Pre
 3. Nicht rückgängig zu machen: Was im Team-Bereich gelöscht wird, ist weg.
 
 ## Geprüft
-- `npm test`: 108 grün, 0 Fehler, 5 bekannte Abbrüche (Squadra-Functions, vorher schon so).
+- `npm test`: 111 grün, 0 Fehler, 5 bekannte Abbrüche (Squadra-Functions, vorher schon so).
 - Build: 189 Seiten, Reiter „Anfragen“ im Team-Bereich.
 - Netlify-Vorschau für PR #9 gebaut.
 - Unabhängige Agenten-Prüfung: zuerst Ampel GELB, nach den Korrekturen GRÜN. Behoben:
@@ -56,8 +74,8 @@ Alle Anfragen von Dritten aus dem Kontaktformular (Sponsoring, Partnermappe, Pre
 - DSGVO Art. 5 Abs. 1 lit. e (Speicherbegrenzung), Art. 22, Art. 25: https://eur-lex.europa.eu/eli/reg/2016/679/oj
 
 ## Offene Punkte
-- **Tabelle im LBC3-Supabase anlegen:** `005_kontakt_anfragen.sql` ausführen. Von hier nicht möglich, weil nur das PiStop-Supabase verbunden ist.
-- **Die zwei E-Mails des Eigentümers:** prüfen und mit `quelle = 'email'` in die Kartei übernehmen, sobald der Inhalt vorliegt.
+- Tabelle im LBC3-Supabase: vom Eigentümer am 10.11.2026 angelegt (laut seiner Rückmeldung).
+- **Die zwei E-Mails:** geprüft, beide Spam; `zwei-anfragen.sql` muss der Eigentümer im LBC3-Supabase ausführen.
 - **Live-Gang** erst nach „freigeben“ und angelegter Tabelle.
 - **LBC3 Rechts-Recherche-Team:** Datenschutztext (Abschnitte 4, 7, 8), Fristen 30 Tage / 12 Monate / 24 Monate und die Frage nach Art. 22 DSGVO (automatische Einstufung ohne Weiterleitung) bestätigen – NICHT VERIFIZIERT.
 - IT/FR-Text der Datenschutzerklärung von Muttersprachlern gegenlesen – NICHT VERIFIZIERT.
