@@ -137,6 +137,8 @@ describe('Kontaktformular speichert in der Kartei', () => {
   test('Lockfeld: still als Spam gespeichert, keine E-Mail', async () => {
     await senden({ ...ECHT, 'bot-field': 'x' });
     assert.equal(gespeichert()[0].body.status, 'spam');
+    assert.equal(gespeichert()[0].body.lockfeld, true);
+    assert.ok(aufrufe.some((a) => a.method === 'GET' && a.url.includes('lockfeld=is.true')), 'Tageslimit zählt nur Lockfeld-Treffer');
     assert.equal(mails().length, 0);
   });
   test('Datenbank kaputt: E-Mail geht trotzdem raus (nichts geht verloren)', async () => {
@@ -164,6 +166,7 @@ describe('Datenbank, Team-Bereich, Datenschutz', () => {
     assert.match(sql, /enable row level security/);
     assert.match(sql, /meine_rolle\(\) = 'admin'/);
     assert.match(sql, /status in \('ok', 'spam'\)/);
+    assert.match(sql, /add column if not exists status_am/, 'Spalten auch bei bestehender Tabelle');
     assert.ok(existsSync(join(ROOT, 'supabase/migrations/005_kontakt_anfragen_rueckgaengig.sql')));
     assert.match(lies('supabase/migrations/005_kontakt_anfragen_rueckgaengig.sql'), /drop table if exists public\.kontakt_anfragen/);
   });
@@ -182,6 +185,7 @@ describe('Datenbank, Team-Bereich, Datenschutz', () => {
     assert.match(f, /SPAM_TAGE = 30/);
     assert.match(f, /ERLEDIGT_TAGE = 365/);
     assert.match(f, /HOECHST_TAGE = 730/);
+    assert.match(f, /kontakt_anfragen\?created_at=lt\./, 'Höchstfrist gilt für alle Anfragen');
     assert.match(f, /status_am=lt\./, 'Spam-Frist zählt ab dem Setzen des Labels');
     assert.match(f, /schedule:/);
   });

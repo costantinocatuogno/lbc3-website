@@ -22,7 +22,7 @@ async function vorherige24h(email) {
 
 async function lockfeldHeuteVoll() {
   const heute = new Date(); heute.setUTCHours(0, 0, 0, 0);
-  const rows = await sb(`/rest/v1/kontakt_anfragen?status=eq.spam&spam_wert=gte.10&created_at=gte.${encodeURIComponent(heute.toISOString())}&select=id&limit=${LOCKFELD_PRO_TAG}`, { timeout: KARTEI_TIMEOUT }).catch(() => []);
+  const rows = await sb(`/rest/v1/kontakt_anfragen?lockfeld=is.true&created_at=gte.${encodeURIComponent(heute.toISOString())}&select=id&limit=${LOCKFELD_PRO_TAG}`, { timeout: KARTEI_TIMEOUT }).catch(() => []);
   return Array.isArray(rows) && rows.length >= LOCKFELD_PRO_TAG;
 }
 
@@ -63,7 +63,7 @@ export default handle(async (req) => {
   if (honeypot) { // Honeypot: Bots still ignorieren – mit gültigen Feldern als Spam in die Kartei
     if (gueltig && !(await lockfeldHeuteVoll())) {
       const p = pruefeAnfrage({ name, email, firma, nachricht, honeypot: true, botZeit });
-      await speichern({ name, email, firma: firma || null, anliegen: anliegenKey, sprache: lang, nachricht, status: 'spam', spam_wert: p.wert, spam_gruende: p.gruende });
+      await speichern({ name, email, firma: firma || null, anliegen: anliegenKey, sprache: lang, nachricht, status: 'spam', lockfeld: true, spam_wert: p.wert, spam_gruende: p.gruende });
     }
     return done();
   }

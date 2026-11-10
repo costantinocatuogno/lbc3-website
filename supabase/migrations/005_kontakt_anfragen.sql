@@ -19,8 +19,13 @@ create table if not exists public.kontakt_anfragen (
   spam_wert    integer not null default 0,                               -- Punkte der Spam-Prüfung (ab 5 = Spam)
   spam_gruende text[] not null default '{}',                             -- Gründe, gut lesbar
   quelle       text not null default 'formular' check (quelle in ('formular', 'email')), -- email = von Hand übernommen
+  lockfeld     boolean not null default false,                           -- unsichtbares Lockfeld ausgefüllt (Roboter)
   erledigt_am  timestamptz
 );
+
+-- Falls eine frühere Fassung dieser Datei schon ausgeführt wurde: neue Spalten nachziehen
+alter table public.kontakt_anfragen add column if not exists status_am timestamptz not null default now();
+alter table public.kontakt_anfragen add column if not exists lockfeld boolean not null default false;
 
 create index if not exists kontakt_anfragen_created_at_idx on public.kontakt_anfragen (created_at desc);
 create index if not exists kontakt_anfragen_email_idx on public.kontakt_anfragen (email, created_at);
