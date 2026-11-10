@@ -1,7 +1,7 @@
 <!-- © 2026 LBC3 -->
 # Anfragen-Kartei mit Spam-Prüfung – Abschluss
 
-Stand: 10.11.2026 · **Noch nicht live** – PR #9 (Branch `kontakt-anfragen-kartei`), Netlify-Vorschau https://deploy-preview-9--luigi-catuogno.netlify.app · Verantwortlich: Head of R&D LBC3
+Stand: 10.11.2026 · **Live seit 10.11.2026, 22:40** – PR #9 freigegeben vom Eigentümer, Squash-Commit 9a3ad3a, Netlify-Deploy 6af38f3616d7fa48a1c06eec · Verantwortlich: Head of R&D LBC3
 
 ## Ziel
 Alle Anfragen von Dritten aus dem Kontaktformular (Sponsoring, Partnermappe, Presse, Sonstiges) liegen in einer Kartei im Team-Bereich. Jede Anfrage wird geprüft: grünes Label **OK** oder rotes Label **Spam**. Spam landet nur still in der Kartei, ohne E-Mail. Die Arbeit muss vollständig rückgängig zu machen sein. (Vorgaben des Eigentümers, 10.11.2026)
@@ -42,7 +42,7 @@ Je ein Regressionstest und ein Gegentest gegen Fehlalarme sind dazugekommen; die
 3. Nicht rückgängig zu machen: Was im Team-Bereich gelöscht wird, ist weg.
 
 ## Geprüft
-- `npm test`: 111 grün, 0 Fehler, 5 bekannte Abbrüche (Squadra-Functions, vorher schon so).
+- `npm test`: 131 grün (nach Abgleich mit main), 0 Fehler, 5 bekannte Abbrüche (Squadra-Functions, vorher schon so).
 - Build: 189 Seiten, Reiter „Anfragen“ im Team-Bereich.
 - Netlify-Vorschau für PR #9 gebaut.
 - Unabhängige Agenten-Prüfung: zuerst Ampel GELB, nach den Korrekturen GRÜN. Behoben:
@@ -75,7 +75,8 @@ Je ein Regressionstest und ein Gegentest gegen Fehlalarme sind dazugekommen; die
 
 ## Offene Punkte
 - Erledigt 10.11.2026: Tabelle im LBC3-Supabase angelegt und die zwei E-Mails eingetragen (beide Spam) – vom Eigentümer ausgeführt mit `kartei-anlegen-und-zwei-anfragen.sql`.
-- **Live-Gang** erst nach „freigeben“ und angelegter Tabelle.
+- Live-Gang erledigt: „freigeben“ am 10.11.2026; vor dem Zusammenführen auf den neuen Stand von main gebracht (PR #8, #10, #11), Tests 131 grün, Vorschau neu gebaut. Deploy enthält `kontakt` und den Zeitplan `anfragen-aufraeumen` (02:20 UTC); Netlify-Schlüsselprüfung ohne Treffer.
+- Rauchtest von hier nicht möglich (kein direkter Netzzugang zur Website): einmal eine Test-Anfrage über das Formular schicken und im Reiter „Anfragen“ prüfen, danach löschen.
 - **LBC3 Rechts-Recherche-Team:** Datenschutztext (Abschnitte 4, 7, 8), Fristen 30 Tage / 12 Monate / 24 Monate und die Frage nach Art. 22 DSGVO (automatische Einstufung ohne Weiterleitung) bestätigen – NICHT VERIFIZIERT.
 - IT/FR-Text der Datenschutzerklärung von Muttersprachlern gegenlesen – NICHT VERIFIZIERT.
 - Eigenes Ticket: Grenze pro IP-Adresse für das Kontaktformular (Befund 9; Fluten mit OK-Einträgen und Inhalts-Spam bleibt möglich).
